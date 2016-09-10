@@ -1,60 +1,37 @@
-Verdi
-=====
+Verdi Raft
+==========
 
-[![Build Status](https://api.travis-ci.org/uwplse/verdi.svg?branch=master)](https://travis-ci.org/uwplse/verdi)
+[![Build Status](https://api.travis-ci.org/uwplse/verdi-raft.svg?branch=master)](https://travis-ci.org/uwplse/verdi-raft)
 
-A framework for formally verifying distributed systems implementations in Coq
+An implementation of the Raft distributed consensus protocol, verified in Coq using the Verdi framework.
 
-The Verdi Framework
--------------------
-
-Requirements:
+Requirements
+------------
 
  - [`Coq 8.5`](https://coq.inria.fr/download)
- - [`Mathematical Components 1.6`](http://math-comp.github.io/math-comp/)
+ - [`Verdi`](https://github.com/uwplse/verdi)
  - [`StructTact`](https://github.com/uwplse/StructTact)
 
-Building:
+Building
+--------
 
-First run `./configure` in the Verdi root directory.  This will check
+First run `./configure` in the root directory.  This will check
 for the appropriate version of Coq and ensure all necessary
-dependencies can be located. By default, it checks for `StructTact` in
-the current parent directory, but this can be overridden by setting
-the `StructTact_PATH` environment variable.
+dependencies can be located. By default, it checks for `verdi` 
+and `StructTact` in the current parent directory, but this can be
+overridden by setting the `Verdi_PATH` and `StructTact_PATH` environment
+variables.
 
-Then run `make` in the Verdi root directory.  This will compile the
-specifications and proofs of the core Verdi framework, as well as some
-simple examples. The files in the root directory include:
+Then run `make` in the root directory. This will compile the Raft 
+implementation and proof interfaces, and check all the proofs.
 
-- Core Verdi files:
-    - `Net.v`: core network semantics, including ghost variables
-    - `VerdiTactics.v` and `Util.v`, tactics and lemmas for Verdi proofs
-    - `HandlerMonad.v`: a monad for writing network/input handlers
-    - `StatePacketPacket.v`: a technique for writing easily decomposable
-    invariants
-- Example systems
-    - `LockServ.v`: a lock server
-    - `VarD.v`: vard, a key-value store
-- Verified system transformers
-    - `SeqNum.v` and `SeqNumCorrect.v`, a system transformer
-      implementing sequence numbering
-      - `LockServSeqNum.v`, the sequence numbering transformer
-         applied to the lock server
-    - `PrimaryBackup.v`, a system transformer implementing asynchronous
-      primary-backup replication
-      - `VarDPB.v`, the primary-backup transformer applied to the
-        key-value store
+Files
+-----
 
-The Raft Consensus Protocol
----------------------------
-
-The `raft` and `raft-proofs` subdirectories contain an implementation and
-verification of the Raft distributed consensus protocol. After
-building Verdi, running `make` in the `raft` subdirectory will compile
-the Raft implementation and proof interfaces. For each proof interface,
-there is a corresponding proof file in `raft-proofs`.
-Running `make` in `raft-proofs` will check all the proofs.
-The files in the `raft` subdirectory include:
+The `raft` and `raft-proofs` subdirectories contain the implementation and
+verification of Raft. For each proof interface file in `raft`, there is a 
+corresponding proof file in `raft-proofs`. The files in the `raft` 
+subdirectory include:
 
 - `Raft.v`: an implementation of Raft in Verdi
 - `RaftRefinementInterface.v`: an application of the ghost-variable transformer
@@ -77,10 +54,10 @@ The vard Key-Value Store
 
 Requirements:
 
-- `coq 8.5`
+- `Coq 8.5`
 - `ocaml`, `ocamlbuild`
 
-As discussed above, vard is a simple key-value store implemented in
+vard is a simple key-value store implemented using
 Verdi. vard is specified and verified against Verdi's state-machine
 semantics in `VarD.v`. When the Raft transformer is applied, `vard`
 can be run as a strongly-consistent, fault-tolerant key-value store

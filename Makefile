@@ -2,7 +2,12 @@ PYTHON=python2.7
 COQVERSION := $(shell coqc --version|grep "version 8.5")
 
 ifeq "$(COQVERSION)" ""
-$(error "Verdi is only compatible with Coq version 8.5")
+$(error "Verdi Raft is only compatible with Coq version 8.5")
+endif
+
+COQPROJECT_EXISTS=$(wildcard _CoqProject)
+ifeq "$(COQPROJECT_EXISTS)" ""
+$(error "Run ./configure before running make")
 endif
 
 CHECKPATH := $(shell ./script/checkpaths.sh)
@@ -28,7 +33,6 @@ proofalytics-aux: Makefile.coq
 	$(MAKE) -f Makefile.coq
 
 Makefile.coq: hacks _CoqProject
-	test -s _CoqProject || { echo "Run ./configure before running make"; exit 1; }
 	coq_makefile -f _CoqProject -o Makefile.coq
 
 hacks: raft/RaftState.v

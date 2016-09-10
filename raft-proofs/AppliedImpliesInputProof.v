@@ -1,4 +1,4 @@
-Require Import InverseTraceRelations.
+Require Import Verdi.InverseTraceRelations.
 
 Require Import Raft.
 Require Import CommonTheorems.

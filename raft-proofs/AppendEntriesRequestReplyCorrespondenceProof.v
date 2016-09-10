@@ -7,7 +7,7 @@ Require Import SpecLemmas.
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 Require Import AppendEntriesRequestReplyCorrespondenceInterface.
 
-Require Import DupDropReordering.
+Require Import Verdi.DupDropReordering.
 
 Section AppendEntriesRequestReplyCorrespondence.
   Context {orig_base_params : BaseParams}.

@@ -19,8 +19,7 @@ function find-redundant-imports {
 }
 
 echo "Looking for redundant imports."
-find-redundant-imports core/Verdi.v ".*/(core|lib)/.*"
-find-redundant-imports raft/Raft.v "(.*/(core|lib|systems)/.*)|(.*/Raft.v)"
+find-redundant-imports raft/Raft.v "(.*/Raft.v)"
 
 
 # Delete imports:

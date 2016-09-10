@@ -1,5 +1,5 @@
-Require Import Verdi.
-Require Import VarD.
+Require Import Verdi.Verdi.
+Require Import Verdi.VarD.
 Require Import VarDRaft.
 
 Require Import ExtrOcamlBasic.

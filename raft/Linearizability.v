@@ -1,4 +1,4 @@
-Require Import Verdi.
+Require Import Verdi.Verdi.
 
 Section Linearizability.
   Variable K : Type.

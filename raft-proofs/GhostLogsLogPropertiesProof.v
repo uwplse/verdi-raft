@@ -1,4 +1,4 @@
-Require Import GhostSimulations.
+Require Import Verdi.GhostSimulations.
 
 Require Import Raft.
 Require Import RaftMsgRefinementInterface.

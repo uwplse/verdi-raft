@@ -7,6 +7,11 @@ pushd ..
   pushd StructTact
     ./build.sh
   popd
+
+  git clone 'http://github.com/uwplse/verdi'
+  pushd verdi
+    ./build.sh
+  popd
 popd
 
 case $MODE in

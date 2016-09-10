@@ -1,8 +1,8 @@
 Require Import FunctionalExtensionality.
 
-Require Import GhostSimulations.
+Require Import Verdi.GhostSimulations.
 Require Import Raft.
-Require Import DupDropReordering.
+Require Import Verdi.DupDropReordering.
 Require Import SpecLemmas.
 
 Require Import RaftRefinementInterface.

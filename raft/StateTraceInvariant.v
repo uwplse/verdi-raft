@@ -1,6 +1,6 @@
 Require Import FunctionalExtensionality.
 
-Require Import Verdi.
+Require Import Verdi.Verdi.
 
 Section ST.
   Context {B : BaseParams}.

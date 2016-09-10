@@ -1,5 +1,5 @@
 Require Import Raft.
-Require Import VarD.
+Require Import Verdi.VarD.
 
 Section VarDRaft.
   Instance raft_params : RaftParams vard_base_params :=

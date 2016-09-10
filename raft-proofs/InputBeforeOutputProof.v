@@ -1,5 +1,5 @@
-Require Import GhostSimulations.
-Require Import InverseTraceRelations.
+Require Import Verdi.GhostSimulations.
+Require Import Verdi.InverseTraceRelations.
 
 Require Import Raft.
 Require Import CommonTheorems.

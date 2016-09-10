@@ -1,6 +1,6 @@
 Require Import FunctionalExtensionality.
 
-Require Import GhostSimulations.
+Require Import Verdi.GhostSimulations.
 Require Import Raft.
 
 Require Import RaftRefinementInterface.

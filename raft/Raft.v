@@ -1,4 +1,4 @@
-Require Export Verdi.
+Require Export Verdi.Verdi.
 Require Import RaftState.
 Require Export StructTact.Fin.
 
