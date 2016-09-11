@@ -1,8 +1,8 @@
 -Q ../StructTact StructTact
--Q ../verdi/core Verdi
--Q ../verdi/lib ""
--Q ../verdi/systems Verdi
--Q ../verdi/extraction/coq ""
+-Q ../verdi-framework/core Verdi
+-Q ../verdi-framework/lib ""
+-Q ../verdi-framework/systems Verdi
+-Q ../verdi-framework/extraction/coq ""
 -Q raft ""
 -Q raft-proofs ""
 -Q extraction/vard/coq ""
