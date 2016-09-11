@@ -2,7 +2,7 @@
 *.glob
 *.v.d
 *.buildtime
-_CoqProject
+#_CoqProject
 Makefile.coq
 Makefile.coq.bak
 *~

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-./configure
+#./configure
 time make -k -j 3

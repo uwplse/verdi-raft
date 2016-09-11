@@ -24,7 +24,7 @@ pushd "$SANDBOX" > /dev/null
 
   # build w/ timing and no buffers
   make clean
-  ./configure
+  #./configure
   "$STDBUF" -i0 -o0 make proofalytics-aux \
     | "$STDBUF" -i0 -o0 "${PADIR}/timestamp-lines" \
     > "$PROOF_TICKS"
