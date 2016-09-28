@@ -8,7 +8,7 @@ pushd ..
     ./build.sh
   popd
 
-  git clone -b verdi-without-raft 'http://github.com/uwplse/verdi' verdi
+  git clone 'http://github.com/uwplse/verdi' verdi
   pushd verdi
     ./build.sh
   popd
