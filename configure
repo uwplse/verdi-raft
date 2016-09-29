@@ -8,6 +8,7 @@ DIRS=(raft raft-proofs extraction/vard/coq)
 CANARIES=("mathcomp.ssreflect.ssreflect" "Verdi Raft requires mathcomp to be installed" "StructTact.StructTactics" "Build StructTact before building Verdi Raft")
 EXTRA=(raft/RaftState.v)
 Verdi_PATH=${Verdi_PATH:="../verdi"}
+ln -sfn $Verdi_PATH/extraction/ocaml extraction/vard/lib
 Verdi_DIRS=(core lib systems extraction/coq)
 NAMESPACE_Verdi_lib="\"\""
 NAMESPACE_Verdi_extraction_coq="\"\""
