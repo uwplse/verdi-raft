@@ -528,6 +528,7 @@ Section CandidateEntriesProof.
 
   Lemma candidate_entries_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply CandidateEntries.
+  Proof.
     red. unfold CandidateEntries. intros. intuition.
     - unfold candidateEntries_host_invariant in *.
       intros. simpl in *. eapply candidateEntries_ext; eauto.
