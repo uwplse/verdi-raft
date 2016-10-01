@@ -15,7 +15,7 @@ Section SortedProof.
 
   Theorem logs_sorted_init :
     raft_net_invariant_init logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, logs_sorted,
     logs_sorted_host, logs_sorted_nw, packets_gt_prevIndex, packets_ge_prevTerm in *.
     intuition; simpl in *; intuition.
@@ -25,7 +25,7 @@ Section SortedProof.
     forall h st client id c out st' ps,
       handleClientRequest h st client id c = (out, st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. find_apply_lem_hyp handleClientRequest_log. intuition.
   Qed.
 
@@ -34,7 +34,7 @@ Section SortedProof.
       logs_sorted_nw net ->
       (forall p, In p ps' -> In p (nwPackets net) \/ False) ->
       logs_sorted_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold logs_sorted_nw in *. intros.
     simpl in *. find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -44,7 +44,7 @@ Section SortedProof.
       packets_gt_prevIndex net ->
       (forall p, In p ps' -> In p (nwPackets net) \/ False) ->
       packets_gt_prevIndex (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold packets_gt_prevIndex in *. intros.
     simpl in *. find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -54,7 +54,7 @@ Section SortedProof.
       packets_ge_prevTerm net ->
       (forall p, In p ps' -> In p (nwPackets net) \/ False) ->
       packets_ge_prevTerm (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold packets_ge_prevTerm in *. intros.
     simpl in *. find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -65,7 +65,7 @@ Section SortedProof.
       raft_intermediate_reachable net ->
       logs_sorted_host net ->
       sorted (log st).
-  Proof.
+  Proof using tsi. 
     unfold logs_sorted_host.
     intros.
     find_apply_lem_hyp handleClientRequest_log. intuition.
@@ -81,7 +81,7 @@ Section SortedProof.
 
   Theorem logs_sorted_client_request :
     raft_net_invariant_client_request logs_sorted.
-  Proof.
+  Proof using tsi. 
     unfold raft_net_invariant_client_request. unfold logs_sorted. intuition.
     - unfold logs_sorted_host in *. simpl in *. intros.
       find_higher_order_rewrite. break_match; eauto.
@@ -99,7 +99,7 @@ Section SortedProof.
     forall h st out st' ps,
       handleTimeout h st = (out, st', ps) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     break_match; find_inversion; subst; auto.
   Qed.
@@ -110,7 +110,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       logs_sorted_nw (mkNetwork l st') ->
       logs_sorted_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold logs_sorted_nw. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -121,7 +121,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       (forall p, In p l -> ~ is_append_entries (pBody p)) ->
       logs_sorted_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros. eapply logs_sorted_nw_only_new_packets_matter; eauto.
     unfold logs_sorted_nw. intros. simpl in *. find_apply_hyp_hyp.
     exfalso. match goal with H : _ |- _ => apply H end.
@@ -134,7 +134,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ p = p') ->
       ~ is_append_entries (pBody p') ->
       logs_sorted_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold logs_sorted_nw. intros. simpl in *. find_apply_hyp_hyp.
     intuition.
@@ -149,7 +149,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       packets_gt_prevIndex (mkNetwork l st') ->
       packets_gt_prevIndex (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold packets_gt_prevIndex. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -160,7 +160,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       (forall p, In p l -> ~ is_append_entries (pBody p)) ->
       packets_gt_prevIndex (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros. eapply packets_gt_prevIndex_only_new_packets_matter; eauto.
     unfold packets_gt_prevIndex. intros. simpl in *. find_apply_hyp_hyp.
     exfalso. match goal with H : _ |- _ => apply H end.
@@ -173,7 +173,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ p = p') ->
       ~ is_append_entries (pBody p') ->
       packets_gt_prevIndex (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold packets_gt_prevIndex. intros. simpl in *. find_apply_hyp_hyp.
     intuition.
@@ -188,7 +188,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       packets_ge_prevTerm (mkNetwork l st') ->
       packets_ge_prevTerm (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold packets_ge_prevTerm. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -199,7 +199,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       (forall p, In p l -> ~ is_append_entries (pBody p)) ->
       packets_ge_prevTerm (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros. eapply packets_ge_prevTerm_only_new_packets_matter; eauto.
     unfold packets_ge_prevTerm. intros. simpl in *. find_apply_hyp_hyp.
     exfalso. match goal with H : _ |- _ => apply H end.
@@ -212,7 +212,7 @@ Section SortedProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ p = p') ->
       ~ is_append_entries (pBody p') ->
       packets_ge_prevTerm (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold packets_ge_prevTerm. intros. simpl in *. find_apply_hyp_hyp.
     intuition.
@@ -225,7 +225,7 @@ Section SortedProof.
     forall h st st' ps p,
       handleTimeout h st = (st', ps) ->
       In p (send_packets h ps) -> ~ is_append_entries (pBody p).
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     break_match; find_inversion; subst; simpl in *; eauto;
     repeat (do_in_map; subst; simpl in *); intuition; break_exists; congruence.
@@ -233,7 +233,7 @@ Section SortedProof.
 
   Theorem logs_sorted_timeout :
     raft_net_invariant_timeout logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout. unfold logs_sorted. intuition.
     - unfold logs_sorted_host in *. simpl in *. intros.
       find_apply_lem_hyp handleTimeout_log.
@@ -259,7 +259,7 @@ Section SortedProof.
       (forall e e', In e l -> In e' l' -> eIndex e > eIndex e') ->
       (forall e e', In e l -> In e' l' -> eTerm e >= eTerm e') ->
       sorted (l ++ l').
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; auto.
     intuition; do_in_app; intuition; find_apply_hyp_hyp; intuition.
   Qed.
@@ -271,7 +271,7 @@ Section SortedProof.
       In e l ->
       In e' l ->
       eTerm e <= eTerm e'.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - subst_max. intuition.
     - subst. find_apply_hyp_hyp. intuition.
@@ -287,7 +287,7 @@ Section SortedProof.
       pBody p = AppendEntries t n pli plt es ci ->
       In p (nwPackets net) ->
       sorted (log st').
-  Proof.
+  Proof using. 
     intros. unfold logs_sorted in *. intuition.
     find_apply_lem_hyp handleAppendEntries_log. intuition.
     - find_rewrite; eauto.
@@ -315,7 +315,7 @@ Section SortedProof.
 
   Theorem logs_sorted_append_entries :
     raft_net_invariant_append_entries logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries. intros. unfold logs_sorted. intuition.
     - unfold logs_sorted_host. simpl in *. intros.
       repeat find_higher_order_rewrite.
@@ -344,7 +344,7 @@ Section SortedProof.
     forall h st from t es s st' ps,
       handleAppendEntriesReply h st from t es s = (st', ps) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
@@ -353,14 +353,14 @@ Section SortedProof.
     forall h st from t es s st' ps,
       handleAppendEntriesReply h st from t es s = (st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
 
   Theorem logs_sorted_append_entries_reply :
     raft_net_invariant_append_entries_reply logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply. unfold logs_sorted.
     intuition; simpl in *.
     - unfold logs_sorted_host in *. simpl in *. intros.
@@ -381,7 +381,7 @@ Section SortedProof.
     forall h st t candidate lli llt st' m,
       handleRequestVote h st t candidate lli llt = (st', m) ->
       ~ is_append_entries m.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion;
     subst; intuition; break_exists; congruence.
@@ -389,7 +389,7 @@ Section SortedProof.
 
   Theorem logs_sorted_request_vote :
     raft_net_invariant_request_vote logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote. unfold logs_sorted.
     intuition; simpl in *.
     - unfold logs_sorted_host in *. simpl in *. intros.
@@ -413,14 +413,14 @@ Section SortedProof.
     forall h st src t vg st',
       handleRequestVoteReply h st src t vg = st' ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; subst; auto.
   Qed.
 
   Theorem logs_sorted_request_vote_reply :
     raft_net_invariant_request_vote_reply logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply. unfold logs_sorted.
     intuition; simpl in *.
     - unfold logs_sorted_host in *. simpl in *. intros.
@@ -435,7 +435,7 @@ Section SortedProof.
     forall h st os st' ps,
       doLeader st h = (os, st', ps) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
@@ -449,7 +449,7 @@ Section SortedProof.
       subseq entries (log st) /\
       (forall e, In e entries -> eIndex e > pli) /\
       (forall e, In e entries -> eTerm e >= plt).
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; subst; simpl in *; intuition.
     - unfold replicaMessage in *. do_in_map. simpl in *.
@@ -469,7 +469,7 @@ Section SortedProof.
 
   Theorem logs_sorted_do_leader :
     raft_net_invariant_do_leader logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader. unfold logs_sorted.
     intuition; simpl in *.
     - unfold logs_sorted_host in *. simpl in *. intros.
@@ -495,14 +495,14 @@ Section SortedProof.
     forall h st os st' ps,
       doGenericServer h st = (os, st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
 
   Theorem logs_sorted_do_generic_server :
     raft_net_invariant_do_generic_server logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server. unfold logs_sorted.
     intuition; simpl in *.
     - subst. unfold logs_sorted_host in *. simpl in *. intros.
@@ -518,7 +518,7 @@ Section SortedProof.
 
   Theorem logs_sorted_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset, logs_sorted.
     intuition; simpl in *.
     - unfold logs_sorted_host in *.
@@ -530,7 +530,7 @@ Section SortedProof.
 
   Theorem logs_sorted_reboot :
     raft_net_invariant_reboot logs_sorted.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot, logs_sorted, reboot.
     intuition; simpl in *.
     - unfold logs_sorted_host in *.
@@ -552,7 +552,7 @@ Section SortedProof.
     forall net,
       raft_intermediate_reachable net ->
       logs_sorted net.
-  Proof.
+  Proof using tsi. 
     intros.
     eapply raft_net_invariant; eauto.
     - apply logs_sorted_init.

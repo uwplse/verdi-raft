@@ -16,7 +16,7 @@ Section SpecLemmas.
       handleRequestVote h (snd st) t src lli llt = (st', m) ->
       In (t', h') (votes (update_elections_data_requestVote h src t src lli llt st)) ->
       In (t', h') (votes (fst st)) \/ t' = currentTerm st' /\ votedFor st' = Some h'.
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat tuple_inversion; intuition;
@@ -29,7 +29,7 @@ Section SpecLemmas.
       handleRequestVoteReply h (snd st) src t r = st' ->
       In (t', h') (votes (update_elections_data_requestVoteReply h src t r st)) ->
       In (t', h') (votes (fst st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros. repeat break_match; repeat tuple_inversion; intuition.
   Qed.
@@ -38,7 +38,7 @@ Section SpecLemmas.
     forall h st t n pli plt es ci,
       votes (update_elections_data_appendEntries h st t n pli plt es ci) =
       votes (fst st).
-  Proof.
+  Proof using. 
     intros. unfold update_elections_data_appendEntries.
     repeat break_match; auto.
   Qed.
@@ -51,7 +51,7 @@ Section SpecLemmas.
       t' = currentTerm st' /\
       t' = S (currentTerm (snd st)) /\
       votedFor st' = Some h'.
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout, handleTimeout, tryToBecomeLeader.
     intros.
     repeat break_match; simpl in *; intuition; repeat tuple_inversion; intuition.
@@ -62,7 +62,7 @@ Section SpecLemmas.
       handleTimeout h st = (out, st', ps) ->
       currentTerm st' = currentTerm st ->
       votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     unfold handleTimeout, tryToBecomeLeader.
     intros. repeat break_match; repeat tuple_inversion; simpl in *; auto; omega.
   Qed.
@@ -71,7 +71,7 @@ Section SpecLemmas.
     forall h st src t r st',
       handleRequestVoteReply h (snd st) src t r = st' ->
       votes (update_elections_data_requestVoteReply h src t r st) = votes (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros. repeat break_match; repeat tuple_inversion; intuition.
   Qed.
@@ -83,7 +83,7 @@ Section SpecLemmas.
       currentTerm (snd st) < currentTerm st' \/ votedFor (snd st) = None ->
       In (currentTerm st', h')
          (votes (update_elections_data_requestVote h src t src lli llt st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat tuple_inversion; do_bool; intuition;
@@ -97,7 +97,7 @@ Section SpecLemmas.
       In (t', h') (votes (fst st)) ->
       In (t', h')
          (votes (update_elections_data_requestVote h src t src lli llt st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat tuple_inversion; simpl; auto.
@@ -113,7 +113,7 @@ Section SpecLemmas.
       t' = currentTerm st' ->
       votedFor st' = Some h' ->
       In (t', h') (votes (update_elections_data_timeout h st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout, handleTimeout, tryToBecomeLeader.
     intros.
     repeat break_match; simpl in *; intuition; repeat tuple_inversion;
@@ -125,7 +125,7 @@ Section SpecLemmas.
       handleTimeout h (snd st) = (out, st', ps) ->
       In (t', h') (votes (update_elections_data_timeout h st)) ->
       In (t', h') (votes (fst st)) \/ t' = currentTerm st'.
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros. repeat break_match; simpl in *; intuition; repeat tuple_inversion; intuition.
   Qed.
@@ -133,7 +133,7 @@ Section SpecLemmas.
   Lemma votes_update_elections_data_client_request :
     forall h st client id c,
       votes (update_elections_data_client_request h st client id c) = votes (fst st).
-  Proof.
+  Proof using. 
     intros. unfold update_elections_data_client_request.
     repeat break_match; auto.
   Qed.
@@ -142,7 +142,7 @@ Section SpecLemmas.
     forall h st client id c,
       votesWithLog (update_elections_data_client_request h st client id c) =
       votesWithLog (fst st).
-  Proof.
+  Proof using. 
     intros. unfold update_elections_data_client_request.
     repeat break_match; auto.
   Qed.
@@ -152,7 +152,7 @@ Section SpecLemmas.
       handleClientRequest h (snd st) client id c = (out, st', ps) ->
       In (t', h', l') (votesWithLog (update_elections_data_client_request h st client id c)) ->
       In (t', h', l') (votesWithLog (fst st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request.
     intros. repeat break_match; repeat tuple_inversion; intuition.
   Qed.
@@ -163,7 +163,7 @@ Section SpecLemmas.
       In (t', h', l') (votesWithLog (update_elections_data_timeout h st)) ->
       In (t', h', l') (votesWithLog (fst st)) \/
       (t' = currentTerm st' /\ l' = log st').
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros. repeat break_match; simpl in *; intuition; repeat tuple_inversion; intuition.
   Qed.
@@ -172,7 +172,7 @@ Section SpecLemmas.
     forall h st t n pli plt es ci,
       votesWithLog (update_elections_data_appendEntries h st t n pli plt es ci) =
       votesWithLog (fst st).
-  Proof.
+  Proof using. 
     intros. unfold update_elections_data_appendEntries.
     repeat break_match; auto.
   Qed.
@@ -182,7 +182,7 @@ Section SpecLemmas.
       handleAppendEntries h (snd st) t n pli plt es ci = (st', ps) ->
       In (t', h', l') (votesWithLog (update_elections_data_appendEntries h st t n pli plt es ci)) ->
       In (t', h', l') (votesWithLog (fst st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_appendEntries.
     intros. repeat break_match; repeat tuple_inversion; intuition.
   Qed.
@@ -194,7 +194,7 @@ Section SpecLemmas.
       In (t', h', l') (votesWithLog (fst st)) \/
       (t' = currentTerm st' /\
        l' = log st').
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat tuple_inversion; intuition;
@@ -207,7 +207,7 @@ Section SpecLemmas.
       handleRequestVoteReply h (snd st) src t r = st' ->
       In (t', h', l') (votesWithLog (update_elections_data_requestVoteReply h src t r st)) ->
       In (t', h', l') (votesWithLog (fst st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros. repeat break_match; repeat tuple_inversion; intuition.
   Qed.
@@ -219,7 +219,7 @@ Section SpecLemmas.
     (src : name) (t : nat) (r : bool),
     votesWithLog (update_elections_data_requestVoteReply h src t r st) =
     votesWithLog (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVoteReply.
     break_match; simpl in *; auto.
@@ -229,7 +229,7 @@ Section SpecLemmas.
     forall h st client id c,
       leaderLogs (update_elections_data_client_request h st client id c) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request in *.
     intros. repeat break_match; repeat find_inversion; auto.
   Qed.
@@ -237,7 +237,7 @@ Section SpecLemmas.
   Lemma update_elections_data_timeout_leaderLogs :
     forall h st,
       leaderLogs (update_elections_data_timeout h st) = leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros.
     repeat break_match; auto.
@@ -246,7 +246,7 @@ Section SpecLemmas.
   Lemma update_elections_data_appendEntries_leaderLogs :
     forall h st t src pli plt es ci,
       leaderLogs (update_elections_data_appendEntries h st t src pli plt es ci) = leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_appendEntries.
     intros. repeat break_match; auto.
   Qed.
@@ -255,7 +255,7 @@ Section SpecLemmas.
     forall h src t ci lli llt st,
       leaderLogs (update_elections_data_requestVote h src t ci lli llt st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat find_inversion; auto.
@@ -270,7 +270,7 @@ Section SpecLemmas.
        type (snd st) = Candidate /\
        t2 = currentTerm st' /\
        ll = log st').
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; repeat find_inversion; intuition.
@@ -282,7 +282,7 @@ Section SpecLemmas.
     forall h src t1 v st t2 ll,
       In (t2, ll) (leaderLogs (fst st)) ->
       In (t2, ll) (leaderLogs (update_elections_data_requestVoteReply h src t1 v st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; repeat find_inversion; intuition.
@@ -300,7 +300,7 @@ Section SpecLemmas.
          eClient e = client /\ eInput e = c /\ eId e = id /\ type (snd st) = Leader /\
          allEntries (update_elections_data_client_request h st client id c) =
          (currentTerm st', e) :: allEntries (fst st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request.
     repeat break_match; repeat find_inversion; auto.
@@ -326,7 +326,7 @@ Section SpecLemmas.
          allEntries (update_elections_data_client_request h st client id c) =
          (currentTerm st', e) :: allEntries (fst st) /\
          log st' = e :: log (snd st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request.
     unfold handleClientRequest in *.
@@ -341,7 +341,7 @@ Section SpecLemmas.
   Lemma update_elections_data_requestVoteReply_allEntries :
     forall h h' t  st r,
       allEntries (update_elections_data_requestVoteReply h h' t r st) = allEntries (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; auto.
@@ -352,7 +352,7 @@ Section SpecLemmas.
       handleAppendEntries h st t h' pli plt es ci =
       (st', AppendEntriesReply t' es' true) ->
       t' = t /\ es' = es /\ (forall e, In e es -> In e (log st') \/ haveNewEntries st es = false /\ log st' = log st).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries in *.
     repeat break_match; find_inversion; simpl in *; intuition; eauto using advanceCurrentTerm_log.
   Qed.
@@ -361,7 +361,7 @@ Section SpecLemmas.
     forall h st t h' pli plt es ci e,
       In e (map snd (allEntries (update_elections_data_appendEntries h st t h' pli plt es ci))) ->
       In e (map snd (allEntries (fst st))) \/ In e es.
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries in *.
     repeat break_match; subst; simpl in *; auto.
@@ -376,7 +376,7 @@ Section SpecLemmas.
     forall h st t h' pli plt es ci te e,
       In (te, e) (allEntries (update_elections_data_appendEntries h st t h' pli plt es ci)) ->
       In (te, e) (allEntries (fst st)) \/ (In e es /\ te = t).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries in *.
     repeat break_match; subst; simpl in *; auto.
@@ -392,7 +392,7 @@ Section SpecLemmas.
       handleAppendEntries h (snd st) t h' pli plt es
                           ci = (d, m) ->
       In (te, e) (allEntries (fst st)) \/ (In e es /\ te = currentTerm d).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries in *.
     repeat break_match; subst; simpl in *; auto.
@@ -419,7 +419,7 @@ Section SpecLemmas.
            eIndex e = pli /\
            eTerm e = plt) /\
          log st' = es ++ (removeAfterIndex (log (snd st)) pli))).
-  Proof.
+  Proof using. 
     intros. unfold update_elections_data_appendEntries, handleAppendEntries in *.
     repeat break_match; repeat find_inversion; auto; simpl in *.
     - right. intuition. right. left. do_bool. intuition; eauto using advanceCurrentTerm_term.
@@ -441,7 +441,7 @@ Section SpecLemmas.
       handleAppendEntries h (snd st) t h' pli plt es ci = (st', m) ->
       In (te, e) (allEntries (update_elections_data_appendEntries h st t h' pli plt es ci)) ->
       In (te, e) (allEntries (fst st)) \/ In e (log st') \/ (In e es /\ haveNewEntries (snd st) es = false /\ log st' = log (snd st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries in *.
     repeat break_match; subst; simpl in *; auto.
@@ -458,7 +458,7 @@ Section SpecLemmas.
       (eIndex e = S (maxIndex (log (snd st)))
        /\ eTerm e = currentTerm (snd st)
        /\ type (snd st) = Leader).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request in *.
     repeat break_match; subst; simpl in *; auto. intuition. subst.
@@ -475,7 +475,7 @@ Section SpecLemmas.
     forall h st client id c e,
       In e (map snd (allEntries (fst st))) ->
       In e (map snd (allEntries (update_elections_data_client_request h st client id c))).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request in *.
     repeat break_match; subst; simpl in *; auto.
@@ -485,7 +485,7 @@ Section SpecLemmas.
     forall h st client id c x,
       In x (allEntries (fst st)) ->
       In x (allEntries (update_elections_data_client_request h st client id c)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request in *.
     repeat break_match; subst; simpl in *; auto.
@@ -494,7 +494,7 @@ Section SpecLemmas.
   Lemma update_elections_data_timeout_allEntries :
     forall h st,
       allEntries (update_elections_data_timeout h st) = allEntries (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_timeout. repeat break_match; simpl; auto.
   Qed.
@@ -503,7 +503,7 @@ Section SpecLemmas.
     forall h h' t lli llt st,
       allEntries (update_elections_data_requestVote h h' t h' lli llt st) =
       allEntries (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; auto.
@@ -514,7 +514,7 @@ Section SpecLemmas.
       handleClientRequest h (snd st) client id c = (out, st', ms) ->
       cronies (update_elections_data_client_request h st client id c) =
       cronies (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request.
     repeat break_match; repeat find_inversion; auto.
@@ -524,7 +524,7 @@ Section SpecLemmas.
     forall h st t h' pli plt es ci,
       cronies (update_elections_data_appendEntries h st t h' pli plt es ci) =
       cronies (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries in *.
     repeat break_match; subst; simpl in *; auto.
@@ -534,7 +534,7 @@ Section SpecLemmas.
     forall h st client id c,
       cronies (update_elections_data_client_request h st client id c) =
       cronies (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request in *.
     repeat break_match; subst; simpl in *; auto.
@@ -545,7 +545,7 @@ Section SpecLemmas.
       cronies (update_elections_data_timeout h st) t = cronies (fst st) t
       \/ (cronies (update_elections_data_timeout h st) t = [h]
           /\ t = S (currentTerm (snd st))).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_timeout. repeat break_match; simpl; auto.
     unfold handleTimeout, tryToBecomeLeader in *.
@@ -556,7 +556,7 @@ Section SpecLemmas.
     forall h h' t lli llt st,
       cronies (update_elections_data_requestVote h h' t h' lli llt st) =
       cronies (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; auto.
@@ -566,7 +566,7 @@ Section SpecLemmas.
     forall net h t n pli plt es ci x,
       In x (allEntries (fst (nwState net h))) ->
       In x (allEntries (update_elections_data_appendEntries h (nwState net h) t n pli plt es ci)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_appendEntries.
     intros. break_let. break_match; auto.
     break_if; auto.
@@ -582,7 +582,7 @@ Section SpecLemmas.
       In (t', h', l') (votesWithLog (fst st)) ->
       In (t', h', l')
          (votesWithLog (update_elections_data_requestVote h src t src lli llt st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVote in *.
     repeat break_match; simpl in *; intuition.
@@ -592,7 +592,7 @@ Section SpecLemmas.
     forall h st t h' l,
       In (t, h', l) (votesWithLog (fst st)) ->
       In (t, h', l) (votesWithLog (update_elections_data_timeout h st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_timeout.
     repeat break_match; simpl in *; auto.
@@ -609,7 +609,7 @@ Section SpecLemmas.
        votesWithLog (update_elections_data_timeout h st) =
        (currentTerm st', h, (log st')) :: votesWithLog (fst st) /\
        currentTerm st' = S (currentTerm (snd st))).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout, handleTimeout, tryToBecomeLeader in *.
     intros.
     repeat break_match; simpl in *; intuition; repeat tuple_inversion; intuition;
@@ -628,7 +628,7 @@ Section SpecLemmas.
        currentTerm st' = S (currentTerm (snd st)) /\
        votesWithLog (update_elections_data_timeout h st) =
        (currentTerm st', cid, (log st')) :: votesWithLog (fst st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_timeout.
     repeat find_rewrite.
@@ -649,7 +649,7 @@ Section SpecLemmas.
                        h h' t h' lli llt st) =
        (currentTerm st', cid, (log st')) :: votesWithLog (fst st) /\
        moreUpToDate llt lli (maxTerm (log st')) (maxIndex (log st')) = true).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVote.
     repeat find_rewrite.

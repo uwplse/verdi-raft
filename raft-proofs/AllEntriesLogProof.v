@@ -50,7 +50,7 @@ Section AllEntriesLog.
     forall net,
       refined_raft_intermediate_reachable net ->
       no_entries_past_current_term_host_lifted net.
-  Proof.
+  Proof using rri tsi. 
     unfold no_entries_past_current_term_host_lifted.
     pose proof deghost_spec.
     do 4 intro.
@@ -92,7 +92,7 @@ Ltac all f ls :=
       haveNewEntries (snd (nwState net h)) es = false ->
       In e es ->
       In e (log (snd (nwState net h))).
-  Proof.
+  Proof using rlmli. 
     intros.
     unfold haveNewEntries in *. do_bool. intuition;
       [unfold not_empty in *; break_match; subst; simpl in *; intuition; congruence|].
@@ -117,7 +117,7 @@ Ltac all f ls :=
       l2 = nil
       \/ (exists e, In e l2 /\ eIndex e = 0)
       \/ maxIndex l1 <= maxIndex l2.
-  Proof.
+  Proof using. 
     intros. destruct l2; intuition.
     simpl in *. right.
     destruct l1; intuition.
@@ -143,7 +143,7 @@ Ltac all f ls :=
       contiguous_range_exact_lo l2 i ->
       findAtIndex l1 (maxIndex l2) = None ->
       maxIndex l1 <= maxIndex l2.
-  Proof.
+  Proof using. 
     intros. find_eapply_lem_hyp maxIndex_le; intuition; eauto.
     break_exists. intuition.
     unfold contiguous_range_exact_lo in *.
@@ -157,7 +157,7 @@ Ltac all f ls :=
       In e l1 ->
       In e' l2 ->
       eIndex e' < eIndex e.
-  Proof.
+  Proof using. 
     induction l1; intros; simpl in *; intuition; eauto.
     subst. find_insterU. conclude_using ltac:(apply in_app_iff; intuition eauto).
     intuition.
@@ -171,7 +171,7 @@ Ltac all f ls :=
       In e' (l2 ++ l3) ->
       eIndex e' = eIndex e ->
       In e' l2.
-  Proof.
+  Proof using. 
     intros. do_in_app. intuition.
     match goal with
       | H : sorted (?l ++ ?l'), _ : In _ ?l, _ : In _ ?l' |- _ =>
@@ -188,7 +188,7 @@ Ltac all f ls :=
       In e' (l2 ++ l4) ->
       eIndex e' = eIndex e ->
       In e' l2.
-  Proof.
+  Proof using. 
     intros. do_in_app. intuition.
     find_eapply_lem_hyp Prefix_In; [|eauto].
     match goal with
@@ -204,7 +204,7 @@ Ltac all f ls :=
       In e l2 ->
       eIndex e' = eIndex e ->
       In e' l2.
-  Proof.
+  Proof using. 
     intros. do_in_app. intuition.
     match goal with
       | H : sorted (?l ++ ?l'), _ : In _ ?l, _ : In _ ?l' |- _ =>
@@ -237,7 +237,7 @@ Ltac all f ls :=
       In e' l ->
       eTerm e' < eTerm e ->
       eIndex e' <= eIndex e.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition; subst_max; intuition.
     - find_apply_hyp_hyp. intuition.
     - find_apply_hyp_hyp. intuition.
@@ -252,7 +252,7 @@ Ltac all f ls :=
       In e' l ->
       eTerm e' <> eTerm e ->
       In e' l2.
-  Proof.
+  Proof using. 
     intros.
     assert (eIndex e' <= eIndex e) by
         (eapply sorted_term_index_le; eauto;
@@ -269,7 +269,7 @@ Ltac all f ls :=
       Prefix l l' ->
       l <> nil ->
       maxIndex l = maxIndex l'.
-  Proof.
+  Proof using. 
     intros.
     induction l; simpl in *; intuition.
     break_match; intuition. subst. simpl. auto.
@@ -280,7 +280,7 @@ Ltac all f ls :=
       sorted (e :: l1 ++ l2) ->
       l2 <> nil ->
       maxIndex l2 < eIndex e.
-  Proof.
+  Proof using. 
     intros; induction l1; simpl in *; intuition.
     - destruct l2; simpl in *; intuition.
       match goal with
@@ -291,7 +291,7 @@ Ltac all f ls :=
   
   Lemma allEntries_log_append_entries :
     refined_raft_net_invariant_append_entries allEntries_log.
-  Proof.
+  Proof using aetsi rri tsi llsi ollpti llci aellti rlmli aerlli llli. 
     red. unfold allEntries_log in *. simpl in *. intros.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *;
@@ -843,14 +843,14 @@ Ltac all f ls :=
       handleAppendEntriesReply h st h' t es res = (st', m) ->
       currentTerm st < currentTerm st' \/
       (currentTerm st = currentTerm st' /\ leaderId st' = leaderId st).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; simpl in *; auto).
   Qed.
 
   Lemma allEntries_log_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     repeat find_higher_order_rewrite.
     find_copy_apply_lem_hyp handleAppendEntriesReply_log.
@@ -865,7 +865,7 @@ Ltac all f ls :=
     forall h h' t lli llt st,
       leaderLogs (update_elections_data_requestVote h h' t h' lli llt st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; auto.
@@ -875,7 +875,7 @@ Ltac all f ls :=
     forall h h' t  st t' ll' r,
       In (t', ll') (leaderLogs (fst st)) ->
       In (t', ll') (leaderLogs (update_elections_data_requestVoteReply h h' t r st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; auto.
@@ -884,7 +884,7 @@ Ltac all f ls :=
 
   Lemma allEntries_log_request_vote :
     refined_raft_net_invariant_request_vote allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     repeat find_higher_order_rewrite.
     find_copy_apply_lem_hyp handleRequestVote_log.
@@ -900,13 +900,13 @@ Ltac all f ls :=
   Lemma handleRequestVoteReply_log' :
     forall h st h' t r,
       log (handleRequestVoteReply h st h' t r) = log st.
-  Proof.
+  Proof using. 
     eauto using handleRequestVoteReply_log.
   Qed.
 
   Lemma allEntries_log_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     find_copy_apply_lem_hyp handleRequestVoteReply_currentTerm_leaderId.
     repeat find_higher_order_rewrite.
@@ -926,7 +926,7 @@ Ltac all f ls :=
       In (t, e) (allEntries (update_elections_data_client_request h st client id c)) ->
       In (t, e) (allEntries (fst st)) \/
       In e (log st').
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_client_request in *.
     repeat break_match; repeat find_inversion; auto.
@@ -939,7 +939,7 @@ Ltac all f ls :=
       handleClientRequest h st client id c = (out, st', ms) ->
       currentTerm st' = currentTerm st /\
       leaderId st' = leaderId st.
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     subst.
     break_match; try find_inversion; simpl in *; auto.
@@ -947,7 +947,7 @@ Ltac all f ls :=
   
   Lemma allEntries_log_client_request :
     refined_raft_net_invariant_client_request allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *;
@@ -969,7 +969,7 @@ Ltac all f ls :=
       handleTimeout h st = (out, st', ms) ->
       currentTerm st < currentTerm st' \/
       currentTerm st' = currentTerm st /\ leaderId st' = leaderId st.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     subst.
     break_match; try find_inversion; simpl in *; auto.
@@ -977,7 +977,7 @@ Ltac all f ls :=
   
   Lemma allEntries_log_timeout :
     refined_raft_net_invariant_timeout allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *;
@@ -997,14 +997,14 @@ Ltac all f ls :=
       doLeader st h = (out, st', m) ->
       currentTerm st' = currentTerm st /\
       leaderId st' = leaderId st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader, advanceCommitIndex in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
   
   Lemma allEntries_log_do_leader :
     refined_raft_net_invariant_do_leader allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -1026,7 +1026,7 @@ Ltac all f ls :=
       doGenericServer h st = (out, st', m) ->
       currentTerm st' = currentTerm st /\
       leaderId st' = leaderId st.
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion;
     use_applyEntries_spec; subst; simpl in *;
@@ -1035,7 +1035,7 @@ Ltac all f ls :=
   
   Lemma allEntries_log_do_generic_server :
     refined_raft_net_invariant_do_generic_server allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -1053,13 +1053,13 @@ Ltac all f ls :=
 
   Lemma allEntries_log_init :
     refined_raft_net_invariant_init allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log. intros. simpl in *. intuition.
   Qed.
 
   Lemma allEntries_log_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros.
     repeat find_reverse_higher_order_rewrite.
     find_apply_hyp_hyp. intuition. right.
@@ -1068,7 +1068,7 @@ Ltac all f ls :=
 
   Lemma allEntries_log_reboot :
     refined_raft_net_invariant_reboot allEntries_log.
-  Proof.
+  Proof using. 
     red. unfold allEntries_log in *. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -1087,7 +1087,7 @@ Ltac all f ls :=
     forall net,
       refined_raft_intermediate_reachable net ->
       allEntries_log net.
-  Proof.
+  Proof using aetsi rri tsi llsi ollpti llci aellti rlmli aerlli llli. 
     intros. apply refined_raft_net_invariant; auto.
     - exact allEntries_log_init.
     - exact allEntries_log_client_request.

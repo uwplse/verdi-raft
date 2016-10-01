@@ -22,7 +22,7 @@ Section LeaderLogsTermSanity.
     forall net,
       refined_raft_intermediate_reachable net ->
       candidate_term_gt_log (deghost net).
-  Proof.
+  Proof using ctgli rri. 
     intros. eapply lift_prop; eauto using candidate_term_gt_log_invariant.
   Qed.
 
@@ -39,7 +39,7 @@ Section LeaderLogsTermSanity.
       (forall h' : Net.name, st' h' = update name_eq_dec (nwState net) h (gd, d) h') ->
       leaderLogs gd = leaderLogs (fst (nwState net h)) ->
       leaderLogs_term_sanity {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     unfold leaderLogs_term_sanity. intros. find_higher_order_rewrite.
     update_destruct; subst; rewrite_update; simpl in *; [find_rewrite|]; eauto.
   Qed.
@@ -53,7 +53,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_term_sanity_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_term_sanity.
-  Proof.
+  Proof using ctgli rri. 
     term_sanity_start_update.
     find_copy_apply_lem_hyp handleRequestVoteReply_type.
     find_copy_apply_lem_hyp handleRequestVoteReply_log.
@@ -78,7 +78,7 @@ Section LeaderLogsTermSanity.
     forall net,
       refined_raft_intermediate_reachable net ->
       leaderLogs_term_sanity net.
-  Proof.
+  Proof using ctgli rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - term_sanity_start; contradiction.
@@ -108,7 +108,7 @@ Section LeaderLogsTermSanity.
       leaderLogs gd = leaderLogs (fst (nwState net h)) ->
       currentTerm d >= currentTerm (snd (nwState net h)) ->
       leaderLogs_currentTerm_sanity {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     unfold leaderLogs_currentTerm_sanity. intros. find_higher_order_rewrite.
     update_destruct; subst; rewrite_update.
     - simpl in *. find_rewrite. find_apply_hyp_hyp. omega.
@@ -129,13 +129,13 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_init :
     refined_raft_net_invariant_init leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_start. contradiction.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_client_request :
     refined_raft_net_invariant_client_request leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - apply update_elections_data_client_request_leaderLogs.
     - find_apply_lem_hyp handleClientRequest_type. intuition.
@@ -143,7 +143,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_timeout :
     refined_raft_net_invariant_timeout leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - apply update_elections_data_timeout_leaderLogs.
     - find_apply_lem_hyp handleTimeout_type_strong. intuition.
@@ -151,7 +151,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_append_entries :
     refined_raft_net_invariant_append_entries leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - apply update_elections_data_appendEntries_leaderLogs.
     - find_apply_lem_hyp handleAppendEntries_type_term. intuition.
@@ -159,14 +159,14 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_request_vote :
     refined_raft_net_invariant_request_vote leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - apply leaderLogs_update_elections_data_requestVote.
     - find_apply_lem_hyp handleRequestVote_type_term. intuition.
@@ -174,7 +174,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_start_update. simpl in *.
     find_eapply_lem_hyp leaderLogs_update_elections_data_RVR; [|auto].
     find_copy_apply_lem_hyp handleRequestVoteReply_type.
@@ -189,7 +189,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_do_leader :
     refined_raft_net_invariant_do_leader leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - find_rewrite. auto.
     - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition.
@@ -197,7 +197,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_do_generic_server :
     refined_raft_net_invariant_do_generic_server leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_unchanged.
     - find_rewrite. auto.
     - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition.
@@ -205,13 +205,13 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_start. find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_reboot :
     refined_raft_net_invariant_reboot leaderLogs_currentTerm_sanity.
-  Proof.
+  Proof using. 
     currentTerm_sanity_start_update. specialize (H0 h). repeat find_rewrite.
     find_apply_hyp_hyp. subst. unfold reboot. auto.
   Qed.
@@ -220,7 +220,7 @@ Section LeaderLogsTermSanity.
     forall net,
       refined_raft_intermediate_reachable net ->
       leaderLogs_currentTerm_sanity net.
-  Proof.
+  Proof using rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply leaderLogs_currentTerm_sanity_init.
@@ -252,7 +252,7 @@ Section LeaderLogsTermSanity.
       currentTerm d >= currentTerm (snd (nwState net h)) ->
       (type d = type (snd (nwState net h)) \/ type d <> Candidate) ->
       leaderLogs_currentTerm_sanity_candidate {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     unfold leaderLogs_currentTerm_sanity_candidate. intros. find_higher_order_rewrite.
     update_destruct; subst; rewrite_update; [|eauto].
     simpl in *. repeat find_rewrite. intuition; find_apply_hyp_hyp; omega.
@@ -263,13 +263,13 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_init :
     refined_raft_net_invariant_init leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_start. contradiction.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_client_request :
     refined_raft_net_invariant_client_request leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_unchanged.
     - apply update_elections_data_client_request_leaderLogs.
     - find_apply_lem_hyp handleClientRequest_type; intuition.
@@ -278,7 +278,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_timeout :
     refined_raft_net_invariant_timeout leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using rri. 
     ctsc_start_update. subst. simpl in *.
     find_rewrite_lem update_elections_data_timeout_leaderLogs.
     find_apply_lem_hyp handleTimeout_type_strong. intuition.
@@ -289,7 +289,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_append_entries :
     refined_raft_net_invariant_append_entries leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_unchanged.
     - apply update_elections_data_appendEntries_leaderLogs.
     - find_apply_lem_hyp handleAppendEntries_type_term. intuition.
@@ -298,7 +298,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_unchanged.
     - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition.
     - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition. right. congruence.
@@ -306,7 +306,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_request_vote :
     refined_raft_net_invariant_request_vote leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_unchanged.
     - apply leaderLogs_update_elections_data_requestVote.
     - find_apply_lem_hyp handleRequestVote_type_term. intuition.
@@ -315,7 +315,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_start_update. simpl in *.
     find_eapply_lem_hyp leaderLogs_update_elections_data_RVR; [|auto].
     intuition.
@@ -328,7 +328,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_do_leader :
     refined_raft_net_invariant_do_leader leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_unchanged.
     - find_rewrite. auto.
     - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition.
@@ -337,7 +337,7 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_do_generic_server :
     refined_raft_net_invariant_do_generic_server leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_unchanged.
     - find_rewrite. auto.
     - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition.
@@ -346,13 +346,13 @@ Section LeaderLogsTermSanity.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_start. repeat find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_reboot :
     refined_raft_net_invariant_reboot leaderLogs_currentTerm_sanity_candidate.
-  Proof.
+  Proof using. 
     ctsc_start_update. subst. simpl in *. discriminate.
   Qed.
 
@@ -360,7 +360,7 @@ Section LeaderLogsTermSanity.
     forall net,
       refined_raft_intermediate_reachable net ->
       leaderLogs_currentTerm_sanity_candidate net.
-  Proof.
+  Proof using rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply leaderLogs_currentTerm_sanity_candidate_init.

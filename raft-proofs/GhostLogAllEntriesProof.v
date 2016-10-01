@@ -29,7 +29,7 @@ Section GhostLogAllEntriesProof.
     forall (net : @network _ raft_msg_refined_multi_params),
       msg_refined_raft_intermediate_reachable net ->
       lifted_in_log_in_all_entries net.
-  Proof.
+  Proof using iliaei rmri. 
     intros.
     unfold lifted_in_log_in_all_entries; intros.
     find_eapply_lem_hyp msg_lift_prop;
@@ -45,7 +45,7 @@ Section GhostLogAllEntriesProof.
     forall st h t n pli plt es ci x,
       In x (allEntries (fst st)) ->
       In x (allEntries (update_elections_data_appendEntries h st t n pli plt es ci)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_appendEntries.
     intros. break_let. break_match; auto.
     break_if; auto.
@@ -54,7 +54,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_append_entries :
     msg_refined_raft_net_invariant_append_entries' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -83,7 +83,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_append_entries_reply :
     msg_refined_raft_net_invariant_append_entries_reply' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -103,7 +103,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_request_vote :
     msg_refined_raft_net_invariant_request_vote' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -123,7 +123,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_request_vote_reply :
     msg_refined_raft_net_invariant_request_vote_reply ghost_log_allEntries.
-  Proof.
+  Proof using. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -135,7 +135,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_timeout :
     msg_refined_raft_net_invariant_timeout' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -157,7 +157,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_client_request :
     msg_refined_raft_net_invariant_client_request' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -181,7 +181,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_do_leader :
     msg_refined_raft_net_invariant_do_leader' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -207,7 +207,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_do_generic_server :
     msg_refined_raft_net_invariant_do_generic_server' ghost_log_allEntries.
-  Proof.
+  Proof using iliaei rmri. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -233,7 +233,7 @@ Section GhostLogAllEntriesProof.
 
   Lemma ghost_log_allEntries_reboot :
     msg_refined_raft_net_invariant_reboot ghost_log_allEntries.
-  Proof.
+  Proof using. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -247,7 +247,7 @@ Section GhostLogAllEntriesProof.
   
   Lemma ghost_log_allEntries_state_same_packet_subset :
     msg_refined_raft_net_invariant_state_same_packet_subset ghost_log_allEntries.
-  Proof.
+  Proof using. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -258,7 +258,7 @@ Section GhostLogAllEntriesProof.
   
   Lemma ghost_log_allEntries_init :
     msg_refined_raft_net_invariant_init ghost_log_allEntries.
-  Proof.
+  Proof using. 
     red. unfold ghost_log_allEntries. intros. simpl in *.
     intuition.
   Qed.

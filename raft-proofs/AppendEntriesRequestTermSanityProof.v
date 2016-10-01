@@ -19,7 +19,7 @@ Section AppendEntriesRequestTermSanity.
     forall net,
       refined_raft_intermediate_reachable net ->
       logs_sorted (deghost net).
-  Proof.
+  Proof using si rri. 
     intros.
     eapply lift_prop; eauto using logs_sorted_invariant.
   Qed.
@@ -28,7 +28,7 @@ Section AppendEntriesRequestTermSanity.
     forall (net : network (params := raft_refined_multi_params)) p,
       In p (nwPackets net) ->
       In (deghost_packet p) (nwPackets (deghost net)).
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl. intuition.
     apply in_map_iff.
@@ -39,7 +39,7 @@ Section AppendEntriesRequestTermSanity.
     forall net,
       logs_sorted (deghost net) ->
       append_entries_request_term_sanity net.
-  Proof.
+  Proof using. 
     unfold logs_sorted, append_entries_request_term_sanity. intuition.
     unfold packets_ge_prevTerm in *. find_apply_lem_hyp ghost_packet.
     eauto.

@@ -20,7 +20,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_init :
     raft_net_invariant_init nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, nextIndex_safety.
     intros.
     discriminate.
@@ -41,7 +41,7 @@ Section NextIndexSafety.
       (forall h',
           type st' = Leader ->
           Nat.pred (getNextIndex st' h') <= maxIndex (log st')).
-  Proof.
+  Proof using. 
     unfold getNextIndex, nextIndex_preserved in *.
     intuition.
     repeat find_rewrite.
@@ -57,7 +57,7 @@ Section NextIndexSafety.
     forall h st client id c out st' ps,
       handleClientRequest h st client id c = (out, st', ps) ->
       nextIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold handleClientRequest, nextIndex_preserved.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; try congruence.
@@ -66,7 +66,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_client_request :
     raft_net_invariant_client_request nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_client_request, nextIndex_safety.
     simpl.
     intros.
@@ -80,7 +80,7 @@ Section NextIndexSafety.
     forall h d out d' l,
       handleTimeout h d = (out, d', l) ->
       nextIndex_preserved d d'.
-  Proof.
+  Proof using. 
     unfold handleTimeout, tryToBecomeLeader, nextIndex_preserved.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; try congruence.
@@ -89,7 +89,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_timeout :
     raft_net_invariant_timeout nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout, nextIndex_safety.
     simpl.
     intros.
@@ -103,7 +103,7 @@ Section NextIndexSafety.
     forall h st t n pli plt es ci st' ps,
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       nextIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries, nextIndex_preserved, advanceCurrentTerm.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; try congruence; auto.
@@ -111,7 +111,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_append_entries :
     raft_net_invariant_append_entries nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries, nextIndex_safety.
     simpl.
     intros.
@@ -137,7 +137,7 @@ Section NextIndexSafety.
        nextIndex st' =
         (assoc_set name_eq_dec (nextIndex st) h'
                    (pred (getNextIndex st h'))))).
-  Proof.
+  Proof using. 
     unfold handleAppendEntriesReply, advanceCurrentTerm.
     intros.
     repeat break_match; repeat find_inversion; do_bool; simpl in *; intuition.
@@ -146,7 +146,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_append_entries_reply :
     raft_net_invariant_append_entries_reply nextIndex_safety.
-  Proof.
+  Proof using si aersi. 
     unfold raft_net_invariant_append_entries_reply, nextIndex_safety, getNextIndex.
     simpl.
     intros.
@@ -184,7 +184,7 @@ Section NextIndexSafety.
     forall st h h' t lli llt st' m,
       handleRequestVote h st t h' lli llt = (st', m) ->
       nextIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold handleRequestVote, nextIndex_preserved, advanceCurrentTerm.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; auto; try congruence.
@@ -192,7 +192,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_request_vote :
     raft_net_invariant_request_vote nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote, nextIndex_safety.
     simpl.
     intros.
@@ -209,7 +209,7 @@ Section NextIndexSafety.
       nextIndex (handleRequestVoteReply n st src t v) =
       nextIndex st \/
       nextIndex (handleRequestVoteReply n st src t v) = [].
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; auto; try congruence.
@@ -217,7 +217,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_request_vote_reply :
     raft_net_invariant_request_vote_reply nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply, nextIndex_safety.
     simpl.
     intros.
@@ -237,7 +237,7 @@ Section NextIndexSafety.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       nextIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold doLeader, nextIndex_preserved.
     intros.
     repeat break_match; repeat find_inversion; auto; try congruence.
@@ -245,7 +245,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_do_leader :
     raft_net_invariant_do_leader nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader, nextIndex_safety.
     simpl.
     intros.
@@ -259,7 +259,7 @@ Section NextIndexSafety.
     forall h st os st' ms,
       doGenericServer h st = (os, st', ms) ->
       nextIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold doGenericServer, nextIndex_preserved.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; auto; try congruence;
@@ -268,7 +268,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_do_generic_server :
     raft_net_invariant_do_generic_server nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server, nextIndex_safety.
     simpl.
     intros.
@@ -280,7 +280,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset, nextIndex_safety.
     simpl.
     intros.
@@ -290,7 +290,7 @@ Section NextIndexSafety.
 
   Lemma nextIndex_safety_reboot :
     raft_net_invariant_reboot nextIndex_safety.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot, nextIndex_safety, reboot.
     simpl.
     intros.
@@ -305,7 +305,7 @@ Section NextIndexSafety.
     forall net,
       raft_intermediate_reachable net ->
       nextIndex_safety net.
-  Proof.
+  Proof using si aersi. 
     intros.
     apply raft_net_invariant; auto.
     - apply nextIndex_safety_init.

@@ -41,7 +41,7 @@ Section LeaderLogsVotesWithLog.
            exists log : list entry,
              moreUpToDate (maxTerm ll) (maxIndex ll) (maxTerm log) (maxIndex log) =
              true /\ In (t0, leader, log) (votesWithLog (fst (st' h)))).
-  Proof.
+  Proof using. 
     intros.
     break_exists_exists. intuition.
     find_apply_hyp_hyp. break_exists_exists. intuition eauto.
@@ -49,7 +49,7 @@ Section LeaderLogsVotesWithLog.
   
   Lemma leaderLogs_votesWithLog_append_entries :
     refined_raft_net_invariant_append_entries leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -66,7 +66,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -87,7 +87,7 @@ Section LeaderLogsVotesWithLog.
       In (t', h', l') (votesWithLog (fst st)) ->
       In (t', h', l')
          (votesWithLog (update_elections_data_requestVote h src t src lli llt st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVote in *.
     repeat break_match; simpl in *; intuition.
@@ -95,7 +95,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_request_vote :
     refined_raft_net_invariant_request_vote leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -118,7 +118,7 @@ Section LeaderLogsVotesWithLog.
         NoDup quorum /\
         length quorum > div2 (length nodes) /\
         (forall h, In h quorum -> In h l).
-  Proof.
+  Proof using. 
     intros.
     exists (dedup name_eq_dec l). intuition; eauto using NoDup_dedup, in_dedup_was_in.
     unfold wonElection in *.
@@ -127,7 +127,7 @@ Section LeaderLogsVotesWithLog.
         
   Lemma leaderLogs_votesWithLog_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_votesWithLog.
-  Proof.
+  Proof using rvrmutdi vrmutdi. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -180,7 +180,7 @@ Section LeaderLogsVotesWithLog.
     forall h st t h' l,
       In (t, h', l) (votesWithLog (fst st)) ->
       In (t, h', l) (votesWithLog (update_elections_data_timeout h st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_timeout.
     repeat break_match; simpl in *; auto.
@@ -188,7 +188,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_timeout :
     refined_raft_net_invariant_timeout leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -207,7 +207,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_client_request :
     refined_raft_net_invariant_client_request leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -226,7 +226,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_do_leader :
     refined_raft_net_invariant_do_leader leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -244,7 +244,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_do_generic_server :
     refined_raft_net_invariant_do_generic_server leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -262,7 +262,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_reboot :
     refined_raft_net_invariant_reboot leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -280,7 +280,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     subst. repeat find_reverse_higher_order_rewrite.
     eapply quorum_preserved; [|eauto];
@@ -291,7 +291,7 @@ Section LeaderLogsVotesWithLog.
 
   Lemma leaderLogs_votesWithLog_init :
     refined_raft_net_invariant_init leaderLogs_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_votesWithLog. intros. simpl in *.
     intuition.
   Qed.

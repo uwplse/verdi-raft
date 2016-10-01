@@ -23,7 +23,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_client_request :
     refined_raft_net_invariant_client_request votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, votes_le_currentTerm.
     start_proof.
     erewrite handleClientRequest_currentTerm by eauto.
@@ -33,7 +33,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_timeout :
     refined_raft_net_invariant_timeout votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout, votes_le_currentTerm.
     start_proof.
     find_copy_eapply_lem_hyp votes_update_elections_data_timeout; eauto.
@@ -45,7 +45,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_append_entries :
     refined_raft_net_invariant_append_entries votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries, votes_le_currentTerm.
     start_proof.
     rewrite @votes_same_append_entries in *.
@@ -56,7 +56,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, votes_le_currentTerm.
     start_proof.
     find_apply_lem_hyp handleAppendEntriesReply_currentTerm.
@@ -66,7 +66,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_request_vote :
     refined_raft_net_invariant_request_vote votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote, votes_le_currentTerm.
     start_proof.
     find_eapply_lem_hyp votes_update_elections_data_request_vote; eauto.
@@ -77,7 +77,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote_reply, votes_le_currentTerm.
     start_proof.
     find_eapply_lem_hyp votes_update_elections_data_request_vote_reply; eauto.
@@ -86,7 +86,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_do_leader :
     refined_raft_net_invariant_do_leader votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, votes_le_currentTerm.
     start_proof.
     assert (gd = (fst (nwState net h)) /\ d = snd (nwState net h))
@@ -97,7 +97,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_do_generic_server :
     refined_raft_net_invariant_do_generic_server votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, votes_le_currentTerm.
     start_proof.
     assert (gd = (fst (nwState net h)) /\ d = snd (nwState net h))
@@ -108,7 +108,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, votes_le_currentTerm.
     intros.
     repeat find_reverse_higher_order_rewrite.
@@ -117,7 +117,7 @@ Section VotesLeCurrentTerm.
 
   Lemma votes_le_current_term_reboot :
     refined_raft_net_invariant_reboot votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, votes_le_currentTerm.
     start_proof.
     unfold reboot. simpl.
@@ -128,7 +128,7 @@ Section VotesLeCurrentTerm.
 
   Theorem votes_le_current_term_init :
     refined_raft_net_invariant_init votes_le_currentTerm.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, votes_le_currentTerm.
     simpl. intuition.
   Qed.
@@ -137,7 +137,7 @@ Section VotesLeCurrentTerm.
     forall net,
       refined_raft_intermediate_reachable net ->
       votes_le_currentTerm net.
-  Proof.
+  Proof using rri. 
     intros.
     eapply refined_raft_net_invariant; eauto.
     - apply votes_le_current_term_init.

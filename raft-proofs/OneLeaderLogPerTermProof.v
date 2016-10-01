@@ -39,7 +39,7 @@ Section OneLeaderLogPerTerm.
 
   Lemma one_leaderLog_per_term_init :
     refined_raft_net_invariant_init one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     start. contradiction.
   Qed.
 
@@ -49,7 +49,7 @@ Section OneLeaderLogPerTerm.
       (forall h' : Net.name, st' h' = update name_eq_dec (nwState net) h (gd, d) h') ->
       leaderLogs gd = leaderLogs (fst (nwState net h)) ->
       one_leaderLog_per_term {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     unfold one_leaderLog_per_term. intros.
     repeat find_higher_order_rewrite;
     repeat (update_destruct; subst; rewrite_update);
@@ -65,31 +65,31 @@ Section OneLeaderLogPerTerm.
 
   Lemma one_leaderLog_per_term_client_request :
     refined_raft_net_invariant_client_request one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     unchanged update_elections_data_client_request_leaderLogs.
   Qed.
 
   Lemma one_leaderLog_per_term_timeout :
     refined_raft_net_invariant_timeout one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     unchanged update_elections_data_timeout_leaderLogs.
   Qed.
 
   Lemma one_leaderLog_per_term_append_entries :
     refined_raft_net_invariant_append_entries one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     unchanged update_elections_data_appendEntries_leaderLogs.
   Qed.
 
   Lemma one_leaderLog_per_term_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     start_unchanged. auto.
   Qed.
 
   Lemma one_leaderLog_per_term_request_vote :
     refined_raft_net_invariant_request_vote one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     unchanged leaderLogs_update_elections_data_requestVote.
   Qed.
 
@@ -103,7 +103,7 @@ Section OneLeaderLogPerTerm.
           /\ t' = currentTerm (snd st)
           /\ type (snd st) = Candidate
           /\ wonElection (dedup name_eq_dec (h' :: votesReceived (snd st))) = true).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; auto.
@@ -118,7 +118,7 @@ Section OneLeaderLogPerTerm.
     forall votes,
       wonElection votes = true ->
       length votes > div2 (length nodes).
-  Proof.
+  Proof using. 
     unfold wonElection. intros. find_apply_lem_hyp leb_true_le. omega.
   Qed.
 
@@ -129,7 +129,7 @@ Section OneLeaderLogPerTerm.
       length q1 > div2 (length nodes) ->
       length q2 > div2 (length nodes) ->
       exists v, In v q1 /\ In v q2.
-  Proof.
+  Proof using one_node_params. 
     intros. eapply pigeon with (l := nodes).
     - apply name_eq_dec.
     - intros. apply (@all_names_nodes _ multi_params).
@@ -151,7 +151,7 @@ Section OneLeaderLogPerTerm.
       pDst p = h' ->
       pDst p <> h ->
       False.
-  Proof.
+  Proof using vvci cci vci llvwli. 
     intros. unfold not in *. find_false.
     simpl in *. find_apply_lem_hyp update_elections_data_requestVoteReply_leaderLogs'.
     intro_refined_invariant leaderLogs_votesWithLog_invariant.
@@ -182,7 +182,7 @@ Section OneLeaderLogPerTerm.
 
   Lemma one_leaderLog_per_term_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply one_leaderLog_per_term.
-  Proof.
+  Proof using lltsi vvci cci vci llvwli. 
     start. repeat find_higher_order_rewrite. repeat (update_destruct; rewrite_update).
     - split; [subst; auto|].
       find_copy_eapply_lem_hyp leaderLogs_update_elections_data_RVR; [|eauto].
@@ -211,25 +211,25 @@ Section OneLeaderLogPerTerm.
 
   Lemma one_leaderLog_per_term_do_leader :
     refined_raft_net_invariant_do_leader one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     start_unchanged. find_rewrite. auto.
   Qed.
 
   Lemma one_leaderLog_per_term_do_generic_server :
     refined_raft_net_invariant_do_generic_server one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     start_unchanged. find_rewrite. auto.
   Qed.
 
   Lemma one_leaderLog_per_term_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     start. repeat find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma one_leaderLog_per_term_reboot :
     refined_raft_net_invariant_reboot one_leaderLog_per_term.
-  Proof.
+  Proof using. 
     start_update; eapply H0; unfold reboot in *; try find_rewrite; simpl in *; eauto.
   Qed.
 
@@ -237,7 +237,7 @@ Section OneLeaderLogPerTerm.
     forall net,
       refined_raft_intermediate_reachable net ->
       one_leaderLog_per_term net.
-  Proof.
+  Proof using lltsi vvci cci vci llvwli rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply one_leaderLog_per_term_init.

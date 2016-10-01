@@ -20,7 +20,7 @@ Section TransitiveCommit.
     forall net,
       refined_raft_intermediate_reachable net ->
       transitive_commit net.
-  Proof.
+  Proof using rlmli. 
     unfold transitive_commit, committed. intros.
     break_exists_name h'; exists h'.
     break_exists_name e''; exists e''.

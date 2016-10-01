@@ -72,7 +72,7 @@ Section CommonDefinitions.
     Definition key : Type := nat * nat.
 
     Definition key_eq_dec : forall x y : key, {x = y} + {x <> y}.
-    Proof.
+    Proof using. 
       decide equality; auto using eq_nat_dec.
     Qed.
 

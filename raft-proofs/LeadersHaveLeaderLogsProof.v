@@ -20,7 +20,7 @@ Section LeadersHaveLeaderLogs.
       log st' = log st /\
       ((currentTerm st' = currentTerm st /\ type st' = type st) \/
        type st' = Follower \/ (type st = Candidate /\ type st' = Leader)).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition.
@@ -33,7 +33,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_appendEntries :
     refined_raft_net_invariant_append_entries leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleAppendEntries_type. intuition; try congruence.
     rewrite update_elections_data_appendEntries_leaderLogs.
@@ -42,7 +42,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_appendEntriesReply :
     refined_raft_net_invariant_append_entries_reply leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleAppendEntriesReply_type. intuition; try congruence.
     repeat find_rewrite. eauto.
@@ -51,7 +51,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_requestVote :
     refined_raft_net_invariant_request_vote leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleRequestVote_type. intuition; try congruence.
     rewrite leaderLogs_update_elections_data_requestVote.
@@ -61,7 +61,7 @@ Section LeadersHaveLeaderLogs.
   
   Lemma leaders_have_leaderLogs_requestVoteReply :
     refined_raft_net_invariant_request_vote_reply leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     unfold update_elections_data_requestVoteReply.
     break_match; unfold raft_data in *;
@@ -75,7 +75,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_clientRequest :
     refined_raft_net_invariant_client_request leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleClientRequest_type. intuition; try congruence.
     rewrite update_elections_data_client_request_leaderLogs.
@@ -85,7 +85,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_timeout :
     refined_raft_net_invariant_timeout leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleTimeout_type. intuition; try congruence.
     rewrite update_elections_data_timeout_leaderLogs.
@@ -95,7 +95,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_doGenericServer :
     refined_raft_net_invariant_do_generic_server leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp doGenericServer_type. intuition; try congruence.
     match goal with
@@ -107,7 +107,7 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_doLeader :
     refined_raft_net_invariant_do_leader leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp doLeader_type. intuition; try congruence.
     match goal with
@@ -119,21 +119,21 @@ Section LeadersHaveLeaderLogs.
 
   Lemma leaders_have_leaderLogs_init :
     refined_raft_net_invariant_init leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     red. unfold leaders_have_leaderLogs, step_async_init.
     intros. simpl in *. congruence.
   Qed.
 
   Lemma leaders_have_leaderLogs_state_same_packets_subset :
     refined_raft_net_invariant_state_same_packet_subset leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     red. unfold leaders_have_leaderLogs. intros.
     repeat find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma leaders_have_leaderLogs_reboot :
     refined_raft_net_invariant_reboot leaders_have_leaderLogs.
-  Proof.
+  Proof using. 
     start. congruence.
   Qed.
   

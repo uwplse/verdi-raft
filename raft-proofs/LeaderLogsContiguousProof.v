@@ -22,7 +22,7 @@ Section LeaderLogsContiguous.
     forall h st client id c,
       leaderLogs (update_elections_data_client_request h st client id c) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request in *.
     intros. repeat break_match; repeat find_inversion; auto.
   Qed.
@@ -31,7 +31,7 @@ Section LeaderLogsContiguous.
     forall h st,
       leaderLogs (update_elections_data_timeout h st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros.
     repeat break_match; simpl in *; auto.
@@ -41,7 +41,7 @@ Section LeaderLogsContiguous.
     forall h st t h' pli plt es ci,
       leaderLogs (update_elections_data_appendEntries h st t h' pli plt es ci) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries.
     repeat break_match; subst; simpl in *; auto.
@@ -51,7 +51,7 @@ Section LeaderLogsContiguous.
     forall h h' t lli llt st,
       leaderLogs (update_elections_data_requestVote h h' t h' lli llt st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; auto.
@@ -64,7 +64,7 @@ Section LeaderLogsContiguous.
       (currentTerm st' = currentTerm st \/
        (currentTerm st <= currentTerm st' /\
         type st' = Follower)).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -77,7 +77,7 @@ Section LeaderLogsContiguous.
       leaderLogs (fst st) \/
       leaderLogs (update_elections_data_requestVoteReply h h' t r st) =
       (currentTerm (snd st), log (snd st)) :: leaderLogs (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVoteReply in *.
     repeat break_match; intuition.
@@ -94,7 +94,7 @@ Section LeaderLogsContiguous.
     forall net,
       refined_raft_intermediate_reachable net ->
       log_matching (deghost net).
-  Proof.
+  Proof using lmi rri. 
     intros.
     eapply lift_prop; eauto using log_matching_invariant.
   Qed.
@@ -103,7 +103,7 @@ Section LeaderLogsContiguous.
     forall net h,
       refined_raft_intermediate_reachable net ->
       contiguous_range_exact_lo (log (snd (nwState net h))) 0.
-  Proof.
+  Proof using lmi rri. 
     intros.
     find_apply_lem_hyp lift_log_matching.
     unfold log_matching, log_matching_hosts in *.
@@ -132,48 +132,48 @@ Section LeaderLogsContiguous.
 
   Lemma leaderLogs_contiguous_init :
     refined_raft_net_invariant_init leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     split; simpl in *; intuition.
   Qed.
 
   Lemma leaderLogs_contiguous_client_request :
     refined_raft_net_invariant_client_request leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start. 
     find_rewrite_lem update_elections_data_client_request_leaderLogs. eauto.
   Qed.
 
   Lemma leaderLogs_contiguous_timeout :
     refined_raft_net_invariant_timeout leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start.
     find_rewrite_lem update_elections_data_timeout_leaderLogs. eauto.
   Qed.
 
   Lemma leaderLogs_contiguous_append_entries :
     refined_raft_net_invariant_append_entries leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start.
     find_rewrite_lem update_elections_data_appendEntries_leaderLogs. eauto.
   Qed.
 
   Lemma leaderLogs_contiguous_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start. (* and finish *)
   Qed.
     
 
   Lemma leaderLogs_contiguous_request_vote :
     refined_raft_net_invariant_request_vote leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start.
     find_rewrite_lem update_elections_data_requestVote_leaderLogs. eauto.
   Qed.
 
   Lemma leaderLogs_contiguous_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_contiguous.
-  Proof.
+  Proof using lmi rri. 
     start.
     match goal with
       | [ _ : context [ update_elections_data_requestVoteReply ?d ?s ?t ?v ?st ] |- _ ] =>
@@ -187,28 +187,28 @@ Section LeaderLogsContiguous.
 
   Lemma leaderLogs_contiguous_do_leader :
     refined_raft_net_invariant_do_leader leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start. replace gd with (fst (nwState net h0)) in *; eauto.
     find_rewrite; reflexivity.
   Qed.
 
   Lemma leaderLogs_contiguous_do_generic_server :
     refined_raft_net_invariant_do_generic_server leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start. replace gd with (fst (nwState net h0)) in *; eauto.
     find_rewrite; reflexivity.
   Qed.
 
   Lemma leaderLogs_contiguous_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     red. unfold leaderLogs_contiguous. intros.
     find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma leaderLogs_contiguous_reboot :
     refined_raft_net_invariant_reboot leaderLogs_contiguous.
-  Proof.
+  Proof using. 
     start. replace gd with (fst (nwState net h0)) in *; eauto.
     find_rewrite; reflexivity.
   Qed.
@@ -217,7 +217,7 @@ Section LeaderLogsContiguous.
     forall net,
       refined_raft_intermediate_reachable net ->
       leaderLogs_contiguous net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply leaderLogs_contiguous_init.

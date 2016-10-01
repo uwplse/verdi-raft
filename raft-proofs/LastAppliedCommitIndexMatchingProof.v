@@ -20,7 +20,7 @@ Section LastAppliedCommitIndexMatching.
     forall net,
       raft_intermediate_reachable net ->
       lastApplied_commitIndex_match net.
-  Proof.
+  Proof using misi smsi lmi. 
     intros.
     find_copy_apply_lem_hyp log_matching_invariant. unfold log_matching in *.
     find_copy_apply_lem_hyp state_machine_safety_invariant. unfold state_machine_safety in *.
@@ -65,7 +65,7 @@ Section LastAppliedCommitIndexMatching.
     forall net,
       raft_intermediate_reachable net ->
       commitIndex_lastApplied_match net.
-  Proof.
+  Proof using misi smsi lmi. 
     intros.
     find_copy_apply_lem_hyp log_matching_invariant. unfold log_matching in *.
     find_copy_apply_lem_hyp state_machine_safety_invariant. unfold state_machine_safety in *.
@@ -110,7 +110,7 @@ Section LastAppliedCommitIndexMatching.
     forall net,
       raft_intermediate_reachable net ->
       lastApplied_lastApplied_match net.
-  Proof.
+  Proof using misi smsi lmi. 
     intros.
     find_copy_apply_lem_hyp log_matching_invariant. unfold log_matching in *.
     find_copy_apply_lem_hyp state_machine_safety_invariant. unfold state_machine_safety in *.

@@ -32,7 +32,7 @@ Section LogAllEntries.
     forall net,
       refined_raft_intermediate_reachable net ->
       no_entries_past_current_term_host_lifted net.
-  Proof.
+  Proof using tsi rri. 
     unfold no_entries_past_current_term_host_lifted.
     pose proof deghost_spec.
     do 4 intro.
@@ -49,7 +49,7 @@ Section LogAllEntries.
       handleAppendEntries h st t n pli plt es
                           ci = (d, m) ->
       currentTerm st <= currentTerm d.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntries in *.
     repeat break_match; simpl in *; do_bool; repeat find_inversion; auto; try omega;
@@ -59,7 +59,7 @@ Section LogAllEntries.
   
   Lemma log_all_entries_append_entries :
     refined_raft_net_invariant_append_entries log_all_entries.
-  Proof.
+  Proof using tsi rri. 
     red. unfold log_all_entries. intros.
     simpl in *. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -94,7 +94,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply log_all_entries.
-  Proof.
+  Proof using tsi rri. 
     red. unfold log_all_entries. intros.
     simpl in *. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -108,7 +108,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_request_vote :
     refined_raft_net_invariant_request_vote log_all_entries.
-  Proof.
+  Proof using tsi rri. 
     red. unfold log_all_entries. intros.
     simpl in *. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -124,7 +124,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply log_all_entries.
-  Proof.
+  Proof using tsi rri. 
     red. unfold log_all_entries. intros.
     simpl in *. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -147,7 +147,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_do_leader :
     refined_raft_net_invariant_do_leader log_all_entries.
-  Proof.
+  Proof using. 
     red. unfold log_all_entries. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -166,7 +166,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_do_generic_server :
     refined_raft_net_invariant_do_generic_server log_all_entries.
-  Proof.
+  Proof using. 
     red. unfold log_all_entries. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -184,7 +184,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_client_request :
     refined_raft_net_invariant_client_request log_all_entries.
-  Proof.
+  Proof using. 
     red. unfold log_all_entries. intros.
     simpl in *. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -200,7 +200,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_timeout :
     refined_raft_net_invariant_timeout log_all_entries.
-  Proof.
+  Proof using tsi rri. 
     red. unfold log_all_entries. intros.
     simpl in *. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -219,7 +219,7 @@ Section LogAllEntries.
 
   Lemma log_all_entries_reboot :
     refined_raft_net_invariant_reboot log_all_entries.
-  Proof.
+  Proof using. 
     red. unfold log_all_entries. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -234,14 +234,14 @@ Section LogAllEntries.
 
   Lemma log_all_entries_init :
     refined_raft_net_invariant_init log_all_entries.
-  Proof.
+  Proof using. 
     red. unfold log_all_entries. intros.
     simpl in *. intuition.
   Qed.
 
   Lemma log_all_entries_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset log_all_entries.
-  Proof.
+  Proof using. 
     red. unfold log_all_entries. intros.
     simpl in *.
     repeat find_reverse_higher_order_rewrite.
@@ -252,7 +252,7 @@ Section LogAllEntries.
     forall net,
       refined_raft_intermediate_reachable net ->
       log_all_entries net.
-  Proof.
+  Proof using tsi rri. 
     intros. apply refined_raft_net_invariant; auto.
     - apply log_all_entries_init.
     - apply log_all_entries_client_request.

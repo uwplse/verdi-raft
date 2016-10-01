@@ -65,7 +65,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_init :
     refined_raft_net_invariant_init match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init,
            match_index_all_entries_inv,
            match_index_all_entries_nw,
@@ -88,7 +88,7 @@ Section MatchIndexAllEntries.
          eId e = id /\
          type st = Leader /\
          matchIndex st' = assoc_set name_eq_dec (matchIndex st) h (S (maxIndex (log st)))).
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     break_match; find_inversion; subst; intuition.
     simpl in *. eauto 10.
@@ -100,7 +100,7 @@ Section MatchIndexAllEntries.
       type (snd (nwState net leader)) = Leader ->
       assoc_default name_eq_dec (matchIndex (snd (nwState net leader))) leader 0 =
       maxIndex (log (snd (nwState net leader))).
-  Proof.
+  Proof using mili rri. 
     intros.
     pose proof lift_prop _ match_index_leader_invariant _ ltac:(eauto) leader.
     find_rewrite_lem deghost_spec. concludes. auto.
@@ -112,7 +112,7 @@ Section MatchIndexAllEntries.
       type (snd (nwState net leader)) = Leader ->
       assoc_default name_eq_dec (matchIndex (snd (nwState net leader))) h 0 <=
       maxIndex (log (snd (nwState net leader))).
-  Proof.
+  Proof using matchisi rri. 
     intros.
     pose proof lift_prop _ match_index_sanity_invariant _ ltac:(eauto) leader h.
     find_rewrite_lem deghost_spec. concludes. auto.
@@ -127,7 +127,7 @@ Section MatchIndexAllEntries.
       type (snd (nwState net h)) = Leader ->
       In e es ->
       In e (log (snd (nwState net h))).
-  Proof.
+  Proof using aersi rri. 
     intros.
     pose proof lift_prop _ append_entries_reply_sublog_invariant _ ltac:(eauto).
     unfold append_entries_reply_sublog in *.
@@ -138,7 +138,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_client_request :
     refined_raft_net_invariant_client_request match_index_all_entries_inv.
-  Proof.
+  Proof using aersi matchisi mili rlmli rri. 
     unfold refined_raft_net_invariant_client_request, match_index_all_entries_inv.
     simpl. intros. break_and. split.
     - unfold match_index_all_entries in *. simpl in *. intros.
@@ -219,7 +219,7 @@ Section MatchIndexAllEntries.
     forall h st out st' l,
        handleTimeout h st = (out, st', l) ->
        matchIndex st' = matchIndex st.
-  Proof.
+  Proof using. 
     unfold handleTimeout, tryToBecomeLeader.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; auto.
@@ -230,7 +230,7 @@ Section MatchIndexAllEntries.
       In x (allEntries (fst (nwState net h))) ->
       In x (allEntries (fst (update name_eq_dec (nwState net) h'
                                     (update_elections_data_timeout h' (nwState net h'), d) h))).
-  Proof.
+  Proof using. 
     intros.
     update_destruct_simplify_hyp.
     - unfold update_elections_data_timeout. repeat break_match; auto.
@@ -243,7 +243,7 @@ Section MatchIndexAllEntries.
       In m l ->
       exists node t h mi mt,
         m = (node, RequestVote t h mi mt).
-  Proof.
+  Proof using. 
     unfold handleTimeout, tryToBecomeLeader.
     intros.
     repeat break_match; repeat find_inversion.
@@ -254,7 +254,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_timeout :
     refined_raft_net_invariant_timeout match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout, match_index_all_entries_inv.
     simpl. intros. break_and. split.
     - unfold match_index_all_entries in *. simpl. intros.
@@ -288,7 +288,7 @@ Section MatchIndexAllEntries.
       handleAppendEntries h st t n pli plt es ci = (st', m) ->
       type st' = Leader ->
       st' = st.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries.
     intros.
     repeat break_match; repeat find_inversion; auto; try discriminate.
@@ -299,7 +299,7 @@ Section MatchIndexAllEntries.
       handleAppendEntries h st t n pli plt es ci = (st', m) ->
       type st' = Leader ->
       type st = Leader.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries.
     intros.
     repeat break_match; repeat find_inversion; auto; try discriminate.
@@ -313,7 +313,7 @@ Section MatchIndexAllEntries.
       type (snd (nwState net (pDst p))) = Leader ->
       currentTerm (snd (nwState net (pDst p))) = t ->
       False.
-  Proof.
+  Proof using naetli rri. 
     intros.
     pose proof (lift_prop _ no_append_entries_to_leader_invariant _ ltac:(eauto)).
     unfold no_append_entries_to_leader in *.
@@ -332,7 +332,7 @@ Section MatchIndexAllEntries.
       pBody p = AppendEntries t n pli plt es ci ->
       pDst p = pSrc p ->
       False.
-  Proof.
+  Proof using naetsi rri. 
     intros.
     pose proof (lift_prop _ no_append_entries_to_self_invariant _ ltac:(eauto)).
     unfold no_append_entries_to_self in *.
@@ -346,7 +346,7 @@ Section MatchIndexAllEntries.
     forall h st t n pli plt es ci st' m,
       handleAppendEntries h st t n pli plt es ci = (st', m) ->
       exists res, m = AppendEntriesReply (currentTerm st') es res.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries, advanceCurrentTerm.
     intros. repeat break_match; repeat find_inversion; simpl in *; repeat do_bool; eauto;
             eexists; f_equal; eauto using NPeano.Nat.le_antisymm.
@@ -355,7 +355,7 @@ Section MatchIndexAllEntries.
   Lemma not_empty_true_elim :
     forall A (l : list A),
       not_empty l = true -> l <> nil.
-  Proof.
+  Proof using. 
     unfold not_empty.
     intros. break_match; congruence.
   Qed.
@@ -363,7 +363,7 @@ Section MatchIndexAllEntries.
   Lemma not_empty_false_elim :
     forall A (l : list A),
       not_empty l = false -> l = nil.
-  Proof.
+  Proof using. 
     unfold not_empty.
     intros. break_match; congruence.
   Qed.
@@ -384,7 +384,7 @@ Section MatchIndexAllEntries.
       exists e, In e (log st') /\ In e es /\
                 eIndex e = maxIndex es /\
                 eTerm e = maxTerm es.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries, haveNewEntries.
     intros.
     break_if; try find_inversion.
@@ -441,7 +441,7 @@ Section MatchIndexAllEntries.
     forall h st t n pli plt es ci st' t',
       handleAppendEntries h st t n pli plt es ci = (st', AppendEntriesReply t' es true) ->
       currentTerm st' = t.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries, advanceCurrentTerm.
     intros. repeat break_match; repeat find_inversion; simpl; auto; repeat do_bool;
     eauto using Nat.le_antisymm.
@@ -450,7 +450,7 @@ Section MatchIndexAllEntries.
   Lemma lifted_terms_and_indices_from_one_log : forall net h,
     refined_raft_intermediate_reachable net ->
     terms_and_indices_from_one (log (snd (nwState net h))).
-  Proof.
+  Proof using taifoli rri. 
     intros.
     pose proof (lift_prop _ terms_and_indices_from_one_log_invariant).
     unfold terms_and_indices_from_one_log in *.
@@ -466,7 +466,7 @@ Section MatchIndexAllEntries.
       eTerm e = currentTerm (snd (nwState net h)) ->
       In e es ->
       In e (log (snd (nwState net h))).
-  Proof.
+  Proof using lsi rri. 
     intros.
     pose proof (lift_prop _ leader_sublog_invariant_invariant _ ltac:(eauto)) as Hinv.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant in *.
@@ -484,7 +484,7 @@ Section MatchIndexAllEntries.
       type (snd (nwState net h)) = Leader ->
       In e es ->
       In e (log (snd (nwState net h))).
-  Proof.
+  Proof using ollpti lhllsi lsi aelli rri. 
     intros.
     find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
     break_exists. break_and.
@@ -501,7 +501,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_append_entries :
     refined_raft_net_invariant_append_entries' match_index_all_entries_inv.
-  Proof.
+  Proof using ollpti lhllsi lsi aelli laei rlmli taifoli naetsi naetli rri. 
     unfold refined_raft_net_invariant_append_entries', match_index_all_entries_inv.
     simpl. intros. break_and.
     split.
@@ -623,7 +623,7 @@ Section MatchIndexAllEntries.
                                   (PeanoNat.Nat.max
                                      (assoc_default name_eq_dec (matchIndex st) src 0) (maxIndex es)) /\
        currentTerm st' = currentTerm st).
-  Proof.
+  Proof using. 
     unfold handleAppendEntriesReply.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; auto.
@@ -634,14 +634,14 @@ Section MatchIndexAllEntries.
   Lemma update_nop_fst :
     forall A B f x (v2 : B) y,
       fst (update name_eq_dec f x (fst (f x), v2) y) = fst (A := A) (f y).
-  Proof.
+  Proof using. 
     intros.
     update_destruct_simplify_hyp; auto.
   Qed.
 
   Lemma match_index_all_entries_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, match_index_all_entries_inv.
     simpl. intros. split.
     - { unfold match_index_all_entries in *. simpl. intros. break_and.
@@ -704,7 +704,7 @@ Section MatchIndexAllEntries.
     forall st h h' t lli llt st' m,
       handleRequestVote h st t h' lli llt = (st', m) ->
       exists t b, m = RequestVoteReply t b.
-  Proof.
+  Proof using. 
     unfold handleRequestVote.
     intros.
     repeat break_match; repeat find_inversion; eauto.
@@ -712,7 +712,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_request_vote :
     refined_raft_net_invariant_request_vote match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote, match_index_all_entries_inv.
     simpl. intros. split.
     - unfold match_index_all_entries in *. simpl. intros. break_and.
@@ -796,7 +796,7 @@ Section MatchIndexAllEntries.
       (log st' = log st /\
        currentTerm st' = currentTerm st /\
        matchIndex st' = assoc_set name_eq_dec nil h (maxIndex (log st))).
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros.
     repeat break_match; repeat find_inversion; subst; simpl; intuition.
@@ -815,7 +815,7 @@ Section MatchIndexAllEntries.
        t = currentTerm st /\
        wonElection (dedup name_eq_dec (h' :: votesReceived st)) = true /\
        currentTerm st' = currentTerm st).
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros.
     repeat break_match; repeat find_inversion; do_bool; subst; simpl; intuition.
@@ -824,7 +824,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply match_index_all_entries_inv.
-  Proof.
+  Proof using cci vci cei laei taifoli rri. 
     unfold refined_raft_net_invariant_request_vote_reply, match_index_all_entries_inv.
     simpl. intros. split.
     - unfold match_index_all_entries in *. simpl. intros. break_and.
@@ -919,7 +919,7 @@ Section MatchIndexAllEntries.
       doLeader st h = (os, st', ms) ->
       In m ms ->
       is_append_entries (snd m).
-  Proof.
+  Proof using. 
     unfold doLeader.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; intuition.
@@ -931,7 +931,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_do_leader :
     refined_raft_net_invariant_do_leader match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, match_index_all_entries_inv.
     intros. break_and. split.
     - unfold match_index_all_entries in *.
@@ -991,7 +991,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_do_generic_server :
     refined_raft_net_invariant_do_generic_server match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, match_index_all_entries_inv.
     simpl. intros. break_and. split.
     - unfold match_index_all_entries in *.
@@ -1050,7 +1050,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, match_index_all_entries_inv.
     simpl. intros. break_and. split.
     - unfold match_index_all_entries in *.
@@ -1067,7 +1067,7 @@ Section MatchIndexAllEntries.
 
   Lemma match_index_all_entries_reboot :
     refined_raft_net_invariant_reboot match_index_all_entries_inv.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, match_index_all_entries_inv.
     intros. break_and. subst. split.
     - unfold match_index_all_entries in *.
@@ -1104,7 +1104,7 @@ Section MatchIndexAllEntries.
     forall net,
       refined_raft_intermediate_reachable net ->
       match_index_all_entries_inv net.
-  Proof.
+  Proof using cci vci cei aersi matchisi mili ollpti lhllsi lsi aelli laei rlmli taifoli naetsi naetli rri. 
     intros.
     apply refined_raft_net_invariant'; auto.
     - apply match_index_all_entries_init.

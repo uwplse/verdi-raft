@@ -49,7 +49,7 @@ Section LeaderSublogProof.
             type (nwState net h) = Leader /\
             currentTerm (nwState net h) = currentTerm (nwState net' h)) ->
       leader_sublog_host_invariant net'.
-  Proof.
+  Proof using. 
     unfold leader_sublog_host_invariant in *. intros.
     specialize (H leader e h).
     forward H; [apply H1; auto|].
@@ -68,7 +68,7 @@ Section LeaderSublogProof.
             type (nwState net h) = Leader /\
             currentTerm (nwState net h) = currentTerm (nwState net' h)) ->
       leader_sublog_invariant net'.
-  Proof.
+  Proof using. 
     unfold leader_sublog_invariant in *. intros; intuition.
     - eauto using leader_sublog_invariant_same_state.
     - unfold leader_sublog_nw_invariant in *. intros.
@@ -84,7 +84,7 @@ Section LeaderSublogProof.
 
   Theorem leader_sublog_do_leader :
     raft_net_invariant_do_leader leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader.
     intros.
     unfold doLeader in *.
@@ -118,7 +118,7 @@ Section LeaderSublogProof.
 
   Lemma leader_sublog_client_request :
     raft_net_invariant_client_request leader_sublog_invariant.
-  Proof.
+  Proof using olpti. 
     unfold raft_net_invariant_client_request.
     intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
@@ -143,7 +143,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_timeout :
     raft_net_invariant_timeout
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout. intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
     leader_sublog_host_invariant, handleTimeout, tryToBecomeLeader in *.
@@ -161,7 +161,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_append_entries :
     raft_net_invariant_append_entries
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries. intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
     leader_sublog_host_invariant, handleAppendEntries, advanceCurrentTerm in *.
@@ -179,7 +179,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_append_entries_reply :
     raft_net_invariant_append_entries_reply
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply. intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
     leader_sublog_host_invariant, handleAppendEntriesReply, advanceCurrentTerm in *.
@@ -196,7 +196,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_request_vote :
     raft_net_invariant_request_vote
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote. intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
     leader_sublog_host_invariant, handleRequestVote, advanceCurrentTerm in *.
@@ -224,7 +224,7 @@ Section LeaderSublogProof.
       forall h h' e,
         In e (log (snd (nwState net h'))) ->
         CandidateEntriesLowered (deghost net) e h.
-  Proof.
+  Proof using rri. 
     unfold CandidateEntriesLowered, CandidateEntries, votes_correct, cronies_correct.
     intros. break_and.
     rewrite deghost_spec.
@@ -239,7 +239,7 @@ Section LeaderSublogProof.
       forall h h' e,
         In e (log (nwState net h')) ->
         CandidateEntriesLowered net e h.
-  Proof.
+  Proof using cci vci cei rri. 
     intros net H.
     pattern net.
     apply lower_prop; auto.
@@ -264,7 +264,7 @@ Section LeaderSublogProof.
       In p (nwPackets (deghost net)) ->
       exists (q : packet (params := raft_refined_multi_params (raft_params := raft_params))),
         In q (nwPackets net) /\ p = deghost_packet q.
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl.
     intros.
@@ -280,7 +280,7 @@ Section LeaderSublogProof.
       forall p h e,
         In e (log (snd (nwState net h))) ->
         CandidateEntriesLowered_rvr (deghost net) e p.
-  Proof.
+  Proof using rri. 
     unfold CandidateEntriesLowered_rvr, CandidateEntries.
     intros. break_and.
     rewrite deghost_spec.
@@ -299,7 +299,7 @@ Section LeaderSublogProof.
       forall p h e,
         In e (log (nwState net h)) ->
         CandidateEntriesLowered_rvr net e p.
-  Proof.
+  Proof using cci vci cei rri. 
     intros net H.
     pattern net.
     apply lower_prop; auto.
@@ -322,7 +322,7 @@ Section LeaderSublogProof.
         In p (nwPackets (deghost net)) ->
         In e es ->
         CandidateEntriesLowered (deghost net) e h.
-  Proof.
+  Proof using rri. 
     unfold CandidateEntriesLowered, CandidateEntries, votes_correct, cronies_correct.
     intros. break_and.
     rewrite deghost_spec.
@@ -361,7 +361,7 @@ Section LeaderSublogProof.
         In p (nwPackets net) ->
         In e es ->
         CandidateEntriesLowered net e h.
-  Proof.
+  Proof using cci vci cei rri. 
     intros net H.
     pattern net.
     apply lower_prop; auto.
@@ -384,7 +384,7 @@ Section LeaderSublogProof.
         In p (nwPackets (deghost net)) ->
         In e es ->
         CandidateEntriesLowered_rvr (deghost net) e p'.
-  Proof.
+  Proof using rri. 
     unfold CandidateEntriesLowered_rvr, CandidateEntries, votes_correct, cronies_correct.
     intros. break_and.
     rewrite deghost_spec.
@@ -432,7 +432,7 @@ Section LeaderSublogProof.
         In p (nwPackets net) ->
         In e es ->
         CandidateEntriesLowered_rvr net e p'.
-  Proof.
+  Proof using cci vci cei rri. 
     intros net H.
     pattern net.
     apply lower_prop; auto.
@@ -448,7 +448,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_request_vote_reply :
     raft_net_invariant_request_vote_reply
       leader_sublog_invariant.
-  Proof.
+  Proof using cci vci cei rri. 
     unfold raft_net_invariant_request_vote_reply.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
            leader_sublog_host_invariant, handleRequestVoteReply, advanceCurrentTerm.
@@ -477,7 +477,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_do_generic_server :
     raft_net_invariant_do_generic_server
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server.
     intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
@@ -498,7 +498,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset.
     intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
@@ -509,7 +509,7 @@ Section LeaderSublogProof.
   Lemma leader_sublog_reboot :
     raft_net_invariant_reboot
       leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot. intros.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant,
     leader_sublog_host_invariant, reboot in *. intuition idtac.
@@ -523,7 +523,7 @@ Section LeaderSublogProof.
 
   Theorem leader_sublog_init :
     raft_net_invariant_init leader_sublog_invariant.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, leader_sublog_invariant,
     leader_sublog_host_invariant, leader_sublog_nw_invariant;
     intuition.
@@ -533,7 +533,7 @@ Section LeaderSublogProof.
     forall net,
       raft_intermediate_reachable net ->
       leader_sublog_invariant net.
-  Proof.
+  Proof using olpti cci vci cei rri. 
     intros.
     eapply raft_net_invariant; eauto.
     - apply leader_sublog_init.

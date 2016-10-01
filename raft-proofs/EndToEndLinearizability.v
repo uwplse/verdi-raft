@@ -384,7 +384,7 @@ Section EndToEndProof.
         equivalent _ (import tr) l /\
         exported (get_input tr) (get_output tr) l tr1 /\
         step_1_star init st tr1.
-  Proof.
+  Proof using. 
     intros.
     eapply (@raft_linearizable' orig_base_params one_node_params raft_params); eauto;
     auto with typeclass_instances.
@@ -392,4 +392,4 @@ Section EndToEndProof.
 End EndToEndProof.
 
 About raft_linearizable.
-Print Assumptions raft_linearizable.
+(*Print Assumptions raft_linearizable.*)

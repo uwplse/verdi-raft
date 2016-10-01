@@ -20,7 +20,7 @@ Section VotesReceivedMoreUpToDate.
   
   Lemma votesReceived_moreUpToDate_append_entries :
     refined_raft_net_invariant_append_entries votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -35,7 +35,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp handleAppendEntriesReply_votesReceived.
     find_copy_apply_lem_hyp handleAppendEntriesReply_log_term_type.
@@ -46,7 +46,7 @@ Section VotesReceivedMoreUpToDate.
   
   Lemma votesReceived_moreUpToDate_request_vote :
     refined_raft_net_invariant_request_vote votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp handleRequestVote_votesReceived.
     find_copy_apply_lem_hyp handleRequestVote_log_term_type.
@@ -61,7 +61,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply votesReceived_moreUpToDate.
-  Proof.
+  Proof using rvrmutdi. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -88,7 +88,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_timeout :
     refined_raft_net_invariant_timeout votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -107,7 +107,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_client_request :
     refined_raft_net_invariant_client_request votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto;
@@ -118,7 +118,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_do_leader :
     refined_raft_net_invariant_do_leader votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -133,7 +133,7 @@ Section VotesReceivedMoreUpToDate.
   
   Lemma votesReceived_moreUpToDate_do_generic_server :
     refined_raft_net_invariant_do_generic_server votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -149,7 +149,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_reboot :
     refined_raft_net_invariant_reboot votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -163,7 +163,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     subst. repeat find_reverse_higher_order_rewrite.
     eauto.
@@ -171,7 +171,7 @@ Section VotesReceivedMoreUpToDate.
 
   Lemma votesReceived_moreUpToDate_init :
     refined_raft_net_invariant_init votesReceived_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votesReceived_moreUpToDate. intros. simpl in *.
     intuition.
   Qed.

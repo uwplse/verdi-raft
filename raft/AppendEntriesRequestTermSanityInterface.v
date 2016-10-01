@@ -23,5 +23,3 @@ Section AppendEntriesRequestTermSanity.
     }.
 
 End AppendEntriesRequestTermSanity.
-
-

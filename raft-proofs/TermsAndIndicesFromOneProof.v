@@ -18,7 +18,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_init :
     refined_raft_net_invariant_init terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, terms_and_indices_from_one_vwl.
     simpl. contradiction.
   Qed.
@@ -26,7 +26,7 @@ Section TermsAndIndicesFromOne.
   Lemma lifted_terms_and_indices_from_one_log : forall net h,
     refined_raft_intermediate_reachable net ->
     terms_and_indices_from_one (log (snd (nwState net h))).
-  Proof.
+  Proof using taifoli rri. 
     intros.
     pose proof (lift_prop _ terms_and_indices_from_one_log_invariant).
     unfold terms_and_indices_from_one_log in *.
@@ -35,7 +35,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_client_request :
     refined_raft_net_invariant_client_request terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update;
       eauto using votesWithLog_update_elections_data_client_request.
@@ -43,7 +43,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_timeout :
     refined_raft_net_invariant_timeout terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using taifoli rri. 
     unfold refined_raft_net_invariant_timeout, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     simpl in *. find_eapply_lem_hyp votesWithLog_update_elections_data_timeout; eauto.
@@ -53,7 +53,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_append_entries :
     refined_raft_net_invariant_append_entries terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update;
       eauto using votesWithLog_update_elections_data_append_entries.
@@ -61,14 +61,14 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
   Qed.
 
   Lemma terms_and_indices_from_one_vwl_request_vote :
     refined_raft_net_invariant_request_vote terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using taifoli rri. 
     unfold refined_raft_net_invariant_request_vote, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     simpl in *. find_eapply_lem_hyp votesWithLog_update_elections_data_request_vote; eauto.
@@ -78,7 +78,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote_reply, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; rewrite_update;
       eauto using votesWithLog_update_elections_data_request_vote_reply.
@@ -86,7 +86,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_do_leader :
     refined_raft_net_invariant_do_leader terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     eapply H0. find_higher_order_rewrite. eauto.
@@ -94,7 +94,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_do_generic_server :
     refined_raft_net_invariant_do_generic_server terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     eapply H0. find_higher_order_rewrite. eauto.
@@ -102,14 +102,14 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_vwl_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, terms_and_indices_from_one_vwl.
     simpl. intuition. find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma terms_and_indices_from_one_vwl_reboot :
     refined_raft_net_invariant_reboot terms_and_indices_from_one_vwl.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, terms_and_indices_from_one_vwl.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     eapply H0. find_higher_order_rewrite. eauto.
@@ -119,7 +119,7 @@ Section TermsAndIndicesFromOne.
     forall net,
       refined_raft_intermediate_reachable net ->
       terms_and_indices_from_one_vwl net.
-  Proof.
+  Proof using taifoli rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply terms_and_indices_from_one_vwl_init.
@@ -137,14 +137,14 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_init :
     refined_raft_net_invariant_init terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, terms_and_indices_from_one_ll.
     simpl. contradiction.
   Qed.
 
   Lemma terms_and_indices_from_one_ll_client_request :
     refined_raft_net_invariant_client_request terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, terms_and_indices_from_one_ll.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     simpl in *. find_rewrite_lem update_elections_data_client_request_leaderLogs. eauto.
@@ -152,7 +152,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_timeout :
     refined_raft_net_invariant_timeout terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout, terms_and_indices_from_one_ll.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     simpl in *. find_rewrite_lem update_elections_data_timeout_leaderLogs. eauto.
@@ -160,7 +160,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_append_entries :
     refined_raft_net_invariant_append_entries terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries, terms_and_indices_from_one_ll.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     simpl in *. find_rewrite_lem update_elections_data_appendEntries_leaderLogs. eauto.
@@ -168,14 +168,14 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, terms_and_indices_from_one_ll.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
   Qed.
 
   Lemma terms_and_indices_from_one_ll_request_vote :
     refined_raft_net_invariant_request_vote terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote, terms_and_indices_from_one_ll.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     simpl in *. find_rewrite_lem leaderLogs_update_elections_data_requestVote. eauto.
@@ -183,7 +183,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply terms_and_indices_from_one_ll.
-  Proof.
+  Proof using taifoli rri. 
     unfold refined_raft_net_invariant_request_vote_reply, terms_and_indices_from_one_ll.
     simpl. intuition. repeat find_higher_order_rewrite. update_destruct; rewrite_update; eauto.
     simpl in *. find_eapply_lem_hyp leaderLogs_update_elections_data_RVR; eauto.
@@ -194,7 +194,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_do_leader :
     refined_raft_net_invariant_do_leader terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, terms_and_indices_from_one_ll.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     eapply H0. find_higher_order_rewrite. eauto.
@@ -202,7 +202,7 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_do_generic_server :
     refined_raft_net_invariant_do_generic_server terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, terms_and_indices_from_one_ll.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     eapply H0. find_higher_order_rewrite. eauto.
@@ -210,14 +210,14 @@ Section TermsAndIndicesFromOne.
 
   Lemma terms_and_indices_from_one_ll_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, terms_and_indices_from_one_ll.
     simpl. intuition. find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma terms_and_indices_from_one_ll_reboot :
     refined_raft_net_invariant_reboot terms_and_indices_from_one_ll.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, terms_and_indices_from_one_ll.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update; eauto.
     eapply H0. find_higher_order_rewrite. eauto.
@@ -227,7 +227,7 @@ Section TermsAndIndicesFromOne.
     forall net,
       refined_raft_intermediate_reachable net ->
       terms_and_indices_from_one_ll net.
-  Proof.
+  Proof using taifoli rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply terms_and_indices_from_one_ll_init.

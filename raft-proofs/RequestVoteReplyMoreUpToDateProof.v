@@ -24,7 +24,7 @@ Section RequestVoteReplyMoreUpToDate.
   
   Lemma requestVoteReply_moreUpToDate_append_entries :
     refined_raft_net_invariant_append_entries requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     assert (In p0 (nwPackets net)) by
@@ -42,7 +42,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     assert (In p0 (nwPackets net)) by
         (repeat find_rewrite;
@@ -58,7 +58,7 @@ Section RequestVoteReplyMoreUpToDate.
   
   Lemma requestVoteReply_moreUpToDate_request_vote :
     refined_raft_net_invariant_request_vote requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using vfmutdi rvmimti. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp handleRequestVote_votesReceived.
     subst. repeat find_higher_order_rewrite.
@@ -121,7 +121,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -141,7 +141,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_timeout :
     refined_raft_net_invariant_timeout requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using rvrtsi. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -184,7 +184,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_client_request :
     refined_raft_net_invariant_client_request requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp handleClientRequest_packets.
     subst. simpl in *.
@@ -197,7 +197,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_do_leader :
     refined_raft_net_invariant_do_leader requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     assert (In p (nwPackets net)) by
         (find_apply_hyp_hyp; intuition;
@@ -218,7 +218,7 @@ Section RequestVoteReplyMoreUpToDate.
   
   Lemma requestVoteReply_moreUpToDate_do_generic_server :
     refined_raft_net_invariant_do_generic_server requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp doGenericServer_packets. subst. simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -236,7 +236,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_reboot :
     refined_raft_net_invariant_reboot requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -250,7 +250,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     subst. repeat find_reverse_higher_order_rewrite.
     eauto.
@@ -258,7 +258,7 @@ Section RequestVoteReplyMoreUpToDate.
 
   Lemma requestVoteReply_moreUpToDate_init :
     refined_raft_net_invariant_init requestVoteReply_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold requestVoteReply_moreUpToDate. intros. simpl in *.
     intuition.
   Qed.

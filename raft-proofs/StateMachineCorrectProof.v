@@ -47,7 +47,7 @@ Section StateMachineCorrect.
   Lemma snd_execute_log' :
     forall l st o o',
       snd (execute_log' l st o) = snd (execute_log' l st o').
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition;
     break_let; eauto.
   Qed.
@@ -56,7 +56,7 @@ Section StateMachineCorrect.
   Lemma snd_execute_log'_nil :
     forall l st o,
       snd (execute_log' l st o) = snd (execute_log' l st []).
-  Proof.
+  Proof using. 
     eauto using snd_execute_log'.
   Qed.
   
@@ -65,7 +65,7 @@ Section StateMachineCorrect.
       assoc eq_nat_dec (clientCache_to_ks c) client = Some id ->
       exists o,
         assoc eq_nat_dec c client = Some (id, o).
-  Proof.
+  Proof using. 
     induction c; intros; simpl in *; try congruence.
     break_if; eauto.
     - subst. find_inversion.
@@ -79,7 +79,7 @@ Section StateMachineCorrect.
       assoc eq_nat_dec (clientCache_to_ks (clientCache st)) client = Some id ->
       exists o,
         getLastId st client = Some (id, o).
-  Proof.
+  Proof using. 
     eauto using clientCache_to_ks_assoc.
   Qed.
 
@@ -87,7 +87,7 @@ Section StateMachineCorrect.
     forall c client,
       assoc eq_nat_dec (clientCache_to_ks c) client = None ->
       assoc eq_nat_dec c client = None.
-  Proof.
+  Proof using. 
     induction c; intros; simpl in *; try congruence.
     break_if; eauto; try congruence.
     - break_let; subst; simpl in *. break_if; try congruence. eauto.
@@ -97,7 +97,7 @@ Section StateMachineCorrect.
     forall st client,
       assoc eq_nat_dec (clientCache_to_ks (clientCache st)) client = None ->
       getLastId st client = None.
-  Proof.
+  Proof using. 
     eauto using clientCache_to_ks_assoc_none.
   Qed.
   
@@ -108,7 +108,7 @@ Section StateMachineCorrect.
       id < eId e ->
       handler (eInput e) (stateMachine st) = (o', d) ->
       stateMachine st' = d.
-  Proof.
+  Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool; try omega;
@@ -122,7 +122,7 @@ Section StateMachineCorrect.
       id < eId e ->
       handler (eInput e) (stateMachine st) = (o', d) ->
       assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, o') = clientCache st'.
-  Proof.
+  Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
@@ -136,7 +136,7 @@ Section StateMachineCorrect.
       getLastId st (eClient e) = None ->
       handler (eInput e) (stateMachine st) = (o', d) ->
       stateMachine st' = d.
-  Proof.
+  Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool; try omega;
@@ -149,7 +149,7 @@ Section StateMachineCorrect.
       getLastId st (eClient e) = None ->
       handler (eInput e) (stateMachine st) = (o', d) ->
       assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, o') = clientCache st'.
-  Proof.
+  Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
@@ -162,7 +162,7 @@ Section StateMachineCorrect.
       getLastId st (eClient e) = Some (id, o) ->
       eId e <= id ->
       stateMachine st' = stateMachine st.
-  Proof.
+  Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
@@ -175,7 +175,7 @@ Section StateMachineCorrect.
       getLastId st (eClient e) = Some (id, o) ->
       eId e <= id ->
       clientCache st = clientCache st'.
-  Proof.
+  Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
@@ -186,7 +186,7 @@ Section StateMachineCorrect.
     forall c client id o,
       assoc_set eq_nat_dec (clientCache_to_ks c) client id =
       clientCache_to_ks (assoc_set eq_nat_dec c client (id, o)).
-  Proof.
+  Proof using. 
     induction c; intros; simpl in *; intuition.
     simpl.
     break_if; simpl in *; eauto.
@@ -199,7 +199,7 @@ Section StateMachineCorrect.
       stateMachine st' = (snd (execute_log'
                                  (deduplicate_log' l (clientCache_to_ks (clientCache st)))
                                  (stateMachine st) [])).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - find_inversion. auto.
     - repeat break_let. find_inversion.
@@ -240,7 +240,7 @@ Section StateMachineCorrect.
       lastApplied st' = lastApplied st /\
       commitIndex st' = commitIndex st /\
       log st' = log st.
-  Proof.
+  Proof using. 
     induction l; simpl in *; intros.
     - find_inversion. auto.
     - repeat break_match; find_inversion; simpl in *;
@@ -252,7 +252,7 @@ Section StateMachineCorrect.
   Lemma filter_false :
     forall A (l : list A),
       filter (fun _ => false) l = [].
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; auto.
   Qed.
 
@@ -260,7 +260,7 @@ Section StateMachineCorrect.
     forall A (l : list A) f g,
       (forall x, In x l -> f x = true) ->
       filter (fun x => f x && g x) l = filter (fun x => g x) l.
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; auto.
     repeat break_if; do_bool; simpl in *; auto.
     - f_equal; eauto.
@@ -276,7 +276,7 @@ Section StateMachineCorrect.
       i' < i ->
       removeAfterIndex l i =
       filter (fun x => eIndex x <=? i) (findGtIndex l i') ++ removeAfterIndex l i'.
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; auto.
     repeat (break_match; simpl in *); do_bool; intuition; try omega; try congruence.
     f_equal. repeat find_reverse_rewrite.
@@ -309,7 +309,7 @@ Section StateMachineCorrect.
   Lemma log_to_ks'_app :
     forall l1 l2 ks,
       log_to_ks' (l1 ++ l2) ks = log_to_ks' l2 (log_to_ks' l1 ks).
-  Proof.
+  Proof using. 
     induction l1; intros; simpl in *; auto.
     break_if; simpl in *; eauto.
   Qed.
@@ -318,7 +318,7 @@ Section StateMachineCorrect.
     forall l ks ks',
       a_equiv eq_nat_dec ks ks' ->
       a_equiv eq_nat_dec (log_to_ks' l ks) (log_to_ks' l ks').
-  Proof.
+  Proof using. 
     induction l; intros; simpl.
     - auto.
     - erewrite assoc_default_a_equiv by eauto.
@@ -337,7 +337,7 @@ Section StateMachineCorrect.
     forall l c ks,
       assoc_default eq_nat_dec (log_to_ks' l ks) c 0 =
       max_id_for_client_default (assoc_default eq_nat_dec ks c 0) c l.
-  Proof.
+  Proof using. 
     induction l; simpl; intros.
     - auto.
     - repeat break_match; do_bool; rewrite IHl; subst; auto.
@@ -351,7 +351,7 @@ Section StateMachineCorrect.
     forall l x c,
       (forall e, In e l -> eClient e = c -> eId e <= x) ->
       max_id_for_client_default x c l = x.
-  Proof.
+  Proof using. 
     induction l; simpl; intros.
     - auto.
     - break_if.
@@ -365,7 +365,7 @@ Section StateMachineCorrect.
     forall c l x x',
       max_id_for_client_default (max x x') c l =
       max x (max_id_for_client_default x' c l).
-  Proof.
+  Proof using. 
     induction l; simpl; intros.
     - auto.
     - break_if; repeat rewrite IHl; auto with *.
@@ -376,7 +376,7 @@ Section StateMachineCorrect.
     forall c l x,
       max_id_for_client_default x c l = x \/
       exists e, In e l /\ eClient e = c /\ max_id_for_client_default x c l = eId e.
-  Proof.
+  Proof using. 
     induction l; simpl; intuition.
     break_if.
     - specialize (IHl (max x (eId a))).
@@ -397,7 +397,7 @@ Section StateMachineCorrect.
       In e l ->
       eClient e = c ->
       eId e <= max_id_for_client_default x c l.
-  Proof.
+  Proof using. 
     induction l; simpl; intuition; subst.
     - break_if; try congruence.
       rewrite Max.max_comm.
@@ -409,7 +409,7 @@ Section StateMachineCorrect.
   Lemma max_id_for_client_default_ge_default :
     forall l x c,
       x <= max_id_for_client_default x c l.
-  Proof.
+  Proof using. 
     induction l; simpl; intuition.
     break_if; intuition.
     rewrite max_id_for_client_default_on_max.
@@ -420,7 +420,7 @@ Section StateMachineCorrect.
     forall l l' x c,
       (forall e, In e l -> In e l') ->
       max_id_for_client_default x c l <= max_id_for_client_default x c l'.
-  Proof.
+  Proof using. 
     intros.
     pose proof max_id_for_client_default_or_entry c l x.
     pose proof max_id_for_client_default_or_entry c l' x.
@@ -443,7 +443,7 @@ Section StateMachineCorrect.
       (forall e, In e l -> In e l') ->
       (forall e, In e l' -> In e l) ->
       max_id_for_client_default x c l = max_id_for_client_default x c l'.
-  Proof.
+  Proof using. 
     intros.
     apply le_antisym; auto using max_id_for_client_default_subset.
   Qed.
@@ -453,7 +453,7 @@ Section StateMachineCorrect.
       i <= assoc_default eq_nat_dec
                         (log_to_ks' l (assoc_set Nat.eq_dec ks c i))
                         c 0.
-  Proof.
+  Proof using. 
     induction l; intros; simpl.
     - rewrite assoc_default_assoc_set. auto.
     - break_if; simpl in *; eauto.
@@ -473,7 +473,7 @@ Section StateMachineCorrect.
     forall l ks c,
       assoc_default eq_nat_dec ks c 0 <=
       assoc_default eq_nat_dec (log_to_ks' l ks) c 0.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; auto.
     break_if; simpl in *; eauto.
     do_bool.
@@ -491,7 +491,7 @@ Section StateMachineCorrect.
     forall l ks ks' c,
       assoc_default eq_nat_dec (log_to_ks' l ks) c 0 <= assoc_default eq_nat_dec ks' c 0 ->
       assoc_default eq_nat_dec (log_to_ks' l ks') c 0 = assoc_default eq_nat_dec ks' c 0.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; auto.
     repeat break_if; do_bool; simpl in *; eauto.
     - destruct (eq_nat_dec (eClient a) c); simpl in *; auto.
@@ -535,7 +535,7 @@ Section StateMachineCorrect.
                     (log_to_ks' l (assoc_set Nat.eq_dec ks k v)) k' =
       assoc eq_nat_dec
                     (log_to_ks' l ks) k'.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *.
     - rewrite get_set_diff by auto. auto.
     - repeat break_match; simpl in *; eauto.
@@ -558,7 +558,7 @@ Section StateMachineCorrect.
                     (log_to_ks' l (assoc_set Nat.eq_dec ks k v)) k' 0 =
       assoc_default eq_nat_dec
                     (log_to_ks' l ks) k' 0.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; auto using assoc_default_assoc_set_diff.
     repeat break_match; simpl in *; eauto.
     - do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
@@ -579,7 +579,7 @@ Section StateMachineCorrect.
       a_equiv eq_nat_dec
               (assoc_set Nat.eq_dec (log_to_ks' l ks) c i)
               (log_to_ks' l (assoc_set Nat.eq_dec ks c i)).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; eauto using a_equiv_refl.
     repeat break_if; simpl in *; eauto.
     - do_bool.
@@ -622,7 +622,7 @@ Section StateMachineCorrect.
       assoc Nat.eq_dec ks (eClient e) = Some id ->
       exists id', assoc Nat.eq_dec (log_to_ks' l ks) (eClient e) = Some id' /\
              id <= id'.
-  Proof.
+  Proof using. 
     induction l; simpl; intuition.
     - eauto.
     - break_if; do_bool.
@@ -640,7 +640,7 @@ Section StateMachineCorrect.
     forall e l ks,
       In e l ->
       exists id, assoc Nat.eq_dec (log_to_ks' l ks) (eClient e) = Some id /\ eId e <= id.
-  Proof.
+  Proof using. 
     induction l; simpl; intuition.
     - subst. break_if; do_bool.
       + apply in_ks_log_to_ks'_le.  rewrite get_set_same. auto.
@@ -669,7 +669,7 @@ Section StateMachineCorrect.
       eIndex e <= lastApplied (nwState net (pDst p)) ->
       In e (log (nwState net (pDst p))) ->
       In e (log d).
-  Proof.
+  Proof using lmi smsi misi. 
     (* establish maxIndex guarantee in post state *)
     intros.
     get_invariant_post max_index_sanity_invariant.
@@ -740,7 +740,7 @@ Section StateMachineCorrect.
       pBody p = AppendEntries t n pli plt es ci ->
       removeAfterIndex (log d) (lastApplied d) = removeAfterIndex (log (nwState net (pDst p)))
                                                                   (lastApplied (nwState net (pDst p))).
-  Proof.
+  Proof using lmi smsi misi si. 
     intros.
     find_copy_apply_lem_hyp handleAppendEntries_same_lastApplied.
     repeat find_rewrite.
@@ -790,7 +790,7 @@ Section StateMachineCorrect.
     forall l x i,
       i < eIndex x ->
       removeAfterIndex (x :: l) i = removeAfterIndex l i.
-  Proof.
+  Proof using. 
     intros.
     simpl in *; break_if; do_bool; auto; omega.
   Qed.
@@ -802,7 +802,7 @@ Section StateMachineCorrect.
       handleClientRequest h (nwState net h) client id c = (out, d, l) ->      
       removeAfterIndex (log d) (lastApplied d) = removeAfterIndex (log (nwState net h))
                                                                   (lastApplied (nwState net h)).
-  Proof.
+  Proof using misi. 
     intros.
     erewrite handleClientRequest_lastApplied; eauto.
     find_apply_lem_hyp handleClientRequest_log.
@@ -821,7 +821,7 @@ Section StateMachineCorrect.
     forall net,
       client_cache_keys_correct net ->
       client_cache_complete net.
-  Proof.
+  Proof using. 
     unfold client_cache_keys_correct, client_cache_complete.
     intros.
     unfold getLastId.
@@ -840,7 +840,7 @@ Section StateMachineCorrect.
     forall l1 l2 ks,
       deduplicate_log' (l1 ++ l2) ks =
       deduplicate_log' l1 ks ++ (deduplicate_log' l2 (log_to_ks' l1 ks)).
-  Proof.
+  Proof using. 
     induction l1; intros; simpl in *; auto.
     repeat break_match; simpl in *; eauto; try solve [f_equal; eauto].
     - exfalso. do_bool.
@@ -857,7 +857,7 @@ Section StateMachineCorrect.
     forall l ks ks',
       a_equiv eq_nat_dec ks ks' ->
       deduplicate_log' l ks = deduplicate_log' l ks'.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; auto.
     repeat break_match; simpl in *; auto; do_bool;
     try solve [f_equal; eauto using assoc_set_a_equiv];
@@ -878,7 +878,7 @@ Section StateMachineCorrect.
       out = fst (handler (eInput e) (stateMachine st)) /\
       (forall id' out', getLastId st client = Some (id', out') ->
        id' < id).
-  Proof.
+  Proof using. 
     intros. unfold cacheApplyEntry in *.
     repeat break_match; try find_inversion; subst; auto; do_bool.
     - unfold applyEntry in *.
@@ -915,7 +915,7 @@ Section StateMachineCorrect.
         applyEntries h st l = (os', d') /\
         applyEntries h d' l' = (os'', d) /\
         os = os' ++ os''.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; try now repeat eexists; eauto.
     repeat break_let. find_inversion.
     find_apply_hyp_hyp.
@@ -930,7 +930,7 @@ Section StateMachineCorrect.
       (client id : nat) o,
       getLastId st client = Some (id, o) ->
       assoc Nat.eq_dec (clientCache_to_ks (clientCache st)) client = Some id.
-  Proof.
+  Proof using. 
     intros. unfold getLastId in *. induction (clientCache st).
     - simpl in *. congruence.
     - simpl in *. break_let. subst. simpl in *.
@@ -943,7 +943,7 @@ Section StateMachineCorrect.
       exists i',
         assoc K_eq_dec ks k = Some i' /\
         i < i'.
-  Proof.
+  Proof using. 
     intros.
     unfold assoc_default in *.
     break_match; intuition; eauto; omega.
@@ -954,7 +954,7 @@ Section StateMachineCorrect.
       applyEntries h st l = (o, st') ->
       a_equiv eq_nat_dec (clientCache_to_ks (clientCache st'))
               (log_to_ks' l (clientCache_to_ks (clientCache st))).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - find_inversion. 
       apply a_equiv_refl.
@@ -1004,7 +1004,7 @@ Section StateMachineCorrect.
          Some (eInput e, out) = hd_error (rev (fst (execute_log'
                                                (xs ++ [e])
                                                (stateMachine st) [])))).
-  Proof.
+  Proof using. 
     induction l using rev_ind; intros; simpl in *; intuition; repeat break_let; repeat find_inversion; auto.
     find_apply_lem_hyp applyEntries_app. break_exists. intuition.
     simpl in *. break_let. find_inversion.
@@ -1184,7 +1184,7 @@ Section StateMachineCorrect.
                            (findGtIndex (log st) (lastApplied st)))) = (os', st'')  /\
         clientCache st' = clientCache st'' /\
         forall c, getLastId st' c = getLastId st'' c.
-  Proof.
+  Proof using. 
     intros.
     unfold doGenericServer in *.
     break_let. break_if.
@@ -1212,7 +1212,7 @@ Section StateMachineCorrect.
     forall l l',
       exists l'',
         deduplicate_log (l ++ l') = deduplicate_log l ++ l''.
-  Proof.
+  Proof using. 
     eauto using deduplicate_log'_app.
   Qed.
   
@@ -1220,7 +1220,7 @@ Section StateMachineCorrect.
     forall c i o xs ys,
       output_correct c i o xs ->
       output_correct c i o (xs ++ ys).
-  Proof.
+  Proof using. 
     unfold output_correct.
     intros.
     break_exists.
@@ -1236,7 +1236,7 @@ Section StateMachineCorrect.
     forall l d d' tr tr' tr'',
       execute_log' l d tr = (tr', d') ->
       execute_log' l d (tr'' ++ tr) = (tr'' ++ tr', d').
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *.
     - find_inversion. auto.
     - repeat break_let.
@@ -1248,7 +1248,7 @@ Section StateMachineCorrect.
     forall l d d' tr' tr'',
       execute_log' l d [] = (tr', d') ->
       execute_log' l d tr'' = (tr'' ++ tr', d').
-  Proof.
+  Proof using. 
     intros.
     find_eapply_lem_hyp execute_log'_trace;
       rewrite app_nil_r in *; eauto.
@@ -1258,14 +1258,14 @@ Section StateMachineCorrect.
     forall A l l' (x : A),
       hd_error l = Some x ->
       hd_error (l ++ l') = Some x.
-  Proof.
+  Proof using. 
     intros.
     destruct l; simpl in *; intuition; unfold error in *; congruence.
   Qed.
   
   Lemma client_cache_keys_correct_do_generic_server :
     raft_net_invariant_do_generic_server' client_cache_keys_correct.
-  Proof.
+  Proof using si. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1294,7 +1294,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_append_entries :
     raft_net_invariant_append_entries' client_cache_keys_correct.
-  Proof.
+  Proof using lmi smsi misi si. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1305,7 +1305,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_append_entries_reply :
     raft_net_invariant_append_entries_reply' client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1317,7 +1317,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_request_vote :
     raft_net_invariant_request_vote' client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1328,7 +1328,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_request_vote_reply :
     raft_net_invariant_request_vote_reply' client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1339,7 +1339,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_client_request :
     raft_net_invariant_client_request' client_cache_keys_correct.
-  Proof.
+  Proof using misi. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1349,7 +1349,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_timeout :
     raft_net_invariant_timeout' client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1360,7 +1360,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_do_leader :
     raft_net_invariant_do_leader' client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1371,7 +1371,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_reboot :
     raft_net_invariant_reboot' client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1379,7 +1379,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros. subst.
     find_reverse_higher_order_rewrite. auto.
   Qed.
@@ -1387,7 +1387,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_keys_correct_init :
     raft_net_invariant_init client_cache_keys_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_keys_correct in *. simpl in *. intros.
     apply a_equiv_refl.
   Qed.
@@ -1396,7 +1396,7 @@ Section StateMachineCorrect.
     forall (net : network),
       raft_intermediate_reachable net ->
       client_cache_keys_correct net.
-  Proof.
+  Proof using lmi smsi misi si. 
     intros. apply raft_net_invariant'; auto.
     - apply client_cache_keys_correct_init.
     - apply client_cache_keys_correct_client_request.
@@ -1413,7 +1413,7 @@ Section StateMachineCorrect.
   
   Lemma state_machine_do_generic_server :
     raft_net_invariant_do_generic_server' state_machine_log.
-  Proof.
+  Proof using lmi smsi misi si. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1463,7 +1463,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_append_entries :
     raft_net_invariant_append_entries' state_machine_log.
-  Proof.
+  Proof using lmi smsi misi si. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1473,7 +1473,7 @@ Section StateMachineCorrect.
   
   Lemma state_machine_append_entries_reply :
     raft_net_invariant_append_entries_reply' state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1484,7 +1484,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_request_vote :
     raft_net_invariant_request_vote' state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1495,7 +1495,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_request_vote_reply :
     raft_net_invariant_request_vote_reply' state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1506,7 +1506,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_timeout :
     raft_net_invariant_timeout' state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1517,7 +1517,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_client_request :
     raft_net_invariant_client_request' state_machine_log.
-  Proof.
+  Proof using misi. 
     red. unfold state_machine_log in *. simpl in *. intros.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1527,7 +1527,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_do_leader :
     raft_net_invariant_do_leader' state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1538,7 +1538,7 @@ Section StateMachineCorrect.
 
   Lemma state_machine_reboot :
     raft_net_invariant_reboot' state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1546,14 +1546,14 @@ Section StateMachineCorrect.
 
   Lemma state_machine_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset state_machine_log.
-  Proof.
+  Proof using. 
     red. unfold state_machine_log in *. simpl in *. intros. subst.
     find_reverse_higher_order_rewrite. eauto.
   Qed.
     
   Lemma state_machine_init :
     raft_net_invariant_init state_machine_log.
-  Proof.
+  Proof using. 
     now red.
   Qed.
 
@@ -1561,7 +1561,7 @@ Section StateMachineCorrect.
     forall net,
       raft_intermediate_reachable net ->
       state_machine_log net.
-  Proof.
+  Proof using lmi smsi misi si. 
     intros.
     apply raft_net_invariant'; auto.
     - apply state_machine_init.
@@ -1579,7 +1579,7 @@ Section StateMachineCorrect.
   
   Lemma client_cache_correct_do_generic_server :
     raft_net_invariant_do_generic_server' client_cache_correct.
-  Proof.
+  Proof using lmi smsi misi si. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1652,7 +1652,7 @@ Section StateMachineCorrect.
     forall st st' k,
       clientCache st = clientCache st' ->
       getLastId st k = getLastId st' k.
-  Proof.
+  Proof using. 
     intros. unfold getLastId in *.
     find_rewrite. auto.
   Qed.
@@ -1663,7 +1663,7 @@ Section StateMachineCorrect.
   
   Lemma client_cache_correct_append_entries :
     raft_net_invariant_append_entries' client_cache_correct.
-  Proof.
+  Proof using lmi smsi misi si. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1673,7 +1673,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_append_entries_reply :
     raft_net_invariant_append_entries_reply' client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1685,7 +1685,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_request_vote :
     raft_net_invariant_request_vote' client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1696,7 +1696,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_request_vote_reply :
     raft_net_invariant_request_vote_reply' client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1707,7 +1707,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_client_request :
     raft_net_invariant_client_request' client_cache_correct.
-  Proof.
+  Proof using misi. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1717,7 +1717,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_timeout :
     raft_net_invariant_timeout' client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1728,7 +1728,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_do_leader :
     raft_net_invariant_do_leader' client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1739,7 +1739,7 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_reboot :
     raft_net_invariant_reboot' client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -1747,14 +1747,14 @@ Section StateMachineCorrect.
 
   Lemma client_cache_correct_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros. subst.
     find_reverse_higher_order_rewrite. auto.
   Qed.
 
   Lemma client_cache_correct_init :
     raft_net_invariant_init client_cache_correct.
-  Proof.
+  Proof using. 
     red. unfold client_cache_correct in *. simpl in *. intros.
     unfold getLastId in *. simpl in *. congruence.
   Qed.
@@ -1763,7 +1763,7 @@ Section StateMachineCorrect.
     forall (net : network),
       raft_intermediate_reachable net ->
       client_cache_correct net.
-  Proof.
+  Proof using lmi smsi misi si. 
     intros. apply raft_net_invariant'; auto.
     - apply client_cache_correct_init.
     - apply client_cache_correct_client_request.
@@ -1782,7 +1782,7 @@ Section StateMachineCorrect.
     forall net,
       raft_intermediate_reachable net ->
       state_machine_correct net.
-  Proof.
+  Proof using lmi smsi misi si. 
     intros. red. intuition.
     - auto using state_machine_log_invariant.
     - auto using client_cache_correct_invariant.
@@ -1796,4 +1796,3 @@ Section StateMachineCorrect.
     exact state_machine_correct_invariant.
   Qed.
 End StateMachineCorrect.
-

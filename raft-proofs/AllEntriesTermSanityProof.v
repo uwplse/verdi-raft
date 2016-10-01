@@ -22,7 +22,7 @@ Section AllEntriesTermSanity.
       handleAppendEntries h st t n pli plt es
                           ci = (d, m) ->
       currentTerm st <= currentTerm d.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntries in *.
     repeat break_match; simpl in *; do_bool; repeat find_inversion; auto; try omega;
@@ -32,7 +32,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_append_entries :
     refined_raft_net_invariant_append_entries allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -44,7 +44,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -54,7 +54,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_request_vote :
     refined_raft_net_invariant_request_vote allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -65,7 +65,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -78,7 +78,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_client_request :
     refined_raft_net_invariant_client_request allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -97,7 +97,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_timeout :
     refined_raft_net_invariant_timeout allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -108,7 +108,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_do_leader :
     refined_raft_net_invariant_do_leader allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -125,7 +125,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_do_generic_server :
     refined_raft_net_invariant_do_generic_server allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -142,7 +142,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_reboot :
     refined_raft_net_invariant_reboot allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -157,7 +157,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros.
     find_reverse_higher_order_rewrite. eauto.
   Qed.
@@ -165,7 +165,7 @@ Section AllEntriesTermSanity.
 
   Lemma allEntries_term_sanity_init :
     refined_raft_net_invariant_init allEntries_term_sanity.
-  Proof.
+  Proof using. 
     red. unfold allEntries_term_sanity. intros. simpl in *. intuition.
   Qed.
   

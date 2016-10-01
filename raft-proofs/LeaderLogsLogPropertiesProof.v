@@ -24,7 +24,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_init :
     refined_raft_net_invariant_init log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs.
     intros. simpl in *. intuition.
   Qed.
@@ -33,7 +33,7 @@ Section LeaderLogsLogProperties.
     
   Lemma log_properties_hold_on_leader_logs_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_higher_order_rewrite.
@@ -46,7 +46,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_append_entries :
     refined_raft_net_invariant_append_entries log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_higher_order_rewrite.
@@ -57,7 +57,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_higher_order_rewrite.
@@ -66,7 +66,7 @@ Section LeaderLogsLogProperties.
   
   Lemma log_properties_hold_on_leader_logs_request_vote :
     refined_raft_net_invariant_request_vote log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_higher_order_rewrite.
@@ -77,7 +77,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_do_leader :
     refined_raft_net_invariant_do_leader log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -93,7 +93,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_do_generic_server :
     refined_raft_net_invariant_do_generic_server log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -108,7 +108,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_reboot :
     refined_raft_net_invariant_reboot log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -123,7 +123,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_client_request :
     refined_raft_net_invariant_client_request log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_higher_order_rewrite.
@@ -135,7 +135,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_timeout :
     refined_raft_net_invariant_timeout log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_higher_order_rewrite.
@@ -147,7 +147,7 @@ Section LeaderLogsLogProperties.
 
   Lemma log_properties_hold_on_leader_logs_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset log_properties_hold_on_leader_logs.
-  Proof.
+  Proof using. 
     red. unfold log_properties_hold_on_leader_logs. intros.
     simpl in *.
     subst. repeat find_reverse_higher_order_rewrite. finish.
@@ -158,7 +158,7 @@ Section LeaderLogsLogProperties.
     forall net,
       refined_raft_intermediate_reachable net ->
       log_properties_hold_on_leader_logs net.
-  Proof.
+  Proof using rri. 
     intros. apply refined_raft_net_invariant; auto.
     - apply log_properties_hold_on_leader_logs_init.
     - apply log_properties_hold_on_leader_logs_client_request.

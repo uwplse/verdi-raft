@@ -33,7 +33,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_init :
    raft_net_invariant_init prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, prevLog_leader_sublog.
     simpl. intuition.
   Qed.
@@ -42,7 +42,7 @@ Section PrevLogLeaderSublogProof.
     forall h st client id c out st' ps e,
       handleClientRequest h st client id c = (out, st', ps) ->
       In e (log st) -> In e (log st').
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp handleClientRequest_log.
     intuition.
@@ -52,7 +52,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_client_request :
     raft_net_invariant_client_request prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_client_request, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -70,7 +70,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_timeout :
     raft_net_invariant_timeout prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -92,7 +92,7 @@ Section PrevLogLeaderSublogProof.
     forall h st t n pli plt es ci st' ps,
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       type st' = Follower \/ (type st' = type st /\ log st' = log st /\ currentTerm st' = currentTerm st).
-  Proof.
+  Proof using. 
     unfold handleAppendEntries.
     intros.
     repeat break_match; repeat find_inversion; simpl in *; auto.
@@ -100,7 +100,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_append_entries :
     raft_net_invariant_append_entries prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -118,7 +118,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_append_entries_reply :
     raft_net_invariant_append_entries_reply prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -138,7 +138,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_request_vote :
     raft_net_invariant_request_vote prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -166,7 +166,7 @@ Section PrevLogLeaderSublogProof.
       In p (nwPackets (deghost net)) ->
       exists (q : packet (params := raft_refined_multi_params (raft_params := raft_params))),
         In q (nwPackets net) /\ p = deghost_packet q.
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl.
     intros.
@@ -185,7 +185,7 @@ Section PrevLogLeaderSublogProof.
                                 entries leaderCommit ->
         0 < prevLogTerm ->
         candidateEntriesTerm_lowered (deghost net) prevLogTerm p'.
-  Proof.
+  Proof using rri. 
     unfold candidateEntriesTerm_lowered,
            cronies_correct, votes_correct.
     intros. break_and.
@@ -234,7 +234,7 @@ Section PrevLogLeaderSublogProof.
                                 entries leaderCommit ->
         0 < prevLogTerm ->
         candidateEntriesTerm_lowered net prevLogTerm p'.
-  Proof.
+  Proof using plceti cci vci rri. 
     intros net H.
     pattern net.
     apply lower_prop; auto.
@@ -254,7 +254,7 @@ Section PrevLogLeaderSublogProof.
       (v = true /\
        wonElection (dedup name_eq_dec (src :: votesReceived st)) = true /\
        currentTerm st' = t).
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros.
     repeat break_match; repeat find_inversion; subst; simpl in *; auto; do_bool; intuition.
@@ -262,7 +262,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_request_vote_reply :
     raft_net_invariant_request_vote_reply prevLog_leader_sublog.
-  Proof.
+  Proof using plceti cci vci rri. 
     unfold raft_net_invariant_request_vote_reply, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -284,7 +284,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_do_leader :
     raft_net_invariant_do_leader prevLog_leader_sublog.
-  Proof.
+  Proof using lsi. 
     unfold raft_net_invariant_do_leader, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -309,7 +309,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_do_generic_server :
     raft_net_invariant_do_generic_server prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server, prevLog_leader_sublog.
     intros. simpl in *.
     repeat find_higher_order_rewrite.
@@ -325,7 +325,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset, prevLog_leader_sublog.
     intros.
     find_apply_hyp_hyp.
@@ -335,7 +335,7 @@ Section PrevLogLeaderSublogProof.
 
   Lemma prevLog_leader_sublog_reboot :
     raft_net_invariant_reboot prevLog_leader_sublog.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot, prevLog_leader_sublog, reboot.
     intros.  subst. simpl in *.
     repeat find_reverse_higher_order_rewrite.
@@ -358,7 +358,7 @@ Section PrevLogLeaderSublogProof.
     forall net,
       raft_intermediate_reachable net ->
       prevLog_leader_sublog net.
-  Proof.
+  Proof using plceti lsi cci vci rri. 
     intros.
     apply raft_net_invariant; auto.
     - apply prevLog_leader_sublog_init.

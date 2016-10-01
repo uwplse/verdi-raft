@@ -23,7 +23,7 @@ Section CandidatesVoteForSelvesProof.
 
   Theorem candidates_vote_for_selves_do_leader :
     raft_net_invariant_do_leader (candidates_vote_for_selves).
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader, candidates_vote_for_selves. intros.
     unfold doLeader, advanceCommitIndex in *.
     t.
@@ -31,7 +31,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_client_request :
     raft_net_invariant_client_request (candidates_vote_for_selves).
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_client_request, candidates_vote_for_selves.
     intros. unfold handleClientRequest in *.
     t.
@@ -39,7 +39,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_timeout :
     raft_net_invariant_timeout candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout, candidates_vote_for_selves. intros.
     unfold handleTimeout, tryToBecomeLeader in *.
     t.
@@ -47,7 +47,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_append_entries :
     raft_net_invariant_append_entries candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries, candidates_vote_for_selves. intros.
     unfold handleAppendEntries, advanceCurrentTerm in *.
     t.
@@ -55,7 +55,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_append_entries_reply :
     raft_net_invariant_append_entries_reply candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply, candidates_vote_for_selves. intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     t.
@@ -63,7 +63,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_request_vote :
     raft_net_invariant_request_vote candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote, candidates_vote_for_selves. intros.
     unfold handleRequestVote, advanceCurrentTerm in *.
     t. exfalso. find_apply_hyp_hyp. congruence.
@@ -71,7 +71,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_request_vote_reply :
     raft_net_invariant_request_vote_reply candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply, candidates_vote_for_selves. intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     t.
@@ -79,7 +79,7 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_do_generic_server :
     raft_net_invariant_do_generic_server candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server, candidates_vote_for_selves. intros.
     unfold doGenericServer in *.
     t; eauto.
@@ -87,14 +87,14 @@ Section CandidatesVoteForSelvesProof.
 
   Lemma candidates_vote_for_selves_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset, candidates_vote_for_selves. intros.
     repeat find_reverse_higher_order_rewrite; eauto.
   Qed.
 
   Lemma candidates_vote_for_selves_reboot :
     raft_net_invariant_reboot candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot, candidates_vote_for_selves. intros.
     repeat find_higher_order_rewrite. simpl in *. subst. unfold reboot in *.
     break_if; simpl in *; eauto; discriminate.
@@ -102,7 +102,7 @@ Section CandidatesVoteForSelvesProof.
 
   Theorem candidates_vote_for_selves_init :
     raft_net_invariant_init candidates_vote_for_selves.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, candidates_vote_for_selves, step_async_init.
     simpl in *. intros; discriminate.
   Qed.
@@ -111,7 +111,7 @@ Section CandidatesVoteForSelvesProof.
     forall net,
       raft_intermediate_reachable net ->
       candidates_vote_for_selves net.
-  Proof.
+  Proof using. 
     intros.
     eapply raft_net_invariant; eauto.
     - apply candidates_vote_for_selves_init.

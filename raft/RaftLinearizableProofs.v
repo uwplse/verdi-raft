@@ -24,7 +24,7 @@ Section RaftLinearizableProofs.
   Context {ogii : output_greatest_id_interface}.
 
   Definition op_eq_dec : forall x y : op key, {x = y} + {x <> y}.
-  Proof.
+  Proof using. 
     decide equality; auto using key_eq_dec.
   Qed.
 
@@ -101,7 +101,7 @@ Section RaftLinearizableProofs.
   Lemma has_key_intro :
     forall e,
       has_key (eClient e) (eId e) e = true.
-  Proof.
+  Proof using. 
     unfold has_key.
     intros.
     destruct e.
@@ -114,7 +114,7 @@ Section RaftLinearizableProofs.
       eClient e = c ->
       eId e = i ->
       has_key c i e = true.
-  Proof.
+  Proof using. 
     intros. subst. apply has_key_intro.
   Qed.
 
@@ -122,7 +122,7 @@ Section RaftLinearizableProofs.
     forall e e',
       eId e <> eId e' ->
       has_key (eClient e) (eId e) e' = false.
-  Proof.
+  Proof using. 
     unfold has_key.
     intros.
     destruct e'.
@@ -134,7 +134,7 @@ Section RaftLinearizableProofs.
     forall e e',
       eClient e <> eClient e' ->
       has_key (eClient e) (eId e) e' = false.
-  Proof.
+  Proof using. 
     unfold has_key.
     intros.
     destruct e'.
@@ -154,7 +154,7 @@ Section RaftLinearizableProofs.
         eClient e' = eClient e /\
         eId e' = eId e /\
         In e' (deduplicate_log' l ks)).
-  Proof.
+  Proof using. 
     induction l; simpl.
     - intuition.
     - intros. repeat break_match; intuition; subst; simpl in *; intuition eauto.
@@ -250,7 +250,7 @@ Section RaftLinearizableProofs.
         eClient e' = eClient e /\
         eId e' = eId e /\
         In e' (deduplicate_log l).
-  Proof.
+  Proof using. 
     unfold deduplicate_log'.
     intros.
     eapply deduplicate_log'_In with (ks := []) in H; simpl; intuition; try discriminate.
@@ -260,7 +260,7 @@ Section RaftLinearizableProofs.
     forall l e,
       In e (deduplicate_log l) ->
       In e l.
-  Proof.
+  Proof using. 
     eauto using deduplicate_log'_In_if.
   Qed.
 
@@ -277,7 +277,7 @@ Section RaftLinearizableProofs.
   Lemma log_to_IR_good_trace :
     forall env_o log,
       good_trace _ (log_to_IR env_o log).
-  Proof.
+  Proof using. 
     intros.
     induction log; simpl in *; auto.
     - repeat break_match; simpl in *; constructor; auto.
@@ -290,7 +290,7 @@ Section RaftLinearizableProofs.
       exists os h,
         In (h, inr os) tr /\
         exists o, In (ClientResponse (fst k) (snd k) o) os.
-  Proof.
+  Proof using. 
     induction tr; intros; simpl in *; intuition.
     repeat break_match; subst; intuition.
     - find_apply_hyp_hyp. break_exists_exists.
@@ -316,7 +316,7 @@ Section RaftLinearizableProofs.
       In (I k) (import tr) ->
       exists h i,
         In (h, inl (ClientRequest (fst k) (snd k) i)) tr.
-  Proof.
+  Proof using. 
     induction tr; intros; simpl in *; intuition.
     repeat break_match; subst.
     - find_apply_hyp_hyp. break_exists.
@@ -340,7 +340,7 @@ Section RaftLinearizableProofs.
       In e log ->
       (exists o, env (client, id) = Some o) ->
       In (IRO (client, id)) (log_to_IR env log).
-  Proof.
+  Proof using. 
     intros.
     induction log; simpl in *; intuition.
     - subst. break_exists.
@@ -354,7 +354,7 @@ Section RaftLinearizableProofs.
     forall l client id o,
       In (ClientResponse client id o) l ->
       exists o', get_output' l (client, id) = Some o'.
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; intuition.
     - subst. break_if; simpl in *; intuition eauto.
     - break_match; simpl in *; intuition eauto.
@@ -366,7 +366,7 @@ Section RaftLinearizableProofs.
       In (O k) (import tr) ->
       exists o,
         get_output tr k = Some o.
-  Proof.
+  Proof using. 
     intros.
     induction tr; simpl in *; intuition.
     repeat break_match; intuition; subst; simpl in *; intuition; try congruence;
@@ -388,7 +388,7 @@ Section RaftLinearizableProofs.
         eId e = snd k /\
         get_output tr k = Some out /\
         In e log.
-  Proof.
+  Proof using. 
     induction log; intros; simpl in *; intuition.
     repeat break_match; subst; simpl in *; intuition; try congruence; try find_inversion; simpl.
     - eexists. eexists. intuition; eauto.
@@ -400,7 +400,7 @@ Section RaftLinearizableProofs.
     forall l k out,
       get_output' l k = Some out ->
       In (ClientResponse (fst k) (snd k) out) l.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - discriminate.
     - repeat break_match; subst; eauto.
@@ -411,7 +411,7 @@ Section RaftLinearizableProofs.
     forall tr k out,
       get_output tr k = Some out ->
       In (O k) (import tr).
-  Proof.
+  Proof using. 
     induction tr; intros; simpl in *.
     - discriminate.
     - repeat break_match; subst; simpl; intuition eauto.
@@ -441,7 +441,7 @@ Section RaftLinearizableProofs.
         eId e = snd k /\
         get_output tr k = None /\
         In e log.
-  Proof.
+  Proof using. 
 
     induction log; intros; simpl in *; intuition.
     repeat break_match; subst; simpl in *; intuition; try congruence; try find_inversion; simpl.
@@ -454,7 +454,7 @@ Section RaftLinearizableProofs.
     forall tr k h i,
       In (h, inl (ClientRequest (fst k) (snd k) i)) tr ->
       In (I k) (import tr).
-  Proof.
+  Proof using. 
     induction tr; intros; simpl in *; intuition; subst.
     - rewrite <- surjective_pairing. intuition.
     - break_match; simpl; eauto.
@@ -478,7 +478,7 @@ Section RaftLinearizableProofs.
     forall env log,
       get_IR_input_keys _ (log_to_IR env log) =
       map (fun e => (eClient e, eId e)) log.
-  Proof.
+  Proof using. 
     induction log; simpl; intuition.
     repeat break_match; subst; simpl in *;
     rewrite get_IR_input_keys_defn; auto using f_equal.
@@ -488,7 +488,7 @@ Section RaftLinearizableProofs.
     forall env log,
       get_IR_output_keys _ (log_to_IR env log) =
       map (fun e => (eClient e, eId e)) log.
-  Proof.
+  Proof using. 
     induction log; simpl; intuition.
     repeat break_match; subst; simpl in *;
     repeat rewrite get_IR_output_keys_defn; auto using f_equal.
@@ -498,7 +498,7 @@ Section RaftLinearizableProofs.
   Lemma NoDup_input_import :
     forall tr,
       NoDup (get_op_input_keys key (import tr)).
-  Proof.
+  Proof using. 
     induction tr; intros.
     - constructor.
     - simpl. repeat break_match; subst.
@@ -527,7 +527,7 @@ Section RaftLinearizableProofs.
   Lemma NoDup_output_import :
     forall tr,
       NoDup (get_op_output_keys key (import tr)).
-  Proof.
+  Proof using. 
     induction tr; intros.
     - constructor.
     - simpl. repeat break_match; subst.
@@ -553,7 +553,7 @@ Section RaftLinearizableProofs.
     forall k k' tr,
       before (O k) (I k') (import tr) ->
       output_before_input (fst k) (snd k) (fst k') (snd k') tr.
-  Proof.
+  Proof using. 
     induction tr; intros; simpl in *; intuition.
     repeat break_match; subst; simpl in *; intuition eauto; try congruence;
     unfold output_before_input; simpl in *; intuition.
@@ -587,7 +587,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       has_key c i e = true ->
       key_of e = (c, i).
-  Proof.
+  Proof using. 
     intros. unfold has_key, key_of in *.
     break_match. subst. simpl in *. repeat (do_bool; intuition).
   Qed.
@@ -596,7 +596,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       key_of e = (c, i) ->
       has_key c i e = true.
-  Proof.
+  Proof using. 
     intros. unfold has_key, key_of in *.
     break_match. subst. simpl in *. find_inversion. repeat (do_bool; intuition).
   Qed.
@@ -605,7 +605,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       has_key c i e = false ->
       key_of e <> (c, i).
-  Proof.
+  Proof using. 
     intros. unfold has_key, key_of in *.
     break_match. subst. simpl in *. repeat (do_bool; intuition); congruence.
   Qed.
@@ -614,7 +614,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       key_of e <> (c, i) ->
       has_key c i e = false.
-  Proof.
+  Proof using. 
     intros. unfold has_key, key_of in *.
     break_match. subst. simpl in *. repeat (do_bool; intuition).
     match goal with
@@ -632,7 +632,7 @@ Section RaftLinearizableProofs.
       before_func(A:=A) f g l ->
       before_func g f l ->
       False.
-  Proof.
+  Proof using. 
     induction l; simpl; intuition.
     - eauto.
     - congruence.
@@ -643,7 +643,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       has_key c i e = true ->
       eClient e = c.
-  Proof.
+  Proof using. 
     unfold has_key.
     intros. destruct e.
     simpl. do_bool. intuition. do_bool. auto.
@@ -653,7 +653,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       has_key c i e = true ->
       eId e = i.
-  Proof.
+  Proof using. 
     unfold has_key.
     intros. destruct e.
     simpl. do_bool. intuition. do_bool. auto.
@@ -663,7 +663,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       has_key c i e = true ->
       eClient e = c /\ eId e = i.
-  Proof.
+  Proof using. 
     intuition eauto using has_key_true_same_client, has_key_true_same_id.
   Qed.
 
@@ -671,7 +671,7 @@ Section RaftLinearizableProofs.
     forall c i e,
       has_key c i e = false ->
       eClient e <> c \/ eId e <> i.
-  Proof.
+  Proof using. 
     unfold has_key.
     intros. destruct e. simpl. do_bool. intuition (do_bool; auto).
   Qed.
@@ -684,7 +684,7 @@ Section RaftLinearizableProofs.
          id' <= snd k) ->
       (forall i, assoc eq_nat_dec ks (fst k) = Some i -> i < snd k) ->
       before_func (has_key (fst k) (snd k)) (has_key (fst k') (snd k')) (deduplicate_log' l ks).
-  Proof.
+  Proof using. 
     induction l; simpl; intros.
     - intuition.
     - intuition.
@@ -737,7 +737,7 @@ Section RaftLinearizableProofs.
          before_func (has_key (fst k) id') (has_key (fst k) (snd k)) l ->
          id' <= snd k) ->
       before_func (has_key (fst k) (snd k)) (has_key (fst k') (snd k')) (deduplicate_log l).
-  Proof.
+  Proof using. 
     intros.
     apply before_func_deduplicate'; auto.
     simpl. intros. discriminate.
@@ -751,7 +751,7 @@ Section RaftLinearizableProofs.
       entries_ordered (fst k) (snd k) (fst k') (snd k') net ->
       before (IRO k) (IRI k')
              (log_to_IR (get_output tr) (deduplicate_log (applied_entries (nwState net)))).
-  Proof.
+  Proof using ogii. 
     intros. unfold entries_ordered in *.
     remember (applied_entries (nwState net)) as l.
     find_apply_lem_hyp before_func_deduplicate.
@@ -795,7 +795,7 @@ Section RaftLinearizableProofs.
       before_func (is_input_with_key (fst k) (snd k))
                   (is_output_with_key (fst k) (snd k)) tr ->
       before (I k) (O k) (import tr).
-  Proof.
+  Proof using. 
     intros; induction tr; simpl in *; intuition.
     - repeat break_match; subst; simpl in *; intuition; try congruence.
       repeat (do_bool; intuition).
@@ -831,7 +831,7 @@ Section RaftLinearizableProofs.
       step_failure_star step_failure_init (failed, net) tr ->
       In (O k) (import tr) ->
       before (I k) (O k) (import tr).
-  Proof.
+  Proof using iboi. 
     intros.
     find_apply_lem_hyp in_import_in_trace_O.
     find_eapply_lem_hyp output_implies_input_before_output; eauto.
@@ -842,7 +842,7 @@ Section RaftLinearizableProofs.
     forall l env_o,
       get_IR_input_keys key (log_to_IR env_o l) =
       map (fun e => (eClient e, eId e)) l.
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; intuition.
     repeat break_match; subst; compute; simpl; f_equal; auto.
   Qed.
@@ -851,7 +851,7 @@ Section RaftLinearizableProofs.
     forall l env_o,
       get_IR_output_keys key (log_to_IR env_o l) =
       map (fun e => (eClient e, eId e)) l.
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; intuition.
     repeat break_match; subst; compute; simpl; f_equal; auto.
   Qed.
@@ -861,7 +861,7 @@ Section RaftLinearizableProofs.
       In e (deduplicate_log' l ks) ->
       assoc eq_nat_dec ks (eClient e) = Some id ->
       id < (eId e).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     repeat break_match; simpl in *; do_bool; intuition; subst; eauto;
     repeat find_rewrite; repeat find_inversion; intuition.
@@ -881,7 +881,7 @@ Section RaftLinearizableProofs.
   Lemma NoDup_deduplicate_log' :
     forall l ks,
       NoDup (map (fun e => (eClient e, eId e)) (deduplicate_log' l ks)).
-  Proof.
+  Proof using. 
     induction l; intros.
     - simpl in *. constructor.
     - simpl in *. repeat break_match; eauto.
@@ -900,14 +900,14 @@ Section RaftLinearizableProofs.
   Lemma NoDup_deduplicate_log :
     forall l,
       NoDup (map (fun e => (eClient e, eId e)) (deduplicate_log l)).
-  Proof.
+  Proof using. 
     eauto using NoDup_deduplicate_log'.
   Qed.
 
   Lemma NoDup_input_log :
     forall l env_o,
       NoDup (get_IR_input_keys key (log_to_IR env_o (deduplicate_log l))).
-  Proof.
+  Proof using. 
     intros.
     rewrite get_IR_input_keys_log_to_IR.
     eauto using NoDup_deduplicate_log.
@@ -916,7 +916,7 @@ Section RaftLinearizableProofs.
   Lemma NoDup_output_log :
     forall l env_o,
       NoDup (get_IR_output_keys key (log_to_IR env_o (deduplicate_log l))).
-  Proof.
+  Proof using. 
     intros.
     rewrite get_IR_output_keys_log_to_IR.
     eauto using NoDup_deduplicate_log.
@@ -930,7 +930,7 @@ Section RaftLinearizableProofs.
       env_i k = Some i ->
       env_o k = Some o ->
       exported env_i env_o (ir ++ [IRI k; IRO k]) (tr ++ [(i, o)]).
-  Proof.
+  Proof using. 
     induction 1; intros; simpl; auto.
   Qed.
 
@@ -940,14 +940,14 @@ Section RaftLinearizableProofs.
       env_i k = Some i ->
       env_o k = None ->
       exported env_i env_o (ir ++ [IRI k; IRU k]) (tr ++ [(i, o)]).
-  Proof.
+  Proof using. 
     induction 1; intros; simpl; auto.
   Qed.
 
   Lemma log_to_IR_app :
     forall xs ys env,
       log_to_IR env (xs ++ ys) = log_to_IR env xs ++ log_to_IR env ys.
-  Proof.
+  Proof using. 
     induction xs; intros; simpl; intuition.
     repeat break_match; subst; simpl; auto using f_equal.
   Qed.
@@ -964,7 +964,7 @@ Section RaftLinearizableProofs.
       execute_log es = (tr, st) ->
       exported env_i env_o (log_to_IR env_o es) tr ->
       exported env_i env_o (log_to_IR env_o (es ++ l)) (fst (execute_log' l st tr)).
-  Proof.
+  Proof using. 
     induction l using rev_ind; intros; simpl in *.
     - rewrite app_nil_r.  auto.
     - rewrite execute_log'_app. simpl. repeat break_let.
@@ -1000,7 +1000,7 @@ Section RaftLinearizableProofs.
          env_o (eClient e, eId e) = Some o0 ->
          o = o0) ->
       exported env_i env_o (log_to_IR env_o l) (fst (execute_log l)).
-  Proof.
+  Proof using. 
     intros.
     unfold execute_log.
     change (log_to_IR env_o l) with (log_to_IR env_o ([] ++ l)).
@@ -1018,7 +1018,7 @@ Section RaftLinearizableProofs.
       input_correct tr ->
       in_input_trace (eClient e) (eId e) (eInput e) tr ->
       get_input tr (eClient e, eId e) = Some (eInput e).
-  Proof.
+  Proof using. 
     unfold in_input_trace, input_correct.
     induction tr; intros; break_exists; simpl in *; intuition; subst;
     repeat break_match; intuition; subst; eauto 10 using f_equal.
@@ -1028,7 +1028,7 @@ Section RaftLinearizableProofs.
     forall tr client id o,
       get_output tr (client, id) = Some o ->
       in_output_trace client id o tr.
-  Proof.
+  Proof using. 
     intros. induction tr; simpl in *; try congruence.
     repeat break_let. subst.
     repeat break_match; simpl in *; intuition; subst;
@@ -1044,7 +1044,7 @@ Section RaftLinearizableProofs.
       l = xs' ++ y' :: zs' ->
       f y = f y' ->
       xs = xs'.
-  Proof.
+  Proof using. 
     induction xs; simpl; intros; destruct xs'.
     - auto.
     - subst. simpl in *. find_inversion.
@@ -1064,7 +1064,7 @@ Section RaftLinearizableProofs.
       eClient e = eClient e' ->
       eId e = eId e' ->
       xs = xs'.
-  Proof.
+  Proof using. 
     intros.
     eapply NoDup_map_partition.
     - apply NoDup_deduplicate_log.
@@ -1077,7 +1077,7 @@ Section RaftLinearizableProofs.
     forall net e,
       In e (applied_entries (nwState net)) ->
       applied_implies_input_state (eClient e) (eId e) (eInput e) net.
-  Proof.
+  Proof using. 
     intros.
     red. exists e.
     intuition.
@@ -1097,7 +1097,7 @@ Section RaftLinearizableProofs.
         exists x : A,
           f x = true /\
           before x y l.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - eauto.
     - find_copy_apply_hyp_hyp. break_exists_exists. intuition.
@@ -1112,7 +1112,7 @@ Section RaftLinearizableProofs.
         equivalent _ (import tr) l /\
         exported (get_input tr) (get_output tr) l tr1 /\
         step_1_star init st tr1.
-  Proof.
+  Proof using ogii oci iboi copi aiii oiai. 
     intros.
     exists (log_to_IR (get_output tr) (deduplicate_log (applied_entries (nwState net)))).
     exists (fst (execute_log (deduplicate_log (applied_entries (nwState net))))).

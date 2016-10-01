@@ -27,7 +27,7 @@ Section RaftRefinementProof.
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
                              In p' (send_packets (pDst p) l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleMessage, update_elections_data_net in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -50,7 +50,7 @@ Section RaftRefinementProof.
       (forall p', In p' ps' -> In p' (nwPackets net) \/
                          In p' (send_packets h l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleInput, update_elections_data_input in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -73,7 +73,7 @@ Section RaftRefinementProof.
       refined_raft_net_invariant_reboot P ->
       refined_raft_intermediate_reachable net ->
       P net.
-  Proof.
+  Proof using. 
     intros.
     induction H10.
     - intuition.
@@ -213,7 +213,7 @@ Section RaftRefinementProof.
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
                              In p' (send_packets (pDst p) l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleMessage, update_elections_data_net in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -237,7 +237,7 @@ Section RaftRefinementProof.
       (forall p', In p' ps' -> In p' (nwPackets net) \/
                          In p' (send_packets h l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleInput, update_elections_data_input in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -260,7 +260,7 @@ Section RaftRefinementProof.
       refined_raft_net_invariant_reboot' P ->
       refined_raft_intermediate_reachable net ->
       P net.
-  Proof.
+  Proof using. 
     intros.
     induction H10.
     - intuition.
@@ -433,7 +433,7 @@ Section RaftRefinementProof.
     forall net,
       refined_raft_intermediate_reachable net ->
       raft_intermediate_reachable (deghost net).
-  Proof.
+  Proof using. 
     intros.
     induction H.
     - constructor.
@@ -502,7 +502,7 @@ Section RaftRefinementProof.
     forall P,
       (forall net, raft_intermediate_reachable net -> P net) ->
       (forall net, refined_raft_intermediate_reachable net -> P (deghost net)).
-  Proof.
+  Proof using. 
     intros.
     eauto using simulation_1.
   Qed.
@@ -513,7 +513,7 @@ Section RaftRefinementProof.
       exists rnet,
         net = deghost rnet /\
         refined_raft_intermediate_reachable rnet.
-  Proof.
+  Proof using. 
     intros.
     induction H.
     - exists (reghost step_async_init). intuition.
@@ -605,7 +605,7 @@ Section RaftRefinementProof.
     forall P : _ -> Prop,
       (forall net, refined_raft_intermediate_reachable net -> P (deghost net)) ->
       (forall net, raft_intermediate_reachable net -> P net).
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp simulation_2.
     break_exists. intuition. subst. eauto.
@@ -614,7 +614,7 @@ Section RaftRefinementProof.
   Lemma deghost_spec :
     forall (net : @network _ raft_refined_multi_params) h,
       nwState (deghost net) h = snd (nwState net h).
-  Proof.
+  Proof using. 
     intros.
     destruct net; auto.
   Qed.

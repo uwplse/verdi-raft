@@ -38,4 +38,3 @@ Section StateMachineSafety.
     }.
 
 End StateMachineSafety.
-         

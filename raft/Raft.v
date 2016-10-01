@@ -64,14 +64,14 @@ Section Raft.
   Proof. decide equality. Defined.
 
   Definition term_eq_dec : forall x y : term, {x = y} + {x <> y}.
-  Proof. apply eq_nat_dec. Qed.
+  Proof using.  apply eq_nat_dec. Qed.
 
   Definition entry_eq_dec : forall x y : entry, {x = y} + {x <> y}.
-  Proof. decide equality; eauto using input_eq_dec, name_eq_dec, term_eq_dec. Qed.
+  Proof using.  decide equality; eauto using input_eq_dec, name_eq_dec, term_eq_dec. Qed.
 
 
   Definition msg_eq_dec : forall x y: msg, {x = y} + {x <> y}.
-  Proof.
+  Proof using. 
     decide equality;
       eauto using name_eq_dec, input_eq_dec, term_eq_dec, Bool.bool_dec,
                   list_eq_dec, entry_eq_dec.
@@ -559,7 +559,7 @@ Section Raft.
     forall n' tr,
       step_failure_star step_failure_init n' tr ->
       raft_intermediate_reachable (snd n').
-  Proof.
+  Proof using. 
     intros. find_apply_lem_hyp refl_trans_1n_n1_trace.
     remember step_failure_init as net1.
     induction H.
@@ -572,7 +572,7 @@ Section Raft.
     forall failed net tr,
       step_failure_star step_failure_init (failed, net) tr ->
       raft_intermediate_reachable net.
-  Proof.
+  Proof using. 
     intros.
     replace net with (snd (failed, net)); [|simpl; auto].
     eapply step_failure_star_raft_intermediate_reachable'; eauto.
@@ -583,7 +583,7 @@ Section Raft.
       step_failure_star (f, net) (f', net') tr ->
       raft_intermediate_reachable net ->
       raft_intermediate_reachable net'.
-  Proof.
+  Proof using. 
     intros.
     prep_induction H.
     induction H using refl_trans_1n_trace_n1_ind; intros; subst.
@@ -696,7 +696,7 @@ Section Raft.
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
                              In p' (send_packets (pDst p) l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleMessage in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -718,7 +718,7 @@ Section Raft.
       (forall p', In p' ps' -> In p' (nwPackets net) \/
                          In p' (send_packets h l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleInput in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -763,7 +763,7 @@ Section Raft.
       raft_net_invariant_reboot P ->
       raft_intermediate_reachable net ->
       P net.
-  Proof.
+  Proof using. 
     intros.
     induction H10.
     - intuition.

@@ -55,7 +55,7 @@ Section LogsLeaderLogs.
     forall net,
       logs_leaderLogs_nw net ->
       logs_leaderLogs_nw_weak net.
-  Proof.
+  Proof using. 
     intros. unfold logs_leaderLogs_nw, logs_leaderLogs_nw_weak, weak_sanity in *.
     intros.
     eapply_prop_hyp In In; eauto.
@@ -71,7 +71,7 @@ Section LogsLeaderLogs.
     forall net,
       refined_raft_intermediate_reachable net ->
       logs_sorted (deghost net).
-  Proof.
+  Proof using si rri. 
     intros.
     eapply lift_prop; eauto using logs_sorted_invariant.
   Qed.
@@ -80,7 +80,7 @@ Section LogsLeaderLogs.
     forall net h,
       refined_raft_intermediate_reachable net ->
       sorted (log (snd (nwState net h))).
-  Proof.
+  Proof using si rri. 
     intros.
     find_apply_lem_hyp lift_sorted.
     unfold logs_sorted, logs_sorted_host in *.
@@ -92,7 +92,7 @@ Section LogsLeaderLogs.
     forall net,
       refined_raft_intermediate_reachable net ->
       nextIndex_safety (deghost net).
-  Proof.
+  Proof using nisi rri. 
     intros.
     eapply lift_prop; eauto using nextIndex_safety_invariant.
   Qed.
@@ -105,7 +105,7 @@ Section LogsLeaderLogs.
       pred (getNextIndex (snd (nwState net h)) h') <> 0 ->
       exists e,
         findAtIndex (log (snd (nwState net h))) (pred (getNextIndex (snd (nwState net h)) h')) = Some e.
-  Proof.
+  Proof using si nisi rlmli rri. 
     intros.
     find_copy_apply_lem_hyp entries_contiguous_invariant.
     find_copy_apply_lem_hyp lift_nextIndex_safety.
@@ -132,7 +132,7 @@ Section LogsLeaderLogs.
     forall h st client id c,
       leaderLogs (update_elections_data_client_request h st client id c) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request in *.
     intros. repeat break_match; repeat find_inversion; auto.
   Qed.
@@ -141,7 +141,7 @@ Section LogsLeaderLogs.
     forall h st,
       leaderLogs (update_elections_data_timeout h st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros.
     repeat break_match; simpl in *; auto.
@@ -151,7 +151,7 @@ Section LogsLeaderLogs.
     forall h st t h' pli plt es ci,
       leaderLogs (update_elections_data_appendEntries h st t h' pli plt es ci) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries.
     repeat break_match; subst; simpl in *; auto.
@@ -161,7 +161,7 @@ Section LogsLeaderLogs.
     forall h h' t lli llt st,
       leaderLogs (update_elections_data_requestVote h h' t h' lli llt st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; auto.
@@ -171,7 +171,7 @@ Section LogsLeaderLogs.
     forall h h' t  st t' ll' r,
       In (t', ll') (leaderLogs (fst st)) ->
       In (t', ll') (leaderLogs (update_elections_data_requestVoteReply h h' t r st)).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; auto.
@@ -191,7 +191,7 @@ Section LogsLeaderLogs.
 
   Lemma contiguous_log_property :
     log_property (fun l => contiguous_range_exact_lo l 0).
-  Proof.
+  Proof using rlmli. 
     red. intros.
     apply entries_contiguous_invariant; auto.
   Qed.
@@ -201,7 +201,7 @@ Section LogsLeaderLogs.
       refined_raft_intermediate_reachable net ->
       In (t, ll) (leaderLogs (fst (nwState net h))) ->
       contiguous_range_exact_lo ll 0.
-  Proof.
+  Proof using lpholli rlmli. 
     intros. pattern ll.
     eapply log_properties_hold_on_leader_logs_invariant; eauto using contiguous_log_property.
   Qed.
@@ -209,7 +209,7 @@ Section LogsLeaderLogs.
   
   Lemma logs_leaderLogs_inductive_appendEntries :
     refined_raft_net_invariant_append_entries logs_leaderLogs_inductive.
-  Proof.
+  Proof using lpholli si lllmi llci rlmli llsi rri. 
     red. unfold logs_leaderLogs_inductive. intros.
     subst. simpl in *. intuition.
     - unfold logs_leaderLogs in *. intros.
@@ -411,7 +411,7 @@ Section LogsLeaderLogs.
   
   Lemma logs_leaderLogs_inductive_appendEntriesReply :
     refined_raft_net_invariant_append_entries_reply logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intros. intuition.
     - find_apply_lem_hyp handleAppendEntriesReply_log. subst.
       unfold logs_leaderLogs in *. intros.
@@ -432,7 +432,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_requestVote :
     refined_raft_net_invariant_request_vote logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intros. intuition.
     - find_apply_lem_hyp handleRequestVote_log. subst.
       unfold logs_leaderLogs in *. intros.
@@ -456,7 +456,7 @@ Section LogsLeaderLogs.
   
   Lemma logs_leaderLogs_inductive_requestVoteReply :
     refined_raft_net_invariant_request_vote_reply logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intros. intuition.
     - subst.
       unfold logs_leaderLogs in *. intros.
@@ -482,7 +482,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_clientRequest :
     refined_raft_net_invariant_client_request logs_leaderLogs_inductive.
-  Proof.
+  Proof using si lhllsi rri. 
     red. unfold logs_leaderLogs_inductive. intros. intuition.
     - subst.
       unfold logs_leaderLogs in *. intros.
@@ -525,7 +525,7 @@ Section LogsLeaderLogs.
   
   Lemma logs_leaderLogs_inductive_timeout :
     refined_raft_net_invariant_timeout logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intros. intuition.
     - find_apply_lem_hyp handleTimeout_log_same. subst.
       unfold logs_leaderLogs in *. intros.
@@ -550,7 +550,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_doGenericServer :
     refined_raft_net_invariant_do_generic_server logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -588,7 +588,7 @@ Section LogsLeaderLogs.
               eTerm e = plt) /\
         es = findGtIndex (log st) pli) \/
        exists h', pred (getNextIndex st h') <> 0 /\ findAtIndex (log st) (pred (getNextIndex st h')) = None).
-  Proof.
+  Proof using. 
     intros. unfold doLeader, advanceCommitIndex in *.
     break_match; try solve [find_inversion; simpl in *; intuition].
     break_if; try solve [find_inversion; simpl in *; intuition].
@@ -610,7 +610,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_doLeader :
     refined_raft_net_invariant_do_leader logs_leaderLogs_inductive.
-  Proof.
+  Proof using si nisi rlmli llsi rri. 
     red. unfold logs_leaderLogs_inductive. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -761,7 +761,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_init :
     refined_raft_net_invariant_init logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     unfold logs_leaderLogs_inductive. red. intuition.
     - unfold logs_leaderLogs. intros. simpl in *. intuition.
     - unfold logs_leaderLogs_nw. intros. simpl in *. intuition.
@@ -769,7 +769,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_state_same_packets_subset :
     refined_raft_net_invariant_state_same_packet_subset logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intuition.
     - unfold logs_leaderLogs in *. intros.
       repeat find_reverse_higher_order_rewrite.
@@ -783,7 +783,7 @@ Section LogsLeaderLogs.
 
   Lemma logs_leaderLogs_inductive_reboot :
     refined_raft_net_invariant_reboot logs_leaderLogs_inductive.
-  Proof.
+  Proof using. 
     red. unfold logs_leaderLogs_inductive. intros.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -812,7 +812,7 @@ Section LogsLeaderLogs.
     forall net,
       refined_raft_intermediate_reachable net ->
       logs_leaderLogs_inductive net.
-  Proof.
+  Proof using lpholli si nisi lhllsi lllmi llci rlmli llsi rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply logs_leaderLogs_inductive_init.
@@ -832,7 +832,7 @@ Section LogsLeaderLogs.
     forall net,
       refined_raft_intermediate_reachable net ->
       logs_leaderLogs net.
-  Proof.
+  Proof using lpholli si nisi lhllsi lllmi llci rlmli llsi rri. 
     intros. apply logs_leaderLogs_inductive_invariant. auto.
   Qed.
 
@@ -840,7 +840,7 @@ Section LogsLeaderLogs.
     forall net,
       refined_raft_intermediate_reachable net ->
       logs_leaderLogs_nw net.
-  Proof.
+  Proof using lpholli si nisi lhllsi lllmi llci rlmli llsi rri. 
     intros. apply logs_leaderLogs_inductive_invariant. auto.
   Qed.
 

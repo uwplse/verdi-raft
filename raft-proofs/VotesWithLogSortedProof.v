@@ -21,7 +21,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_init :
     refined_raft_net_invariant_init votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, votesWithLog_sorted.
     intros. subst. simpl in *. intuition.
   Qed.
@@ -30,7 +30,7 @@ Section VotesWithLogSorted.
     forall me st client id c,
       votesWithLog (update_elections_data_client_request me st client id c) =
       votesWithLog (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request.
     intros.
     repeat break_match; auto.
@@ -38,7 +38,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_client_request :
     refined_raft_net_invariant_client_request votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *.
@@ -51,7 +51,7 @@ Section VotesWithLogSorted.
     forall net h,
       refined_raft_intermediate_reachable net ->
       sorted (log (snd (nwState net h))).
-  Proof.
+  Proof using si rri. 
     intros.
     pose proof (lift_prop _ logs_sorted_invariant).
     find_insterU. conclude_using eauto.
@@ -66,7 +66,7 @@ Section VotesWithLogSorted.
         (forall t cid, P ((t, cid, log st') :: votesWithLog (fst st))) ->
         (P (votesWithLog (fst st))) ->
         (P (votesWithLog (update_elections_data_timeout h st))).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros.
     repeat break_match; simpl in *; find_inversion; eauto.
@@ -74,7 +74,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_timeout :
     refined_raft_net_invariant_timeout votesWithLog_sorted.
-  Proof.
+  Proof using si rri. 
     unfold refined_raft_net_invariant_timeout, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *.
@@ -92,7 +92,7 @@ Section VotesWithLogSorted.
     forall me st t li pli plt es lci,
       votesWithLog (update_elections_data_appendEntries me st t li pli plt es lci) =
       votesWithLog (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_appendEntries.
     intros.
     repeat break_match; subst; auto.
@@ -100,7 +100,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_append_entries :
     refined_raft_net_invariant_append_entries votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *.
@@ -111,7 +111,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *; eauto.
@@ -119,7 +119,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_request_vote :
     refined_raft_net_invariant_request_vote votesWithLog_sorted.
-  Proof.
+  Proof using si rri. 
     unfold refined_raft_net_invariant_request_vote, votesWithLog_sorted.
     intros.
     subst. simpl in *. find_higher_order_rewrite.
@@ -134,7 +134,7 @@ Section VotesWithLogSorted.
     forall me src t status st,
       votesWithLog (update_elections_data_requestVoteReply me src t status st) =
       votesWithLog (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; simpl; auto.
@@ -142,7 +142,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote_reply, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify.
@@ -153,7 +153,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_do_leader :
     refined_raft_net_invariant_do_leader votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify.
@@ -166,7 +166,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_do_generic_server :
     refined_raft_net_invariant_do_generic_server votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, votesWithLog_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify.
@@ -179,7 +179,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, votesWithLog_sorted.
     intros. subst. simpl in *. find_reverse_higher_order_rewrite.
     eauto.
@@ -187,7 +187,7 @@ Section VotesWithLogSorted.
 
   Lemma votesWithLog_sorted_reboot :
     refined_raft_net_invariant_reboot votesWithLog_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, votesWithLog_sorted.
     intros.
     find_higher_order_rewrite.
@@ -203,7 +203,7 @@ Section VotesWithLogSorted.
     forall net,
       refined_raft_intermediate_reachable net ->
       votesWithLog_sorted net.
-  Proof.
+  Proof using si rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply votesWithLog_sorted_init.
