@@ -24,4 +24,3 @@ Section AllEntriesLeaderLogsTerm.
     }.
 
 End AllEntriesLeaderLogsTerm.
-

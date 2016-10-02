@@ -75,7 +75,7 @@ Section ST.
       step_failure_star step_failure_init (failed, net) tr ->
       T tr ->
       R net tr.
-  Proof.
+  Proof using H_RT_reboot H_RT_dup H_RT_drop H_RT_input H_RT_deliver RT_init T_snoc_inv. 
     intros.
     remember (failed, net) as p. generalize dependent failed. revert net.
     remember step_failure_init as init. revert Heqinit. revert H0.

@@ -21,7 +21,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_append_entries :
     refined_raft_net_invariant_append_entries allEntries_leaderLogs_term.
-  Proof.
+  Proof using aerlli. 
     red. unfold allEntries_leaderLogs_term. intros. simpl in *. subst.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *;
@@ -55,14 +55,14 @@ Section AllEntriesLeaderLogsTerm.
   (* rest of cases are easy *)
   Lemma allEntries_leaderLogs_term_init :
     refined_raft_net_invariant_init allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, allEntries_leaderLogs_term.
     simpl. intuition.
   Qed.
 
   Lemma allEntries_leaderLogs_term_client_request :
     refined_raft_net_invariant_client_request allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, allEntries_leaderLogs_term.
     simpl.
     intros.
@@ -112,7 +112,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_timeout :
     refined_raft_net_invariant_timeout allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout, allEntries_leaderLogs_term.
     simpl. intros.
     repeat find_higher_order_rewrite.
@@ -138,7 +138,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, allEntries_leaderLogs_term.
     simpl.
     intros.
@@ -164,7 +164,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_request_vote :
     refined_raft_net_invariant_request_vote allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote, allEntries_leaderLogs_term.
     simpl.
     intros.
@@ -191,7 +191,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote_reply, allEntries_leaderLogs_term.
     simpl. intros.
     repeat find_higher_order_rewrite.
@@ -221,7 +221,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_do_leader :
     refined_raft_net_invariant_do_leader allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, allEntries_leaderLogs_term.
     simpl. intros.
     repeat find_higher_order_rewrite.
@@ -248,7 +248,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_do_generic_server :
     refined_raft_net_invariant_do_generic_server allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, allEntries_leaderLogs_term.
     simpl. intros.
     repeat find_higher_order_rewrite.
@@ -275,7 +275,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, allEntries_leaderLogs_term.
     simpl.
     intros.
@@ -289,7 +289,7 @@ Section AllEntriesLeaderLogsTerm.
 
   Lemma allEntries_leaderLogs_term_reboot :
     refined_raft_net_invariant_reboot allEntries_leaderLogs_term.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, allEntries_leaderLogs_term.
     simpl. intros.
     find_higher_order_rewrite.
@@ -323,7 +323,7 @@ Section AllEntriesLeaderLogsTerm.
     forall net,
       refined_raft_intermediate_reachable net ->
       allEntries_leaderLogs_term net.
-  Proof.
+  Proof using aerlli rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply allEntries_leaderLogs_term_init.

@@ -19,7 +19,7 @@ Section LeadersHaveLeaderLogsStrong.
       log st' = log st /\
       ((currentTerm st' = currentTerm st /\ type st' = type st) \/
        type st' = Follower \/ (type st = Candidate /\ type st' = Leader)).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition.
@@ -35,7 +35,7 @@ Section LeadersHaveLeaderLogsStrong.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       (type st' = type st /\ currentTerm st' = currentTerm st /\ log st' = log st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -45,7 +45,7 @@ Section LeadersHaveLeaderLogsStrong.
       handleAppendEntriesReply h st h' t es r = (st', ms) ->
       (type st' = type st /\ currentTerm st' = currentTerm st /\ log st' = log st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -55,7 +55,7 @@ Section LeadersHaveLeaderLogsStrong.
       handleRequestVote h st t h' lli llt = (st', m) ->
       (type st' = type st /\ currentTerm st' = currentTerm st /\ log st' = log st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -65,7 +65,7 @@ Section LeadersHaveLeaderLogsStrong.
       handleClientRequest h st client id c = (out, st', l) ->
       type st' = type st /\ currentTerm st' = currentTerm st /\
       (log st' = log st \/ exists e, eTerm e = currentTerm st /\ log st' = e :: log st).
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     repeat break_match; find_inversion; intuition eauto.
     simpl in *. right. eexists; simpl in *; intuition eauto.
@@ -77,7 +77,7 @@ Section LeadersHaveLeaderLogsStrong.
       handleTimeout h st = (out, st', l) ->
       (type st' = type st /\ currentTerm st' = currentTerm st /\ log st' = log st) \/
       type st' = Candidate.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -86,7 +86,7 @@ Section LeadersHaveLeaderLogsStrong.
     forall h st os st' ms,
       doGenericServer h st = (os, st', ms) ->
       type st' = type st /\ currentTerm st' = currentTerm st /\ log st' = log st.
-  Proof.
+  Proof using. 
     unfold doGenericServer.
     intros.
     repeat break_match; repeat find_inversion;
@@ -98,7 +98,7 @@ Section LeadersHaveLeaderLogsStrong.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       type st' = type st /\ currentTerm st' = currentTerm st /\ log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -107,7 +107,7 @@ Section LeadersHaveLeaderLogsStrong.
     forall h st client id c,
       leaderLogs (update_elections_data_client_request h st client id c) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request in *.
     intros. repeat break_match; repeat find_inversion; auto.
   Qed.
@@ -116,7 +116,7 @@ Section LeadersHaveLeaderLogsStrong.
     forall h st,
       leaderLogs (update_elections_data_timeout h st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros.
     repeat break_match; simpl in *; auto.
@@ -126,7 +126,7 @@ Section LeadersHaveLeaderLogsStrong.
     forall h st t h' pli plt es ci,
       leaderLogs (update_elections_data_appendEntries h st t h' pli plt es ci) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_appendEntries.
     repeat break_match; subst; simpl in *; auto.
@@ -136,7 +136,7 @@ Section LeadersHaveLeaderLogsStrong.
     forall h h' t lli llt st,
       leaderLogs (update_elections_data_requestVote h h' t h' lli llt st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; auto.
@@ -144,7 +144,7 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_appendEntries :
     refined_raft_net_invariant_append_entries leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_copy_apply_lem_hyp handleAppendEntries_type.
     rewrite update_elections_data_appendEntries_leaderLogs.
@@ -154,7 +154,7 @@ Section LeadersHaveLeaderLogsStrong.
   
   Lemma leaders_have_leaderLogs_strong_appendEntriesReply :
     refined_raft_net_invariant_append_entries_reply leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleAppendEntriesReply_type. intuition; try congruence.
     repeat find_rewrite. eauto.
@@ -163,7 +163,7 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_requestVote :
     refined_raft_net_invariant_request_vote leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleRequestVote_type. intuition; try congruence.
     rewrite update_elections_data_requestVote_leaderLogs.
@@ -173,7 +173,7 @@ Section LeadersHaveLeaderLogsStrong.
   
   Lemma leaders_have_leaderLogs_strong_requestVoteReply :
     refined_raft_net_invariant_request_vote_reply leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     unfold update_elections_data_requestVoteReply.
     break_match; unfold raft_data in *;
@@ -188,7 +188,7 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_clientRequest :
     refined_raft_net_invariant_client_request leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_copy_apply_lem_hyp handleClientRequest_type.
     intuition; try congruence;
@@ -210,7 +210,7 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_timeout :
     refined_raft_net_invariant_timeout leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp handleTimeout_type. intuition; try congruence.
     rewrite update_elections_data_timeout_leaderLogs.
@@ -220,7 +220,7 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_doGenericServer :
     refined_raft_net_invariant_do_generic_server leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp doGenericServer_type. intuition; try congruence.
     match goal with
@@ -232,7 +232,7 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_doLeader :
     refined_raft_net_invariant_do_leader leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start.
     find_apply_lem_hyp doLeader_type. intuition; try congruence.
     match goal with
@@ -244,21 +244,21 @@ Section LeadersHaveLeaderLogsStrong.
 
   Lemma leaders_have_leaderLogs_strong_init :
     refined_raft_net_invariant_init leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     red. unfold leaders_have_leaderLogs_strong, step_async_init.
     intros. simpl in *. congruence.
   Qed.
 
   Lemma leaders_have_leaderLogs_strong_state_same_packets_subset :
     refined_raft_net_invariant_state_same_packet_subset leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     red. unfold leaders_have_leaderLogs_strong. intros.
     repeat find_reverse_higher_order_rewrite. eauto.
   Qed.
 
   Lemma leaders_have_leaderLogs_strong_reboot :
     refined_raft_net_invariant_reboot leaders_have_leaderLogs_strong.
-  Proof.
+  Proof using. 
     start. congruence.
   Qed.
   

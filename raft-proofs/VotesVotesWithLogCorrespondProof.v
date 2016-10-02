@@ -21,7 +21,7 @@ Section VotesVotesWithLogCorrespond.
        votes gd = (t, n) :: votes (fst (nwState net h)) /\
        votesWithLog gd = (t, n, l) :: votesWithLog (fst (nwState net h))) ->
       votes_votesWithLog_correspond {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     red. unfold votes_votesWithLog_correspond. split; intros; break_and.
     - unfold votes_votesWithLog in *; intros.
       repeat find_higher_order_rewrite; update_destruct; rewrite_update; [|eauto].
@@ -53,7 +53,7 @@ Section VotesVotesWithLogCorrespond.
     forall net,
       refined_raft_intermediate_reachable net ->
       votes_votesWithLog_correspond net.
-  Proof.
+  Proof using rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - unfold_all. simpl. split; contradiction.

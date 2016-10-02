@@ -66,7 +66,7 @@ Section LeaderCompleteness.
         In (t', log) l ->
         t' > t ->
         In e log.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition; subst;
     repeat break_match; subst; simpl in *; intuition eauto;
     congruence.
@@ -78,7 +78,7 @@ Section LeaderCompleteness.
       forall h,
         In h nodes ->
         contradicting_leader_logs_on_leader (leaderLogs (fst (nwState net h))) t e = [].
-  Proof.
+  Proof using. 
     intros.
     induction nodes; simpl in *; intuition; subst;
     find_apply_lem_hyp app_eq_nil; intuition;
@@ -92,7 +92,7 @@ Section LeaderCompleteness.
         In (t', log) (leaderLogs (fst (nwState net h))) ->
         t' > t ->
         In e log.
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp argmin_None.
     eapply contradicting_leader_logs_on_leader_empty; eauto.
@@ -104,7 +104,7 @@ Section LeaderCompleteness.
     forall l t e t' l',
       In (t', l') (contradicting_leader_logs_on_leader l t e) ->
       In (t', l') l /\ t < t' /\ ~ In e l'.
-  Proof.
+  Proof using. 
     intros; induction l; simpl in *; intuition;
     repeat break_match; subst; simpl in *; intuition;
     find_inversion; intuition.
@@ -114,7 +114,7 @@ Section LeaderCompleteness.
     forall net nodes t e t' h l,
       In (t', h, l) (contradicting_leader_logs net nodes t e) ->
       In (t', l) (contradicting_leader_logs_on_leader (leaderLogs (fst (nwState net h))) t e).
-  Proof.
+  Proof using. 
     induction nodes; intros; simpl in *; intuition.
     do_in_app. intuition.
     do_in_map. find_inversion. rewrite <- surjective_pairing. auto.
@@ -124,7 +124,7 @@ Section LeaderCompleteness.
     forall ll t e t' l,
       In (t', l) (contradicting_leader_logs_on_leader ll t e) ->
       In (t', l) ll.
-  Proof.
+  Proof using. 
     induction ll; intros; simpl in *; intuition.
     repeat break_match; simpl in *; intuition eauto.
   Qed.
@@ -133,7 +133,7 @@ Section LeaderCompleteness.
     forall t' l ll t e,
       In (t', l) (contradicting_leader_logs_on_leader ll t e) ->
       In e l -> False.
-  Proof.
+  Proof using. 
     induction ll; intros; simpl in *; intuition.
     repeat break_match; simpl in *; intuition eauto.
     find_inversion. auto.
@@ -143,7 +143,7 @@ Section LeaderCompleteness.
     forall t' l ll t e,
       In (t', l) (contradicting_leader_logs_on_leader ll t e) ->
       t < t'.
-  Proof.
+  Proof using. 
     induction ll; intros; simpl in *; intuition.
     repeat break_match; simpl in *; intuition; repeat find_inversion; eauto.
   Qed.
@@ -154,7 +154,7 @@ Section LeaderCompleteness.
       t < t' ->
       ~ In e l ->
       In (t', l) (contradicting_leader_logs_on_leader ll t e).
-  Proof.
+  Proof using. 
     induction ll; intros; simpl in *; intuition;
     repeat break_match; repeat find_inversion; simpl in *; intuition.
   Qed.
@@ -164,7 +164,7 @@ Section LeaderCompleteness.
       In h nodes ->
       In (t', l) (contradicting_leader_logs_on_leader (leaderLogs (fst (nwState net h))) t e) ->
       In (t', h, l) (contradicting_leader_logs net nodes t e).
-  Proof.
+  Proof using. 
     induction nodes; intros; simpl in *; intuition.
     apply in_or_app.
     subst. left. apply in_map_iff. eexists. intuition eauto. simpl. auto.
@@ -182,7 +182,7 @@ Section LeaderCompleteness.
           (t'' <= t \/
            t'' >= t' \/
            In e l'))).
-  Proof.
+  Proof using. 
     unfold minimal_contradicting_leader_log.
     intros.
     find_apply_lem_hyp argmin_elim. intuition.
@@ -203,14 +203,14 @@ Section LeaderCompleteness.
   Lemma maxTerm_zero_or_entry :
     forall l,
       maxTerm l = 0 \/ exists e, In e l /\ eTerm e = maxTerm l.
-  Proof.
+  Proof using. 
     destruct l; simpl; eauto.
   Qed.
 
   Lemma maxIndex_zero_or_entry :
     forall l,
       maxIndex l = 0 \/ exists e, In e l /\ eIndex e = maxIndex l.
-  Proof.
+  Proof using. 
     destruct l; simpl; eauto.
   Qed.
 
@@ -218,7 +218,7 @@ Section LeaderCompleteness.
     forall net,
       refined_raft_intermediate_reachable net ->
       leader_completeness_directly_committed net.
-  Proof.
+  Proof using taifoi vwlsi aevwli llvwli eewci llpi lltsi pwti. 
     unfold leader_completeness_directly_committed in *.
     intros.
     unfold directly_committed in *.
@@ -346,7 +346,7 @@ Section LeaderCompleteness.
     forall net,
       refined_raft_intermediate_reachable net ->
       leader_completeness_committed net.
-  Proof.
+  Proof using lllmi taifoi vwlsi aevwli llvwli eewci llpi lltsi pwti. 
     unfold leader_completeness_committed, committed.
     intros.
     break_exists. break_and.
@@ -369,7 +369,7 @@ Section LeaderCompleteness.
     forall net,
       refined_raft_intermediate_reachable net ->
       leader_completeness net.
-  Proof.
+  Proof using lllmi taifoi vwlsi aevwli llvwli eewci llpi lltsi pwti. 
     unfold leader_completeness.
     intuition.
     - auto using leader_completeness_directly_committed_invariant.

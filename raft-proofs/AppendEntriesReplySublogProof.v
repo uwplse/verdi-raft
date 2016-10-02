@@ -31,7 +31,7 @@ Section AppendEntriesReplySublog.
     forall net,
       raft_intermediate_reachable net ->
       lowered_appendEntries_leader net.
-  Proof.
+  Proof using aeli rri. 
     intros.
     apply (lower_prop lowered_appendEntries_leader); auto.
     intros.
@@ -53,7 +53,7 @@ Section AppendEntriesReplySublog.
     forall net,
       raft_intermediate_reachable net ->
       append_entries_reply_sublog net.
-  Proof.
+  Proof using aeli rri aerrci. 
     unfold append_entries_reply_sublog. intros.
     find_apply_lem_hyp append_entries_request_reply_correspondence_invariant.
     eapply_prop_hyp append_entries_request_reply_correspondence AppendEntriesReply; eauto.

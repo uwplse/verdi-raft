@@ -23,7 +23,7 @@ Section TraceUtil.
 
   Definition key_in_output_list_dec (client id : nat) (os : list raft_output) :
     {key_in_output_list client id os} + {~ key_in_output_list client id os}.
-  Proof.
+  Proof using. 
     unfold key_in_output_list.
     destruct (find (is_client_response_with_key client id) os) eqn:?.
     - find_apply_lem_hyp find_some. break_and.
@@ -43,7 +43,7 @@ Section TraceUtil.
   Definition key_in_output_trace_dec (client id : nat) :
     forall tr : list (name * (raft_input + list raft_output)),
       {key_in_output_trace client id tr} + {~ key_in_output_trace client id tr}.
-  Proof.
+  Proof using. 
     unfold key_in_output_trace.
     intros.
     destruct (find (fun p => match snd p with
@@ -83,7 +83,7 @@ Section TraceUtil.
 
   Definition in_output_list_dec (client id : nat) (o : output) (os : list raft_output) :
     {in_output_list client id o os} + {~ in_output_list client id o os}.
-  Proof.
+  Proof using raft_params. 
     unfold in_output_list.
     destruct (find (is_client_response client id o) os) eqn:?.
     - find_apply_lem_hyp find_some. break_and.

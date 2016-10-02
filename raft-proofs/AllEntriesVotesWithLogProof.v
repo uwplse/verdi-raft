@@ -29,7 +29,7 @@ Section AllEntriesVotesWithLog.
     forall h st t h' pli plt es ci t' e,
       In (t', e) (allEntries (update_elections_data_appendEntries h st t h' pli plt es ci)) ->
       In (t', e) (allEntries (fst st)) \/ currentTerm (snd st) <= t'.
-  Proof.
+  Proof using. 
     intros. unfold update_elections_data_appendEntries in *.
     repeat break_match; auto. simpl in *.
     do_in_app. intuition. do_in_map. find_inversion.
@@ -40,7 +40,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_append_entries :
     refined_raft_net_invariant_append_entries allEntries_votesWithLog.
-  Proof.
+  Proof using vwltsi. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *.
@@ -60,7 +60,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *;
@@ -80,7 +80,7 @@ Section AllEntriesVotesWithLog.
     forall net,
       refined_raft_intermediate_reachable net ->
       currentTerm_votedFor_votesWithLog net.
-  Proof.
+  Proof using vci vvwlci. 
     unfold currentTerm_votedFor_votesWithLog. intros.
     eapply votes_votesWithLog_correspond_invariant; eauto.
     break_and.
@@ -93,7 +93,7 @@ Section AllEntriesVotesWithLog.
       votedFor st' <> votedFor st ->
       currentTerm st < currentTerm st' \/
       leaderId st = None.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; simpl in *; auto);
     do_bool; auto; congruence.
@@ -103,7 +103,7 @@ Section AllEntriesVotesWithLog.
     forall h st t src lli llt st' m,
       handleRequestVote h st t src lli llt = (st', m) ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; do_bool; auto.
@@ -119,7 +119,7 @@ Section AllEntriesVotesWithLog.
        l' = log st' /\
        (leaderId (snd (nwState net h)) = None \/
         currentTerm (snd (nwState net h)) < currentTerm st')).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat tuple_inversion; intuition;
@@ -135,7 +135,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_request_vote :
     refined_raft_net_invariant_request_vote allEntries_votesWithLog.
-  Proof.
+  Proof using aeli. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *.
@@ -171,7 +171,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *.
@@ -193,7 +193,7 @@ Section AllEntriesVotesWithLog.
       In (t, e) (allEntries (update_elections_data_client_request h st client id c)) ->
       In (t, e) (allEntries (fst st)) \/
       t = currentTerm (snd st).
-  Proof.
+  Proof using. 
     intros.
     intros.
     unfold update_elections_data_client_request in *.
@@ -206,7 +206,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_client_request :
     refined_raft_net_invariant_client_request allEntries_votesWithLog.
-  Proof.
+  Proof using vwltsi. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *.
@@ -234,7 +234,7 @@ Section AllEntriesVotesWithLog.
       In (t', h', l') (votesWithLog (update_elections_data_timeout h (nwState net h))) ->
       In (t', h', l') (votesWithLog (fst (nwState net h))) \/
       (t' = currentTerm st' /\ l' = log st' /\ currentTerm (snd (nwState net h)) < currentTerm st').
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros. repeat break_match; simpl in *; intuition; repeat tuple_inversion; intuition.
     - unfold handleTimeout, tryToBecomeLeader in *.
@@ -245,7 +245,7 @@ Section AllEntriesVotesWithLog.
   
   Lemma allEntries_votesWithLog_timeout :
     refined_raft_net_invariant_timeout allEntries_votesWithLog.
-  Proof.
+  Proof using aeli. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *.
@@ -271,7 +271,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_do_leader :
     refined_raft_net_invariant_do_leader allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -288,7 +288,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_do_generic_server :
     refined_raft_net_invariant_do_generic_server allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -305,13 +305,13 @@ Section AllEntriesVotesWithLog.
   
   Lemma allEntries_votesWithLog_init :
     refined_raft_net_invariant_init allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog. intros. simpl in *. intuition.
   Qed.
 
   Lemma allEntries_votesWithLog_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog in *. intros.
     repeat find_reverse_higher_order_rewrite.
     copy_eapply_prop_hyp votesWithLog votesWithLog; eauto. intuition. right.
@@ -320,7 +320,7 @@ Section AllEntriesVotesWithLog.
 
   Lemma allEntries_votesWithLog_reboot :
     refined_raft_net_invariant_reboot allEntries_votesWithLog.
-  Proof.
+  Proof using. 
     red. unfold allEntries_votesWithLog in *. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -340,7 +340,7 @@ Section AllEntriesVotesWithLog.
     forall net,
       refined_raft_intermediate_reachable net ->
       allEntries_votesWithLog net.
-  Proof.
+  Proof using vwltsi aeli rri. 
     intros.
     eapply refined_raft_net_invariant; eauto.
     - exact allEntries_votesWithLog_init.

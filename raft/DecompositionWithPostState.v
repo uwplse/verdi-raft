@@ -120,7 +120,7 @@ Section DecompositionWithPostState.
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
                              In p' (send_packets (pDst p) l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleMessage in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -143,7 +143,7 @@ Section DecompositionWithPostState.
       (forall p', In p' ps' -> In p' (nwPackets net) \/
                          In p' (send_packets h l)) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleInput in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -178,7 +178,7 @@ Section DecompositionWithPostState.
       raft_net_invariant_reboot' P ->
       raft_intermediate_reachable net ->
       P net.
-  Proof.
+  Proof using. 
     intros.
     induction H10.
     - intuition.

@@ -40,7 +40,7 @@ Section NoAppendEntriesToLeader.
     forall net,
       refined_raft_intermediate_reachable net ->
       no_append_entries_to_self (deghost net).
-  Proof.
+  Proof using naetsi rri. 
     intros.
     eapply lift_prop; eauto using no_append_entries_to_self_invariant.
   Qed.
@@ -49,7 +49,7 @@ Section NoAppendEntriesToLeader.
     forall (net : network (params := raft_refined_multi_params)) p,
       In p (nwPackets net) ->
       In (deghost_packet p) (nwPackets (deghost net)).
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl. intuition.
     apply in_map_iff.
@@ -60,7 +60,7 @@ Section NoAppendEntriesToLeader.
     forall net,
       refined_raft_intermediate_reachable net ->
       no_append_entries_to_self' net.
-  Proof.
+  Proof using naetsi rri. 
     unfold no_append_entries_to_self'. intros.
     find_apply_lem_hyp ghost_packet.
     find_eapply_lem_hyp lift_no_append_entries_to_self; auto.
@@ -71,7 +71,7 @@ Section NoAppendEntriesToLeader.
     forall net,
       refined_raft_intermediate_reachable net ->
       no_append_entries_to_leader' net.
-  Proof.
+  Proof using lhlli aercfli ollpti naetsi rri. 
     unfold no_append_entries_to_leader'. intros. subst.
     find_copy_eapply_lem_hyp no_append_entries_to_self'_invariant; eauto.
     find_false.
@@ -87,7 +87,7 @@ Section NoAppendEntriesToLeader.
       In p (nwPackets (deghost net)) ->
       exists (q : packet (params := raft_refined_multi_params (raft_params := raft_params))),
         In q (nwPackets net) /\ p = deghost_packet q.
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl.
     intros.
@@ -112,4 +112,3 @@ Section NoAppendEntriesToLeader.
   end. eauto.
   Qed.
 End NoAppendEntriesToLeader.
-

@@ -35,7 +35,7 @@ Section OutputGreatestId.
       ~ key_in_output_trace client id tr ->
       key_in_output_trace client id (tr ++ o) ->
       key_in_output_trace client id o.
-  Proof.
+  Proof using. 
     intros. unfold key_in_output_trace in *.
     break_exists_exists.
     intuition. do_in_app; intuition.
@@ -46,7 +46,7 @@ Section OutputGreatestId.
     forall client id l l',
       key_in_output_list client id (l ++ l') ->
       key_in_output_list client id l \/ key_in_output_list client id l'.
-  Proof.
+  Proof using. 
     intros.
     unfold key_in_output_list in *.
     break_exists; do_in_app; intuition eauto.
@@ -55,7 +55,7 @@ Section OutputGreatestId.
   Lemma key_in_output_list_empty :
     forall client id,
       ~ key_in_output_list client id [].
-  Proof.
+  Proof using. 
     intuition.
     unfold key_in_output_list in *.
     break_exists; intuition.
@@ -65,7 +65,7 @@ Section OutputGreatestId.
     forall st h out st' m client id,
       doLeader st h = (out, st', m) ->
       ~ key_in_output_list client id out.
-  Proof.
+  Proof using. 
     intros. unfold doLeader, advanceCommitIndex in *.
     repeat break_match; find_inversion; intuition;
     find_apply_lem_hyp key_in_output_list_empty; auto.
@@ -75,7 +75,7 @@ Section OutputGreatestId.
     forall st h i out st' m client id,
       handleInput h i st = (out, st', m) ->
       ~ key_in_output_list client id out.
-  Proof.
+  Proof using. 
     intros. unfold handleInput, handleTimeout, handleClientRequest, tryToBecomeLeader in *.
     repeat break_match; find_inversion; intuition eauto using key_in_output_list_empty;
     unfold key_in_output_list in *; break_exists; simpl in *; intuition; congruence.
@@ -84,7 +84,7 @@ Section OutputGreatestId.
   Lemma has_key_own_key :
     forall e,
       has_key (eClient e) (eId e) e = true.
-  Proof.
+  Proof using. 
     intros. unfold has_key. break_match; subst; simpl in *.
     repeat (do_bool; intuition).
   Qed.
@@ -93,7 +93,7 @@ Section OutputGreatestId.
     forall client id e,
       has_key client id e = true ->
       eClient e = client /\ eId e = id.
-  Proof.
+  Proof using. 
     intros. unfold has_key in *. break_match.
     simpl in *. subst.
     repeat (do_bool; intuition).
@@ -106,7 +106,7 @@ Section OutputGreatestId.
       applyEntries h st l = (os, st') ->
       In (ClientResponse client id o) os ->
       getLastId st client <> Some (id', o').
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - find_inversion. simpl in *. intuition.
     - unfold cacheApplyEntry, applyEntry in *.
@@ -148,7 +148,7 @@ Section OutputGreatestId.
       applyEntries h st l = (os, st') ->
       In (ClientResponse client id o) os ->
       before_func (has_key client id) (has_key client id') l.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     - find_inversion. simpl in *. intuition.
     - repeat break_match.
@@ -189,7 +189,7 @@ Section OutputGreatestId.
       before_func f g l ->
       (forall x, In x l' -> g x = false) ->
       before_func f g (l' ++ l).
-  Proof.
+  Proof using. 
     induction l'; intros; simpl in *; intuition.
   Qed.
 
@@ -198,7 +198,7 @@ Section OutputGreatestId.
     forall net,
       raft_intermediate_reachable net ->
       (forall h, contiguous_range_exact_lo (log (nwState net h)) 0).
-  Proof.
+  Proof using lmi. 
     intros. find_apply_lem_hyp log_matching_invariant.
     unfold log_matching, log_matching_hosts in *.
     intuition.
@@ -211,7 +211,7 @@ Section OutputGreatestId.
       Prefix l l' ->
       before_func f g l ->
       before_func f g l'.
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp Prefix_exists_rest.
     break_exists; subst.
@@ -225,7 +225,7 @@ Section OutputGreatestId.
       key_in_output_list client id os ->
       id < id' ->
       before_func (has_key client id) (has_key client id') (applied_entries (update name_eq_dec (nwState net) h st')).
-  Proof.
+  Proof using lacimi smci si lmi. 
     intros.
     find_copy_apply_lem_hyp logs_sorted_invariant.
     pose proof entries_contiguous.
@@ -319,7 +319,7 @@ Section OutputGreatestId.
       key_in_output_trace client id o ->
       id < id' ->
       before_func (has_key client id) (has_key client id') (applied_entries (nwState net')).
-  Proof.
+  Proof using lacimi smci si lmi. 
     intros.
     invcs H0; simpl in *;
     try match goal with
@@ -413,7 +413,7 @@ Section OutputGreatestId.
       step_failure_star step_failure_init (failed, net) tr ->
       key_in_output_trace client id tr ->
       before_func (has_key client id) (has_key client id') (applied_entries (nwState net)).
-  Proof.
+  Proof using id_lt_id' lacimi smci aemi si lmi. 
     intros. pose proof (trace_relations_work (failed, net) tr).
     concludes. intuition.
   Qed.

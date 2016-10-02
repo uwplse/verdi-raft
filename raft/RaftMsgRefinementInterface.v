@@ -11,7 +11,7 @@ Section RaftMsgRefinementInterface.
   Definition ghost_log : Type := list entry.
 
   Lemma ghost_log_eq_dec : forall x y : ghost_log, {x = y} + {x <> y}.
-  Proof.
+  Proof using. 
     decide equality.
     apply entry_eq_dec.
   Qed.
@@ -320,7 +320,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_client_request net ->
       msg_refined_raft_net_invariant_client_request' net.
-  Proof.
+  Proof using. 
     unfold msg_refined_raft_net_invariant_client_request, msg_refined_raft_net_invariant_client_request'.
     intuition eauto.
   Qed.
@@ -329,7 +329,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_timeout net ->
       msg_refined_raft_net_invariant_timeout' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_timeout, msg_refined_raft_net_invariant_timeout'.
       intuition eauto.
   Qed.
@@ -338,7 +338,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_append_entries net ->
       msg_refined_raft_net_invariant_append_entries' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_append_entries, msg_refined_raft_net_invariant_append_entries'.
       intuition eauto.
   Qed.
@@ -347,7 +347,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_append_entries_reply net ->
       msg_refined_raft_net_invariant_append_entries_reply' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_append_entries_reply, msg_refined_raft_net_invariant_append_entries_reply'.
       intuition eauto.
   Qed.
@@ -356,7 +356,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_request_vote net ->
       msg_refined_raft_net_invariant_request_vote' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_request_vote, msg_refined_raft_net_invariant_request_vote'.
       intuition eauto.
   Qed.
@@ -365,7 +365,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_request_vote_reply net ->
       msg_refined_raft_net_invariant_request_vote_reply' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_request_vote_reply, msg_refined_raft_net_invariant_request_vote_reply'.
       intuition eauto.
   Qed.
@@ -374,7 +374,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_do_leader net ->
       msg_refined_raft_net_invariant_do_leader' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_do_leader, msg_refined_raft_net_invariant_do_leader'.
       intuition eauto.
   Qed.
@@ -383,7 +383,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_do_generic_server net ->
       msg_refined_raft_net_invariant_do_generic_server' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_do_generic_server, msg_refined_raft_net_invariant_do_generic_server'.
       intuition eauto.
   Qed.
@@ -392,7 +392,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_reboot net ->
       msg_refined_raft_net_invariant_reboot' net.
-    Proof.
+    Proof using. 
       unfold msg_refined_raft_net_invariant_reboot, msg_refined_raft_net_invariant_reboot'.
       intuition eauto.
   Qed.
@@ -401,7 +401,7 @@ Section RaftMsgRefinementInterface.
     forall net,
       msg_refined_raft_net_invariant_state_same_packet_subset net ->
       msg_refined_raft_net_invariant_state_same_packet_subset' net.
-  Proof.
+  Proof using. 
     unfold msg_refined_raft_net_invariant_state_same_packet_subset, msg_refined_raft_net_invariant_state_same_packet_subset'.
     intuition eauto.
   Qed.

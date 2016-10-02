@@ -60,7 +60,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_init :
     refined_raft_net_invariant_init leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, leaderLogs_entries_match,
            leaderLogs_entries_match_host, leaderLogs_entries_match_nw.
     simpl.
@@ -75,7 +75,7 @@ Section LeaderLogsLogMatching.
       eTerm x > maxTerm ys ->
       entries_match xs ys ->
       entries_match (x :: xs) ys.
-  Proof.
+  Proof using. 
     unfold entries_match.
     intuition; simpl in *; intuition; subst; subst;
     try match goal with
@@ -98,7 +98,7 @@ Section LeaderLogsLogMatching.
       entries_match xs ys ->
       (forall y, In y ys -> eTerm x = eTerm y -> In y xs) ->
       entries_match (x :: xs) ys.
-  Proof.
+  Proof using. 
     unfold entries_match.
     intuition; simpl in *; intuition; subst; subst;
     try solve [
@@ -117,7 +117,7 @@ Section LeaderLogsLogMatching.
   Lemma entries_match_nil :
     forall l,
       entries_match l [].
-  Proof.
+  Proof using. 
     red.
     simpl.
     intuition.
@@ -129,7 +129,7 @@ Section LeaderLogsLogMatching.
       In p (nwPackets net) ->
       pBody p = AppendEntries t n plt plti es ci ->
       sorted es.
-  Proof.
+  Proof using si rri. 
     intros.
     pose proof (lift_prop _ logs_sorted_invariant).
     find_insterU. conclude_using eauto.
@@ -145,7 +145,7 @@ Section LeaderLogsLogMatching.
     forall net h ,
       refined_raft_intermediate_reachable net ->
       sorted (log (snd (nwState net h))).
-  Proof.
+  Proof using si rri. 
     intros.
     pose proof (lift_prop _ logs_sorted_invariant).
     find_insterU. conclude_using eauto.
@@ -164,7 +164,7 @@ Section LeaderLogsLogMatching.
                  In p (nwPackets net)) ->
       (forall h, leaderLogs (fst (nwState net' h)) = leaderLogs (fst (nwState net h))) ->
       leaderLogs_entries_match_nw net'.
-  Proof.
+  Proof using. 
     unfold leaderLogs_entries_match_nw.
     intros.
     eapply_prop_hyp In nwPackets; [|eauto 10].
@@ -182,7 +182,7 @@ Section LeaderLogsLogMatching.
       (forall h, leaderLogs (fst (nwState net' h)) = leaderLogs (fst (nwState net h))) ->
       (forall h, log (snd (nwState net' h)) = log (snd (nwState net h))) ->
       leaderLogs_entries_match_host net'.
-  Proof.
+  Proof using. 
     unfold leaderLogs_entries_match_host.
     intuition.
     repeat find_higher_order_rewrite. eauto.
@@ -192,7 +192,7 @@ Section LeaderLogsLogMatching.
     forall h st client id c out st' ms,
       handleClientRequest h st client id c = (out, st', ms) ->
       ms = [].
-  Proof.
+  Proof using. 
     unfold handleClientRequest.
     intros.
     repeat break_match; repeat find_inversion; auto.
@@ -200,7 +200,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_client_request :
     refined_raft_net_invariant_client_request leaderLogs_entries_match.
-  Proof.
+  Proof using llsli si llsi lltsi rri. 
     unfold refined_raft_net_invariant_client_request, leaderLogs_entries_match.
     intros.
     split.
@@ -248,7 +248,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_timeout :
     refined_raft_net_invariant_timeout leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout, leaderLogs_entries_match.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto;
@@ -271,7 +271,7 @@ Section LeaderLogsLogMatching.
     forall net,
       refined_raft_intermediate_reachable net ->
       log_matching (deghost net).
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     find_insterU. conclude_using eauto.
@@ -288,7 +288,7 @@ Section LeaderLogsLogMatching.
          exists e, eIndex e = i /\ In e (log (snd (nwState net h)))) /\
       (forall h e,
          In e (log (snd (nwState net h))) -> eIndex e > 0).
-  Proof.
+  Proof using lmi rri. 
     intros.
     find_apply_lem_hyp lifted_log_matching.
     unfold log_matching, log_matching_hosts in *.
@@ -330,7 +330,7 @@ Section LeaderLogsLogMatching.
         (forall e,
            In e entries ->
            prevLogIndex < eIndex e).
-  Proof.
+  Proof using lmi rri. 
     intros.
     find_apply_lem_hyp lifted_log_matching.
     unfold log_matching, log_matching_nw in *.
@@ -362,7 +362,7 @@ Section LeaderLogsLogMatching.
     forall n st t i l t' l' l'' st' m,
       handleAppendEntries n st t i l t' l' l'' = (st', m) ->
       ~ is_append_entries m.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries.
     intros.
     repeat break_match; find_inversion; intro; break_exists; discriminate.
@@ -370,7 +370,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_append_entries :
     refined_raft_net_invariant_append_entries leaderLogs_entries_match.
-  Proof.
+  Proof using taifoi si llsi lmi rri. 
     unfold refined_raft_net_invariant_append_entries, leaderLogs_entries_match.
     intuition.
     - unfold leaderLogs_entries_match_host in *. intros.
@@ -422,7 +422,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, leaderLogs_entries_match.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto; simpl; intros;
@@ -438,7 +438,7 @@ Section LeaderLogsLogMatching.
     forall h st t candidate lli llt st' m,
       handleRequestVote h st t candidate lli llt = (st', m) ->
       ~ is_append_entries m.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion;
     subst; intuition; break_exists; congruence.
@@ -446,7 +446,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_request_vote :
     refined_raft_net_invariant_request_vote leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote, leaderLogs_entries_match.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto; simpl; intros;
@@ -462,7 +462,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_entries_match.
-  Proof.
+  Proof using lmi rri. 
     unfold refined_raft_net_invariant_request_vote_reply, leaderLogs_entries_match.
     intuition.
     - unfold leaderLogs_entries_match_host in *.
@@ -506,7 +506,7 @@ Section LeaderLogsLogMatching.
       ms = map (replicaMessage st' h)
                (filter (fun h' : name => if name_eq_dec h h' then false else true)
                        nodes).
-  Proof.
+  Proof using. 
     unfold doLeader.
     intros.
     repeat break_match; repeat find_inversion; auto.
@@ -514,7 +514,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_do_leader :
     refined_raft_net_invariant_do_leader leaderLogs_entries_match.
-  Proof.
+  Proof using llci si llsi rri. 
     unfold refined_raft_net_invariant_do_leader, leaderLogs_entries_match.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto; simpl; intros;
@@ -583,14 +583,14 @@ Section LeaderLogsLogMatching.
     forall h st os st' ps,
       doGenericServer h st = (os, st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
 
   Lemma leaderLogs_entries_match_do_generic_server :
     refined_raft_net_invariant_do_generic_server leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, leaderLogs_entries_match.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto; simpl; intros;
@@ -605,7 +605,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, leaderLogs_entries_match.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto; intros; find_higher_order_rewrite; auto.
@@ -614,7 +614,7 @@ Section LeaderLogsLogMatching.
 
   Lemma leaderLogs_entries_match_reboot :
     refined_raft_net_invariant_reboot leaderLogs_entries_match.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, leaderLogs_entries_match, reboot.
     intuition.
     - eapply leaderLogs_entries_match_host_state_same; eauto; intros; find_higher_order_rewrite;
@@ -627,7 +627,7 @@ Section LeaderLogsLogMatching.
     forall net,
       refined_raft_intermediate_reachable net ->
       leaderLogs_entries_match net.
-  Proof.
+  Proof using taifoi llci llsli si llsi lltsi lmi rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply leaderLogs_entries_match_init.

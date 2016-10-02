@@ -17,7 +17,7 @@ Section UniqueIndices.
     forall net,
       raft_intermediate_reachable net ->
       UniqueIndices net.
-  Proof.
+  Proof using si. 
     intros.
     find_apply_lem_hyp logs_sorted_invariant.
     unfold logs_sorted, UniqueIndices in *. intuition.

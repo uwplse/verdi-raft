@@ -14,7 +14,7 @@ Section TermSanityProof.
       no_entries_past_current_term_nw net ->
       (forall p, In p ps' -> In p (nwPackets net) \/ False) ->
       no_entries_past_current_term_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold no_entries_past_current_term_nw in *. intros.
     simpl in *. find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -25,7 +25,7 @@ Section TermSanityProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p l) ->
       no_entries_past_current_term_nw (mkNetwork l st') ->
       no_entries_past_current_term_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     unfold no_entries_past_current_term_nw. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
   Qed.
@@ -36,7 +36,7 @@ Section TermSanityProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ In p (send_packets h l)) ->
       (forall m, In m l -> ~ is_append_entries (snd m)) ->
       no_entries_past_current_term_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros. eapply no_entries_past_current_term_nw_only_new_packets_matter; eauto.
     unfold no_entries_past_current_term_nw. intros. simpl in *.
     do_in_map. subst. simpl in *.
@@ -51,7 +51,7 @@ Section TermSanityProof.
       (forall p, In p ps' -> In p (nwPackets net) \/ p = p') ->
       ~ is_append_entries (pBody p') ->
       no_entries_past_current_term_nw (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold no_entries_past_current_term_nw. intros. simpl in *. find_apply_hyp_hyp.
     intuition.
@@ -62,7 +62,7 @@ Section TermSanityProof.
 
   Theorem no_entries_past_current_term_init :
     raft_net_invariant_init (no_entries_past_current_term).
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, no_entries_past_current_term.
     intuition.
     - unfold no_entries_past_current_term_host.
@@ -75,14 +75,14 @@ Section TermSanityProof.
     forall h st os st' ps,
       doLeader st h = (os, st', ps) ->
       log st' = log st /\ currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
 
   Theorem no_entries_past_current_term_do_leader :
     raft_net_invariant_do_leader (no_entries_past_current_term).
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader, no_entries_past_current_term.
     intuition.
     - unfold no_entries_past_current_term_host in *.
@@ -106,7 +106,7 @@ Section TermSanityProof.
       doGenericServer h d = (os, d', ms) ->
       (log d' = log d /\ currentTerm d' = currentTerm d /\
        (forall m, In m ms -> ~ is_append_entries (snd m))).
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion; subst; intuition;
     use_applyEntries_spec; subst; simpl in *; auto.
@@ -114,7 +114,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_do_generic_server :
     raft_net_invariant_do_generic_server no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server, no_entries_past_current_term. intros.
     find_apply_lem_hyp doGenericServer_spec. intuition.
     - unfold no_entries_past_current_term_host in *.
@@ -129,14 +129,14 @@ Section TermSanityProof.
     forall h d client id c os d' ms,
       handleClientRequest h d client id c = (os, d', ms) ->
       (forall m, In m ms -> ~ is_append_entries (snd m)).
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     break_match; find_inversion; subst; intuition.
   Qed.
 
   Lemma no_entries_past_current_term_client_request :
     raft_net_invariant_client_request (no_entries_past_current_term).
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_client_request, no_entries_past_current_term.
     intuition.
     - unfold no_entries_past_current_term_host in *.
@@ -156,7 +156,7 @@ Section TermSanityProof.
       handleTimeout h d = (os, d', ms) ->
       log d' = log d /\ currentTerm d <= currentTerm d' /\
       ( forall m, In m ms -> ~ is_append_entries (snd m)).
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; subst; intuition;
     do_in_map; subst; simpl in *; congruence.
@@ -164,7 +164,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_timeout :
     raft_net_invariant_timeout no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout, no_entries_past_current_term.
     intros. find_apply_lem_hyp handleTimeout_spec.
     intuition.
@@ -185,7 +185,7 @@ Section TermSanityProof.
           In e (log st) \/
           In e es /\ currentTerm st' = t) /\
        ~ is_append_entries m).
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -195,7 +195,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_append_entries :
     raft_net_invariant_append_entries no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries, no_entries_past_current_term.
     intros. find_apply_lem_hyp handleAppendEntries_spec.
     intuition.
@@ -226,7 +226,7 @@ Section TermSanityProof.
       log d = log (nwState net (pDst p)) ->
       (forall m, In m ms -> ~ is_append_entries (snd m)) ->
       no_entries_past_current_term {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     intros. unfold no_entries_past_current_term in *. intuition.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
@@ -260,7 +260,7 @@ Section TermSanityProof.
       log d = log (nwState net (pDst p)) ->
       ~ is_append_entries (pBody m) ->
       no_entries_past_current_term {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     intros. unfold no_entries_past_current_term in *. intuition.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
@@ -292,7 +292,7 @@ Section TermSanityProof.
       currentTerm (nwState net (pDst p)) <= currentTerm d ->
       log d = log (nwState net (pDst p)) ->
       no_entries_past_current_term {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     intros. unfold no_entries_past_current_term in *. intuition.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
@@ -315,7 +315,7 @@ Section TermSanityProof.
       (currentTerm st <= currentTerm st' /\
        log st' = log st /\
        (forall m, In m ms -> ~ is_append_entries (snd m))).
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -325,7 +325,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_append_entries_reply :
     raft_net_invariant_append_entries_reply no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply.
     intros. find_apply_lem_hyp handleAppendEntriesReply_spec.
     intuition eauto using no_entries_past_current_term_unaffected.
@@ -337,7 +337,7 @@ Section TermSanityProof.
       (currentTerm st <= currentTerm st' /\
        log st' = log st /\
        ~ is_append_entries m).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -347,7 +347,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_request_vote :
     raft_net_invariant_request_vote no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote.
     intros. find_apply_lem_hyp handleRequestVote_spec.
     intuition eauto using no_entries_past_current_term_unaffected_1.
@@ -358,7 +358,7 @@ Section TermSanityProof.
       handleRequestVoteReply h st h' t v = st' ->
       (currentTerm st <= currentTerm st' /\
        log st' = log st).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -367,7 +367,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_request_vote_reply :
     raft_net_invariant_request_vote_reply no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply.
     intros. find_apply_lem_hyp handleRequestVoteReply_spec.
     intuition eauto using no_entries_past_current_term_unaffected_0.
@@ -375,7 +375,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset,
     no_entries_past_current_term, no_entries_past_current_term_host,
     no_entries_past_current_term_nw.
@@ -386,7 +386,7 @@ Section TermSanityProof.
 
   Lemma no_entries_past_current_term_reboot :
     raft_net_invariant_reboot no_entries_past_current_term.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot,
     no_entries_past_current_term, no_entries_past_current_term_host,
     no_entries_past_current_term_nw, reboot.
@@ -400,7 +400,7 @@ Section TermSanityProof.
     forall net,
       raft_intermediate_reachable net ->
       no_entries_past_current_term net.
-  Proof.
+  Proof using. 
     intros.
     eapply raft_net_invariant; eauto.
     - apply no_entries_past_current_term_init.

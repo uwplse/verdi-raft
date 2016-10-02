@@ -22,7 +22,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_init :
     refined_raft_net_invariant_init leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, leaderLogs_sorted.
     intros. subst. simpl in *. intuition.
   Qed.
@@ -31,7 +31,7 @@ Section LeaderLogsSorted.
     forall me st client id c,
       leaderLogs (update_elections_data_client_request me st client id c) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_client_request.
     intros.
     repeat break_match; auto.
@@ -39,7 +39,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_client_request :
     refined_raft_net_invariant_client_request leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *.
@@ -52,7 +52,7 @@ Section LeaderLogsSorted.
     forall net h,
       refined_raft_intermediate_reachable net ->
       sorted (log (snd (nwState net h))).
-  Proof.
+  Proof using si rri. 
     intros.
     pose proof (lift_prop _ logs_sorted_invariant).
     find_insterU. conclude_using eauto.
@@ -64,7 +64,7 @@ Section LeaderLogsSorted.
     forall h st,
       leaderLogs (update_elections_data_timeout h st) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_timeout.
     intros.
     repeat break_match; simpl in *; auto.
@@ -72,7 +72,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_timeout :
     refined_raft_net_invariant_timeout leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *;
@@ -84,7 +84,7 @@ Section LeaderLogsSorted.
     forall me st t li pli plt es lci,
       leaderLogs (update_elections_data_appendEntries me st t li pli plt es lci) =
       leaderLogs (fst st).
-  Proof.
+  Proof using. 
     unfold update_elections_data_appendEntries.
     intros.
     repeat break_match; subst; auto.
@@ -92,7 +92,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_append_entries :
     refined_raft_net_invariant_append_entries leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *.
@@ -103,7 +103,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; simpl in *; eauto.
@@ -111,7 +111,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_request_vote :
     refined_raft_net_invariant_request_vote leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_request_vote, leaderLogs_sorted.
     intros.
     subst. simpl in *. find_higher_order_rewrite.
@@ -129,7 +129,7 @@ Section LeaderLogsSorted.
         (forall t, P ((t, log (snd st)) :: leaderLogs (fst st))) ->
         (P (leaderLogs (fst st))) ->
         (P (leaderLogs (update_elections_data_requestVoteReply h h' t r st))).
-  Proof.
+  Proof using. 
     unfold update_elections_data_requestVoteReply.
     intros.
     repeat break_match; simpl in *; eauto.
@@ -144,7 +144,7 @@ Section LeaderLogsSorted.
   
   Lemma leaderLogs_sorted_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_sorted.
-  Proof.
+  Proof using si rri. 
     unfold refined_raft_net_invariant_request_vote_reply, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify; eauto.
@@ -159,7 +159,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_do_leader :
     refined_raft_net_invariant_do_leader leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify.
@@ -172,7 +172,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_do_generic_server :
     refined_raft_net_invariant_do_generic_server leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server, leaderLogs_sorted.
     intros. subst. simpl in *. find_higher_order_rewrite.
     update_destruct_simplify.
@@ -185,7 +185,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset, leaderLogs_sorted.
     intros. subst. simpl in *. find_reverse_higher_order_rewrite.
     eauto.
@@ -193,7 +193,7 @@ Section LeaderLogsSorted.
 
   Lemma leaderLogs_sorted_reboot :
     refined_raft_net_invariant_reboot leaderLogs_sorted.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, leaderLogs_sorted.
     intros.
     find_higher_order_rewrite.
@@ -209,7 +209,7 @@ Section LeaderLogsSorted.
     forall net,
       refined_raft_intermediate_reachable net ->
       leaderLogs_sorted net.
-  Proof.
+  Proof using si rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply leaderLogs_sorted_init.

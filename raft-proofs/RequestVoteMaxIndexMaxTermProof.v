@@ -18,7 +18,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_append_entries :
     refined_raft_net_invariant_append_entries requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     assert (In p0 (nwPackets net)) by
@@ -36,7 +36,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     assert (In p0 (nwPackets net)) by
         (repeat find_rewrite;
@@ -51,7 +51,7 @@ Section RequestVoteMaxIndexMaxTerm.
   
   Lemma requestVote_maxIndex_maxTerm_request_vote :
     refined_raft_net_invariant_request_vote requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     assert (In p0 (nwPackets net)) by
         (find_apply_hyp_hyp; repeat find_rewrite; intuition; [in_crush|];
@@ -66,7 +66,7 @@ Section RequestVoteMaxIndexMaxTerm.
   
   Lemma requestVote_maxIndex_maxTerm_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -76,7 +76,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_timeout :
     refined_raft_net_invariant_timeout requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using rvrtsi. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
@@ -97,7 +97,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_client_request :
     refined_raft_net_invariant_client_request requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     find_copy_apply_lem_hyp handleClientRequest_packets.
     subst. simpl in *.
@@ -111,7 +111,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_do_leader :
     refined_raft_net_invariant_do_leader requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     assert (In p (nwPackets net)) by
         (find_apply_hyp_hyp; intuition;
@@ -132,7 +132,7 @@ Section RequestVoteMaxIndexMaxTerm.
   
   Lemma requestVote_maxIndex_maxTerm_do_generic_server :
     refined_raft_net_invariant_do_generic_server requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     find_copy_apply_lem_hyp doGenericServer_packets. subst. simpl in *.
     find_apply_hyp_hyp. break_or_hyp.
@@ -150,7 +150,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_reboot :
     refined_raft_net_invariant_reboot requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -164,7 +164,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     subst. repeat find_reverse_higher_order_rewrite.
     eauto.
@@ -172,7 +172,7 @@ Section RequestVoteMaxIndexMaxTerm.
 
   Lemma requestVote_maxIndex_maxTerm_init :
     refined_raft_net_invariant_init requestVote_maxIndex_maxTerm.
-  Proof.
+  Proof using. 
     red. unfold requestVote_maxIndex_maxTerm. intros. simpl in *.
     intuition.
   Qed.

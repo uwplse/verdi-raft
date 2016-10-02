@@ -16,14 +16,14 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_init :
     raft_net_invariant_init append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *. intuition.
   Qed.
 
   Lemma append_entries_request_reply_correspondence_timeout :
     raft_net_invariant_timeout append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -55,7 +55,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_client_request :
     raft_net_invariant_client_request append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -88,7 +88,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_do_leader :
     raft_net_invariant_do_leader append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -120,7 +120,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_do_generic_server :
     raft_net_invariant_do_generic_server append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -152,7 +152,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_reboot :
     raft_net_invariant_reboot append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_reverse_rewrite.
@@ -186,7 +186,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       (forall p, In p (nwPackets net') -> In p (nwPackets net)) ->
       raft_intermediate_reachable net ->
       raft_intermediate_reachable net'.
-  Proof.
+  Proof using. 
     intros.
     pose proof dup_drop_reorder _ packet_eq_dec _ _ ltac:(eauto).
     match goal with
@@ -200,7 +200,7 @@ Section AppendEntriesRequestReplyCorrespondence.
   
   Lemma append_entries_request_reply_correspondence_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp.
@@ -234,7 +234,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       handleAppendEntries h st t n pli plt es ci =
       (d, AppendEntriesReply t' es' true) ->
       t' = t /\ es' = es.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntries in *.
     repeat break_match; find_inversion; auto; congruence.
@@ -242,7 +242,7 @@ Section AppendEntriesRequestReplyCorrespondence.
   
   Lemma append_entries_request_reply_correspondence_append_entries :
     raft_net_invariant_append_entries append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -303,7 +303,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_append_entries_reply :
     raft_net_invariant_append_entries_reply append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -342,7 +342,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_request_vote :
     raft_net_invariant_request_vote append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.
@@ -379,7 +379,7 @@ Section AppendEntriesRequestReplyCorrespondence.
 
   Lemma append_entries_request_reply_correspondence_request_vote_reply :
     raft_net_invariant_request_vote_reply append_entries_request_reply_correspondence.
-  Proof.
+  Proof using. 
     red. unfold append_entries_request_reply_correspondence. intros.
     simpl in *.
     find_apply_hyp_hyp. intuition.

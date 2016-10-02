@@ -12,14 +12,14 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_init :
     raft_net_invariant_init current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, current_term_gt_zero.
     intros. simpl in *. congruence.
   Qed.
 
   Lemma current_term_gt_zero_client_request :
     raft_net_invariant_client_request current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_client_request, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp handleClientRequest_type. intuition.
@@ -29,7 +29,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_timeout :
     raft_net_invariant_timeout current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp handleTimeout_type_strong. intuition.
@@ -39,7 +39,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_append_entries :
     raft_net_invariant_append_entries current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp handleAppendEntries_type. intuition.
@@ -49,7 +49,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_append_entries_reply :
     raft_net_invariant_append_entries_reply current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp handleAppendEntriesReply_type. intuition.
@@ -59,7 +59,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_request_vote :
     raft_net_invariant_request_vote current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp handleRequestVote_type. intuition.
@@ -69,7 +69,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_request_vote_reply :
     raft_net_invariant_request_vote_reply current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite.
     find_apply_lem_hyp handleRequestVoteReply_type. update_destruct; subst; rewrite_update.
@@ -81,7 +81,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_do_leader :
     raft_net_invariant_do_leader current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp doLeader_type. intuition.
@@ -91,7 +91,7 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_do_generic_server :
     raft_net_invariant_do_generic_server current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - find_apply_lem_hyp doGenericServer_type. intuition.
@@ -101,14 +101,14 @@ Section CurrentTermGtZero.
 
   Lemma current_term_gt_zero_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset, current_term_gt_zero.
     simpl. intuition. find_reverse_higher_order_rewrite. auto.
   Qed.
 
   Lemma current_term_gt_zero_reboot :
     raft_net_invariant_reboot current_term_gt_zero.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
     - unfold reboot in *. simpl in *. congruence.
@@ -119,7 +119,7 @@ Section CurrentTermGtZero.
     forall net,
       raft_intermediate_reachable net ->
       current_term_gt_zero net.
-  Proof.
+  Proof using. 
     intros.
     apply raft_net_invariant; auto.
     - apply current_term_gt_zero_init.

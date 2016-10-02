@@ -20,4 +20,3 @@ Section LeaderLogsSorted.
           leaderLogs_sorted net
     }.
 End LeaderLogsSorted.
-      

@@ -13,7 +13,7 @@ Section NoAppendEntriesToSelf.
       doLeader st h = (os, st', ms) ->
       In m ms ->
       fst m <> h.
-  Proof.
+  Proof using. 
     intros.
     unfold doLeader in *.
     repeat break_match; try solve [find_inversion; simpl in *; congruence].
@@ -27,7 +27,7 @@ Section NoAppendEntriesToSelf.
 
   Lemma no_append_entries_to_self_do_leader :
     raft_net_invariant_do_leader no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     do_in_map.
@@ -37,7 +37,7 @@ Section NoAppendEntriesToSelf.
 
   Lemma no_append_entries_to_self_do_generic_server :
     raft_net_invariant_do_generic_server no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     do_in_map.
@@ -47,7 +47,7 @@ Section NoAppendEntriesToSelf.
 
   Lemma no_append_entries_to_self_append_entries :
     raft_net_invariant_append_entries no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     subst. simpl in *. subst.
@@ -57,7 +57,7 @@ Section NoAppendEntriesToSelf.
   
   Lemma no_append_entries_to_self_append_entries_reply :
     raft_net_invariant_append_entries_reply no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     do_in_map. subst. simpl in *.
@@ -67,7 +67,7 @@ Section NoAppendEntriesToSelf.
   
   Lemma no_append_entries_to_self_request_vote :
     raft_net_invariant_request_vote no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     subst. simpl in *. subst.
@@ -77,14 +77,14 @@ Section NoAppendEntriesToSelf.
 
   Lemma no_append_entries_to_self_request_vote_reply :
     raft_net_invariant_request_vote_reply no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
   Qed.
 
   Lemma no_append_entries_to_self_client_request :
     raft_net_invariant_client_request no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     do_in_map. subst. simpl in *.
@@ -94,7 +94,7 @@ Section NoAppendEntriesToSelf.
 
   Lemma no_append_entries_to_self_timeout :
     raft_net_invariant_timeout no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
     do_in_map. subst. simpl in *.
@@ -104,21 +104,21 @@ Section NoAppendEntriesToSelf.
 
   Lemma no_append_entries_to_self_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_apply_hyp_hyp. intuition eauto.
   Qed.
 
   Lemma no_append_entries_to_self_reboot :
     raft_net_invariant_reboot no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *.
     find_reverse_rewrite. intuition eauto.
   Qed.
 
   Lemma no_append_entries_to_self_init :
     raft_net_invariant_init no_append_entries_to_self.
-  Proof.
+  Proof using. 
     red. red. intros. simpl in *. intuition.
   Qed.
 
@@ -127,7 +127,7 @@ Section NoAppendEntriesToSelf.
     forall net,
       raft_intermediate_reachable net ->
       no_append_entries_to_self net.
-  Proof.
+  Proof using. 
     intros.
     apply raft_net_invariant; auto.
     - apply no_append_entries_to_self_init.
@@ -148,4 +148,3 @@ Section NoAppendEntriesToSelf.
   Qed.
 
 End NoAppendEntriesToSelf.
-

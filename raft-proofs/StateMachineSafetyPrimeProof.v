@@ -43,7 +43,7 @@ Section StateMachineSafety'.
     forall net,
       refined_raft_intermediate_reachable net ->
       log_matching (deghost net).
-  Proof.
+  Proof using lmi rri. 
     intros.
     eapply lift_prop; eauto using log_matching_invariant.
   Qed.
@@ -52,7 +52,7 @@ Section StateMachineSafety'.
     forall net,
       refined_raft_intermediate_reachable net ->
       logs_sorted (deghost net).
-  Proof.
+  Proof using lsi rri. 
     intros.
     eapply lift_prop; eauto using logs_sorted_invariant.
   Qed.
@@ -61,7 +61,7 @@ Section StateMachineSafety'.
     forall net h h',
       refined_raft_intermediate_reachable net ->
       entries_match (log (snd (nwState net h))) (log (snd (nwState net h'))).
-  Proof.
+  Proof using lmi rri. 
     intros.
     find_apply_lem_hyp lift_log_matching.
     unfold log_matching, log_matching_hosts in *. intuition.
@@ -73,7 +73,7 @@ Section StateMachineSafety'.
     forall net,
       refined_raft_intermediate_reachable net ->
       UniqueIndices (deghost net).
-  Proof.
+  Proof using uii rri. 
     intros. eapply lift_prop; eauto using UniqueIndices_invariant.
   Qed.
 
@@ -81,7 +81,7 @@ Section StateMachineSafety'.
     forall net h,
       refined_raft_intermediate_reachable net ->
       uniqueIndices (log (snd (nwState net h))).
-  Proof.
+  Proof using uii rri. 
     intros.
     find_apply_lem_hyp lift_UniqueIndices.
     unfold UniqueIndices, uniqueIndices_host_invariant in *.
@@ -93,7 +93,7 @@ Section StateMachineSafety'.
     forall net h,
       refined_raft_intermediate_reachable net ->
       sorted (log (snd (nwState net h))).
-  Proof.
+  Proof using lsi rri. 
     intros.
     find_apply_lem_hyp lift_sorted.
     unfold logs_sorted, logs_sorted_host in *.
@@ -105,7 +105,7 @@ Section StateMachineSafety'.
     forall net,
       refined_raft_intermediate_reachable net ->
       state_machine_safety_host' net.
-  Proof.
+  Proof using uii lmi aelli lci rri. 
     unfold state_machine_safety_host'. intros.
     find_copy_apply_lem_hyp leader_completeness_invariant.
     unfold leader_completeness in *. intuition.
@@ -164,7 +164,7 @@ Section StateMachineSafety'.
       In p (nwPackets net) ->
       pBody p = AppendEntries t n pli plt es ci ->
       contiguous_range_exact_lo es pli.
-  Proof. (* by log matching, annoying because of refinement *)
+  Proof using rlmli.  (* by log matching, annoying because of refinement *)
     intros.
     find_apply_lem_hyp entries_contiguous_nw_invariant.
     unfold entries_contiguous_nw in *. eauto.
@@ -175,7 +175,7 @@ Section StateMachineSafety'.
       In p (nwPackets net) ->
       exists q,
         In q (nwPackets (deghost net)) /\ q = deghost_packet p.
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl.
     intros.
@@ -193,7 +193,7 @@ Section StateMachineSafety'.
       eIndex e = eIndex e' ->
       eTerm e = eTerm e' ->
       In e es.
-  Proof.
+  Proof using uii lmi rri. 
     intros.
     pose proof lift_uniqueIndices_log net h; intuition.
     find_copy_apply_lem_hyp lift_log_matching.
@@ -223,7 +223,7 @@ Section StateMachineSafety'.
       In e l1 ->
       In e' l2 ->
       eIndex e' < eIndex e.
-  Proof.
+  Proof using. 
     intros; induction l1; simpl in *; intuition.
     subst. specialize (H2 e'). concludes. intuition.
   Qed.
@@ -233,7 +233,7 @@ Section StateMachineSafety'.
       Prefix l l' ->
       In x l ->
       In x l'.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition;
     subst; break_match; intuition; subst; intuition.
   Qed.
@@ -248,7 +248,7 @@ Section StateMachineSafety'.
     forall A (l : list A) x,
       In x l ->
       l <> nil.
-  Proof.
+  Proof using. 
     destruct l; simpl; intuition congruence.
   Qed.
 
@@ -256,7 +256,7 @@ Section StateMachineSafety'.
     forall net,
       refined_raft_intermediate_reachable net ->
       state_machine_safety_nw' net.
-  Proof.
+  Proof using rlmli ollpti llli lllmi llci lsi llsi aerlli uii lmi lci rri. 
     unfold state_machine_safety_nw'.
     intros.
     unfold committed in *. break_exists; intuition.

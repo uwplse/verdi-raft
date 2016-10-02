@@ -10,7 +10,7 @@ Section Linearizability.
 
   Definition op_eq_dec :
     forall x y : op, {x = y} + {x <> y}.
-  Proof.
+  Proof using K_eq_dec. 
     decide equality.
   Qed.
 
@@ -21,7 +21,7 @@ Section Linearizability.
 
   Definition IR_eq_dec :
     forall x y : IR, {x = y} + {x <> y}.
-  Proof.
+  Proof using K_eq_dec. 
     decide equality.
   Qed.
 
@@ -59,7 +59,7 @@ Section Linearizability.
       forall k,
         In (IRI k) ir ->
         In (I k) l.
-  Proof.
+  Proof using. 
     induction 1; intros; simpl in *; intuition (auto; congruence).
   Qed.
 
@@ -89,7 +89,7 @@ Section Linearizability.
                       else acknowledge_all_ops_func l target
         | O k => IRO k :: acknowledge_all_ops_func l target
       end.
-  Proof.
+  Proof using. 
     intros.
     unfold acknowledge_all_ops_func. repeat break_match; auto.
   Qed.
@@ -97,7 +97,7 @@ Section Linearizability.
   Lemma acknowledge_all_ops_func_correct :
     forall l target,
       acknowledge_all_ops l (acknowledge_all_ops_func l target).
-  Proof.
+  Proof using. 
     induction l; intros; simpl; repeat break_match; subst; eauto.
   Qed.
 
@@ -106,7 +106,7 @@ Section Linearizability.
       (forall k, In (IRU k) t -> In (IRU k) t') ->
       (forall k, In (IRU k) t' -> In (IRU k) t) ->
       acknowledge_all_ops_func l t = acknowledge_all_ops_func l t'.
-  Proof.
+  Proof using. 
     induction l; simpl in *; repeat break_match; subst; intuition eauto using f_equal.
     repeat break_match; eauto using f_equal; solve [exfalso; eauto].
   Qed.
@@ -134,7 +134,7 @@ Section Linearizability.
   Lemma IR_equivalent_refl :
     forall l,
       IR_equivalent l l.
-  Proof.
+  Proof using. 
     induction l; eauto.
   Qed.
 
@@ -143,7 +143,7 @@ Section Linearizability.
       IR_equivalent ir1 ir2 ->
       forall o,
         In o ir1 -> In o ir2.
-  Proof.
+  Proof using. 
     induction 1; intros; simpl in *; intuition.
   Qed.
 
@@ -152,7 +152,7 @@ Section Linearizability.
       IR_equivalent ir1 ir2 ->
       forall o,
         In o ir2 -> In o ir1.
-  Proof.
+  Proof using. 
     induction 1; intros; simpl in *; intuition.
   Qed.
 
@@ -161,7 +161,7 @@ Section Linearizability.
     forall ir1 ir2,
       IR_equivalent ir1 ir2 ->
       Permutation ir1 ir2.
-  Proof.
+  Proof using. 
     induction 1; eauto.
   Qed.
 
@@ -169,7 +169,7 @@ Section Linearizability.
     forall l xs ys,
       IR_equivalent xs ys ->
       IR_equivalent (l ++ xs) (l ++ ys).
-  Proof.
+  Proof using. 
     induction l; intros; simpl; auto.
   Qed.
 
@@ -177,7 +177,7 @@ Section Linearizability.
     forall xs ys x,
       IR_equivalent xs ys ->
       IR_equivalent (xs ++ [x]) (ys ++ [x]).
-  Proof.
+  Proof using. 
     induction 1; simpl; eauto.
   Qed.
 
@@ -185,7 +185,7 @@ Section Linearizability.
     forall l xs ys,
       IR_equivalent xs ys ->
       IR_equivalent (xs ++ l) (ys ++ l).
-  Proof.
+  Proof using. 
     induction 1; intros; simpl in *; eauto using IR_equivalent_refl.
   Qed.
 
@@ -194,7 +194,7 @@ Section Linearizability.
       forall k k',
         k <> k' ->
         IR_equivalent [IRI k; IRI k'; IRO k; IRO k'] [IRI k; IRO k; IRI k'; IRO k'].
-    Proof.
+    Proof using. 
       intros.
       constructor.
       econstructor; auto.
@@ -206,7 +206,7 @@ Section Linearizability.
       forall k k',
         k <> k' ->
         IR_equivalent [IRI k; IRI k'; IRO k; IRO k'] [IRI k'; IRO k'; IRI k; IRO k].
-    Proof.
+    Proof using. 
       intros.
       eapply IR_equiv_trans with (l2 := [IRI k; IRI k'; IRO k'; IRO k]).
       - repeat constructor; unfold good_move; intuition (try congruence).
@@ -221,7 +221,7 @@ Section Linearizability.
       forall k k',
         k <> k' ->
         IR_equivalent [IRI k; IRI k'; IRO k'; IRO k] [IRI k'; IRO k'; IRI k; IRO k].
-    Proof.
+    Proof using. 
       intros.
       eapply IR_equiv_trans with (l2 := [IRI k'; IRI k; IRO k'; IRO k]).
       - constructor.
@@ -236,7 +236,7 @@ Section Linearizability.
       forall k k',
         k <> k' ->
         IR_equivalent [IRI k; IRI k'; IRO k'; IRO k] [IRI k; IRO k; IRI k'; IRO k'].
-    Proof.
+    Proof using. 
       intros.
       constructor.
       eapply IR_equiv_trans with (l2 := [IRI k'; IRO k; IRO k']).
@@ -264,7 +264,7 @@ Section Linearizability.
     forall l ir k,
       In (IRU k) (acknowledge_all_ops_func l ir) ->
       In (I k) l.
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; repeat break_match; subst; simpl in *;
     intuition (eauto; congruence).
   Qed.
@@ -281,7 +281,7 @@ Section Linearizability.
                                | I k => k :: get_op_input_keys l
                                | _ => get_op_input_keys l
                                    end.
-  Proof.
+  Proof using. 
     unfold get_op_input_keys.
     intros.
     simpl. repeat break_match; congruence.
@@ -299,7 +299,7 @@ Section Linearizability.
                                | IRI k => k :: get_IR_input_keys l
                                | _ => get_IR_input_keys l
                              end.
-  Proof.
+  Proof using. 
     unfold get_IR_input_keys.
     intros.
     simpl. repeat break_match; congruence.
@@ -317,7 +317,7 @@ Section Linearizability.
                                       | O k => k :: get_op_output_keys l
                                       | _ => get_op_output_keys l
                                     end.
-  Proof.
+  Proof using. 
     unfold get_op_output_keys.
     intros.
     simpl.
@@ -338,7 +338,7 @@ Section Linearizability.
                                       | IRU k => k :: get_IR_output_keys l
                                       | _ => get_IR_output_keys l
                                     end.
-  Proof.
+  Proof using. 
     unfold get_IR_output_keys.
     intros. simpl. repeat break_match; congruence.
   Qed.
@@ -355,7 +355,7 @@ Section Linearizability.
       (forall k l, P (IRO k :: l) False) ->
       (forall k l, P (IRU k :: l) False) ->
       P l (good_trace l).
-  Proof.
+  Proof using. 
     intros.
     destruct l; simpl; repeat break_match; auto; subst.
     - match goal with
@@ -378,7 +378,7 @@ Section Linearizability.
       (forall k ir, P (IRO k :: ir) False) ->
       (forall k ir, P (IRU k :: ir) False) ->
       forall ir, P ir (good_trace ir).
-  Proof.
+  Proof using. 
     intros.
     apply good_trace_ind'; auto.
   Qed.
@@ -389,7 +389,7 @@ Section Linearizability.
       forall k,
         In (IRI k) ir ->
         In (IRO k) ir \/ In (IRU k) ir.
-  Proof.
+  Proof using. 
     intros ir.
     induction ir, good_trace using good_trace_ind; intros; simpl in *; intuition (auto; try congruence).
     - subst. find_apply_hyp_hyp. intuition.
@@ -400,7 +400,7 @@ Section Linearizability.
     forall l,
       (forall k, ~ In (O k) l) ->
       acknowledge_all_ops_func l [] = [].
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *.
     - auto.
     - repeat break_match; subst; unfold acknowledged_op in *;
@@ -418,7 +418,7 @@ Section Linearizability.
         before x (I h) l ->
         exists k,
           x = I k.
-  Proof.
+  Proof using. 
     intros. destruct x. eauto.
     eapply_prop_hyp In In; eauto.
     simpl in *. intuition congruence.
@@ -427,14 +427,14 @@ Section Linearizability.
   Lemma good_move_II :
     forall k k',
       good_move (IRI k) (IRI k').
-  Proof.
+  Proof using. 
     red. intuition congruence.
   Qed.
 
   Lemma good_move_OO :
     forall k k',
       good_move (IRO k) (IRO k').
-  Proof.
+  Proof using. 
     red. intuition congruence.
   Qed.
 
@@ -442,7 +442,7 @@ Section Linearizability.
     forall l k,
       (forall x, In x l -> exists k, x = IRI k) ->
       IR_equivalent (l ++ [IRI k]) (IRI k :: l).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     apply IR_equiv_trans with (l2 := (a :: IRI k :: l)).
     - auto.
@@ -465,7 +465,7 @@ Section Linearizability.
     forall xs ys,
       op_equivalent xs ys ->
       Permutation xs ys.
-  Proof.
+  Proof using. 
     induction 1; eauto.
   Qed.
 
@@ -475,7 +475,7 @@ Section Linearizability.
       forall k,
         acknowledged_op k xs ->
         acknowledged_op k ys.
-  Proof.
+  Proof using. 
     unfold acknowledged_op.
     intros.
     eauto using Permutation_in, op_equiv_Permutation.
@@ -487,7 +487,7 @@ Section Linearizability.
       forall k,
         acknowledged_op k ys ->
         acknowledged_op k xs.
-  Proof.
+  Proof using. 
     unfold acknowledged_op.
     intros.
     eauto using Permutation_sym, Permutation_in, op_equiv_Permutation.
@@ -497,14 +497,14 @@ Section Linearizability.
     forall k xs,
       acknowledged_op k xs ->
       In (O k) xs.
-  Proof.
+  Proof using. 
     auto.
   Qed.
 
   Lemma good_move_U_l :
     forall k x,
       good_move (IRU k) x.
-  Proof.
+  Proof using. 
     red. intuition congruence.
   Qed.
 
@@ -512,7 +512,7 @@ Section Linearizability.
     forall k k',
       k <> k' ->
       good_move (IRI k) (IRU k').
-  Proof.
+  Proof using. 
     red. intuition congruence.
   Qed.
 
@@ -520,7 +520,7 @@ Section Linearizability.
     forall k k',
       k <> k' ->
       good_move (IRI k) (IRO k').
-  Proof.
+  Proof using. 
     red. intuition congruence.
   Qed.
 
@@ -531,7 +531,7 @@ Section Linearizability.
   Lemma not_good_op_move_IO :
     forall k,
       good_op_move (I k) (O k) -> False.
-  Proof.
+  Proof using. 
     unfold good_op_move.
     intuition eauto.
   Qed.
@@ -539,7 +539,7 @@ Section Linearizability.
   Lemma not_good_op_move_OI :
     forall k k',
       good_op_move (O k) (I k') -> False.
-  Proof.
+  Proof using. 
     unfold good_op_move.
     intuition eauto.
   Qed.
@@ -548,7 +548,7 @@ Section Linearizability.
     forall k k',
       good_op_move (I k) (O k') ->
       good_move (IRI k) (IRO k').
-  Proof.
+  Proof using. 
     unfold good_op_move, good_move.
     intuition (try congruence). repeat find_inversion. eauto.
   Qed.
@@ -560,7 +560,7 @@ Section Linearizability.
         (x = I k /\ y = I k') \/
         (x = O k /\ y = O k') \/
         (k <> k' /\ x = I k /\ y = O k').
-  Proof.
+  Proof using. 
     unfold good_op_move. intros.
     destruct x as [k|k], y as [k'|k']; exists k, k'; intuition.
     - right. right. intuition. subst. eauto.
@@ -571,7 +571,7 @@ Section Linearizability.
     forall k k' l,
       acknowledged_op k (I k' :: l) ->
       acknowledged_op k l.
-  Proof.
+  Proof using. 
     unfold acknowledged_op.
     simpl. intuition congruence.
   Qed.
@@ -580,7 +580,7 @@ Section Linearizability.
     forall k k' l,
       acknowledged_op k l ->
       acknowledged_op k (I k' :: l).
-  Proof.
+  Proof using. 
     unfold acknowledged_op.
     simpl. intuition congruence.
   Qed.
@@ -594,7 +594,7 @@ Section Linearizability.
                     (acknowledge_all_ops_func ys target) ->
       IR_equivalent (acknowledge_all_ops_func (I k :: xs) target)
                     (acknowledge_all_ops_func (I k :: ys) target).
-  Proof.
+  Proof using. 
     intros.
     simpl.
     repeat break_match; auto;
@@ -609,7 +609,7 @@ Section Linearizability.
                     (acknowledge_all_ops_func ys target) ->
       IR_equivalent (acknowledge_all_ops_func (I k :: I k' :: xs) target)
                     (acknowledge_all_ops_func (I k' :: I k :: ys) target).
-  Proof.
+  Proof using. 
     intros.
     rewrite acknowledge_all_ops_func_defn.
     break_if.
@@ -685,7 +685,7 @@ Section Linearizability.
       op_equivalent xs ys ->
       forall l,
         IR_equivalent (acknowledge_all_ops_func xs l) (acknowledge_all_ops_func ys l).
-  Proof.
+  Proof using. 
     induction 1; intros.
     - auto.
     - simpl.
@@ -716,14 +716,14 @@ Section Linearizability.
   Lemma op_equivalent_refl :
     forall xs,
       op_equivalent xs xs.
-  Proof.
+  Proof using. 
     induction xs; auto.
   Qed.
 
   Lemma good_op_move_II :
     forall k k',
       good_op_move (I k) (I k').
-  Proof.
+  Proof using. 
     red. intuition congruence.
   Qed.
 
@@ -731,7 +731,7 @@ Section Linearizability.
     forall l k,
       (forall x, In x l -> exists k, x = I k) ->
       op_equivalent (l ++ [I k]) (I k :: l).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     apply op_equiv_trans with (l2 := (a :: I k :: l)).
     - auto.
@@ -743,7 +743,7 @@ Section Linearizability.
     forall k k',
       k <> k' ->
       good_op_move (I k) (O k').
-  Proof.
+  Proof using. 
     unfold good_op_move.
     intuition congruence.
   Qed.
@@ -751,7 +751,7 @@ Section Linearizability.
   Lemma good_op_move_OO :
     forall k k',
       good_op_move (O k) (O k').
-  Proof.
+  Proof using. 
     unfold good_op_move.
     intuition congruence.
   Qed.
@@ -760,7 +760,7 @@ Section Linearizability.
     forall l k,
       (forall k', In (I k') l -> k <> k') ->
       op_equivalent (l ++ [O k]) (O k :: l).
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     apply op_equiv_trans with (l2 := (a :: O k :: l)).
     - eauto 10.
@@ -773,7 +773,7 @@ Section Linearizability.
     forall l xs ys,
       op_equivalent xs ys ->
       op_equivalent (xs ++ l) (ys ++ l).
-  Proof.
+  Proof using. 
     induction 1; intros; simpl in *; intuition.
     - auto using op_equivalent_refl.
     - eauto.
@@ -783,7 +783,7 @@ Section Linearizability.
     forall xs ys k,
       (forall x, In x xs -> exists k, x = I k) ->
       op_equivalent (xs ++ I k :: ys) (I k :: xs ++ ys).
-  Proof.
+  Proof using. 
     intros.
     rewrite app_comm_cons.
     replace (xs ++ I k :: ys) with ((xs ++ [I k]) ++ ys) by now rewrite app_ass.
@@ -793,7 +793,7 @@ Section Linearizability.
   Lemma get_op_input_keys_app :
     forall xs ys,
       get_op_input_keys (xs ++ ys) = get_op_input_keys xs ++ get_op_input_keys ys.
-  Proof.
+  Proof using. 
     intros.
     apply filterMap_app.
   Qed.
@@ -801,7 +801,7 @@ Section Linearizability.
   Lemma get_op_output_keys_app :
     forall xs ys,
       get_op_output_keys (xs ++ ys) = get_op_output_keys xs ++ get_op_output_keys ys.
-  Proof.
+  Proof using. 
     intros.
     apply filterMap_app.
   Qed.
@@ -810,7 +810,7 @@ Section Linearizability.
     forall xs k,
       In (I k) xs ->
       In k (get_op_input_keys xs).
-  Proof.
+  Proof using. 
     unfold get_op_input_keys.
     intros.
     eapply filterMap_In; eauto.
@@ -821,7 +821,7 @@ Section Linearizability.
     forall k l,
       In k (get_op_input_keys l) ->
       In (I k) l.
-  Proof.
+  Proof using. 
     induction l; intros.
     - auto.
     - simpl in *. rewrite get_op_input_keys_defn in *. break_match; simpl in *.
@@ -833,7 +833,7 @@ Section Linearizability.
     forall k l,
       In k (get_op_output_keys l) ->
       In (O k) l.
-  Proof.
+  Proof using. 
     induction l; intros.
     - auto.
     - simpl in *. rewrite get_op_output_keys_defn in *. break_match; simpl in *.
@@ -845,7 +845,7 @@ Section Linearizability.
     forall l,
       (forall o, In o l -> exists k, o = O k) ->
       get_op_input_keys l = [].
-  Proof.
+  Proof using. 
     induction l; intros; simpl in *; intuition.
     rewrite get_op_input_keys_defn.
     pose proof H a. concludes. break_exists. subst.
@@ -856,7 +856,7 @@ Section Linearizability.
     forall l,
       NoDup l ->
       NoDup (get_op_input_keys l).
-  Proof.
+  Proof using. 
     intros.
     unfold get_op_input_keys.
     apply filterMap_NoDup_inj; auto.
@@ -869,7 +869,7 @@ Section Linearizability.
     forall l,
       NoDup l ->
       NoDup (get_op_output_keys l).
-  Proof.
+  Proof using. 
     intros.
     unfold get_op_output_keys.
     apply filterMap_NoDup_inj; auto.
@@ -882,7 +882,7 @@ Section Linearizability.
     forall xs k,
       In (O k) xs ->
       In k (get_op_output_keys xs).
-  Proof.
+  Proof using. 
     unfold get_op_input_keys.
     intros.
     eapply filterMap_In; eauto.
@@ -893,7 +893,7 @@ Section Linearizability.
     forall xs k,
       In (IRU k) xs ->
       In k (get_IR_output_keys xs).
-  Proof.
+  Proof using. 
     unfold get_IR_output_keys.
     intros.
     eapply filterMap_In; eauto. auto.
@@ -903,7 +903,7 @@ Section Linearizability.
     forall xs k,
       In (IRO k) xs ->
       In k (get_IR_output_keys xs).
-  Proof.
+  Proof using. 
     unfold get_IR_output_keys.
     intros.
     eapply filterMap_In; eauto. auto.
@@ -913,7 +913,7 @@ Section Linearizability.
     forall xs k,
       In (IRI k) xs ->
       In k (get_IR_input_keys xs).
-  Proof.
+  Proof using. 
     unfold get_IR_input_keys.
     intros.
     eapply filterMap_In; eauto. auto.
@@ -923,7 +923,7 @@ Section Linearizability.
     forall xs ys k,
       (forall k', In (I k') xs -> k <> k') ->
       op_equivalent (xs ++ O k :: ys) (O k :: xs ++ ys).
-  Proof.
+  Proof using. 
     intros.
     rewrite app_comm_cons.
     replace (xs ++ O k :: ys) with ((xs ++ [O k]) ++ ys) by now rewrite app_ass.
@@ -935,7 +935,7 @@ Section Linearizability.
       NoDup (get_op_output_keys (xs ++ O k :: ys)) ->
       In (O k) (xs ++ ys) ->
       False.
-  Proof.
+  Proof using. 
     intros.
     rewrite get_op_output_keys_app in *.
     rewrite get_op_output_keys_defn in *.
@@ -948,7 +948,7 @@ Section Linearizability.
       NoDup (get_op_output_keys (xs ++ I k :: ys ++ O k :: zs)) ->
       In (O k) (xs ++ ys ++ zs) ->
       False.
-  Proof.
+  Proof using. 
     intros.
     rewrite get_op_output_keys_app in *.
     rewrite get_op_output_keys_defn in *.
@@ -965,7 +965,7 @@ Section Linearizability.
       NoDup (get_op_input_keys (xs ++ I k :: ys ++ O k :: zs)) ->
       In (I k) (xs ++ ys ++ zs) ->
       False.
-  Proof.
+  Proof using. 
     intros.
     rewrite get_op_input_keys_app in *.
     rewrite get_op_input_keys_defn in *.
@@ -985,7 +985,7 @@ Section Linearizability.
                  In (IRO k) (IRI k' :: IRU k' :: ir)) ->
       forall k, In (O k) (xs ++ ys) ->
                 In (IRO k) ir.
-  Proof.
+  Proof using. 
     intros.
     eapply In_cons_neq.
     - eapply In_cons_neq.
@@ -1001,7 +1001,7 @@ Section Linearizability.
                  In (IRO k) (IRI k' :: IRO k' :: ir)) ->
       forall k, In (O k) (xs ++ ys ++ zs) ->
                 In (IRO k) ir.
-  Proof.
+  Proof using. 
     intros.
     eapply In_cons_neq.
     - eapply In_cons_neq.
@@ -1015,7 +1015,7 @@ Section Linearizability.
       NoDup (get_op_input_keys (xs ++ I k :: ys ++ O k :: zs)) ->
       forall k',
         In (I k') (xs ++ ys) -> k <> k'.
-  Proof.
+  Proof using. 
     intros.
     rewrite get_op_input_keys_app in *. rewrite get_op_input_keys_defn in *.
     match goal with
@@ -1034,7 +1034,7 @@ Section Linearizability.
                  In (O k) (xs ++ I k' :: ys)) ->
       forall k, In (IRO k) ir ->
                 In (O k) (xs ++ ys).
-  Proof.
+  Proof using. 
     intros.
     apply in_middle_reduce with (y := I k'); intuition (auto with *; congruence).
   Qed.
@@ -1046,7 +1046,7 @@ Section Linearizability.
                  In (O k) (xs ++ I k' :: ys ++ O k' :: zs)) ->
       forall k, In (IRO k) ir ->
                 In (O k) (xs ++ ys ++ zs).
-  Proof.
+  Proof using. 
     intros.
 
     eapply In_cons_2_3_neq; eauto using in_cons; try congruence.
@@ -1060,7 +1060,7 @@ Section Linearizability.
                  In (I k) (xs ++ I k' :: ys)) ->
       forall k, In (IRU k) ir ->
                 In (I k) (xs ++ ys).
-  Proof.
+  Proof using. 
     intros.
     apply in_middle_reduce with (y := I k'); intuition.
     find_inversion.
@@ -1074,7 +1074,7 @@ Section Linearizability.
                  In (I k) (xs ++ I k' :: ys ++ O k' :: zs)) ->
       forall k, In (IRU k) ir ->
                 In (I k) (xs ++ ys ++ zs).
-  Proof.
+  Proof using. 
     intros.
     eapply In_cons_2_3_neq; eauto using in_cons; try congruence.
     intro. find_inversion. eauto using get_IR_output_keys_complete_U.
@@ -1084,7 +1084,7 @@ Section Linearizability.
     forall xs ys k,
       NoDup (get_op_input_keys (xs ++ I k :: ys)) ->
       In (I k) (xs ++ ys) -> False.
-  Proof.
+  Proof using. 
     intros.
     rewrite get_op_input_keys_app in *.
     rewrite get_op_input_keys_defn in *.
@@ -1103,7 +1103,7 @@ Section Linearizability.
         In (I k2) (xs ++ ys) ->
         before (O k1) (I k2) (xs ++ ys) ->
         before (IRO k1) (IRI k2) ir.
-  Proof.
+  Proof using. 
     intros.
     simpl in *.
     find_eapply_lem_hyp before_middle_insert.
@@ -1125,7 +1125,7 @@ Section Linearizability.
         In (I k2) (xs ++ ys ++ zs) ->
         before (O k1) (I k2) (xs ++ ys ++ zs) ->
         before (IRO k1) (IRI k2) ir.
-  Proof.
+  Proof using. 
     intros.
     simpl in *.
     find_copy_eapply_lem_hyp before_2_3_insert.
@@ -1147,7 +1147,7 @@ Section Linearizability.
                  before (I k) (O k) (xs ++ I k' :: ys)) ->
       forall k, In (O k) (xs ++ ys) ->
                 before (I k) (O k) (xs ++ ys).
-  Proof.
+  Proof using. 
     intros.
     eapply before_middle_reduce.
     - eauto using in_middle_insert.
@@ -1161,7 +1161,7 @@ Section Linearizability.
                  before (I k) (O k) (xs ++ I k' :: ys ++ O k' :: zs)) ->
       forall k, In (O k) (xs ++ ys ++ zs) ->
                 before (I k) (O k) (xs ++ ys ++ zs).
-  Proof.
+  Proof using. 
     intros.
     eapply before_2_3_reduce.
     - eauto using In_cons_2_3.
@@ -1174,7 +1174,7 @@ Section Linearizability.
       (~ In k' (get_IR_input_keys ir)) ->
       (forall k, In (IRI k) (IRI k' :: IRU k' :: ir) -> In (I k) (xs ++ I k' :: ys)) ->
       forall k, In (IRI k) ir -> In (I k) (xs ++ ys).
-  Proof.
+  Proof using. 
     intros.
     eapply in_middle_reduce.
     - auto with *.
@@ -1186,7 +1186,7 @@ Section Linearizability.
       (~ In k' (get_IR_input_keys ir)) ->
       (forall k, In (IRI k) (IRI k' :: IRO k' :: ir) -> In (I k) (xs ++ I k' :: ys ++ O k' :: zs)) ->
       forall k, In (IRI k) ir -> In (I k) (xs ++ ys ++ zs).
-  Proof.
+  Proof using. 
     intros.
     eapply In_cons_2_3_neq.
     - auto with *.
@@ -1198,7 +1198,7 @@ Section Linearizability.
     forall xs ys,
       subseq xs ys ->
       subseq (get_op_input_keys xs) (get_op_input_keys ys).
-  Proof.
+  Proof using. 
     eauto using subseq_filterMap.
   Qed.
 
@@ -1206,7 +1206,7 @@ Section Linearizability.
     forall xs ys,
       subseq xs ys ->
       subseq (get_op_output_keys xs) (get_op_output_keys ys).
-  Proof.
+  Proof using. 
     eauto using subseq_filterMap.
   Qed.
 
@@ -1238,7 +1238,7 @@ Section Linearizability.
       (forall k : K, In (I k) l -> In (IRU k) t -> In (IRU k) t') ->
       (forall k : K, In (I k) l -> In (IRU k) t' -> In (IRU k) t) ->
       acknowledge_all_ops_func l t = acknowledge_all_ops_func l t'.
-  Proof.
+  Proof using. 
     induction l; intros.
     - auto.
     - simpl. repeat break_match; subst; simpl in *; intuition auto 10 using f_equal with *.
@@ -1254,7 +1254,7 @@ Section Linearizability.
       forall k,
         In (IRU k) (ir) ->
         ~ In (O k) (xs ++ ys).
-  Proof.
+  Proof using. 
     intuition.
     eapply H.
     - apply in_cons. apply in_cons. eauto.
@@ -1269,7 +1269,7 @@ Section Linearizability.
       forall k,
         In (IRU k) (ir) ->
         ~ In (O k) (xs ++ ys ++ zs).
-  Proof.
+  Proof using. 
     intuition.
     eapply H.
     - eauto with *.
@@ -1295,7 +1295,7 @@ Section Linearizability.
         NoDup (get_op_output_keys l) ->
         NoDup (get_IR_output_keys ir) ->
         IR_equivalent (acknowledge_all_ops_func l ir) ir.
-  Proof.
+  Proof using. 
     intros ir.
     induction ir, good_trace using good_trace_ind; intros; try solve [simpl in *; intuition].
     - rewrite acknowledge_all_ops_func_target_nil; auto.
@@ -1412,7 +1412,7 @@ Section Linearizability.
       NoDup (get_op_output_keys l) ->
       NoDup (get_IR_output_keys ir) ->
       equivalent l ir.
-  Proof.
+  Proof using K_eq_dec. 
     intros.
     red.
     intuition.

@@ -26,7 +26,7 @@ Section LogMatchingProof.
       handleAppendEntries h s t n prevT prevI entries c = (d, m) ->
       In e (log d) ->
       (In e (log s) \/ In e entries).
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntries in *.
     repeat break_match; find_inversion; simpl in *; intuition; repeat find_rewrite_lem advanceCurrentTerm_log; intuition.
@@ -39,7 +39,7 @@ Section LogMatchingProof.
       log_matching_hosts net ->
       (forall h, log (nwState net h) = log (nwState net' h)) ->
       log_matching_hosts net'.
-  Proof.
+  Proof using. 
     intros.
     unfold log_matching_hosts in *.
     intuition; repeat rewrite <- H0 in *; eauto.
@@ -56,7 +56,7 @@ Section LogMatchingProof.
       (forall h, log (nwState net h) = log (nwState net' h)) ->
       (forall p, is_append_entries (pBody p) -> In p (nwPackets net') -> In p (nwPackets net)) ->
       log_matching net'.
-  Proof.
+  Proof using. 
     intros. split; unfold log_matching in *.
     - intuition. eauto using log_matching_hosts_ignores_packets.
     - unfold log_matching_nw in *. intros.
@@ -206,7 +206,7 @@ Section LogMatchingProof.
        In p (nwPackets net) \/ In p (map (fun m => mkPacket h (fst m) (snd m)) ms)) ->
       (forall h', nwState net' h' = if name_eq_dec h' h then d else nwState net h') ->
       log_matching_nw net'.
-  Proof.
+  Proof using. 
     intros.
     find_copy_apply_lem_hyp doLeader_same_log.
     unfold doLeader in *.
@@ -474,7 +474,7 @@ Section LogMatchingProof.
       forall d h out d' ms,
       doLeader d h = (out, d', ms) ->
       log d' = log d.
-  Proof.
+  Proof using. 
     intros.
     unfold doLeader in *.
     repeat break_match; find_inversion; auto.
@@ -482,7 +482,7 @@ Section LogMatchingProof.
 
   Lemma do_leader_log_matching :
     raft_net_invariant_do_leader log_matching.
-  Proof.
+  Proof using uii si. 
     unfold raft_net_invariant_do_leader, log_matching. intuition.
     - find_apply_lem_hyp doLeader_doesn't_touch_log.
       unfold log_matching_hosts in *; simpl in *.
@@ -639,7 +639,7 @@ Ltac assert_do_leader :=
          In p (nwPackets net') ->
          In p (nwPackets net)) ->
       host_independent_log_matching_nw net'.
-  Proof.
+  Proof using. 
     intros; unfold host_independent_log_matching_nw in *; intuition;
     solve [use_nw_invariant; eauto 10|use_log_matching_nw_nw; eauto 10].
   Qed.
@@ -690,7 +690,7 @@ Ltac assert_do_leader :=
 
   Theorem doGenericServer_log_matching :
     raft_net_invariant_do_generic_server log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server.
     intros. subst.
     unfold doGenericServer in *.
@@ -731,7 +731,7 @@ Ltac assert_do_leader :=
         ((mkEntry h client id (S (maxIndex (log (nwState net h)))) (currentTerm (nwState net h)) c)
            :: (log (nwState net h)))
         (log (nwState net h')).
-  Proof.
+  Proof using. 
     unfold entries_match. intros.
     intuition.
     - simpl in *. intuition.
@@ -753,7 +753,7 @@ Ltac assert_do_leader :=
     forall net,
       leader_sublog_invariant net ->
       leader_sublog_host_invariant net.
-  Proof.
+  Proof using. 
     unfold leader_sublog_invariant. intuition.
   Qed.
 
@@ -761,7 +761,7 @@ Ltac assert_do_leader :=
     forall net,
       logs_sorted net ->
       logs_sorted_host net.
-  Proof.
+  Proof using. 
     unfold logs_sorted. intuition.
   Qed.
 
@@ -793,7 +793,7 @@ Ltac assert_do_leader :=
 
   Lemma client_request_log_matching :
     raft_net_invariant_client_request log_matching.
-  Proof.
+  Proof using lsi si. 
     unfold raft_net_invariant_client_request.
     intros.
     unfold handleClientRequest in *.
@@ -898,7 +898,7 @@ Ltac assert_do_leader :=
       tryToBecomeLeader h d = (out, d', l) ->
       log d' = log d /\
       (forall m, In m l -> ~ is_append_entries (snd m)).
-  Proof.
+  Proof using. 
     intuition eauto using tryToBecomeLeader_same_log.
     unfold tryToBecomeLeader in *. find_inversion.
     do_in_map. subst. simpl in *. congruence.
@@ -906,7 +906,7 @@ Ltac assert_do_leader :=
 
   Lemma handleTimeout_log_matching :
     raft_net_invariant_timeout log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout.
     intros.
     unfold handleTimeout in *.
@@ -925,7 +925,7 @@ Ltac assert_do_leader :=
     forall h st t n lli llt d m,
       handleRequestVote h st t n lli llt = (d, m) ->
       ~ is_append_entries m.
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVote in *.
     repeat (break_match; repeat (find_inversion; simpl in *));
@@ -934,7 +934,7 @@ Ltac assert_do_leader :=
 
   Lemma handleRequestVote_log_matching :
     raft_net_invariant_request_vote log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote.
     intros.
     do_state_same_packet_subset.
@@ -946,7 +946,7 @@ Ltac assert_do_leader :=
 
   Lemma handleRequestVoteReply_log_matching :
     raft_net_invariant_request_vote_reply log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply. intros.
     do_state_same_packet_subset.
     rewrite handleRequestVoteReply_same_log. auto.
@@ -954,7 +954,7 @@ Ltac assert_do_leader :=
 
   Lemma log_matching_init :
     raft_net_invariant_init log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init,
     log_matching,
     log_matching_hosts,
@@ -965,7 +965,7 @@ Ltac assert_do_leader :=
 
   Lemma log_matching_reboot :
     raft_net_invariant_reboot log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot. intros.
     unfold reboot in *. subst. simpl in *.
     eapply log_matching_state_same_packet_subset; eauto;
@@ -979,7 +979,7 @@ Ltac assert_do_leader :=
       forall x,
         In x l ->
         ~ is_append_entries (snd x).
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntriesReply in *.
     repeat (break_match; repeat (find_inversion; simpl in *)); intuition.
@@ -987,7 +987,7 @@ Ltac assert_do_leader :=
 
   Lemma handleAppendEntriesReply_log_matching :
     raft_net_invariant_append_entries_reply log_matching.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries_reply.
     intros.
     do_state_same_packet_subset; eauto.
@@ -1011,7 +1011,7 @@ Ltac assert_do_leader :=
       pBody p = AppendEntries t n 0 plt es ci ->
       pDst p <> h ->
       entries_match es (log (nwState net h)).
-  Proof.
+  Proof using. 
     intros.
     unfold log_matching_nw in *. use_nw_invariant_keep.
     eapply entries_match_scratch; eauto; intuition.
@@ -1031,7 +1031,7 @@ Ltac assert_do_leader :=
         (exists e, findAtIndex (log d) pli = Some e /\
               eTerm e = plt)
         /\ log d' = entries ++ (removeAfterIndex (log d) pli))).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries in *.
     repeat (break_match; try find_inversion; intuition;
             simpl in *; do_bool; subst; intuition;
@@ -1053,7 +1053,7 @@ Ltac assert_do_leader :=
       pli <> 0 ->
       entries_match (es ++ (removeAfterIndex (log (nwState net (pDst p))) pli))
                     (log (nwState net h)).
-  Proof.
+  Proof using. 
     intros.
     eapply entries_match_append; eauto;
     try solve [intros; eapply_prop log_matching_nw; eauto].
@@ -1065,7 +1065,7 @@ Ltac assert_do_leader :=
       contiguous_range_exact_lo es lo ->
       lo < i <= maxIndex es ->
       exists e, eIndex e = i /\ In e es.
-  Proof.
+  Proof using. 
     unfold contiguous_range_exact_lo.
     intros.
     intuition.
@@ -1151,7 +1151,7 @@ Ltac assert_do_leader :=
 
   Lemma handleAppendEntries_log_matching :
     raft_net_invariant_append_entries log_matching.
-  Proof.
+  Proof using uii si. 
     unfold raft_net_invariant_append_entries.
     intros.
     find_copy_apply_lem_hyp UniqueIndices_invariant.
@@ -1496,7 +1496,7 @@ Ltac assert_do_leader :=
     forall net,
       raft_intermediate_reachable net ->
       log_matching net.
-  Proof.
+  Proof using uii lsi si. 
     intros. apply raft_net_invariant; eauto.
     - exact log_matching_init.
     - exact client_request_log_matching.

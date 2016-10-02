@@ -13,7 +13,7 @@ Section SpecLemmas.
       handleRequestVote pDst d t cid lli llt = (d', m) ->
       currentTerm d = currentTerm d' ->
       votedFor d = None \/ votedFor d = votedFor d'.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; tuple_inversion; simpl in *; intuition; try discriminate;
     try solve [exfalso; do_bool; omega].
@@ -26,7 +26,7 @@ Section SpecLemmas.
       st' = advanceCurrentTerm st t \/
       (st' = {[ advanceCurrentTerm st t with votedFor := Some h']} /\
        (votedFor st = None /\ currentTerm st = t \/ currentTerm st < t)).
-  Proof.
+  Proof using. 
     unfold handleRequestVote.
     intros.
     repeat break_match; repeat find_inversion; intuition.
@@ -42,7 +42,7 @@ Section SpecLemmas.
        votedFor st' = votedFor st) \/
       (currentTerm st < currentTerm st' /\
        votedFor st' = None).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *; repeat break_match;
     subst; do_bool; intuition.
@@ -53,7 +53,7 @@ Section SpecLemmas.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       currentTerm st' = currentTerm st ->
       votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     unfold handleAppendEntries, advanceCurrentTerm.
     intros.
     repeat break_match; repeat tuple_inversion; simpl in *;
@@ -65,7 +65,7 @@ Section SpecLemmas.
       handleAppendEntriesReply h st h' t es r = (st', ms) ->
       currentTerm st' = currentTerm st ->
       votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; repeat tuple_inversion; auto.
   Qed.
@@ -74,7 +74,7 @@ Section SpecLemmas.
     forall h st os st' ms,
       doGenericServer h st = (os, st', ms) ->
       currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     unfold doGenericServer.
     intros.
     repeat break_match; repeat find_inversion;
@@ -86,7 +86,7 @@ Section SpecLemmas.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -95,7 +95,7 @@ Section SpecLemmas.
     forall h st h' t es r st' ms,
       handleAppendEntriesReply h st h' t es r = (st', ms) ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; tuple_inversion; do_bool; auto.
   Qed.
@@ -104,7 +104,7 @@ Section SpecLemmas.
     forall h st t n pli plt es ci st' ps,
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; do_bool; auto.
   Qed.
@@ -113,7 +113,7 @@ Section SpecLemmas.
     forall h st out st' l,
       tryToBecomeLeader h st = (out, st', l) ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     unfold tryToBecomeLeader.
     intros.
     find_inversion. simpl.
@@ -124,7 +124,7 @@ Section SpecLemmas.
     forall h st out st' l,
       handleTimeout h st = (out, st', l) ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     unfold handleTimeout.
     intros.
     break_match; eauto using tryToBecomeLeader_currentTerm.
@@ -136,7 +136,7 @@ Section SpecLemmas.
     forall st es,
       haveNewEntries st es = true ->
       es <> [].
-  Proof.
+  Proof using. 
     intros. unfold haveNewEntries, not_empty in *.
     do_bool. intuition. repeat break_match; congruence.
   Qed.
@@ -144,7 +144,7 @@ Section SpecLemmas.
   Lemma advanceCurrentTerm_log :
     forall st t,
       log (advanceCurrentTerm st t) = log st.
-  Proof.
+  Proof using. 
     intros.
     unfold advanceCurrentTerm. break_if; simpl in *; auto.
   Qed.
@@ -159,7 +159,7 @@ Section SpecLemmas.
          eIndex e = pli /\
          eTerm e = plt) /\
       log st' = es ++ (removeAfterIndex (log st) pli).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries in *.
     break_if; [find_inversion; subst; eauto|].
     break_if;
@@ -190,7 +190,7 @@ Section SpecLemmas.
            eTerm e = plt ->
            P (es ++ (removeAfterIndex (log st) pli))) ->
         P (log st').
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp handleAppendEntries_log.
     intuition; subst; try find_rewrite; auto.
@@ -205,7 +205,7 @@ Section SpecLemmas.
         exists e,
           findAtIndex (log st) (maxIndex es) = Some e /\
           eTerm e <> maxTerm es)).
-  Proof.
+  Proof using. 
     intros.
     unfold haveNewEntries, not_empty in *.
     repeat break_match; do_bool; intuition eauto; try congruence.
@@ -215,7 +215,7 @@ Section SpecLemmas.
   Lemma advanceCurrentTerm_commitIndex :
     forall st t,
       commitIndex (advanceCurrentTerm st t) = commitIndex st.
-  Proof.
+  Proof using. 
     intros.
     unfold advanceCurrentTerm. break_if; simpl in *; auto.
   Qed.
@@ -223,7 +223,7 @@ Section SpecLemmas.
   Lemma some_none :
     forall A (x : A),
       Some x = None -> False.
-  Proof.
+  Proof using. 
     congruence.
   Qed.
 
@@ -231,7 +231,7 @@ Section SpecLemmas.
     forall st t,
       currentTerm st <= t ->
       currentTerm (advanceCurrentTerm st t) = t.
-  Proof.
+  Proof using. 
     intros. unfold advanceCurrentTerm in *.
     break_if; do_bool; intuition.
   Qed.
@@ -264,7 +264,7 @@ Section SpecLemmas.
        exists e,
          findAtIndex (log st) (maxIndex es) = Some e /\
          eTerm e <> maxTerm es).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries in *.
     break_if; [find_inversion; subst; eauto|].
     break_if;
@@ -286,7 +286,7 @@ Section SpecLemmas.
     forall st t,
       currentTerm st < currentTerm (advanceCurrentTerm st t) \/
       leaderId (advanceCurrentTerm st t) = leaderId st.
-  Proof.
+  Proof using. 
     intros.
     unfold advanceCurrentTerm in *.
     break_if; simpl in *; do_bool; auto.
@@ -296,7 +296,7 @@ Section SpecLemmas.
   Lemma advanceCurrentTerm_currentTerm :
     forall st t,
       currentTerm st <= currentTerm (advanceCurrentTerm st t).
-  Proof.
+  Proof using. 
     intros. unfold advanceCurrentTerm in *.
     break_if; simpl in *; do_bool; omega.
   Qed.
@@ -305,7 +305,7 @@ Section SpecLemmas.
     forall pDst t cid lli llt d d' m,
       handleRequestVote pDst d t cid lli llt = (d', m) ->
       currentTerm d <= currentTerm d'.
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVote in *.
     repeat break_match; find_inversion; subst; auto;
@@ -318,7 +318,7 @@ Section SpecLemmas.
       (currentTerm d < currentTerm d' \/
        (currentTerm d = currentTerm d' /\ votedFor d = None) \/
        (currentTerm d = currentTerm d' /\ votedFor d = votedFor d')).
-  Proof.
+  Proof using. 
     intros.
     find_copy_apply_lem_hyp handleRequestVote_currentTerm_monotonic.
     find_apply_lem_hyp le_lt_or_eq. intuition.
@@ -329,7 +329,7 @@ Section SpecLemmas.
     forall h st h' t r st',
       handleRequestVoteReply h st h' t r = st' ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply in *.
     repeat break_match; subst; do_bool; intuition.
     apply advanceCurrentTerm_currentTerm.
@@ -340,7 +340,7 @@ Section SpecLemmas.
     forall st h h' t lli llt st' m,
       handleRequestVote h st t h' lli llt = (st', m) ->
       currentTerm st <= currentTerm st'.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote in *.
     repeat break_match; tuple_inversion; do_bool;
       simpl; auto using advanceCurrentTerm_currentTerm.
@@ -351,7 +351,7 @@ Section SpecLemmas.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       currentTerm st < currentTerm st' \/
       (currentTerm st <= currentTerm st' /\ (leaderId st' = leaderId st \/ leaderId st' <> None)).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries in *.
     repeat break_match; find_inversion; simpl in *; auto; right;
     intuition eauto using advanceCurrentTerm_currentTerm; right; congruence.
@@ -362,7 +362,7 @@ Section SpecLemmas.
       handleRequestVote h st t c li lt = (st', m) ->
       currentTerm st < currentTerm st' \/
       (currentTerm st = currentTerm st' /\ leaderId st' = leaderId st).
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; simpl in *; auto);
     do_bool; auto.
@@ -374,7 +374,7 @@ Section SpecLemmas.
       currentTerm st < currentTerm st' \/
       currentTerm st' = currentTerm st /\
       leaderId st' = leaderId st.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
     subst.
     repeat (break_match; try find_inversion; simpl in *; auto);
@@ -394,7 +394,7 @@ Section SpecLemmas.
          eInput e = c /\
          eId e = id /\
          type st = Leader).
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     break_match; find_inversion; subst; intuition.
     simpl in *. eauto 10.
@@ -413,7 +413,7 @@ Section SpecLemmas.
                    type st = Leader ->
                    P (e :: log st)) ->
         P (log st').
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp handleClientRequest_log.
     intuition; repeat find_rewrite; auto.
@@ -424,7 +424,7 @@ Section SpecLemmas.
     forall h st t candidate lli llt st' m,
       handleRequestVote h st t candidate lli llt = (st', m) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
@@ -433,7 +433,7 @@ Section SpecLemmas.
     forall h d out d' l,
       handleTimeout h d = (out, d', l) ->
       log d' = log d.
-  Proof.
+  Proof using. 
     unfold handleTimeout, tryToBecomeLeader.
     intros.
     repeat break_match; repeat find_inversion; auto.
@@ -443,7 +443,7 @@ Section SpecLemmas.
     forall h st os st' ps,
       doGenericServer h st = (os, st', ps) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion;
     use_applyEntries_spec; simpl in *;
@@ -460,7 +460,7 @@ Section SpecLemmas.
       (type st <> Leader /\ type st' = Leader ->
        (type st = Candidate /\ wonElection (dedup name_eq_dec
                                                  (votesReceived st')) = true)).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -479,7 +479,7 @@ Section SpecLemmas.
        currentTerm st' = currentTerm st /\
        currentTerm st = t /\
        votesReceived st' = (h' :: (votesReceived st))).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
@@ -490,7 +490,7 @@ Section SpecLemmas.
     forall h st st' ms m,
       handleTimeout h st = (st', ms) ->
       In m ms -> ~ is_append_entries (snd m).
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     break_match; find_inversion; subst; simpl in *; eauto;
     repeat (do_in_map; subst; simpl in *); intuition; break_exists; congruence.
@@ -502,7 +502,7 @@ Section SpecLemmas.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -512,7 +512,7 @@ Section SpecLemmas.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       (type st' = Follower /\ currentTerm st' >= currentTerm st).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; do_bool; auto.
   Qed.
@@ -522,7 +522,7 @@ Section SpecLemmas.
       handleAppendEntriesReply h st h' t es r = (st', ms) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -532,7 +532,7 @@ Section SpecLemmas.
       handleAppendEntriesReply h st h' t es r = (st', ms) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       (type st' = Follower /\ currentTerm st' >= currentTerm st).
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; tuple_inversion; do_bool; auto.
   Qed.
@@ -542,7 +542,7 @@ Section SpecLemmas.
       handleRequestVote h st t h' lli llt = (st', m) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -552,7 +552,7 @@ Section SpecLemmas.
       handleRequestVote h st t h' lli llt = (st', m) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       (type st' = Follower /\ currentTerm st' >= currentTerm st).
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; tuple_inversion; do_bool; auto.
   Qed.
@@ -563,7 +563,7 @@ Section SpecLemmas.
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       (type st' = Follower /\ currentTerm st' > currentTerm st) \/
       (type st = Candidate /\ type st' = Leader /\ currentTerm st' = currentTerm st).
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; subst; do_bool; intuition.
   Qed.
@@ -572,7 +572,7 @@ Section SpecLemmas.
     forall h st client id c out st' l,
       handleClientRequest h st client id c = (out, st', l) ->
       type st' = type st /\ currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -581,7 +581,7 @@ Section SpecLemmas.
     forall h st client id c out st' l,
       handleClientRequest h st client id c = (out, st', l) ->
       currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp handleClientRequest_type.
     intuition.
@@ -592,7 +592,7 @@ Section SpecLemmas.
       handleTimeout h st = (out, st', l) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       type st' = Candidate.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -602,7 +602,7 @@ Section SpecLemmas.
       handleTimeout h st = (out, st', l) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       (type st' = Candidate /\ currentTerm st' = S (currentTerm st)).
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; simpl; intuition.
   Qed.
@@ -611,7 +611,7 @@ Section SpecLemmas.
     forall h st os st' ms,
       doGenericServer h st = (os, st', ms) ->
       type st' = type st /\ currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     unfold doGenericServer.
     intros.
     repeat break_match; repeat find_inversion;
@@ -623,7 +623,7 @@ Section SpecLemmas.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       type st' = type st /\ currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -632,7 +632,7 @@ Section SpecLemmas.
     forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     unfold doLeader. intros.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -641,7 +641,7 @@ Section SpecLemmas.
     forall h st h' t es r st' ms,
       handleAppendEntriesReply h st h' t es r = (st', ms) ->
       log st' = log st.
-  Proof.
+  Proof using. 
     unfold handleAppendEntriesReply, advanceCurrentTerm.
     intros.
     repeat break_match; find_inversion; simpl in *; auto.
@@ -651,7 +651,7 @@ Section SpecLemmas.
     forall h st h' t r st',
       handleRequestVoteReply h st h' t r = st' ->
       log st' = log st.
-  Proof.
+  Proof using. 
     intros.
     eapply handleRequestVoteReply_spec; eauto.
   Qed.
@@ -659,7 +659,7 @@ Section SpecLemmas.
   Lemma handleRequestVoteReply_log_rewrite :
     forall h st h' t r,
       log (handleRequestVoteReply h st h' t r) = log st.
-  Proof.
+  Proof using. 
     intros.
     erewrite handleRequestVoteReply_log; eauto.
   Qed.
@@ -668,7 +668,7 @@ Section SpecLemmas.
     forall h st from t es s st' ps,
       handleAppendEntriesReply h st from t es s = (st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; subst; auto.
   Qed.
@@ -677,7 +677,7 @@ Section SpecLemmas.
     forall h st os st' ps,
       doGenericServer h st = (os, st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion; simpl in *;
     subst; auto.
@@ -687,7 +687,7 @@ Section SpecLemmas.
     forall h st t n pli plt es ci st' m,
       handleAppendEntries h st t n pli plt es ci = (st', m) ->
       ~ is_append_entries m.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries in *.
     repeat break_match; find_inversion;
     intuition; break_exists; congruence.
@@ -699,7 +699,7 @@ Section SpecLemmas.
       (plt : term) (es : list entry) (ci : logIndex),
       handleAppendEntries h st t n pli plt es ci = (d, m) ->
       clientCache d = clientCache st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -710,7 +710,7 @@ Section SpecLemmas.
       (res : bool) h',
       handleAppendEntriesReply h st h' t es res = (d, m) ->
       clientCache d = clientCache st.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; simpl in *; auto).
@@ -719,7 +719,7 @@ Section SpecLemmas.
   Lemma advanceCurrentTerm_clientCache :
     forall st t,
       clientCache (advanceCurrentTerm st t) = clientCache st.
-  Proof.
+  Proof using. 
     unfold advanceCurrentTerm. intros.
     break_if; auto.
   Qed.
@@ -728,7 +728,7 @@ Section SpecLemmas.
     forall h st out st' ps,
       handleTimeout h st = (out, st', ps) ->
       clientCache st' = clientCache st.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     break_match; find_inversion; subst; auto.
   Qed.
@@ -737,7 +737,7 @@ Section SpecLemmas.
   forall h st client id c out st' ps,
     handleClientRequest h st client id c = (out, st', ps) ->
     clientCache st' = clientCache st.
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     break_match; find_inversion; subst; auto.
   Qed.
@@ -746,7 +746,7 @@ Section SpecLemmas.
     forall n st out st' ms,
       tryToBecomeLeader n st = (out, st', ms) ->
       clientCache st' = clientCache st.
-  Proof.
+  Proof using. 
     unfold tryToBecomeLeader.
     intros. find_inversion. auto.
   Qed.
@@ -755,7 +755,7 @@ Section SpecLemmas.
     forall n st t c li lt st' ms,
       handleRequestVote n st t c li lt = (st', ms) ->
       clientCache st' = clientCache st.
-  Proof.
+  Proof using. 
     unfold handleRequestVote.
     intros.
     repeat (break_match; try discriminate; repeat (find_inversion; simpl in *));
@@ -765,7 +765,7 @@ Section SpecLemmas.
   Lemma handleRequestVoteReply_clientCache :
     forall n st src t v,
       clientCache (handleRequestVoteReply n st src t v) = clientCache st.
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros. repeat break_match; simpl; auto using advanceCurrentTerm_clientCache.
   Qed.
@@ -774,7 +774,7 @@ Section SpecLemmas.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       clientCache st' = clientCache st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -785,7 +785,7 @@ Section SpecLemmas.
       (plt : term) (es : list entry) (ci : logIndex),
       handleAppendEntries h st t n pli plt es ci = (d, m) ->
       stateMachine d = stateMachine st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -796,7 +796,7 @@ Section SpecLemmas.
       (res : bool) h',
       handleAppendEntriesReply h st h' t es res = (d, m) ->
       stateMachine d = stateMachine st.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; simpl in *; auto).
@@ -805,7 +805,7 @@ Section SpecLemmas.
   Lemma advanceCurrentTerm_stateMachine :
     forall st t,
       stateMachine (advanceCurrentTerm st t) = stateMachine st.
-  Proof.
+  Proof using. 
     unfold advanceCurrentTerm. intros.
     break_if; auto.
   Qed.
@@ -814,7 +814,7 @@ Section SpecLemmas.
     forall h st out st' ps,
       handleTimeout h st = (out, st', ps) ->
       stateMachine st' = stateMachine st.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     break_match; find_inversion; subst; auto.
   Qed.
@@ -823,7 +823,7 @@ Section SpecLemmas.
   forall h st client id c out st' ps,
     handleClientRequest h st client id c = (out, st', ps) ->
     stateMachine st' = stateMachine st.
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     break_match; find_inversion; subst; auto.
   Qed.
@@ -832,7 +832,7 @@ Section SpecLemmas.
     forall n st out st' ms,
       tryToBecomeLeader n st = (out, st', ms) ->
       stateMachine st' = stateMachine st.
-  Proof.
+  Proof using. 
     unfold tryToBecomeLeader.
     intros. find_inversion. auto.
   Qed.
@@ -841,7 +841,7 @@ Section SpecLemmas.
     forall n st t c li lt st' ms,
       handleRequestVote n st t c li lt = (st', ms) ->
       stateMachine st' = stateMachine st.
-  Proof.
+  Proof using. 
     unfold handleRequestVote.
     intros.
     repeat (break_match; try discriminate; repeat (find_inversion; simpl in *));
@@ -851,7 +851,7 @@ Section SpecLemmas.
   Lemma handleRequestVoteReply_stateMachine :
     forall n st src t v,
       stateMachine (handleRequestVoteReply n st src t v) = stateMachine st.
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros. repeat break_match; simpl; auto using advanceCurrentTerm_stateMachine.
   Qed.
@@ -860,7 +860,7 @@ Section SpecLemmas.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       stateMachine st' = stateMachine st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -887,7 +887,7 @@ Section SpecLemmas.
       (plt : term) (es : list entry) (ci : logIndex),
       handleAppendEntries h st t n pli plt es ci = (d, m) ->
       matchIndex_preserved st d.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto; intros; congruence.
   Qed.
@@ -898,7 +898,7 @@ Section SpecLemmas.
       (res : bool) h',
       handleAppendEntriesReply h st h' t es res = (d, m) ->
       matchIndex_preserved_except_at_host h' st d.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; simpl in *; auto).
@@ -910,7 +910,7 @@ Section SpecLemmas.
   Lemma advanceCurrentTerm_matchIndex_preserved :
     forall st t,
       matchIndex_preserved st (advanceCurrentTerm st t).
-  Proof.
+  Proof using. 
     unfold advanceCurrentTerm. intros.
     break_if; simpl in *; auto; congruence.
   Qed.
@@ -919,7 +919,7 @@ Section SpecLemmas.
     forall h st out st' ps,
       handleTimeout h st = (out, st', ps) ->
       matchIndex_preserved st st'.
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     break_match; simpl in *; find_inversion; subst; simpl in *; auto; congruence.
   Qed.
@@ -930,7 +930,7 @@ Section SpecLemmas.
     (maxIndex (log st') = maxIndex (log st) /\
      matchIndex st' = matchIndex st) \/
     (assoc_default name_eq_dec (matchIndex st') h 0) = maxIndex (log st').
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     break_match; find_inversion; subst; simpl in *; auto.
     unfold assoc_default. break_match;
@@ -944,7 +944,7 @@ Section SpecLemmas.
        matchIndex st' = matchIndex st) \/
       matchIndex st' = assoc_set name_eq_dec (matchIndex st) h (maxIndex (log st')) /\
       maxIndex (log st') = S (maxIndex (log st)).
-  Proof.
+  Proof using. 
     unfold handleClientRequest.
     intros.
     repeat break_match; repeat find_inversion; auto.
@@ -954,7 +954,7 @@ Section SpecLemmas.
     forall n st out st' ms,
       tryToBecomeLeader n st = (out, st', ms) ->
       matchIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold tryToBecomeLeader.
     intros. find_inversion. simpl; intros; auto; congruence.
   Qed.
@@ -963,7 +963,7 @@ Section SpecLemmas.
     forall n st t c li lt st' ms,
       handleRequestVote n st t c li lt = (st', ms) ->
       matchIndex_preserved st st'.
-  Proof.
+  Proof using. 
     unfold handleRequestVote, advanceCurrentTerm.
     intros.
     repeat (break_match; try discriminate; repeat (find_inversion; simpl in *)); auto.
@@ -973,7 +973,7 @@ Section SpecLemmas.
     forall h st os st' ps,
       doGenericServer h st = (os, st', ps) ->
       matchIndex_preserved st st'.
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion;
     use_applyEntries_spec; simpl in *;
@@ -986,7 +986,7 @@ Section SpecLemmas.
       (type st = Leader /\ matchIndex (handleRequestVoteReply n st src t v) = matchIndex st) \/
       (assoc_default name_eq_dec (matchIndex (handleRequestVoteReply n st src t v)) n 0
        = maxIndex (log (handleRequestVoteReply n st src t v))).
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply.
     intros.
     repeat break_match; simpl; auto using advanceCurrentTerm_matchIndex_preserved;
@@ -999,7 +999,7 @@ Section SpecLemmas.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       matchIndex_preserved st st'.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *. simpl; intros.
     repeat break_match; find_inversion; auto; congruence.
   Qed.
@@ -1008,7 +1008,7 @@ Section SpecLemmas.
         forall st h os st' ms,
       doLeader st h = (os, st', ms) ->
       lastApplied st' = lastApplied st.
-  Proof.
+  Proof using. 
     intros. unfold doLeader in *.
     repeat break_match; find_inversion; auto.
   Qed.  
@@ -1016,7 +1016,7 @@ Section SpecLemmas.
     forall st h h' t lli llt st' m,
       handleRequestVote h st t h' lli llt = (st', m) ->
       ~ is_append_entries m.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; subst; auto;
     intuition; break_exists; congruence.
@@ -1027,7 +1027,7 @@ Section SpecLemmas.
       handleClientRequest h st client id c = (out, st', ps) ->
       In m ps ->
       ~ is_append_entries (snd m).
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     repeat break_match; find_inversion; subst; auto;
     intuition; break_exists; congruence.
@@ -1037,7 +1037,7 @@ Section SpecLemmas.
     forall h st client id c out st' ps,
       handleClientRequest h st client id c = (out, st', ps) ->
       ps = [].
-  Proof.
+  Proof using. 
     intros. unfold handleClientRequest in *.
     repeat break_match; repeat find_inversion; auto.
   Qed.
@@ -1047,7 +1047,7 @@ Section SpecLemmas.
       handleTimeout h d = (out, d', ps) ->
       In m ps ->
       ~ is_append_entries (snd m).
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; subst; auto;
     intuition; break_exists;
@@ -1065,7 +1065,7 @@ Section SpecLemmas.
       ((plt = 0) \/
        ((exists e, findAtIndex (log st) pli = Some e /\
               eTerm e = plt))).
-  Proof.
+  Proof using. 
     intros. unfold doLeader, advanceCommitIndex in *.
     break_match; try solve [find_inversion; simpl in *; intuition].
     break_if; try solve [find_inversion; simpl in *; intuition].
@@ -1086,7 +1086,7 @@ Section SpecLemmas.
       snd m = AppendEntries t n pli plt es ci ->
       In e es ->
       In e (log st).
-  Proof.
+  Proof using. 
     intros. unfold doLeader, advanceCommitIndex in *.
     break_match; try solve [find_inversion; simpl in *; intuition].
     break_if; try solve [find_inversion; simpl in *; intuition].
@@ -1101,7 +1101,7 @@ Section SpecLemmas.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       (log st' = log st /\ currentTerm st' = currentTerm st /\ type st' = type st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1110,7 +1110,7 @@ Section SpecLemmas.
     forall h st t n pli plt es ci st' ps,
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       votesReceived st' = votesReceived st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1120,7 +1120,7 @@ Section SpecLemmas.
       handleAppendEntriesReply h st n t es r = (st', ps) ->
       (log st' = log st /\ currentTerm st' = currentTerm st /\ type st' = type st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1129,7 +1129,7 @@ Section SpecLemmas.
     forall h st n t es r st' ps,
       handleAppendEntriesReply h st n t es r = (st', ps) ->
       votesReceived st' = votesReceived st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1140,7 +1140,7 @@ Section SpecLemmas.
       handleRequestVote h st t c li lt = (st', m) ->
       (log st' = log st /\ currentTerm st' = currentTerm st /\ type st' = type st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1149,7 +1149,7 @@ Section SpecLemmas.
     forall h st t c li lt st' m,
       handleRequestVote h st t c li lt = (st', m) ->
       votesReceived st' = votesReceived st.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1160,7 +1160,7 @@ Section SpecLemmas.
       type st' = Candidate ->
       handleRequestVoteReply h st h' t r = st' ->
       (log st' = log st /\ currentTerm st' = currentTerm st /\ type st' = type st).
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; subst; simpl in *; auto; congruence.
   Qed.
@@ -1170,7 +1170,7 @@ Section SpecLemmas.
       In v (votesReceived (handleRequestVoteReply h st h' t r)) ->
       In v (votesReceived st) \/
       (r = true /\ v = h' /\ currentTerm (handleRequestVoteReply h st h' t r) = t).
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; subst; simpl in *; do_bool; intuition.
   Qed.
@@ -1180,7 +1180,7 @@ Section SpecLemmas.
       handleTimeout h st = (out, st', ps) ->
       (log st' = log st /\ currentTerm st' = currentTerm st /\ type st' = type st) \/
       currentTerm st' = S (currentTerm st).
-  Proof.
+  Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; simpl in *; intuition.
   Qed.
@@ -1190,7 +1190,7 @@ Section SpecLemmas.
       handleClientRequest h st client id c = (os, st', m) ->
       type st' = Candidate ->
       st' = st.
-  Proof.
+  Proof using. 
     intros.
     unfold handleClientRequest in *.
     repeat break_match; find_inversion; simpl in *; congruence.
@@ -1201,7 +1201,7 @@ Section SpecLemmas.
       doLeader st h = (os, st', ms) ->
       type st' = Candidate ->
       st' = st.
-  Proof.
+  Proof using. 
     unfold doLeader, advanceCommitIndex in *.
     intros.
     repeat break_match; find_inversion; simpl in *; congruence.
@@ -1212,7 +1212,7 @@ Section SpecLemmas.
       doLeader st h = (os, st', ms) ->
       currentTerm st' = currentTerm st /\
       votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     unfold doLeader, advanceCommitIndex in *.
     intros.
     repeat break_match; find_inversion; simpl in *; intuition.
@@ -1226,7 +1226,7 @@ Section SpecLemmas.
       currentTerm st' = currentTerm st /\
       votesReceived st' = votesReceived st /\
       votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     intros. unfold doGenericServer in *.
     repeat break_match; find_inversion;
     use_applyEntries_spec; simpl in *;
@@ -1240,7 +1240,7 @@ Section SpecLemmas.
       type st' = type st /\
       currentTerm st' = currentTerm st /\
       votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     intros.
     unfold handleClientRequest in *.
     repeat break_match; find_inversion; simpl in *; intuition.
@@ -1252,7 +1252,7 @@ Section SpecLemmas.
       handleAppendEntries h st t n pli plt es ci = (st', ps) ->
       votedFor st' = Some h' ->
       currentTerm st' = currentTerm st /\ votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntries, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto; congruence.
   Qed.
@@ -1262,7 +1262,7 @@ Section SpecLemmas.
       handleAppendEntriesReply h st n t es r = (st', ps) ->
       votedFor st' = Some h' ->
       currentTerm st' = currentTerm st /\ votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; auto.
   Qed.
@@ -1272,7 +1272,7 @@ Section SpecLemmas.
       handleRequestVoteReply h st h' t r = st' ->
       votedFor st' = Some h'' ->
       currentTerm st' = currentTerm st /\ votedFor st' = votedFor st.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; subst; simpl in *; auto; congruence.
   Qed.
@@ -1283,7 +1283,7 @@ Section SpecLemmas.
       (st', RequestVoteReply t' true) ->
       votedFor st' = Some h' /\
       currentTerm st' = t'.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; simpl in *; intuition.
   Qed.
@@ -1296,7 +1296,7 @@ Section SpecLemmas.
       In m l ->
       snd m = RequestVote t n mi mt ->
       maxIndex (log st') = mi /\ maxTerm (log st') = mt /\ t = currentTerm st'.
-  Proof.
+  Proof using. 
     intros.
     unfold handleTimeout, tryToBecomeLeader in *.
     repeat break_match; find_inversion; simpl in *; intuition;
@@ -1307,7 +1307,7 @@ Section SpecLemmas.
     forall h st h' t r x,
       x <= currentTerm st ->
       x <= currentTerm (handleRequestVoteReply h st h' t r).
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm.
     repeat break_match; subst; simpl in *; auto; try omega.
     do_bool. omega.
@@ -1320,7 +1320,7 @@ Section SpecLemmas.
     (t lli llt : nat) (st' : raft_data) (t' : term),
     handleRequestVote h st t h' lli llt = (st', RequestVoteReply t' true) ->
     t' = t /\ currentTerm st' = t.
-  Proof.
+  Proof using. 
     unfold handleRequestVote, advanceCurrentTerm in *.
     intros.
     repeat break_match; find_inversion; simpl in *; auto; try congruence;

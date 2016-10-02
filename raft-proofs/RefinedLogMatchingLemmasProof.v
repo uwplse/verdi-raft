@@ -24,7 +24,7 @@ Section RefinedLogMatchingLemmas.
     forall (net : network (params := raft_refined_multi_params)) p,
       In p (nwPackets net) ->
       In (deghost_packet p) (nwPackets (deghost net)).
-  Proof.
+  Proof using. 
     unfold deghost.
     simpl. intuition.
     apply in_map_iff.
@@ -50,7 +50,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_contiguous_nw net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -63,7 +63,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_gt_0_nw net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -77,7 +77,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_sorted_nw net.
-  Proof.
+  Proof using si rri. 
     intros.
     pose proof (lift_prop _ logs_sorted_invariant).
     forward_invariant.
@@ -92,7 +92,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_gt_0 net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -107,7 +107,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_contiguous net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -124,7 +124,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_sorted net.
-  Proof.
+  Proof using si rri. 
     intros.
     pose proof (lift_prop _ logs_sorted_invariant).
     forward_invariant.
@@ -139,7 +139,7 @@ Section RefinedLogMatchingLemmas.
     forall net h h',
       refined_raft_intermediate_reachable net ->
       entries_match (log (snd (nwState net h))) (log (snd (nwState net h'))).
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -154,7 +154,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_match_nw_1 net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -185,7 +185,7 @@ Section RefinedLogMatchingLemmas.
     forall net,
       refined_raft_intermediate_reachable net ->
       entries_match_nw_host net.
-  Proof.
+  Proof using lmi rri. 
     intros.
     pose proof (lift_prop _ log_matching_invariant).
     forward_invariant.
@@ -213,7 +213,7 @@ Section RefinedLogMatchingLemmas.
       refined_raft_intermediate_reachable net ->
       In e (map snd (allEntries (fst (nwState net h)))) ->
       eIndex e > 0.
-  Proof.
+  Proof using aeigt0. 
     intros.
     eapply allEntries_indices_gt_0_invariant; eauto.
   Qed.

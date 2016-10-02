@@ -44,7 +44,7 @@ Section AllEntriesLogMatching.
   
   Lemma allEntries_log_matching_init :
     refined_raft_net_invariant_init allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start. split.
     - unfold allEntries_log_matching. intros. simpl in *. intuition.
     - unfold allEntries_log_matching_nw. intros. simpl in *. intuition.
@@ -61,7 +61,7 @@ Section AllEntriesLogMatching.
     forall net,
       refined_raft_intermediate_reachable net ->
       leader_sublog net.
-  Proof.
+  Proof using lsi rri. 
     pose proof lift_prop _ leader_sublog_invariant_invariant.
     unfold leader_sublog, leader_sublog_invariant, leader_sublog_host_invariant in *.
     intuition.
@@ -83,7 +83,7 @@ Section AllEntriesLogMatching.
       eTerm e = currentTerm (snd (nwState net h)) ->
       In e es ->
       In e (log (snd (nwState net h))).
-  Proof.
+  Proof using lsi rri. 
     intros.
     pose proof (lift_prop _ leader_sublog_invariant_invariant _ ltac:(eauto)) as Hinv.
     unfold leader_sublog_invariant, leader_sublog_nw_invariant in *.
@@ -99,7 +99,7 @@ Section AllEntriesLogMatching.
       In e (log (snd (nwState net h))) ->
       eIndex e = S (maxIndex (log (snd (nwState net h)))) ->
       False.
-  Proof.
+  Proof using rlmli. 
     intros.
     intro_refined_invariant entries_sorted_invariant.
     find_apply_lem_hyp maxIndex_is_max; auto.
@@ -117,7 +117,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_client_request :
     refined_raft_net_invariant_client_request allEntries_log_matching_inductive.
-  Proof.
+  Proof using rlmli lsi aelsi rri. 
     start_update.
     - subst.
       find_copy_apply_lem_hyp update_elections_data_client_request_log_allEntries.
@@ -168,7 +168,7 @@ Section AllEntriesLogMatching.
       log d = log (snd (nwState net h)) ->
       allEntries gd = allEntries (fst (nwState net h)) ->
       allEntries_log_matching {| nwPackets := ps'; nwState := st' |}.
-  Proof.
+  Proof using. 
     unfold allEntries_log_matching. intros.
     find_higher_order_rewrite.
     do 2 (update_destruct; rewrite_update); simpl in *;
@@ -180,7 +180,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_timeout :
     refined_raft_net_invariant_timeout allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *; try find_erewrite_lem handleTimeout_log_same; eauto;
     try find_erewrite_lem update_elections_data_timeout_allEntries; eauto;
     find_apply_hyp_hyp; intuition; eauto;
@@ -197,7 +197,7 @@ Section AllEntriesLogMatching.
       haveNewEntries (snd (nwState net h)) es = false ->
       In e es ->
       In e (log (snd (nwState net h))).
-  Proof.
+  Proof using rlmli. 
     intros.
     unfold haveNewEntries in *. do_bool. intuition;
       [unfold not_empty in *; break_match; subst; simpl in *; intuition; congruence|].
@@ -228,7 +228,7 @@ Section AllEntriesLogMatching.
       pBody p = AppendEntries (currentTerm d) n pli plt es ci ->
       eTerm e = eTerm e' ->
       eIndex e = eIndex e' -> In e entries -> In e' es -> e = e'.
-  Proof.
+  Proof using rlmli. 
     intros.
     enough (In e' entries) by
         (eapply uniqueIndices_elim_eq; eauto; apply sorted_uniqueIndices; eapply entries_sorted_nw_invariant; [| | eauto]; eauto).
@@ -241,7 +241,7 @@ Section AllEntriesLogMatching.
   
   Lemma allEntries_log_matching_append_entries :
     refined_raft_net_invariant_append_entries allEntries_log_matching_inductive.
-  Proof.
+  Proof using rlmli. 
     start_update; simpl in *.
     - match goal with
         | H : context [handleAppendEntries] |- _ =>
@@ -302,7 +302,7 @@ Section AllEntriesLogMatching.
       
   Lemma allEntries_log_matching_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *;
     try find_erewrite_lem handleAppendEntriesReply_log; eauto;
     find_apply_hyp_hyp; intuition; eauto;
@@ -313,7 +313,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_request_vote :
     refined_raft_net_invariant_request_vote allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *;
     try find_erewrite_lem handleRequestVote_log; eauto;
     try find_erewrite_lem update_elections_data_requestVote_allEntries; eauto;
@@ -327,7 +327,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *;
     try find_erewrite_lem handleRequestVoteReply_log; eauto;
     try find_erewrite_lem update_elections_data_requestVoteReply_allEntries; eauto;
@@ -336,7 +336,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_do_leader :
     refined_raft_net_invariant_do_leader allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *;
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -352,7 +352,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_do_generic_server :
     refined_raft_net_invariant_do_generic_server allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *;
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -367,7 +367,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *.
     - repeat find_reverse_higher_order_rewrite. eauto.
     - repeat find_reverse_higher_order_rewrite.
@@ -376,7 +376,7 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_reboot :
     refined_raft_net_invariant_reboot allEntries_log_matching_inductive.
-  Proof.
+  Proof using. 
     start_update; simpl in *;
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -390,7 +390,7 @@ Section AllEntriesLogMatching.
     forall net,
       refined_raft_intermediate_reachable net ->
       allEntries_log_matching_inductive net.
-  Proof.
+  Proof using rlmli lsi aelsi rri. 
     intros.
     apply refined_raft_net_invariant; auto.
     - apply allEntries_log_matching_init.

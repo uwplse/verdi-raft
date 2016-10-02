@@ -33,7 +33,7 @@ Section OutputImpliesApplied.
       ~ key_in_output_trace client id tr ->
       key_in_output_trace client id (tr ++ o) ->
       key_in_output_trace client id o.
-  Proof.
+  Proof using. 
     intros. unfold key_in_output_trace in *.
     break_exists_exists.
     intuition. do_in_app; intuition.
@@ -44,7 +44,7 @@ Section OutputImpliesApplied.
     forall l l',
       key_in_output_list client id (l ++ l') ->
       key_in_output_list client id l \/ key_in_output_list client id l'.
-  Proof.
+  Proof using. 
     intros.
     unfold key_in_output_list in *.
     break_exists; do_in_app; intuition eauto.
@@ -52,7 +52,7 @@ Section OutputImpliesApplied.
 
   Lemma key_in_output_list_empty :
     ~ key_in_output_list client id [].
-  Proof.
+  Proof using. 
     intuition.
     unfold key_in_output_list in *.
     break_exists; intuition.
@@ -62,7 +62,7 @@ Section OutputImpliesApplied.
     forall st h out st' m,
       doLeader st h = (out, st', m) ->
       ~ key_in_output_list client id out.
-  Proof.
+  Proof using. 
     intros. unfold doLeader, advanceCommitIndex in *.
     repeat break_match; find_inversion; intuition eauto using key_in_output_list_empty.
   Qed.
@@ -71,7 +71,7 @@ Section OutputImpliesApplied.
     forall st h i out st' m,
       handleInput h i st = (out, st', m) ->
       ~ key_in_output_list client id out.
-  Proof.
+  Proof using. 
     intros. unfold handleInput, handleTimeout, handleClientRequest, tryToBecomeLeader in *.
     repeat break_match; find_inversion; intuition eauto using key_in_output_list_empty;
     unfold key_in_output_list in *; break_exists; simpl in *; intuition; congruence.
@@ -85,7 +85,7 @@ Section OutputImpliesApplied.
         eClient e = client /\
         eId e = id /\
         In e l.
-  Proof.
+  Proof using. 
     induction l; intros.
     - simpl in *.
       find_inversion; simpl in *; intuition.
@@ -105,7 +105,7 @@ Section OutputImpliesApplied.
       exists e : entry,
         eClient e = client /\
         eId e = id /\ In e (applied_entries (update name_eq_dec (nwState net) h st')).
-  Proof.
+  Proof using misi smsi lmi. 
     intros. unfold key_in_output_list in *.
     match goal with | H : exists _, _ |- _ => destruct H as [o] end.
     unfold doGenericServer in *. break_let. simpl in *.
@@ -163,7 +163,7 @@ Section OutputImpliesApplied.
       @step_failure _ _ failure_params (failed, net) (failed', net') o ->
       key_in_output_trace client id o ->
       in_applied_entries client id net'.
-  Proof.
+  Proof using misi smsi lmi. 
     intros.
     invcs H0; simpl in *;
     try match goal with
@@ -257,7 +257,7 @@ Section OutputImpliesApplied.
       step_failure_star step_failure_init (failed, net) tr ->
       key_in_output_trace client id tr ->
       in_applied_entries client id net.
-  Proof.
+  Proof using misi smsi aemi lmi. 
     intros. pose proof (trace_relations_work (failed, net) tr).
     concludes. intuition.
   Qed.

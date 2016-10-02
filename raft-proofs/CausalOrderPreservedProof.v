@@ -28,7 +28,7 @@ Section CausalOrderPreserved.
       before_func f g (l ++ l') ->
       (forall x, In x l -> g x = false) /\
       before_func f g l'.
-  Proof.
+  Proof using. 
     intros. induction l; simpl in *; intuition; subst; auto.
   Qed.
 
@@ -38,7 +38,7 @@ Section CausalOrderPreserved.
       step_failure s s' tr' ->
       output_before_input client id client' id' (tr ++ tr') ->
       ~ exists i, in_input_trace client' id' i (tr ++ tr').
-  Proof.
+  Proof using. 
     intros. find_eapply_lem_hyp before_func_app_necessary; eauto.
     intuition.
     break_exists. unfold in_input_trace in *.
@@ -56,7 +56,7 @@ Section CausalOrderPreserved.
     forall tr,
       output_before_input client id client' id' tr ->
       key_in_output_trace client id tr.
-  Proof.
+  Proof using. 
     intros. unfold output_before_input in *.
     induction tr; simpl in *; intuition.
     - unfold key_in_output_trace.
@@ -71,7 +71,7 @@ Section CausalOrderPreserved.
       in_applied_entries client id net ->
       ~ in_applied_entries client' id' net ->
       entries_ordered client id client' id' net.
-  Proof.
+  Proof using. 
     intros. unfold in_applied_entries, entries_ordered in *.
     induction (applied_entries (nwState net)); simpl in *; break_exists; intuition.
     - subst. left. unfold has_key. break_match.
@@ -94,7 +94,7 @@ Section CausalOrderPreserved.
         eClient e = client' /\
         eId e = id' /\
         applied_implies_input_state client' id' (eInput e) net.
-  Proof.
+  Proof using. 
     intros.
     unfold in_applied_entries in *. break_exists_exists.
     intuition. red. exists x. intuition.
@@ -146,7 +146,7 @@ Section CausalOrderPreserved.
       step_failure_star step_failure_init (failed, net) tr ->
       output_before_input client id client' id' tr ->
       entries_ordered client id client' id' net.
-  Proof.
+  Proof using aemi aiii oiai. 
     intros. pose proof (trace_relations_work (failed, net) tr).
     concludes. intuition.
   Qed.

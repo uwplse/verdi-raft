@@ -442,7 +442,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_client_request net ->
       refined_raft_net_invariant_client_request' net.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request, refined_raft_net_invariant_client_request'.
     intuition eauto.
   Qed.
@@ -451,7 +451,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_timeout net ->
       refined_raft_net_invariant_timeout' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_timeout, refined_raft_net_invariant_timeout'.
       intuition eauto.
   Qed.
@@ -460,7 +460,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_append_entries net ->
       refined_raft_net_invariant_append_entries' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_append_entries, refined_raft_net_invariant_append_entries'.
       intuition eauto.
   Qed.
@@ -469,7 +469,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_append_entries_reply net ->
       refined_raft_net_invariant_append_entries_reply' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_append_entries_reply, refined_raft_net_invariant_append_entries_reply'.
       intuition eauto.
   Qed.
@@ -478,7 +478,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_request_vote net ->
       refined_raft_net_invariant_request_vote' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_request_vote, refined_raft_net_invariant_request_vote'.
       intuition eauto.
   Qed.
@@ -487,7 +487,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_request_vote_reply net ->
       refined_raft_net_invariant_request_vote_reply' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_request_vote_reply, refined_raft_net_invariant_request_vote_reply'.
       intuition eauto.
   Qed.
@@ -496,7 +496,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_do_leader net ->
       refined_raft_net_invariant_do_leader' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_do_leader, refined_raft_net_invariant_do_leader'.
       intuition eauto.
   Qed.
@@ -505,7 +505,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_do_generic_server net ->
       refined_raft_net_invariant_do_generic_server' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_do_generic_server, refined_raft_net_invariant_do_generic_server'.
       intuition eauto.
   Qed.
@@ -514,7 +514,7 @@ Section RaftRefinementInterface.
     forall net,
       refined_raft_net_invariant_reboot net ->
       refined_raft_net_invariant_reboot' net.
-    Proof.
+    Proof using. 
       unfold refined_raft_net_invariant_reboot, refined_raft_net_invariant_reboot'.
       intuition eauto.
   Qed.

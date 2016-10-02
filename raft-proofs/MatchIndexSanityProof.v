@@ -20,7 +20,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_init :
     raft_net_invariant_init match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_init, match_index_sanity.
     simpl.
     intuition.
@@ -28,7 +28,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_client_request :
     raft_net_invariant_client_request match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_client_request, match_index_sanity.
     simpl.
     intros.
@@ -57,7 +57,7 @@ Section MatchIndexSanity.
           type st' = Leader ->
           assoc_default name_eq_dec (matchIndex st') h 0 <=
           maxIndex (log st')).
-  Proof.
+  Proof using. 
     unfold matchIndex_preserved.
     intros. intuition.
     repeat find_rewrite.
@@ -66,7 +66,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_timeout :
     raft_net_invariant_timeout match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_timeout, match_index_sanity.
     simpl.
     intros.
@@ -79,7 +79,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_append_entries :
     raft_net_invariant_append_entries match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_append_entries, match_index_sanity.
     simpl.
     intros.
@@ -102,7 +102,7 @@ Section MatchIndexSanity.
       (assoc_set name_eq_dec (matchIndex st) h'
                  (Nat.max (assoc_default name_eq_dec (matchIndex st) h' 0)
                           (maxIndex es)))).
-  Proof.
+  Proof using. 
     unfold handleAppendEntriesReply, advanceCurrentTerm.
     intros.
     repeat break_match; repeat find_inversion; do_bool; auto.
@@ -110,7 +110,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_append_entries_reply :
     raft_net_invariant_append_entries_reply match_index_sanity.
-  Proof.
+  Proof using si aersi. 
     unfold raft_net_invariant_append_entries_reply, match_index_sanity.
     simpl. intros.
     repeat find_higher_order_rewrite.
@@ -138,7 +138,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_request_vote :
     raft_net_invariant_request_vote match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote, match_index_sanity.
     simpl.
     intros.
@@ -158,7 +158,7 @@ Section MatchIndexSanity.
       matchIndex st \/
       matchIndex (handleRequestVoteReply n st src t v) =
       (assoc_set name_eq_dec nil n (maxIndex (log st))).
-  Proof.
+  Proof using. 
     unfold handleRequestVoteReply, advanceCurrentTerm.
     intros.
     repeat break_match; repeat find_inversion; auto; simpl in *; try congruence.
@@ -166,7 +166,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_request_vote_reply :
     raft_net_invariant_request_vote_reply match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_request_vote_reply, match_index_sanity.
     simpl.
     intros.
@@ -186,7 +186,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_do_leader :
     raft_net_invariant_do_leader match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_leader, match_index_sanity.
     simpl.
     intros.
@@ -199,7 +199,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_do_generic_server :
     raft_net_invariant_do_generic_server match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_do_generic_server, match_index_sanity.
     simpl.
     intros.
@@ -212,7 +212,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_state_same_packet_subset :
     raft_net_invariant_state_same_packet_subset match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_state_same_packet_subset, match_index_sanity.
     simpl. intros.
     repeat find_reverse_higher_order_rewrite.
@@ -221,7 +221,7 @@ Section MatchIndexSanity.
 
   Lemma match_index_sanity_reboot :
     raft_net_invariant_reboot match_index_sanity.
-  Proof.
+  Proof using. 
     unfold raft_net_invariant_reboot, match_index_sanity, reboot.
     simpl.
     intros.
@@ -236,7 +236,7 @@ Section MatchIndexSanity.
     forall net,
       raft_intermediate_reachable net ->
       match_index_sanity net.
-  Proof.
+  Proof using si aersi. 
     intros.
     apply raft_net_invariant; auto.
     - apply match_index_sanity_init.

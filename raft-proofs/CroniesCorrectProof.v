@@ -21,7 +21,7 @@ Section CroniesCorrectProof.
     forall (net : network),
       refined_raft_intermediate_reachable net ->
       candidates_vote_for_selves (deghost net).
-  Proof.
+  Proof using cvfsi rri. 
     intros.
 
     eapply lift_prop; [exact candidates_vote_for_selves_invariant|eauto].
@@ -38,7 +38,7 @@ Section CroniesCorrectProof.
       pBody p = RequestVoteReply t v ->
       In p ps ->
       In p (nwPackets net).
-  Proof.
+  Proof using. 
     intros.
     unfold handleClientRequest in *; repeat break_match;
     repeat find_inversion; subst; simpl in *; find_apply_hyp_hyp; intuition.
@@ -54,7 +54,7 @@ Section CroniesCorrectProof.
       pBody p = RequestVoteReply t v ->
       In p ps ->
       In p (nwPackets net).
-  Proof.
+  Proof using. 
     intros.
     unfold handleTimeout, tryToBecomeLeader in *; repeat break_match;
     repeat find_inversion; subst; simpl in *; find_apply_hyp_hyp;
@@ -71,7 +71,7 @@ Section CroniesCorrectProof.
       pBody p = RequestVoteReply t v ->
       In p ps ->
       In p ps'.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntries, advanceCurrentTerm in *; repeat break_match;
     repeat find_inversion; subst; simpl in *; find_apply_hyp_hyp;
@@ -88,7 +88,7 @@ Section CroniesCorrectProof.
       pBody p = RequestVoteReply t v ->
       In p ps ->
       In p ps'.
-  Proof.
+  Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *; repeat break_match;
     repeat find_inversion; subst; simpl in *; find_apply_hyp_hyp;
@@ -97,7 +97,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_client_request :
     refined_raft_net_invariant_client_request cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_client_request. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies, handleClientRequest in *. intros.
@@ -122,7 +122,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_timeout :
     refined_raft_net_invariant_timeout cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_timeout. intros.
     unfold cronies_correct, update_elections_data_timeout in *; intuition.
     - unfold votes_received_cronies, handleTimeout, tryToBecomeLeader in *.
@@ -148,7 +148,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_append_entries :
     refined_raft_net_invariant_append_entries cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies, handleAppendEntries in *.
@@ -177,7 +177,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_append_entries_reply. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies, handleAppendEntriesReply, advanceCurrentTerm in *.
@@ -204,7 +204,7 @@ Section CroniesCorrectProof.
     forall h st t src lli llt d t',
       handleRequestVote h st t src lli llt = (d, RequestVoteReply t' true) ->
       currentTerm d = t' /\ votedFor d = Some src.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat (break_match; try find_inversion; try discriminate);
       simpl in *; subst; intuition.
@@ -214,7 +214,7 @@ Section CroniesCorrectProof.
     forall h h' t h'' lli llt st,
       cronies (update_elections_data_requestVote h h' t h'' lli llt st) =
       cronies (fst st).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVote in *.
     repeat break_match; simpl in *; auto.
@@ -224,7 +224,7 @@ Section CroniesCorrectProof.
     forall h st t h' lli llt st' m,
       handleRequestVote h st t h' lli llt = (st', m) ->
       votesReceived st' = votesReceived st.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -234,7 +234,7 @@ Section CroniesCorrectProof.
       handleRequestVote h st t h' lli llt = (st', m) ->
       (currentTerm st' = currentTerm st /\ type st' = type st) \/
       type st' = Follower.
-  Proof.
+  Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -244,7 +244,7 @@ Section CroniesCorrectProof.
       In (t, c) (votes (fst st)) ->
       In (t, c)
          (votes (update_elections_data_requestVote h h' t' h'' lli llt st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVote.
     repeat break_match; simpl in *; intuition.
@@ -258,7 +258,7 @@ Section CroniesCorrectProof.
          (votes (update_elections_data_requestVote h h' t h' lli llt st)) \/
       (votedFor st' = votedFor (snd st) /\
        currentTerm st' = currentTerm (snd st)).
-  Proof.
+  Proof using. 
     intros.
     unfold update_elections_data_requestVote in *.
     repeat break_match; simpl in *;
@@ -268,7 +268,7 @@ Section CroniesCorrectProof.
   
   Lemma cronies_correct_request_vote :
     refined_raft_net_invariant_request_vote cronies_correct.
-  Proof.
+  Proof using vci. 
     unfold refined_raft_net_invariant_request_vote. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies in *.
@@ -319,7 +319,7 @@ Section CroniesCorrectProof.
       handleRequestVoteReply h st src t v = st' ->
       type st' = Candidate ->
       type st = Candidate /\ currentTerm st' = currentTerm st.
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; subst; simpl in *; auto; congruence.
@@ -330,7 +330,7 @@ Section CroniesCorrectProof.
       handleRequestVoteReply h st src t v = st' ->
       In crony (votesReceived st') ->
       ((crony = src /\ v = true /\ currentTerm st' = t) \/ In crony (votesReceived st)).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; simpl in *; subst; simpl in *; do_bool; intuition.
@@ -344,7 +344,7 @@ Section CroniesCorrectProof.
        (type st = Candidate /\
         wonElection (dedup name_eq_dec (votesReceived st')) = true /\
         currentTerm st' = currentTerm st)).
-  Proof.
+  Proof using. 
     intros.
     unfold handleRequestVoteReply in *.
     repeat (break_match; subst; simpl in *; try discriminate; intuition).
@@ -352,7 +352,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply cronies_correct.
-  Proof.
+  Proof using cvfsi vci rri. 
     unfold refined_raft_net_invariant_request_vote_reply. intros.
     assert (candidates_vote_for_selves (deghost net)) by
         eauto using candidates_vote_for_selves_l_invariant.
@@ -504,7 +504,7 @@ Section CroniesCorrectProof.
       votesReceived st' = votesReceived st /\
       currentTerm st' = currentTerm st /\
       type st' = type st.
-  Proof.
+  Proof using. 
     intros.
     unfold doLeader, advanceCommitIndex in *.
     repeat break_match; find_inversion; intuition.
@@ -519,7 +519,7 @@ Section CroniesCorrectProof.
       pBody p = RequestVoteReply t true ->
       In p ps' ->
       In p ps.
-  Proof.
+  Proof using. 
     intros.
     unfold doLeader in *; repeat break_match; repeat find_inversion;
     simpl in *; find_apply_hyp_hyp; intuition.
@@ -528,7 +528,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_do_leader :
     refined_raft_net_invariant_do_leader cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_leader. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies in *. simpl in *. intros.
@@ -578,7 +578,7 @@ Section CroniesCorrectProof.
       pBody p = RequestVoteReply t v ->
       In p ps' ->
       In p ps.
-  Proof.
+  Proof using. 
     intros. find_apply_hyp_hyp. intuition.
     unfold doGenericServer in *.
     repeat break_match; find_inversion; simpl in *; intuition.
@@ -587,7 +587,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_do_generic_server :
     refined_raft_net_invariant_do_generic_server cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_do_generic_server. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies in *.
@@ -633,7 +633,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_state_same_packet_subset. intros.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies in *. intros.
@@ -648,7 +648,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_reboot :
     refined_raft_net_invariant_reboot cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_reboot, reboot. intros. subst.
     unfold cronies_correct in *; intuition.
     - unfold votes_received_cronies in *. intros.
@@ -688,7 +688,7 @@ Section CroniesCorrectProof.
 
   Lemma cronies_correct_init :
     refined_raft_net_invariant_init cronies_correct.
-  Proof.
+  Proof using. 
     unfold refined_raft_net_invariant_init, cronies_correct, step_async_init.
     unfold votes_received_cronies, cronies_votes, votes_nw, votes_received_leaders.
     simpl. intuition. discriminate.
@@ -698,7 +698,7 @@ Section CroniesCorrectProof.
     forall (net : network),
       refined_raft_intermediate_reachable net ->
       cronies_correct net.
-  Proof.
+  Proof using cvfsi vci rri. 
     intros.
     eapply refined_raft_net_invariant; eauto.
     - apply cronies_correct_init.

@@ -29,7 +29,7 @@ Section RaftMsgRefinement.
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
                              In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) l))) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleMessage, update_elections_data_net in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -52,7 +52,7 @@ Section RaftMsgRefinement.
       (forall p', In p' ps' -> In p' (nwPackets net) \/
                          In p' (send_packets h (@add_ghost_msg _ _ _ ghost_log_params h (gd, d) l))) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleInput, update_elections_data_input in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -75,7 +75,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_net_invariant_reboot P ->
       msg_refined_raft_intermediate_reachable net ->
       P net.
-  Proof.
+  Proof using. 
     intros.
     induction H10.
     - intuition.
@@ -295,7 +295,7 @@ Section RaftMsgRefinement.
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
                              In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) l))) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleMessage, update_elections_data_net in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -319,7 +319,7 @@ Section RaftMsgRefinement.
       (forall p', In p' ps' -> In p' (nwPackets net) \/
                          In p' (send_packets h (@add_ghost_msg _ _ _ ghost_log_params h (gd, d) l))) ->
       P (mkNetwork ps' st').
-  Proof.
+  Proof using. 
     intros.
     unfold handleInput, update_elections_data_input in *.
     break_match; repeat break_let; repeat find_inversion;
@@ -342,7 +342,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_net_invariant_reboot' P ->
       msg_refined_raft_intermediate_reachable net ->
       P net.
-  Proof.
+  Proof using. 
     intros.
     induction H10.
     - intuition.
@@ -573,7 +573,7 @@ Section RaftMsgRefinement.
     forall net,
       msg_refined_raft_intermediate_reachable net ->
       refined_raft_intermediate_reachable (mgv_deghost net).
-  Proof.
+  Proof using. 
     intros.
     induction H.
     - constructor.
@@ -653,7 +653,7 @@ Section RaftMsgRefinement.
     forall P,
       (forall net, refined_raft_intermediate_reachable net -> P net) ->
       (forall net, msg_refined_raft_intermediate_reachable net -> P (mgv_deghost net)).
-  Proof.
+  Proof using. 
     intros.
     eauto using simulation_1.
   Qed.
@@ -663,7 +663,7 @@ Section RaftMsgRefinement.
       @step_failure_star _ _ raft_msg_refined_failure_params (f, net) (f', net') tr ->
       msg_refined_raft_intermediate_reachable net ->
       msg_refined_raft_intermediate_reachable net'.
-  Proof.
+  Proof using. 
     intros.
     prep_induction H.
     induction H using refl_trans_1n_trace_n1_ind; intros; subst.
@@ -679,7 +679,7 @@ Section RaftMsgRefinement.
       exists l'',
         map f l' = map f l'' /\
         (forall x, In x l'' -> In x l).
-  Proof.
+  Proof using raft_params one_node_params orig_base_params. 
     induction l'; simpl; intros.
     - exists nil. simpl in *. intuition.
     - assert (exists x, In x l /\ f x = f a).
@@ -697,7 +697,7 @@ Section RaftMsgRefinement.
   Lemma mgv_deghost_packet_mgv_ghost_packet_partial_inverses :
     forall p,
       (@mgv_deghost_packet _ _ _ ghost_log_params (mgv_ghost_packet p)) = p.
-  Proof.
+  Proof using. 
     intros.
     unfold mgv_deghost_packet, mgv_ghost_packet.
     simpl. destruct p; auto.
@@ -709,7 +709,7 @@ Section RaftMsgRefinement.
       exists rnet,
         net = mgv_deghost rnet /\
         msg_refined_raft_intermediate_reachable rnet.
-  Proof.
+  Proof using. 
     intros.
     induction H.
     - exists (mgv_reghost step_async_init). intuition.
@@ -905,7 +905,7 @@ Section RaftMsgRefinement.
     forall P : _ -> Prop,
       (forall net, msg_refined_raft_intermediate_reachable net -> P (mgv_deghost net)) ->
       (forall net, refined_raft_intermediate_reachable net -> P net).
-  Proof.
+  Proof using. 
     intros.
     find_apply_lem_hyp simulation_2.
     break_exists. intuition. subst. eauto.
@@ -914,7 +914,7 @@ Section RaftMsgRefinement.
   Lemma deghost_spec :
     forall (net : @network _ raft_msg_refined_multi_params) h,
       nwState (mgv_deghost net) h = (nwState net h).
-  Proof.
+  Proof using. 
     intros.
     destruct net; auto.
   Qed.
@@ -925,7 +925,7 @@ Section RaftMsgRefinement.
     forall (P : _ -> Prop),
       (forall net, raft_intermediate_reachable net -> P net) ->
       (forall (net : @network _ raft_msg_refined_multi_params), msg_refined_raft_intermediate_reachable net -> P (deghost (mgv_deghost net))).
-  Proof.
+  Proof using rri. 
     intros.
     find_eapply_lem_hyp msg_lift_prop; eauto.
     find_eapply_lem_hyp lift_prop; eauto.
@@ -935,7 +935,7 @@ Section RaftMsgRefinement.
     forall P : _ -> Prop,
       (forall (net : @network _ raft_msg_refined_multi_params), msg_refined_raft_intermediate_reachable net -> P (deghost (mgv_deghost net))) ->
       (forall net, raft_intermediate_reachable net -> P net).
-  Proof.
+  Proof using rri. 
     intros.
     eapply lower_prop; eauto.
     intros.

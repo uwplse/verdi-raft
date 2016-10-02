@@ -22,7 +22,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_append_entries :
     refined_raft_net_invariant_append_entries votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update_hyp; simpl in *; eauto;
@@ -38,7 +38,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp handleAppendEntriesReply_log_term_type.
     subst. repeat find_higher_order_rewrite.
@@ -50,7 +50,7 @@ Section VotedForMoreUpToDate.
   
   Lemma votedFor_moreUpToDate_request_vote :
     refined_raft_net_invariant_request_vote votedFor_moreUpToDate.
-  Proof.
+  Proof using rvmimti. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     find_copy_apply_lem_hyp handleRequestVote_log_term_type.
     subst. repeat find_higher_order_rewrite.
@@ -88,7 +88,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update_hyp; simpl in *;
@@ -107,7 +107,7 @@ Section VotedForMoreUpToDate.
   
   Lemma votedFor_moreUpToDate_timeout :
     refined_raft_net_invariant_timeout votedFor_moreUpToDate.
-  Proof.
+  Proof using vftsi. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     destruct_update_hyp; simpl in *; eauto.
@@ -129,7 +129,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_client_request :
     refined_raft_net_invariant_client_request votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     subst. repeat find_higher_order_rewrite.
     find_copy_apply_lem_hyp handleClientRequest_type; intuition.
@@ -143,7 +143,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_do_leader :
     refined_raft_net_invariant_do_leader votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -160,7 +160,7 @@ Section VotedForMoreUpToDate.
   
   Lemma votedFor_moreUpToDate_do_generic_server :
     refined_raft_net_invariant_do_generic_server votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -176,7 +176,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_reboot :
     refined_raft_net_invariant_reboot votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     match goal with
       | H : nwState ?net ?h = (?gd, ?d) |- _ =>
@@ -190,7 +190,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_state_same_packet_subset :
     refined_raft_net_invariant_state_same_packet_subset votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     subst. repeat find_reverse_higher_order_rewrite.
     eauto.
@@ -198,7 +198,7 @@ Section VotedForMoreUpToDate.
 
   Lemma votedFor_moreUpToDate_init :
     refined_raft_net_invariant_init votedFor_moreUpToDate.
-  Proof.
+  Proof using. 
     red. unfold votedFor_moreUpToDate. intros. simpl in *.
     congruence.
   Qed.
