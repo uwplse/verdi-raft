@@ -20,6 +20,9 @@ endif
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq
 
+quick: Makefile.coq
+	$(MAKE) -f Makefile.coq quick
+
 proofalytics:
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C proofalytics
@@ -33,7 +36,7 @@ proofalytics-aux: Makefile.coq
 	$(MAKE) -f Makefile.coq
 
 Makefile.coq: hacks _CoqProject
-	coq_makefile -f _CoqProject -o Makefile.coq
+	coq_makefile -f _CoqProject -o Makefile.coq -extra assumptions script/assumptions.v '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v'
 
 hacks: raft/RaftState.v
 
