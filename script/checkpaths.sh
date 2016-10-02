@@ -12,7 +12,7 @@ fi
 
 
 grep '\.v' _CoqProject | sort > build.files
-find . -name '*.v' | sed 's!^\./!!' | sort > files
+find . -name '*.v' -not -path "./script/assumptions.v" | sed 's!^\./!!' | sort > files
 
 comm -23 files build.files > files.missing.from.build
 comm -13 files build.files > nonexistant.build.files

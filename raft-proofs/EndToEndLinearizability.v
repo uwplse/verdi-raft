@@ -391,6 +391,3 @@ Section EndToEndProof.
   Qed.
 End EndToEndProof.
 
-About raft_linearizable.
-(*Print Assumptions raft_linearizable.*)
-
