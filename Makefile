@@ -35,8 +35,12 @@ proofalytics-aux: Makefile.coq
 	mv Makefile.coq_tmp Makefile.coq
 	$(MAKE) -f Makefile.coq
 
+ASSUMPTIONS_DEPS='script/assumptions.v raft-proofs/EndToEndLinearizability.vo'
+ASSUMPTIONS_COMMAND='$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v'
 Makefile.coq: hacks _CoqProject
-	coq_makefile -f _CoqProject -o Makefile.coq -extra 'script/assumptions.vo' 'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v'
+	coq_makefile -f _CoqProject -o Makefile.coq \
+	  -extra 'script/assumptions.vo' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND) \
+	  -extra 'script/assumptions.glob' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND)
 
 hacks: raft/RaftState.v
 
