@@ -1,8 +1,10 @@
-OCAMLBUILD = ocamlbuild -lib str -lib unix -I lib -I ml -I coq -cflag -g
+OCAMLBUILD = ocamlbuild -lib str -lib unix -I lib -I ml -cflag -g
+VARD = ml/VarDRaft.ml ml/VarDRaft.mli ml/VarDArrangement.ml ml/vard.ml
+LIB = lib/Shim.ml
 
 default: vard.native
 
-vard.native : ml/*.ml lib/*.ml
+vard.native: $(VARD) $(LIB)
 	$(OCAMLBUILD) vard.native
 
 clean:
@@ -25,4 +27,4 @@ bench-etcd: vard.native
 	./scripts/bench-etcd.sh
 	./scripts/clear-etcd.sh
 
-.PHONY : default coq run clear-data
+.PHONY: default run clear-data
