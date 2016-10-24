@@ -68,7 +68,7 @@ along the lines of [`etcd`](https://github.com/coreos/etcd).
 
 If the Raft implementation and its proofs have been compiled, all the files
 necessary to run `vard` on real hardware are in `extraction/vard`. It then
-suffices to run `make` in that directory to compile the extracted code, link it
+suffices to run `make` in that directory to compile the extracted OCaml code, link it
 against the Verdi shim and some `vard`-specific serialization/debugging code,
 and produce the `vard.native` binary. Alternatively, `make vard-quick` in the
 root directory produces the same result, but without compiling the Raft proofs.
