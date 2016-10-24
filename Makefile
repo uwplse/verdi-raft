@@ -37,10 +37,14 @@ proofalytics-aux: Makefile.coq
 
 ASSUMPTIONS_DEPS='script/assumptions.v raft-proofs/EndToEndLinearizability.vo'
 ASSUMPTIONS_COMMAND='$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v'
+VARDRAFT_DEPS='extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo'
+VARDRAFT_COMMAND='$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v'
 Makefile.coq: hacks _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
 	  -extra 'script/assumptions.vo' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND) \
-	  -extra 'script/assumptions.glob' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND)
+	  -extra 'script/assumptions.glob' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND) \
+          -extra 'extraction/vard/ml/VarDRaft.ml' $(VARDRAFT_DEPS) $(VARDRAFT_COMMAND) \
+          -extra 'extraction/vard/ml/VarDRaft.mli' $(VARDRAFT_DEPS) $(VARDRAFT_COMMAND) \
 
 hacks: raft/RaftState.v
 
@@ -59,9 +63,7 @@ vard:
 	@echo "To quickly provision vard use the vard-quick target."
 
 vard-quick: Makefile.coq
-	$(MAKE) -f Makefile.coq systems/VarD.vo
-	$(MAKE) -f Makefile.coq raft/Raft.vo
-	$(MAKE) -f Makefile.coq extraction/vard/coq/ExtractVarDRaft.vo
+	$(MAKE) -f Makefile.coq extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 	cd extraction/vard; make
 
 lint:
