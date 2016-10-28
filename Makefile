@@ -71,6 +71,6 @@ lint:
 	find . -name '*.v' -exec grep -Hn 'H[0-9][0-9]*' {} \;
 
 distclean: clean
-	rm -f _CoqProject
+	rm -f _CoqProject extraction/vard/lib
 
-.PHONY: default clean vard vard-quick lint hacks proofalytics distclean
+.PHONY: default quick clean vard vard-quick lint hacks proofalytics distclean
