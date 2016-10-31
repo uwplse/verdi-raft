@@ -19,6 +19,7 @@ endif
 
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq
+	$(MAKE) -C extraction/vard
 
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
