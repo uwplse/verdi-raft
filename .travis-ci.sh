@@ -27,6 +27,6 @@ case $MODE in
     ./vard-quick.sh
     ;;
   *)
-      ./build.sh
-      ;;
+    ./build.sh
+    ;;
 esac
