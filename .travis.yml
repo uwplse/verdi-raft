@@ -1,4 +1,9 @@
 language: c
+addons:
+  apt:
+    packages:
+      - ocaml
+      - opam
 env:
   - MODE=build
 script: bash -ex .travis-ci.sh
