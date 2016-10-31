@@ -23,7 +23,9 @@ case $MODE in
   analytics)
     ./analytics.sh
     ;;
-
+  vard-quick)
+    ./vard-quick.sh
+    ;;
   *)
       ./build.sh
       ;;
