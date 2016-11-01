@@ -67,6 +67,9 @@ vard-quick: Makefile.coq
 	$(MAKE) -f Makefile.coq extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 	$(MAKE) -C extraction/vard
 
+vard-test : vard-quick
+	$(PYTHON) extraction/vard/test/integration.py
+
 lint:
 	@echo "Possible use of hypothesis names:"
 	find . -name '*.v' -exec grep -Hn 'H[0-9][0-9]*' {} \;
