@@ -18,7 +18,7 @@ let node_spec arg nodes_ref doc =
 let _ =
 
   let cluster = ref [] in
-  let me = ref 0 in
+  let me = ref (-1) in
   let port = ref 8351 in
   let dbpath = ref "/var/lib/vard" in
   let debug = ref false in
@@ -27,7 +27,7 @@ let _ =
     if length !cluster == 0 then begin
       raise (Arg.Bad "Please specify at least one -node")
     end;
-    if !me == 0 then begin
+    if !me == -1 then begin
       raise (Arg.Bad "Please specify the node name -me")
     end;
     if not (mem_assoc !me !cluster) then begin
@@ -36,7 +36,7 @@ let _ =
   in
 
   let opts =
-    [ node_spec "-node" cluster "{id,host:port} one node in the cluster"
+    [ node_spec "-node" cluster "{name,host:port} one node in the cluster"
     ; ("-me", Arg.Set_int me, "{name} name for this node")
     ; ("-port", Arg.Set_int port, "{port} port for client commands")
     ; ("-dbpath", Arg.Set_string dbpath, "{path} directory for storing database files")
