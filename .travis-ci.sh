@@ -26,7 +26,7 @@ case $MODE in
   vard-quick)
     ./vard-quick.sh
     ;;
-  vard-quick)
+  vard-test)
     ./vard-test.sh
     ;;
   *)
