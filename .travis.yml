@@ -1,6 +1,14 @@
 language: c
+addons:
+  apt:
+    sources:
+      - avsm
+    packages:
+      - ocaml
+      - opam
 env:
   - MODE=build
+  - MODE=vard-quick
 script: bash -ex .travis-ci.sh
 sudo: false
 notifications:

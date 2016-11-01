@@ -19,6 +19,7 @@ endif
 
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq
+	$(MAKE) -C extraction/vard
 
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
@@ -64,7 +65,7 @@ vard:
 
 vard-quick: Makefile.coq
 	$(MAKE) -f Makefile.coq extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
-	cd extraction/vard; make
+	$(MAKE) -C extraction/vard
 
 lint:
 	@echo "Possible use of hypothesis names:"
