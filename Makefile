@@ -55,9 +55,10 @@ raft/RaftState.v:
 clean:
 	if [ -f Makefile.coq ]; then \
 	  $(MAKE) -f Makefile.coq cleanall; fi
-	rm -f Makefile.coq
+	rm -f Makefile.coq raft/RaftState.v
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
+	$(MAKE) -C extraction/vard clean
 
 vard:
 	@echo "To build everything (including vard) use the default target."
@@ -77,4 +78,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject extraction/vard/lib
 
-.PHONY: default quick clean vard vard-quick lint hacks proofalytics distclean
+.PHONY: default quick clean vard vard-quick vard-test lint hacks proofalytics distclean
