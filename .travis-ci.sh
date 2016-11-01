@@ -26,6 +26,9 @@ case $MODE in
   vard-quick)
     ./vard-quick.sh
     ;;
+  vard-test)
+    ./vard-test.sh
+    ;;
   *)
     ./build.sh
     ;;
