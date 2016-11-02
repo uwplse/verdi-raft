@@ -1,3 +1,4 @@
+PYTHON=python2.7
 OCAMLBUILD = ocamlbuild -lib str -lib unix -I lib -I ml -cflag -g
 VARD = ml/VarDRaft.ml ml/VarDRaft.mli ml/VarDArrangement.ml ml/vard.ml
 LIB = lib/Shim.ml
@@ -6,6 +7,9 @@ default: vard.native
 
 vard.native: $(VARD) $(LIB)
 	$(OCAMLBUILD) vard.native
+
+test: vard.native test/integration.py
+	$(PYTHON) test/integration.py
 
 clean:
 	$(OCAMLBUILD) vard.native -clean
@@ -27,4 +31,4 @@ bench-etcd: vard.native
 	./scripts/bench-etcd.sh
 	./scripts/clear-etcd.sh
 
-.PHONY: default run clear-data
+.PHONY: default test clean clear-data run debug bench-vard bench-etcd
