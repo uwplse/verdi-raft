@@ -68,8 +68,8 @@ vard-quick: Makefile.coq
 	$(MAKE) -f Makefile.coq extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 	$(MAKE) -C extraction/vard
 
-vard-test : vard-quick
-	$(PYTHON) extraction/vard/test/integration.py
+vard-test: vard-quick
+	$(MAKE) -C extraction/vard test
 
 lint:
 	@echo "Possible use of hypothesis names:"
