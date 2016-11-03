@@ -4,6 +4,7 @@ pushd ..
   export PATH=$PWD/coq-8.5/bin:$PATH
 
   opam init --yes --no-setup
+  eval $(opam config env)
   opam install ounit --yes
 
   git clone 'http://github.com/uwplse/StructTact'
