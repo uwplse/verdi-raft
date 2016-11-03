@@ -3,8 +3,8 @@ pushd ..
   tar xf coq-8.5-build-local.tgz
   export PATH=$PWD/coq-8.5/bin:$PATH
 
-  opam init
-  opam install ounit
+  opam init --yes --no-setup
+  opam install ounit --yes
 
   git clone 'http://github.com/uwplse/StructTact'
   pushd StructTact
