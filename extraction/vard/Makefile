@@ -1,7 +1,7 @@
 PYTHON=python2.7
 OCAMLBUILD = ocamlbuild -lib str -lib unix -I lib -I ml -cflag -g
 OCAMLBUILDTEST = ocamlbuild -package oUnit -lib str -I ml -I test -cflag -g
-VARD = ml/VarDRaft.ml ml/VarDRaft.mli ml/VarDArrangement.ml ml/vard.ml
+VARD = ml/VarDRaft.ml ml/VarDRaft.mli ml/VarDArrangement.ml ml/vard.ml ml/VarDOpts.ml ml/Util.ml ml/VarDSerialization.ml
 LIB = lib/Shim.ml
 
 default: vard.native
@@ -9,11 +9,15 @@ default: vard.native
 vard.native: $(VARD) $(LIB)
 	$(OCAMLBUILD) vard.native
 
-VarDOptsTest.native: test/VarDOptsTest.ml
+VarDOptsTest.native: ml/VarDOpts.ml test/VarDOptsTest.ml
 	$(OCAMLBUILDTEST) VarDOptsTest.native
 
-test-units: VarDOptsTest.native
+VarDSerializationTest.native: ml/Util.ml ml/VarDSerialization.ml test/VarDSerializationTest.ml
+	$(OCAMLBUILDTEST) VarDSerializationTest.native
+
+test-units: VarDOptsTest.native VarDSerializationTest.native
 	./VarDOptsTest.native
+	./VarDSerializationTest.native
 
 test-integration: vard.native test/integration.py
 	$(PYTHON) test/integration.py
