@@ -1,5 +1,6 @@
-open ListLabels
 open OUnit2
+open ListLabels
+open TestCommon
 
 let tear_down () text_ctxt = ()
 
@@ -9,12 +10,10 @@ let test_serialize_not_leader text_ctxt =
 let test_list =
   ["serialize NotLeader", test_serialize_not_leader]
 
-let test_suite =
+let tests =
   "VarDSerialization" >:::
     (map test_list ~f:(fun (name, test_fn) ->
       name >:: (fun test_ctxt ->
 	bracket ignore tear_down test_ctxt;
 	test_fn test_ctxt)
      ))
-
-let _ = run_test_tt_main test_suite

@@ -1,9 +1,6 @@
-open ListLabels
 open OUnit2
-
-let arr_of_string s =
-  let listl = (Str.split (Str.regexp " ") s) in
-  (Array.of_list listl)
+open ListLabels
+open TestCommon
 
 let tear_down () text_ctxt =
   VarDOpts.cluster := VarDOpts.cluster_default;
@@ -44,12 +41,10 @@ let test_list =
    "validate me not member of cluster", test_validate_me_not_cluster_member;
   ]
   
-let test_suite =
+let tests =
   "VarDOpts" >:::
     (map test_list ~f:(fun (name, test_fn) ->
       name >:: (fun test_ctxt ->
 	bracket ignore tear_down test_ctxt;
 	test_fn test_ctxt)
      ))
-
-let _ = run_test_tt_main test_suite
