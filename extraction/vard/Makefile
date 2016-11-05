@@ -1,6 +1,6 @@
 PYTHON=python2.7
 OCAMLBUILD = ocamlbuild -lib str -lib unix -I lib -I ml -cflag -g
-OCAMLBUILDTEST = ocamlbuild -package oUnit -lib str -I lib -I ml -I test -cflag -g
+OCAMLBUILDTEST = ocamlbuild -package oUnit -lib str -I ml -I test -cflag -g
 VARD = ml/VarDRaft.ml ml/VarDRaft.mli ml/VarDArrangement.ml ml/vard.ml
 LIB = lib/Shim.ml
 
@@ -25,7 +25,7 @@ clean:
 	$(OCAMLBUILDTEST) VarDOptsTest.native -clean
 
 clear-data:
-	./scripts/clear-verdi.sh
+	./scripts/clear-vard.sh
 
 run: vard.native
 	./scripts/start-tmux.sh
@@ -35,7 +35,7 @@ debug: vard.native
 
 bench-vard: vard.native
 	./scripts/bench-vard.sh
-	./scripts/clear-verdi.sh
+	./scripts/clear-vard.sh
 
 bench-etcd: vard.native
 	./scripts/bench-etcd.sh
