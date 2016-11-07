@@ -8,7 +8,6 @@ addons:
       - opam
 env:
   - MODE=build
-  - MODE=vard-quick
   - MODE=vard-test
 script: bash -ex .travis-ci.sh
 sudo: false
