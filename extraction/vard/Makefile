@@ -45,3 +45,5 @@ bench-etcd: vard.native
 	./scripts/clear-etcd.sh
 
 .PHONY: default test-units test-integration test clean clear-data run debug bench-vard bench-etcd
+
+.NOTPARALLEL: vard.native VarDTest.native
