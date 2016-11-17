@@ -7,6 +7,10 @@ addons:
       - ocaml
       - opam
 env:
+global:
+  - COQ_VERSION=8.5.3
+  - SSREFLECT_VERSION=1.6
+matrix:
   - MODE=build
   - MODE=vard-test
 script: bash -ex .travis-ci.sh
