@@ -5,6 +5,6 @@ let () =
     ~exit
     ("VarD" >:::
 	[
-          VarDOptsTest.tests;
+          OptsTest.tests;
           VarDSerializationTest.tests
 	])

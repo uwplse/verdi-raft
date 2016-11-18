@@ -1,7 +1,7 @@
 open List
 open Printf
 open Str
-open VarDOpts
+open Opts
 
 module VarDDebug = Shim.Shim(VarDArrangement.VarDArrangement(VarDArrangement.DebugParams))
 module VarDBench = Shim.Shim(VarDArrangement.VarDArrangement(VarDArrangement.BenchParams))
