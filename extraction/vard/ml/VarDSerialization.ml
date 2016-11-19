@@ -4,7 +4,7 @@ open VarDRaft
 open VarD
 open Util
 
-let serialize out =
+let serializeOutput out =
   match (Obj.magic out) with
   | NotLeader (client, id) ->
      ((client, id), sprintf "NotLeader %s %s" (string_of_int client) (string_of_int id))
@@ -33,7 +33,7 @@ let serialize out =
                              (string_of_int id)
                              (string_of_char_list k))
 
-let deserialize_input i =
+let deserializeInp i =
   let inp = String.trim i in
   let r = regexp "\\([0-9]+\\) \\([0-9]+\\) \\([A-Z]+\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\)[^/A-za-z0-9]*" in
   if string_match r inp 0 then
@@ -50,8 +50,12 @@ let deserialize_input i =
   else
     (print_endline "No match" ; None)
 
-let deserialize inp =
-  match (deserialize_input inp) with
+let deserializeInput inp =
+  match (deserializeInp inp) with
   | Some (client, id, input) ->
      Some ((client, id), (ClientRequest (client, id, (Obj.magic input))))
   | None -> None
+
+let deserializeMsg (s : string) : VarDRaft.msg = Marshal.from_string s 0
+
+let serializeMsg (msg : VarDRaft.msg) : string = Marshal.to_string msg []
