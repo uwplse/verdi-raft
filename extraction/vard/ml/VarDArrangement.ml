@@ -5,24 +5,24 @@ open VarD
 open Util
 
 module type VardParams = sig
-    val debug : bool
-    val heartbeat_timeout : float
-    val election_timeout : float
-  end
+  val debug : bool
+  val heartbeat_timeout : float
+  val election_timeout : float
+end
 
 module DebugParams = struct
-    let debug = true
-    let heartbeat_timeout = 2.0
-    let election_timeout = 10.0
-  end
+  let debug = true
+  let heartbeat_timeout = 2.0
+  let election_timeout = 10.0
+end
 
 module BenchParams = struct
-    let debug = false
-    let heartbeat_timeout = 0.05
-    let election_timeout = 0.5
-  end
+  let debug = false
+  let heartbeat_timeout = 0.05
+  let election_timeout = 0.5
+end
 
-module VarDArrangement (M : VardParams) = struct
+module VarDArrangement (P : VardParams) = struct
   type name = VarDRaft.name
   type state = raft_data0
   type input = VarDRaft.raft_input
@@ -30,19 +30,22 @@ module VarDArrangement (M : VardParams) = struct
   type msg = VarDRaft.msg
   type res = (VarDRaft.raft_output list * raft_data0) * ((VarDRaft.name * VarDRaft.msg) list)
   type request_id = (int * int)
-  let debug = M.debug
+  let systemName = "VarD"
   let init x = Obj.magic (init_handlers0 vard_base_params vard_one_node_params raft_params x)
+  let reboot = Obj.magic (reboot vard_base_params raft_params)
   let handleIO (n : name) (inp : input) (st : state) = Obj.magic (vard_raft_multi_params.input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
   let handleNet (n : name) (src: name) (m : msg) (st : state)  = Obj.magic (vard_raft_multi_params.net_handlers (Obj.magic n) (Obj.magic src) (Obj.magic m) (Obj.magic st))
   let handleTimeout (me : name) (st : state) =
     (Obj.magic vard_raft_multi_params.input_handlers (Obj.magic me) (Obj.magic Timeout) (Obj.magic st))
-  let reboot = Obj.magic (reboot vard_base_params raft_params)
   let setTimeout _ s =
     match s.type0 with
-    | Leader -> M.heartbeat_timeout
-    | _ -> M.election_timeout +. (Random.float 0.1)
-  let deserialize = VarDSerialization.deserialize
-  let serialize = VarDSerialization.serialize
+    | Leader -> P.heartbeat_timeout
+    | _ -> P.election_timeout +. (Random.float 0.1)
+  let deserializeMsg = VarDSerialization.deserializeMsg
+  let serializeMsg = VarDSerialization.serializeMsg
+  let deserializeInput = VarDSerialization.deserializeInput
+  let serializeOutput = VarDSerialization.serializeOutput
+  let debug = P.debug
   let debugRecv s (other, m) =
     (match m with
      | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
@@ -64,11 +67,6 @@ module VarDArrangement (M : VardParams) = struct
         printf "[Term %d] Sending RequestVote to %d, have %d votes\n"
                s.currentTerm other (List.length s.votesReceived)
      | _ -> ()); flush_all ()
-
   let debugTimeout (s : state) = ()
-    (* (match s.type0 with
-     | Leader -> printf "Leader\n"
-     | Follower -> printf "Follower\n"
-     | Candidate -> printf "Candidate\n"); *)
-
+  let debugInput s inp = ()
 end
