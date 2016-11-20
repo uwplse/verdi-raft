@@ -58,7 +58,7 @@ The `vard` Key-Value Store
 Requirements:
 
 - `Coq 8.5`
-- `OCaml 4.0.3`
+- `OCaml 4.02`
 - `Ocamlbuild`
 
 `vard` is a simple key-value store implemented using
