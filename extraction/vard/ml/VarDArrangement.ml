@@ -29,7 +29,7 @@ module VarDArrangement (P : VardParams) = struct
   type output = VarDRaft.raft_output
   type msg = VarDRaft.msg
   type res = (VarDRaft.raft_output list * raft_data0) * ((VarDRaft.name * VarDRaft.msg) list)
-  type request_id = (int * int)
+  type client_id = int
   let systemName = "VarD"
   let init x = Obj.magic (init_handlers0 vard_base_params vard_one_node_params raft_params x)
   let reboot = Obj.magic (reboot vard_base_params raft_params)
@@ -69,4 +69,7 @@ module VarDArrangement (P : VardParams) = struct
      | _ -> ()); flush_all ()
   let debugTimeout (s : state) = ()
   let debugInput s inp = ()
+  let createClientId () =
+    let client_uuid = Uuidm.to_string (Uuidm.create `V4) in
+    int_of_string ("0x" ^ String.sub client_uuid 0 8)
 end
