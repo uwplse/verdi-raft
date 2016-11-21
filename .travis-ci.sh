@@ -4,17 +4,17 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam install coq.$COQ_VERSION coq-mathcomp-ssreflect.$SSREFLECT_VERSION ounit.2.0.0 --yes --verbose
 
 pushd ..
-  git clone 'http://github.com/uwplse/StructTact'
+  git clone 'https://github.com/uwplse/StructTact.git'
   pushd StructTact
     ./build.sh
   popd
 
-  git clone 'http://github.com/palmskog/InfSeqExt'
+  git clone 'https://github.com/DistributedComponents/InfSeqExt.git'
   pushd InfSeqExt
     ./build.sh
   popd
 
-  git clone 'http://github.com/uwplse/verdi'
+  git clone 'https://github.com/uwplse/verdi.git'
   pushd verdi
     ./build.sh
   popd
@@ -25,10 +25,10 @@ case $MODE in
     ./script/analytics.sh
     ;;
   vard-quick)
-    ./script/vard-quick.sh
+    ./build.sh vard-quick
     ;;
   vard-test)
-    ./script/vard-test.sh
+    ./build.sh vard-test
     ;;
   *)
     ./build.sh
