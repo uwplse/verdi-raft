@@ -6,6 +6,7 @@ addons:
     packages:
       - ocaml
       - opam
+      - aspcud
 env:
   global:
     - COQ_VERSION=8.5.3

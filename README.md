@@ -41,13 +41,13 @@ subdirectory include:
   the Raft implementation
 - `OneLeaderPerTermInterface`: a statement of Raft's *election
   safety* property. See also the corresponding proof file in `raft-proofs`.
-  - `CandidatesVoteForSelvesInterface.v`, `VotesCorrectInterface.v`, and
-    `CroniesCorrectInterface.v`: statements of properties used by the proof
-    `OneLeaderPerTermProof.v`
+    - `CandidatesVoteForSelvesInterface.v`, `VotesCorrectInterface.v`, and
+      `CroniesCorrectInterface.v`: statements of properties used by the proof
+      `OneLeaderPerTermProof.v`
 - `LogMatchingInterface.v`: a statement of Raft's *log matching*
     property. See also `LogMatchingProof.v` in `raft-proofs`
-  - `LeaderSublogInterface.v`, `SortedInterface.v`, and `UniqueIndicesInterface.v`: statements
-   of properties used by `LogMatchingProof.v`
+    - `LeaderSublogInterface.v`, `SortedInterface.v`, and `UniqueIndicesInterface.v`: statements
+      of properties used by `LogMatchingProof.v`
 
 The file `EndToEndLinearizability.v` in `raft-proofs` uses the proofs of
 all proof interfaces to show Raft's *linearizability* property.
