@@ -1,7 +1,7 @@
 PYTHON=python2.7
 
-OCAMLBUILD = ocamlbuild -package uuidm -lib str -lib unix -I lib -I ml -cflag -g
-OCAMLBUILD_TEST = ocamlbuild -package uuidm -package oUnit -lib str -I lib -I ml -I test -cflag -g
+OCAMLBUILD = ocamlbuild -lib str -lib unix -I lib -I ml -cflag -g
+OCAMLBUILD_TEST = ocamlbuild -package oUnit -lib str -I lib -I ml -I test -cflag -g
 
 VARD = ml/VarDRaft.ml ml/VarDRaft.mli ml/VarDArrangement.ml ml/vard.ml ml/VarDSerialization.ml
 VARD_TEST = test/TestCommon.ml test/OptsTest.ml test/VarDSerializationTest.ml test/VarDTest.ml
