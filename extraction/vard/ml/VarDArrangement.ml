@@ -70,6 +70,6 @@ module VarDArrangement (P : VardParams) = struct
   let debugTimeout (s : state) = ()
   let debugInput s inp = ()
   let createClientId () =
-    let client_uuid = Uuidm.to_string (Uuidm.create `V4) in
-    int_of_string ("0x" ^ String.sub client_uuid 0 8)
+    let upper_bound = 1073741823 in
+    Random.int upper_bound
 end
