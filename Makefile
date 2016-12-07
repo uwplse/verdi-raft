@@ -39,7 +39,7 @@ proofalytics-aux: Makefile.coq
 
 MLFILES = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 
-Makefile.coq: hacks _CoqProject
+Makefile.coq: raft/RaftState.v _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
 	  -extra 'script/assumptions.vo script/assumptions.glob script/assumptions.v.d' \
 	    'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' \
@@ -47,8 +47,6 @@ Makefile.coq: hacks _CoqProject
           -extra '$(MLFILES)' \
 	    'extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v'
-
-hacks: raft/RaftState.v
 
 raft/RaftState.v:
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
@@ -81,4 +79,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject extraction/vard/lib
 
-.PHONY: default quick clean vard vard-quick vard-test lint hacks proofalytics distclean
+.PHONY: default quick clean vard vard-quick vard-test lint proofalytics distclean
