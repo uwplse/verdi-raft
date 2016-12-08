@@ -72,4 +72,5 @@ module VarDArrangement (P : VardParams) = struct
   let createClientId () =
     let upper_bound = 1073741823 in
     Random.int upper_bound
+  let serializeClientId = string_of_int
 end
