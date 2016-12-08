@@ -13,7 +13,11 @@ env:
     - SSREFLECT_VERSION=1.6
   matrix:
     - MODE=build
+      TARGET=default
+    - MODE=build
+      TARGET=quick
     - MODE=vard-test
+      TARGET=default
 script: bash -ex .travis-ci.sh
 sudo: false
 notifications:
