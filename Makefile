@@ -66,10 +66,10 @@ vard:
 $(MLFILES): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
-vard-quick: $(MLFILES)
+vard-quick:
 	$(MAKE) -C extraction/vard
 
-vard-test: $(MLFILES)
+vard-test:
 	$(MAKE) -C extraction/vard test
 
 lint:
