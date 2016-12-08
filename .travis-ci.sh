@@ -6,17 +6,17 @@ opam install coq.$COQ_VERSION coq-mathcomp-ssreflect.$SSREFLECT_VERSION ounit.2.
 pushd ..
   git clone 'https://github.com/uwplse/StructTact.git'
   pushd StructTact
-    ./build.sh
+    ./build.sh $TARGET
   popd
 
   git clone 'https://github.com/DistributedComponents/InfSeqExt.git'
   pushd InfSeqExt
-    ./build.sh
+    ./build.sh $TARGET
   popd
 
   git clone 'https://github.com/uwplse/verdi.git'
   pushd verdi
-    ./build.sh
+    ./build.sh $TARGET
   popd
 popd
 
@@ -31,6 +31,6 @@ case $MODE in
     ./build.sh vard-test
     ;;
   *)
-    ./build.sh
+    ./build.sh $TARGET
     ;;
 esac
