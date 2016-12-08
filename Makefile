@@ -67,10 +67,10 @@ $(MLFILES): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
 vard-quick:
-	$(MAKE) -C extraction/vard
+	+$(MAKE) -C extraction/vard
 
 vard-test:
-	$(MAKE) -C extraction/vard test
+	+$(MAKE) -C extraction/vard test
 
 lint:
 	@echo "Possible use of hypothesis names:"
