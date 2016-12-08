@@ -14,7 +14,7 @@ vard.native: $(LIB) $(VARD) $(VARDRAFT)
 	$(OCAMLBUILD) vard.native
 
 $(VARDRAFT):
-	make -C ../.. extraction/vard/$@
+	+$(MAKE) -C ../.. extraction/vard/$@
 
 VarDTest.native: $(LIB) $(VARD) $(VARDRAFT) $(VARD_TEST)
 	$(OCAMLBUILD_TEST) VarDTest.native
@@ -28,8 +28,7 @@ test-integration: vard.native test/integration.py
 test: test-units test-integration
 
 clean:
-	$(OCAMLBUILD) vard.native -clean
-	$(OCAMLBUILD_TEST) VarDTest.native -clean
+	$(OCAMLBUILD) -clean
 
 clear-data:
 	./scripts/clear-vard.sh
@@ -51,3 +50,4 @@ bench-etcd: vard.native
 .PHONY: default test-units test-integration test clean clear-data run debug bench-vard bench-etcd $(VARDRAFT)
 
 .NOTPARALLEL: vard.native VarDTest.native
+.NOTPARALLEL: $(VARDRAFT)
