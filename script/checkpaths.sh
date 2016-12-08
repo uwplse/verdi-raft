@@ -21,7 +21,7 @@ EXIT_CODE=0
 
 if [ -s files.missing.from.build ]
 then
-    echo 'The following files are present but missing from Makefile.coq.'
+    echo 'The following files are present but are missing from _CoqProject.'
     echo 'Perhaps you have added a new file and should rerun ./configure?'
     cat files.missing.from.build
     EXIT_CODE=1
@@ -29,7 +29,7 @@ fi
 
 if [ -s nonexistant.build.files ]
 then
-    echo 'The following files are present in Makefile.coq but to not exist.'
+    echo 'The following files are present in _CoqProject but do not exist.'
     echo 'Perhaps you have deleted a file and should rerun ./configure?'
     cat nonexistant.build.files
     EXIT_CODE=1

@@ -30,26 +30,23 @@ proofalytics:
 	$(MAKE) -C proofalytics publish
 
 STDBUF=$(shell [ -x "$$(which gstdbuf)" ] && echo "gstdbuf" || echo "stdbuf")
+
 proofalytics-aux: Makefile.coq
 	sed "s|^TIMECMD=$$|TIMECMD=$(PWD)/proofalytics/build-timer.sh $(STDBUF) -i0 -o0|" \
 	  Makefile.coq > Makefile.coq_tmp
 	mv Makefile.coq_tmp Makefile.coq
 	$(MAKE) -f Makefile.coq
 
-ASSUMPTIONS_DEPS='script/assumptions.v raft-proofs/EndToEndLinearizability.vo'
-ASSUMPTIONS_COMMAND='$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v'
+MLFILES = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 
-VARDRAFT_DEPS='extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo'
-VARDRAFT_COMMAND='$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v'
-
-Makefile.coq: hacks _CoqProject
+Makefile.coq: raft/RaftState.v _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
-	  -extra 'script/assumptions.vo' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND) \
-	  -extra 'script/assumptions.glob' $(ASSUMPTIONS_DEPS) $(ASSUMPTIONS_COMMAND) \
-          -extra 'extraction/vard/ml/VarDRaft.ml' $(VARDRAFT_DEPS) $(VARDRAFT_COMMAND) \
-          -extra 'extraction/vard/ml/VarDRaft.mli' $(VARDRAFT_DEPS) $(VARDRAFT_COMMAND) \
-
-hacks: raft/RaftState.v
+	  -extra 'script/assumptions.vo script/assumptions.glob script/assumptions.v.d' \
+	    'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' \
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v' \
+          -extra '$(MLFILES)' \
+	    'extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo' \
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v'
 
 raft/RaftState.v:
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
@@ -66,14 +63,13 @@ vard:
 	@echo "To build everything (including vard) use the default target."
 	@echo "To quickly provision vard use the vard-quick target."
 
-VARD_RAFT = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
+$(MLFILES): Makefile.coq
+	$(MAKE) -f Makefile.coq $@
 
-vard-quick: Makefile.coq
-	$(MAKE) -f Makefile.coq $(VARD_RAFT)
+vard-quick: $(MLFILES)
 	$(MAKE) -C extraction/vard
 
-vard-test: Makefile.coq
-	$(MAKE) -f Makefile.coq $(VARD_RAFT)
+vard-test: $(MLFILES)
 	$(MAKE) -C extraction/vard test
 
 lint:
@@ -83,4 +79,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject extraction/vard/lib
 
-.PHONY: default quick clean vard vard-quick vard-test lint hacks proofalytics distclean
+.PHONY: default quick clean vard vard-quick vard-test lint proofalytics distclean
