@@ -242,11 +242,11 @@ Section Raft.
           ]},
          [])
     else if currentTerm state <? term then
-      (* follower behind, ignore *)
-      (state, [])
-    else
       (* leader behind, convert to follower *)
       (advanceCurrentTerm state term, []).
+    else
+      (* follower behind, ignore *)
+      (state, []).
 
   Definition moreUpToDate t1 i1 t2 i2 := (t1 >? t2) || ((t1 == t2) && (i1 >=? i2)).
 
