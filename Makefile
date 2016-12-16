@@ -19,7 +19,7 @@ endif
 
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq
-	$(MAKE) -C extraction/vard
+	+$(MAKE) -C extraction/vard
 
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
@@ -79,4 +79,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject extraction/vard/lib
 
-.PHONY: default quick clean vard vard-quick vard-test lint proofalytics distclean
+.PHONY: default quick clean vard vard-quick vard-test lint proofalytics distclean $(MLFILES)
