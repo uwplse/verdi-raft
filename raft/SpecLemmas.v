@@ -67,7 +67,7 @@ Section SpecLemmas.
       votedFor st' = votedFor st.
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; repeat tuple_inversion; auto.
+    repeat break_match; repeat tuple_inversion; simpl in *; do_bool; congruence. 
   Qed.
 
   Lemma doGenericServer_currentTerm :
@@ -97,7 +97,7 @@ Section SpecLemmas.
       currentTerm st <= currentTerm st'.
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; tuple_inversion; do_bool; auto.
+    repeat break_match; tuple_inversion; do_bool; simpl; auto; omega.
   Qed.
 
   Lemma handleAppendEntries_currentTerm :
@@ -534,7 +534,7 @@ Section SpecLemmas.
       (type st' = Follower /\ currentTerm st' >= currentTerm st).
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; tuple_inversion; do_bool; auto.
+    repeat break_match; tuple_inversion; do_bool; intuition.
   Qed.
 
   Lemma handleRequestVote_type :
@@ -901,7 +901,8 @@ Section SpecLemmas.
   Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat (break_match; try find_inversion; simpl in *; auto).
+    repeat (break_match; try find_inversion; simpl in *; auto);
+      [|intros; congruence].
     intros. intuition.
     unfold assoc_default.
     repeat break_match; rewrite get_set_diff in *; repeat find_rewrite; congruence.
@@ -1264,7 +1265,7 @@ Section SpecLemmas.
       currentTerm st' = currentTerm st /\ votedFor st' = votedFor st.
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; find_inversion; simpl in *; auto.
+    repeat break_match; find_inversion; simpl in *; auto; congruence.
   Qed.
 
   Theorem handleRequestVoteReply_term_votedFor :
