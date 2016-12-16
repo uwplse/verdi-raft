@@ -243,7 +243,7 @@ Section Raft.
          [])
     else if currentTerm state <? term then
       (* leader behind, convert to follower *)
-      (advanceCurrentTerm state term, []).
+      (advanceCurrentTerm state term, [])
     else
       (* follower behind, ignore *)
       (state, []).
