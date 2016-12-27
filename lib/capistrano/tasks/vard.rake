@@ -12,7 +12,7 @@ namespace :vard do
         '--background',
         "--chdir #{current_path}/extraction/vard",
         '--startas /bin/bash',
-        "-- -c 'exec ./vard.native -me #{server.properties.name} -port #{fetch(:client_port)} #{cluster.join(' ')} > log/vard.log 2>&1'"
+        "-- -c 'exec ./vard.native -me #{server.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard/tmp #{cluster.join(' ')} > log/vard.log 2>&1'"
     end
   end
 
