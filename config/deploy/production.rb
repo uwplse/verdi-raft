@@ -32,6 +32,7 @@ server "discoberry02.duckdns.org", user: "pi", roles: %w{node}, name: "1"
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
+set :branch, 'deploy'
 set :node_port, 6000
 set :client_port, 5000
 
