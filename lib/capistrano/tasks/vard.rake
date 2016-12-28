@@ -43,4 +43,12 @@ namespace :vard do
     end
   end
 
+  desc 'vard status'
+  task :status do
+    cluster = roles(:node).collect { |s| "#{s.hostname}:#{fetch(:client_port)}" }
+    run_locally do
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{cluster.join(',')} status)
+    end
+  end
+
 end
