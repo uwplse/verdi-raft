@@ -1475,10 +1475,18 @@ Section CommonTheorems.
     forall i a,
       contiguous_range_exact_lo [a] i ->
       eIndex a = S i.
-  Proof using. 
+  Proof using.
     intros. unfold contiguous_range_exact_lo in *. intuition.
-    find_insterU. concludes. find_insterU. concludes. break_exists.
-    simpl in *. intuition. subst. auto.
+    specialize (H1 a).
+    specialize (H0 (S i)).
+    assert (H_a: In a [a]) by auto with datatypes.
+    concludes.
+    assert (H_s: i < S i) by auto.
+    concludes.
+    break_exists.
+    break_and.
+    inversion H0; subst; auto.
+    inversion H2.
   Qed.
 
   Lemma contiguous_index_adjacent :
