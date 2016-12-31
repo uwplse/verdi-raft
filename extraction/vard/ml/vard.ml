@@ -3,9 +3,6 @@ open Printf
 open Str
 open Opts
 
-module VarDDebug = Shim.Shim(VarDArrangement.VarDArrangement(VarDArrangement.DebugParams))
-module VarDBench = Shim.Shim(VarDArrangement.VarDArrangement(VarDArrangement.BenchParams))
-
 let _ =
   let  _ = parse Sys.argv in
 
@@ -17,16 +14,20 @@ let _ =
       prerr_newline ();
       exit 2
   in
-
+  let module NumNodes : VarDArrangement.IntValue = 
+      struct let v = length !cluster end
+  in
   if !debug then
-    let open VarDDebug in
+    let module VarD = (Shim.Shim(VarDArrangement.VarDArrangement(VarDArrangement.DebugParams(NumNodes)))) in
+    let open VarD in
     main { cluster = !cluster
          ; me = !me
          ; port = !port
          ; dbpath = !dbpath
          }
   else
-    let open VarDBench in
+    let module VarD = Shim.Shim(VarDArrangement.VarDArrangement(VarDArrangement.BenchParams(NumNodes))) in
+    let open VarD in
     main { cluster = !cluster
          ; me = !me
          ; port = !port

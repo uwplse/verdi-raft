@@ -4,22 +4,33 @@ open VarDRaft
 open VarD
 open Util
 
+module type IntValue = sig
+  val v : int
+end
+
 module type VardParams = sig
   val debug : bool
   val heartbeat_timeout : float
   val election_timeout : float
+  val num_nodes : int
 end
 
-module DebugParams = struct
+module DebugParams =
+  functor (I : IntValue) -> 
+struct
   let debug = true
   let heartbeat_timeout = 2.0
   let election_timeout = 10.0
+  let num_nodes = I.v
 end
 
-module BenchParams = struct
+module BenchParams =
+  functor (I : IntValue) ->
+struct
   let debug = false
   let heartbeat_timeout = 0.05
   let election_timeout = 0.5
+  let num_nodes = I.v
 end
 
 module VarDArrangement (P : VardParams) = struct
@@ -31,12 +42,12 @@ module VarDArrangement (P : VardParams) = struct
   type res = (VarDRaft.raft_output list * raft_data0) * ((VarDRaft.name * VarDRaft.msg) list)
   type client_id = int
   let systemName = "VarD"
-  let init x = Obj.magic (init_handlers0 vard_base_params vard_one_node_params raft_params x)
-  let reboot = Obj.magic (reboot vard_base_params raft_params)
-  let handleIO (n : name) (inp : input) (st : state) = Obj.magic (vard_raft_multi_params.input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
-  let handleNet (n : name) (src: name) (m : msg) (st : state)  = Obj.magic (vard_raft_multi_params.net_handlers (Obj.magic n) (Obj.magic src) (Obj.magic m) (Obj.magic st))
+  let init x = Obj.magic (init_handlers0 vard_base_params vard_one_node_params (raft_params P.num_nodes) x)
+  let reboot = Obj.magic (reboot vard_base_params (raft_params P.num_nodes))
+  let handleIO (n : name) (inp : input) (st : state) = Obj.magic ((vard_raft_multi_params P.num_nodes).input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
+  let handleNet (n : name) (src: name) (m : msg) (st : state)  = Obj.magic ((vard_raft_multi_params P.num_nodes).net_handlers (Obj.magic n) (Obj.magic src) (Obj.magic m) (Obj.magic st))
   let handleTimeout (me : name) (st : state) =
-    (Obj.magic vard_raft_multi_params.input_handlers (Obj.magic me) (Obj.magic Timeout) (Obj.magic st))
+    (Obj.magic (vard_raft_multi_params P.num_nodes).input_handlers (Obj.magic me) (Obj.magic Timeout) (Obj.magic st))
   let setTimeout _ s =
     match s.type0 with
     | Leader -> P.heartbeat_timeout
