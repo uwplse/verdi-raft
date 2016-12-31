@@ -4,7 +4,7 @@ Require Import Verdi.VarD.
 Section VarDRaft.
   Instance raft_params : RaftParams vard_base_params :=
     {
-      N := 2;
+      N := 7;
       input_eq_dec := input_eq_dec;
       output_eq_dec := output_eq_dec
     }.
