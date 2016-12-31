@@ -9,6 +9,14 @@
 
 server "discoberry01.duckdns.org", user: "pi", roles: %w{node}, name: "0"
 server "discoberry02.duckdns.org", user: "pi", roles: %w{node}, name: "1"
+server "discoberry03.duckdns.org", user: "pi", roles: %w{node}, name: "2"
+server "discoberry04.duckdns.org", user: "pi", roles: %w{node}, name: "3"
+server "discoberry05.duckdns.org", user: "pi", roles: %w{node}, name: "4"
+server "discoberry06.duckdns.org", user: "pi", roles: %w{node}, name: "5"
+server "discoberry07.duckdns.org", user: "pi", roles: %w{node}, name: "6"
+server "discoberry08.duckdns.org", user: "pi", roles: %w{node}, name: "7"
+server "discoberry09.duckdns.org", user: "pi", roles: %w{node}, name: "8"
+server "discoberry10.duckdns.org", user: "pi", roles: %w{node}, name: "9"
 
 # role-based syntax
 # ==================
