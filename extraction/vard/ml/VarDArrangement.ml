@@ -16,7 +16,7 @@ module type VardParams = sig
 end
 
 module DebugParams =
-  functor (I : IntValue) -> 
+  functor (I : IntValue) ->
 struct
   let debug = true
   let heartbeat_timeout = 2.0
