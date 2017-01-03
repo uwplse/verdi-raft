@@ -105,7 +105,7 @@ Section MatchIndexSanity.
   Proof using. 
     unfold handleAppendEntriesReply, advanceCurrentTerm.
     intros.
-    repeat break_match; repeat find_inversion; do_bool; auto.
+    repeat break_match; repeat find_inversion; simpl in *; do_bool; auto; congruence.
   Qed.
 
   Lemma match_index_sanity_append_entries_reply :
