@@ -2,7 +2,7 @@ namespace :vard do
   
   desc 'start vard'
   task :start do
-    cluster = roles(:node).collect { |s| "-node #{s.properties.name},#{s.hostname}:#{fetch(:node_port)}" }
+    cluster = roles(:node).collect { |s| "-node #{s.properties.name},#{s.properties.host}:#{fetch(:node_port)}" }
     on roles(:node) do |server|
       execute '/sbin/start-stop-daemon',
         '--start',
@@ -45,7 +45,7 @@ namespace :vard do
 
   desc 'vard status'
   task :status do
-    cluster = roles(:node).collect { |s| "#{s.hostname}:#{fetch(:client_port)}" }
+    cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
     run_locally do
       info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{cluster.join(',')} status)
     end
