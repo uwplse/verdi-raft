@@ -7,16 +7,16 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server "discoberry01.duckdns.org", user: "pi", roles: %w{node}, name: "0"
-server "discoberry02.duckdns.org", user: "pi", roles: %w{node}, name: "1"
-server "discoberry03.duckdns.org", user: "pi", roles: %w{node}, name: "2"
-server "discoberry04.duckdns.org", user: "pi", roles: %w{node}, name: "3"
-server "discoberry05.duckdns.org", user: "pi", roles: %w{node}, name: "4"
-server "discoberry06.duckdns.org", user: "pi", roles: %w{node}, name: "5"
-server "discoberry07.duckdns.org", user: "pi", roles: %w{node}, name: "6"
-server "discoberry08.duckdns.org", user: "pi", roles: %w{node}, name: "7"
-server "discoberry09.duckdns.org", user: "pi", roles: %w{node}, name: "8"
-server "discoberry10.duckdns.org", user: "pi", roles: %w{node}, name: "9"
+server "db01", roles: %w{node}, name: "0"
+server "db02", roles: %w{node}, name: "1"
+#server "db03", roles: %w{node}, name: "2"
+server "db04", roles: %w{node}, name: "3"
+server "db05", roles: %w{node}, name: "4"
+server "db06", roles: %w{node}, name: "5"
+server "db07", roles: %w{node}, name: "6"
+server "db08", roles: %w{node}, name: "7"
+server "db09", roles: %w{node}, name: "8"
+server "db10", roles: %w{node}, name: "9"
 
 # role-based syntax
 # ==================
