@@ -845,7 +845,7 @@ Ltac all f ls :=
       (currentTerm st = currentTerm st' /\ leaderId st' = leaderId st).
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat (break_match; try find_inversion; simpl in *; auto).
+    repeat (break_match; try find_inversion; simpl in *; do_bool; auto).
   Qed.
 
   Lemma allEntries_log_append_entries_reply :
