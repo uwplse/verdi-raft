@@ -40,9 +40,9 @@ server "db10", roles: %w{node}, host: 'discoberry10.duckdns.org', name: "9"
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-set :branch, 'deploy'
 set :node_port, 5000
 set :client_port, 4000
+set :make_jobs, 2
 
 # Custom SSH Options
 # ==================

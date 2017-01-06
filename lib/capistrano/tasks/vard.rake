@@ -7,6 +7,7 @@ namespace :vard do
       execute '/sbin/start-stop-daemon',
         '--start',
         '--quiet',
+        '--oknodo',
         '--make-pidfile',
         "--pidfile #{current_path}/extraction/vard/tmp/vard.pid",
         '--background',
@@ -21,6 +22,7 @@ namespace :vard do
     on roles(:node) do
       execute '/sbin/start-stop-daemon', 
         '--stop',
+        '--oknodo',
         "--pidfile #{current_path}/extraction/vard/tmp/vard.pid"
     end
   end
@@ -28,7 +30,7 @@ namespace :vard do
   desc 'tail vard log'
   task :tail_log do
     on roles(:node) do
-      execute 'tail',
+      execute :tail,
         '-n 20',
         "#{shared_path}/extraction/vard/log/vard.log"
     end
@@ -37,9 +39,27 @@ namespace :vard do
   desc 'truncate vard log'
   task :truncate_log do
     on roles(:node) do
-      execute 'truncate',
+      execute :truncate,
         '-s 0',
         "#{shared_path}/extraction/vard/log/vard.log"
+    end
+  end
+
+  desc 'remove command log'
+  task :remove_clog do
+    on roles(:node) do
+      execute :rm,
+        '-f',
+        "#{shared_path}/extraction/vard/tmp/clog.bin"
+    end
+  end
+
+  desc 'remove snapshot'
+  task :remove_snapshot do
+    on roles(:node) do
+      execute :rm,
+        '-f',
+        "#{shared_path}/extraction/vard/tmp/snapshot.bin"
     end
   end
 

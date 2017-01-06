@@ -4,7 +4,10 @@ namespace :compilation do
   task :build do
     on roles(:node) do
       within release_path do
-        execute './build.sh', 'vard-quick'
+        execute './configure'
+        execute :make,
+          "-j #{fetch(:make_jobs)}",
+          'vard-quick'
       end
     end
   end
@@ -13,7 +16,9 @@ namespace :compilation do
   task :compile do
     on roles(:node) do
       within release_path do
-        execute 'make', 'vard-quick'
+        execute :make,
+          "-j #{fetch(:make_jobs)}",
+          'vard-quick'
       end
     end
   end
