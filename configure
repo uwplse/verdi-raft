@@ -9,7 +9,5 @@ CANARIES=("mathcomp.ssreflect.ssreflect" "Verdi Raft requires mathcomp to be ins
 EXTRA=(raft/RaftState.v)
 Verdi_PATH=$(perl -MCwd -e 'print Cwd::abs_path shift' ${Verdi_PATH:="../verdi"})
 Verdi_DIRS=(core lib systems extraction/coq)
-NAMESPACE_Verdi_lib="\"\""
-NAMESPACE_Verdi_extraction_coq="\"\""
 source script/coqproject.sh
 ln -sfn $Verdi_PATH/extraction/ocaml extraction/vard/lib
