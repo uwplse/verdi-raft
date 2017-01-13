@@ -46,15 +46,17 @@ Makefile.coq: raft/RaftState.v _CoqProject
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v' \
           -extra '$(MLFILES)' \
 	    'extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v'
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
+          -extra-phony 'distclean' 'clean' \
+	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.aux,$$(VFILES)))))'
 
 raft/RaftState.v:
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
 
 clean:
 	if [ -f Makefile.coq ]; then \
-	  $(MAKE) -f Makefile.coq cleanall; fi
-	rm -f Makefile.coq raft/RaftState.v
+	  $(MAKE) -f Makefile.coq distclean; fi
+	rm -f Makefile.coq raft/RaftState.v script/.assumptions.aux
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
