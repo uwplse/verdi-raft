@@ -8,22 +8,30 @@ An implementation of the [Raft](https://raft.github.io) distributed consensus pr
 Requirements
 ------------
 
- - [`Coq 8.5`](https://coq.inria.fr/download)
- - [`Verdi`](https://github.com/uwplse/verdi)
- - [`StructTact`](https://github.com/uwplse/StructTact)
- - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
+- [`Coq 8.5`](https://coq.inria.fr/download)
+- [`Verdi`](https://github.com/uwplse/verdi)
+- [`StructTact`](https://github.com/uwplse/StructTact)
+- [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 
 Building
 --------
 
-First run `./configure` in the root directory.  This will check
+We recommend installing the dependencies of Verdi Raft via
+[OPAM](https://coq.inria.fr/opam/www/using.html):
+
+```
+opam repo add distributedcomponents http://opam.distributedcomponents.net
+opam install verdi StructTact verdi-runtime
+```
+
+Then, run `./configure` in the Verdi Raft root directory.  This will check
 for the appropriate version of Coq and ensure all necessary
-Coq dependencies can be located. By default, `verdi` and `StructTact`
+Coq dependencies can be located. By default, `Verdi` and `StructTact`
 are assumed to be installed in Coq's `user-contrib` directory, but
 this can be overridden by setting the `Verdi_PATH` and `StructTact_PATH`
 environment variables.
 
-Then run `make` in the root directory. This will compile the Raft 
+Finally, run `make` in the root directory. This will compile the Raft
 implementation and proof interfaces, check all the proofs, and
 build the `vard` key-value store.
 
