@@ -11,19 +11,21 @@ Requirements
  - [`Coq 8.5`](https://coq.inria.fr/download)
  - [`Verdi`](https://github.com/uwplse/verdi)
  - [`StructTact`](https://github.com/uwplse/StructTact)
+ - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 
 Building
 --------
 
 First run `./configure` in the root directory.  This will check
 for the appropriate version of Coq and ensure all necessary
-dependencies can be located. By default, it checks for `verdi` 
-and `StructTact` in the current parent directory, but this can be
-overridden by setting the `Verdi_PATH` and `StructTact_PATH` environment
-variables.
+Coq dependencies can be located. By default, `verdi` and `StructTact`
+are assumed to be installed in Coq's `user-contrib` directory, but
+this can be overridden by setting the `Verdi_PATH` and `StructTact_PATH`
+environment variables.
 
 Then run `make` in the root directory. This will compile the Raft 
-implementation and proof interfaces, and check all the proofs.
+implementation and proof interfaces, check all the proofs, and
+build the `vard` key-value store.
 
 Files
 -----
@@ -54,12 +56,6 @@ all proof interfaces to show Raft's *linearizability* property.
 
 The `vard` Key-Value Store
 ------------------------
-
-Requirements:
-
-- `Coq 8.5`
-- `OCaml 4.02`
-- `Ocamlbuild`
 
 `vard` is a simple key-value store implemented using
 Verdi. `vard` is specified and verified against Verdi's state-machine
