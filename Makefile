@@ -48,7 +48,7 @@ Makefile.coq: raft/RaftState.v _CoqProject
 	    'extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
           -extra-phony 'distclean' 'clean' \
-	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.aux,$$(VFILES)))))'
+	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
 
 raft/RaftState.v:
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
