@@ -2,9 +2,11 @@ Require Import Raft.
 Require Import Verdi.VarD.
 
 Section VarDRaft.
+  Variable n : nat.
+
   Instance raft_params : RaftParams vard_base_params :=
     {
-      N := 3;
+      N := n;
       input_eq_dec := input_eq_dec;
       output_eq_dec := output_eq_dec
     }.

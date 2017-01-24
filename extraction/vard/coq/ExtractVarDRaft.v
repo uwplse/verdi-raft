@@ -6,11 +6,11 @@ Require Import ExtrOcamlBasic.
 Require Import ExtrOcamlNatInt.
 Require Import ExtrOcamlString.
 
-Require Import ExtrOcamlBasicExt.
-Require Import ExtrOcamlNatIntExt.
+Require Import Verdi.ExtrOcamlBasicExt.
+Require Import Verdi.ExtrOcamlNatIntExt.
 
-Require Import ExtrOcamlBool.
-Require Import ExtrOcamlList.
-Require Import ExtrOcamlFin.
+Require Import Verdi.ExtrOcamlBool.
+Require Import Verdi.ExtrOcamlList.
+Require Import Verdi.ExtrOcamlFin.
 
 Extraction "extraction/vard/ml/VarDRaft.ml" seq vard_raft_base_params vard_raft_multi_params vard_raft_failure_params.

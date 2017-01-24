@@ -140,7 +140,7 @@ Section NextIndexSafety.
   Proof using. 
     unfold handleAppendEntriesReply, advanceCurrentTerm.
     intros.
-    repeat break_match; repeat find_inversion; do_bool; simpl in *; intuition.
+    repeat break_match; repeat find_inversion; do_bool; simpl in *; intuition; congruence.
   Qed.
 
 
