@@ -8,20 +8,28 @@ An implementation of the [Raft](https://raft.github.io) distributed consensus pr
 Requirements
 ------------
 
-- [`Coq 8.5`](https://coq.inria.fr/download)
+Definitions and proofs:
+
+- [`Coq 8.5`](https://coq.inria.fr/coq-85)
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
+
+Executable `vard` key-value store:
+
+- [`OCaml 4.02.3`](https://coq.inria.fr/download)
+- [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 
 Building
 --------
 
 We recommend installing the dependencies of Verdi Raft via
-[OPAM](https://coq.inria.fr/opam/www/using.html):
+[OPAM](http://opam.ocaml.org/doc/Install.html):
 
 ```
-opam repo add distributedcomponents http://opam.distributedcomponents.net
-opam install verdi StructTact verdi-runtime
+opam repo add coq-released https://coq.inria.fr/opam/released
+opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
+opam install verdi StructTact verdi-runtime ocamlbuild
 ```
 
 Then, run `./configure` in the Verdi Raft root directory.  This will check
