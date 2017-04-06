@@ -17,7 +17,8 @@ let _ =
   in
   let _ =
     try
-      validate ()
+      validate ();
+      if length !cluster < 2 then raise (Arg.Bad "Cluster size must be two or greater")
     with Arg.Bad msg ->
       eprintf "%s: %s" Sys.argv.(0) msg;
       prerr_newline ();
