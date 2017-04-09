@@ -564,7 +564,7 @@ Section InputBeforeOutput.
         | H : In _ (applied_entries _) |- In _ (applied_entries ?sig) =>
           erewrite applied_entries_log_lastApplied_same with (sigma := sig) in H
       end; auto;
-      intros; simpl in *; break_if; auto.
+      intros; simpl in *; update_destruct_max_simplify; auto.
   Qed.
   
   Lemma in_applied_entries_step_applied_implies_input_state :
