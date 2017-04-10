@@ -104,18 +104,6 @@ Section ST.
         repeat concludes.
         find_insterU. find_insterU.  conclude_using eauto.
         eapply H_RT_reboot in IHrefl_trans_n1_trace; eauto.
-        * unfold update in *.
-          replace (fun nm : name =>
-                if name_eq_dec nm h
-                then reboot (nwState net0 nm)
-                else nwState net0 nm)
-                  with (fun nm : name =>
-                if name_eq_dec nm h
-                then reboot (nwState net0 h)
-                else nwState net0 nm );
-          eauto.
-          apply functional_extensionality.
-          intros. break_if; congruence.
-        * apply refl_trans_n1_1n_trace. eauto.
+        apply refl_trans_n1_1n_trace. eauto.
   Qed.
 End ST.

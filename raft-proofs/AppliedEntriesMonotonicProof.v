@@ -458,7 +458,7 @@ Section AppliedEntriesMonotonicProof.
     - exists nil.
       rewrite app_nil_r.
       apply applied_entries_log_lastApplied_same;
-        intros; unfold reboot in *; break_if; simpl; auto.
+        intros; unfold reboot in *; update_destruct_max_simplify; auto.
   Qed.
 
   Theorem applied_entries_monotonic :
