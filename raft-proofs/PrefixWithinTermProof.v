@@ -968,8 +968,8 @@ Section PrefixWithinTerm.
                   destruct (lt_eq_lt_dec (eTerm e) (eTerm x))
               end; intuition; try omega.
               + exfalso.
-                find_eapply_lem_hyp append_entries_request_term_sanity_invariant; eauto.
-                conclude_using eauto. omega.
+                eapply append_entries_request_term_sanity_invariant in H1; eauto.
+                conclude_using eauto; omega.
               + apply in_app_iff. right.
                 apply removeAfterIndex_le_In; [omega|].
                 eapply_prop allEntries_log_prefix_within_term; eauto; omega.
@@ -1000,7 +1000,7 @@ Section PrefixWithinTerm.
                   destruct (lt_eq_lt_dec (eTerm e) (eTerm x))
               end; intuition; try omega.
               + exfalso.
-                find_eapply_lem_hyp append_entries_request_term_sanity_invariant; eauto.
+                eapply append_entries_request_term_sanity_invariant in H1; eauto.
                 conclude_using eauto. omega.
               + apply in_app_iff. right.
                 apply removeAfterIndex_le_In; [omega|].
