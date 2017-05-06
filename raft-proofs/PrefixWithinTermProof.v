@@ -197,9 +197,9 @@ Section PrefixWithinTerm.
           assert (In x (removeAfterIndex l i)) by (apply removeAfterIndex_le_In; eauto; omega)
       end. subst.
       find_apply_hyp_hyp.
-      eapply entries_match_nw_1_invariant.
-      Focus 5. eauto. Focus 4. eauto. all:eauto; try omega. repeat find_rewrite; auto.
-      admit.
+      eapply entries_match_nw_1_invariant in H1; eauto.
+      apply H1; eauto.
+      repeat find_rewrite; auto.
     - break_exists. break_and.
       match goal with
         | H : _ \/ _ |- _ => clear H
@@ -730,7 +730,7 @@ Section PrefixWithinTerm.
           | H : removeAfterIndex _ _ = _ |- _ =>
             eapply removeAfterIndex_in; rewrite H; apply in_app_iff; [idtac]
         end. eauto using Prefix_In.
-  Admitted.
+  Qed.
   
   Definition log_leaderLogs_prefix_within_term net :=
     forall h t ll leader,
