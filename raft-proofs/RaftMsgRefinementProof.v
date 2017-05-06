@@ -76,7 +76,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_intermediate_reachable net ->
       P net.
   Proof using.
-  (*intros.
+    intros.
     induction H10.
     - intuition.
     -  match goal with [H : step_failure _ _ _ |- _ ] => invcs H end.
@@ -122,7 +122,7 @@ Section RaftMsgRefinement.
          eauto.
          simpl. eapply in_app_or.
          simpl.
-         {
+         { clear H11.
            match goal with
              | H : msg_refined_raft_intermediate_reachable ?net |-
                msg_refined_raft_intermediate_reachable ?net' =>
@@ -210,7 +210,7 @@ Section RaftMsgRefinement.
          eauto.
          simpl. eapply in_app_or.
          simpl.
-         {
+         { clear H11.
            match goal with
              | H : msg_refined_raft_intermediate_reachable ?net |-
                msg_refined_raft_intermediate_reachable ?net' =>
@@ -277,8 +277,7 @@ Section RaftMsgRefinement.
     - eapply msg_refined_raft_invariant_handle_message; eauto.
     - eapply_prop msg_refined_raft_net_invariant_do_leader; eauto.
     - eapply_prop msg_refined_raft_net_invariant_do_generic_server; eauto.
-  *)
-  Admitted.
+  Qed.
 
   Lemma msg_refined_raft_invariant_handle_message' P :
     forall xs p ys net st' ps' gd d l,
@@ -344,7 +343,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_intermediate_reachable net ->
       P net.
   Proof using. 
-  (*intros.
+    intros.
     induction H10.
     - intuition.
     -  match goal with [H : step_failure _ _ _ |- _ ] => invcs H end.
@@ -393,7 +392,7 @@ Section RaftMsgRefinement.
               try solve [in_crush];
               simpl in *; intros; repeat break_if; try congruence; auto).
          subst.
-         eapply_prop msg_refined_raft_net_invariant_do_generic_server'. eauto.
+         (*eapply_prop msg_refined_raft_net_invariant_do_generic_server'. eauto.
          eapply_prop msg_refined_raft_net_invariant_do_leader'. eauto.
          eapply msg_refined_raft_invariant_handle_message' with (P := P); auto.
          eauto. eauto.   auto. eauto.  eauto. eauto using in_app_or. auto.
@@ -435,7 +434,8 @@ Section RaftMsgRefinement.
            simpl in *.
            rewrite map_map.
            apply in_map_iff.
-           eexists; intuition; eauto.
+           eexists; intuition; eauto.*)
+         admit.
        + match goal with 
          | [ H : msg_refined_raft_intermediate_reachable _ |- _ ?x ] => 
            assert (msg_refined_raft_intermediate_reachable x) as Hpost
@@ -482,6 +482,7 @@ Section RaftMsgRefinement.
               try solve [in_crush];
               simpl in *; intros; repeat break_if; try congruence; auto).
          subst.
+         (*
          eapply_prop msg_refined_raft_net_invariant_do_generic_server'. eauto.
          eapply_prop msg_refined_raft_net_invariant_do_leader'. eauto.
          eapply msg_refined_raft_invariant_handle_input' with (P := P); auto.
@@ -523,7 +524,8 @@ Section RaftMsgRefinement.
            simpl in *.
            rewrite map_map.
            apply in_map_iff.
-           eexists; intuition; eauto.
+           eexists; intuition; eauto.*)
+         admit.
        + match goal with
            | [ H : nwPackets ?net = _ |- _ {| nwPackets := ?ps ; nwState := ?st |} ] =>
              assert (forall p, In p (nwPackets {| nwPackets := ps ; nwState := st |}) ->
@@ -550,7 +552,6 @@ Section RaftMsgRefinement.
       eapply MRRIR_doLeader; eauto.
     - eapply_prop msg_refined_raft_net_invariant_do_generic_server'; eauto.
       eapply MRRIR_doGenericServer; eauto.
-  *)
   Admitted.
 
   Ltac workhorse :=
