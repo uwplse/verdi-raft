@@ -87,7 +87,7 @@ Section PrefixWithinTerm.
     find_apply_hyp_hyp.
     find_apply_lem_hyp exists_deghosted_packet.
     match goal with
-      | H : exists _, _ |- _ => destruct H as (q)
+      | H : exists _, _ |- _ => destruct H as [q]
     end. break_and.
     match goal with
       | H : leader_sublog_nw_invariant _ |- _ =>
@@ -183,7 +183,7 @@ Section PrefixWithinTerm.
         | H : removeAfterIndex ?l ?index = ?es ++ ?ll |- _ =>
           eapply app_contiguous_maxIndex_le_eq in H
       end;
-        [|idtac|eapply removeAfterIndex_contiguous; [eapply entries_sorted_nw_invariant; eauto|eapply entries_contiguous_nw_invariant; eauto]|idtac]; eauto.
+        [|idtac|eapply removeAfterIndex_contiguous; [eapply entries_sorted_nw_invariant; eauto|eapply entries_contiguous_nw_invariant; eauto]|idtac]; eauto; [|omega].
       assert (exists e'', eIndex e'' = eIndex e /\ In e'' es') by
           (eapply entries_contiguous_nw_invariant; eauto; intuition;
        eapply le_trans; eauto;
@@ -199,6 +199,7 @@ Section PrefixWithinTerm.
       find_apply_hyp_hyp.
       eapply entries_match_nw_1_invariant.
       Focus 5. eauto. Focus 4. eauto. all:eauto; try omega. repeat find_rewrite; auto.
+      admit.
     - break_exists. break_and.
       match goal with
         | H : _ \/ _ |- _ => clear H
@@ -729,7 +730,7 @@ Section PrefixWithinTerm.
           | H : removeAfterIndex _ _ = _ |- _ =>
             eapply removeAfterIndex_in; rewrite H; apply in_app_iff; [idtac]
         end. eauto using Prefix_In.
-  Qed.
+  Admitted.
   
   Definition log_leaderLogs_prefix_within_term net :=
     forall h t ll leader,

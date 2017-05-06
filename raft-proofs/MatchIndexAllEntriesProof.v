@@ -489,12 +489,15 @@ Section MatchIndexAllEntries.
     find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
     break_exists. break_and.
     subst es.
-    find_apply_lem_hyp in_app_or. break_or_hyp.
+    find_apply_lem_hyp in_app_or. destruct H4.
     - find_copy_apply_hyp_hyp.
-      eapply lifted_leader_sublog_nw; eauto. intuition.
+      eapply lifted_leader_sublog_nw; eauto; [subst; auto|auto with datatypes].
     - find_eapply_lem_hyp leaders_have_leaderLogs_strong_invariant; auto.
       break_exists.  break_and.
-      pose proof one_leaderLog_per_term_invariant _ ltac:(eauto) h x _ x3 x0 ltac:(eauto) ltac:(eauto).
+      pose proof one_leaderLog_per_term_invariant _ ltac:(eauto) h x (currentTerm (snd (nwState net h))) x3 x0.
+      concludes.
+      subst_max.
+      concludes.
       break_and. subst.
       find_rewrite. eauto using Prefix_In with *.
   Qed.
@@ -584,6 +587,7 @@ Section MatchIndexAllEntries.
                 | [ H : entries_match _ _ |- _ ] =>
                   specialize (H x x e)
                 end.
+                assert (eIndex e <= eIndex x) by omega.
                 repeat concludes. intuition.
               }
 

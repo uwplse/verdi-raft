@@ -75,8 +75,8 @@ Section RaftMsgRefinement.
       msg_refined_raft_net_invariant_reboot P ->
       msg_refined_raft_intermediate_reachable net ->
       P net.
-  Proof using. 
-    intros.
+  Proof using.
+  (*intros.
     induction H10.
     - intuition.
     -  match goal with [H : step_failure _ _ _ |- _ ] => invcs H end.
@@ -277,7 +277,8 @@ Section RaftMsgRefinement.
     - eapply msg_refined_raft_invariant_handle_message; eauto.
     - eapply_prop msg_refined_raft_net_invariant_do_leader; eauto.
     - eapply_prop msg_refined_raft_net_invariant_do_generic_server; eauto.
-  Qed.
+  *)
+  Admitted.
 
   Lemma msg_refined_raft_invariant_handle_message' P :
     forall xs p ys net st' ps' gd d l,
@@ -343,7 +344,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_intermediate_reachable net ->
       P net.
   Proof using. 
-    intros.
+  (*intros.
     induction H10.
     - intuition.
     -  match goal with [H : step_failure _ _ _ |- _ ] => invcs H end.
@@ -549,7 +550,8 @@ Section RaftMsgRefinement.
       eapply MRRIR_doLeader; eauto.
     - eapply_prop msg_refined_raft_net_invariant_do_generic_server'; eauto.
       eapply MRRIR_doGenericServer; eauto.
-  Qed.
+  *)
+  Admitted.
 
   Ltac workhorse :=
     try match goal with

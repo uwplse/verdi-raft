@@ -2007,7 +2007,7 @@ Section StateMachineSafetyProof.
                        unfold msg_log_property in *.
                        specialize (Hprop (fun l => forall e, In e l -> eIndex e > 0) p).
                        conclude_using ltac:(intros; eapply lifted_entries_gt_0_invariant; eauto).
-                       concludes. simpl in *.
+                       conclude_using eauto. simpl in *.
                        find_apply_hyp_hyp.
                        omega.
                    }
@@ -2140,7 +2140,9 @@ Section StateMachineSafetyProof.
                          pose proof ghost_log_entries_match_invariant _ ltac:(eauto) (pDst p) _ ltac:(eauto)
                            as Hem.
                          specialize (Hem ple gple e').
-                         repeat concludes. intuition.
+                         repeat concludes.
+                         assert (eIndex e' <= eIndex ple) by omega.
+                         intuition.
                        }
                        subst.
 

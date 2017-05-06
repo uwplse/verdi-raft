@@ -162,7 +162,7 @@ Section LeaderLogsVotesWithLog.
     - subst.
       find_eapply_lem_hyp requestVoteReply_moreUpToDate_invariant; eauto.
       repeat find_rewrite.
-      repeat concludes.
+      repeat conclude_using eauto.
       break_exists_exists. intuition.
       find_higher_order_rewrite.
       simpl in *.

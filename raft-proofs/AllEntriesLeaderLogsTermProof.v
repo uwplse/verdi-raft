@@ -43,7 +43,7 @@ Section AllEntriesLeaderLogsTerm.
         eapply append_entries_leaderLogs_invariant in H; eauto
     end.
     break_exists. break_and. subst. do_in_app.
-    break_or_hyp; try find_apply_hyp_hyp; auto.
+    case H7; intros; try find_apply_hyp_hyp; auto.
     right.
     find_eapply_lem_hyp Prefix_In; eauto.
     repeat eexists; eauto.

@@ -109,8 +109,10 @@ Section OutputImpliesApplied.
     intros. unfold key_in_output_list in *.
     match goal with | H : exists _, _ |- _ => destruct H as [o] end.
     unfold doGenericServer in *. break_let. simpl in *.
-    find_inversion. simpl in *. find_copy_eapply_lem_hyp applyEntries_In; eauto.
-    use_applyEntries_spec; subst; simpl in *.
+    find_inversion. simpl in *. 
+    pose proof Heqp as Happ.
+    find_eapply_lem_hyp applyEntries_In; eauto.
+    use_applyEntries_spec; subst_max; simpl in *.
     eexists; intuition eauto.
     find_apply_lem_hyp In_rev.
     find_apply_lem_hyp filter_In.

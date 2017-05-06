@@ -72,7 +72,7 @@ Section RequestVoteReplyMoreUpToDate.
         break_exists_exists. intuition.
         eauto using update_elections_data_request_vote_votesWithLog_old.
       + remember (pSrc p0) as h.
-        subst. simpl in *. subst.
+        subst_max. simpl in *. subst_max.
         find_copy_apply_lem_hyp handleRequestVote_reply_true.
         find_eapply_lem_hyp update_elections_data_request_vote_votedFor; eauto;
         intuition; eauto; repeat find_rewrite.
@@ -90,7 +90,7 @@ Section RequestVoteReplyMoreUpToDate.
         repeat find_rewrite.
         eapply_prop_hyp pBody pBody; eauto.
       + remember (pDst p0) as h.
-        subst. simpl in *. subst.
+        subst_max. simpl in *. subst_max.
         find_copy_apply_lem_hyp handleRequestVote_reply_true. intuition.
     - find_apply_hyp_hyp; intuition.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).
