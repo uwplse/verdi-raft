@@ -224,7 +224,7 @@ Section OutputGreatestId.
       id < id' ->
       before_func (has_key client id) (has_key client id') (applied_entries (update name_eq_dec (nwState net) h st')).
   Proof using lacimi smci si lmi. 
-  (*intros.
+    intros.
     find_copy_apply_lem_hyp logs_sorted_invariant.
     pose proof entries_contiguous.
     match goal with
@@ -238,7 +238,9 @@ Section OutputGreatestId.
     unfold key_in_output_list in *.
     match goal with | H : exists _, _ |- _ => destruct H as [o] end.
     unfold doGenericServer in *. break_let. simpl in *.
-    find_inversion. simpl in *. find_copy_eapply_lem_hyp applyEntries_before; eauto.
+    find_inversion. simpl in *.
+    pose proof Heqp as Heqp'.
+    eapply applyEntries_before in Heqp; eauto.
     match goal with
       | H : before_func _ _ ?l |- _=>
         eapply before_func_prepend with
@@ -307,8 +309,7 @@ Section OutputGreatestId.
             assert (y <= x) by omega
         end.
         eapply_prop_hyp le le; eauto. intuition.
-  *)
-  Admitted.
+  Qed.
 
   
   Lemma output_implies_greatest :
