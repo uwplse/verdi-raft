@@ -89,7 +89,9 @@ Section InputBeforeOutput.
     match goal with
       | |- context [update _ ?sigma ?h ?st] => pose proof applied_entries_update sigma h st
     end.
-    simpl in *. concludes. intuition; [find_rewrite; exists nil; simpl in *; intuition|].
+    simpl in *.
+    assert (commitIndex (sigma h) >= lastApplied (sigma h)) by omega.
+    concludes. intuition; [find_rewrite; exists nil; simpl in *; intuition|].
     pose proof applied_entries_cases sigma.
     intuition; repeat find_rewrite; eauto;
     [eexists; intuition; eauto;
@@ -514,7 +516,7 @@ Section InputBeforeOutput.
       unfold ghost_data in *. simpl in *.
       repeat find_rewrite.
       do_in_app. intuition.
-      + find_false. eexists; intuition; repeat find_rewrite; eauto.
+      + contradict H1. eexists; intuition; repeat find_rewrite; eauto.
       + find_apply_hyp_hyp. break_exists. intuition.
         eapply handleMessage_log with (h'' := x1); eauto;
         [destruct p; simpl in *; repeat find_rewrite; intuition|].

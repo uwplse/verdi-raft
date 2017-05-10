@@ -364,7 +364,9 @@ Section AppliedEntriesMonotonicProof.
     match goal with
       | |- context [update _ ?sigma ?h ?st] => pose proof applied_entries_update sigma h st
     end.
-    simpl in *. concludes. intuition.
+    simpl in *.
+    assert (commitIndex (sigma h) >= lastApplied (sigma h)) by omega.
+    concludes. intuition.
     - find_rewrite. eauto using app_nil_r.
     - pose proof applied_entries_cases sigma.
       intuition; repeat find_rewrite; eauto.

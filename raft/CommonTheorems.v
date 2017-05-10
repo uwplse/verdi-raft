@@ -1475,10 +1475,18 @@ Section CommonTheorems.
     forall i a,
       contiguous_range_exact_lo [a] i ->
       eIndex a = S i.
-  Proof using. 
+  Proof using.
     intros. unfold contiguous_range_exact_lo in *. intuition.
-    find_insterU. concludes. find_insterU. concludes. break_exists.
-    simpl in *. intuition. subst. auto.
+    specialize (H1 a).
+    specialize (H0 (S i)).
+    assert (H_a: In a [a]) by auto with datatypes.
+    concludes.
+    assert (H_s: i < S i) by auto.
+    concludes.
+    break_exists.
+    break_and.
+    inversion H0; subst; auto.
+    inversion H2.
   Qed.
 
   Lemma contiguous_index_adjacent :
@@ -1673,12 +1681,25 @@ Section CommonTheorems.
     - contradiction.
     - simpl Prefix in *. intuition. subst a. f_equal. break_if.
       + do_bool. unfold contiguous_range_exact_lo in *.
-        intuition. find_insterU. simpl in *. conclude_using eauto.
+        intuition.
+        simpl maxIndex in *.
+        specialize (H6 e).
+        specialize (H4 e).
+        assert (H_in': In e (e :: l')).
+          left. reflexivity.
+        concludes.
+        assert (H_in: In e (e :: l)).
+          left. reflexivity.
+        concludes.
         omega.
       + destruct l.
         { do_bool. simpl in *. find_apply_lem_hyp contiguous_index_singleton. destruct l'.
           - reflexivity.
-          - simpl. intuition. find_insterU. concludes. intuition. find_rewrite. break_if.
+          - simpl. intuition. specialize (H0 e0).
+            assert (H_in: In e0 (e0 :: l')).
+              left.
+              reflexivity.
+            concludes. intuition. find_rewrite. break_if.
             + reflexivity.
             + do_bool. omega. }
         { apply IHl; try discriminate; auto.
@@ -1686,9 +1707,33 @@ Section CommonTheorems.
             + firstorder.
             + eauto using Prefix_cons, prefix_sorted.
           - find_apply_lem_hyp cons_contiguous_sorted.
-            + firstorder.
+            + unfold contiguous_range_exact_lo in *.
+              inversion H1.
+              split; intros.
+              * do_bool.
+                simpl maxIndex in *.
+                destruct H2.
+                destruct H3.
+                destruct l'; simpl in *; intuition.
+                subst_max.
+                specialize (H2 i0).
+                specialize (H0 e1).
+                conclude_using eauto.
+                break_and.
+                assert (i < i0 <= eIndex e) by omega.
+                concludes.
+                break_exists.
+                break_and.
+                subst.
+                exists x.
+                split; auto.
+                break_or_hyp; auto.
+                omega.
+              * apply H2.
+                right; auto.
             + eauto using Prefix_cons, prefix_sorted.
-          - apply cons_contiguous_sorted in H3; auto. }
+          - apply cons_contiguous_sorted in H3; auto.
+       }
   Qed.
 
   Lemma thing :
@@ -1761,7 +1806,7 @@ Section CommonTheorems.
   Proof using. 
     induction l1; intros; simpl in *; intuition.
     subst. destruct l2; simpl in *; auto.
-    specialize (H2 e0); concludes; intuition.
+    specialize (H2 e0); conclude_using eauto; intuition.
   Qed.
 
   Lemma findGtIndex_Prefix :
@@ -2265,7 +2310,7 @@ Section CommonTheorems.
     intros l1.
     induction l1 using rev_ind; intuition.
     induction l2 using rev_ind.
-    - find_insterU. concludes. contradiction.
+    - find_insterU. conclude_using eauto. contradiction.
     - repeat rewrite rev_unit.
       find_apply_lem_hyp contiguous_sorted_last; auto.
       find_apply_lem_hyp contiguous_sorted_last; auto.

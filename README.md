@@ -10,13 +10,13 @@ Requirements
 
 Definitions and proofs:
 
-- [`Coq 8.5`](https://coq.inria.fr/coq-85)
+- [`Coq 8.6`](https://coq.inria.fr/coq-86)
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
 
 Executable `vard` key-value store:
 
-- [`OCaml 4.02.3`](https://coq.inria.fr/download)
+- [`OCaml 4.02.3`](https://coq.inria.fr/download) (or later)
 - [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 
@@ -38,7 +38,6 @@ We recommend installing the dependencies of Verdi Raft via
 ```
 opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-opam pin add coq 8.5.3
 opam install verdi StructTact verdi-runtime ocamlbuild
 ```
 

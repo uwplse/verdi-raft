@@ -437,7 +437,7 @@ Section AppendEntriesRequestLeaderLogs.
   Proof using. 
     induction l1; intros; simpl in *; intuition.
     subst. destruct l2; simpl in *; auto.
-    specialize (H2 e0); concludes; intuition.
+    specialize (H2 e0); conclude_using eauto; intuition.
   Qed.
 
   Lemma findGtIndex_Prefix :
@@ -479,7 +479,6 @@ Section AppendEntriesRequestLeaderLogs.
     - simpl in *. break_if; try congruence.
       do_bool. find_inversion. intuition.
   Qed.
-      
   
   Lemma append_entries_leaderLogs_doLeader :
     refined_raft_net_invariant_do_leader append_entries_leaderLogs.
@@ -547,12 +546,14 @@ Section AppendEntriesRequestLeaderLogs.
           break_exists_exists. exists nil.
           intuition; simpl in *; auto; eauto using sorted_app_in_1;
           [rewrite app_nil_r; auto|].
-          find_higher_order_rewrite. rewrite_update.
+          clear H18.
+          find_higher_order_rewrite.
+          rewrite_update.
           simpl in *. auto.
         * { find_copy_eapply_lem_hyp findGtIndex_app_in_2; eauto.
             exists x2. break_exists_exists.
             intuition; simpl in *; auto; intuition eauto.
-            - find_higher_order_rewrite. rewrite_update. auto.
+            - clear H18. find_higher_order_rewrite. rewrite_update. auto.
             - right. left. eexists; intuition; eauto.
               match goal with
                   | |- Prefix_sane ?l _ _ =>

@@ -289,7 +289,9 @@ Section LogMatchingProof.
                      _ : In ?x (log (_ _ ?leader)) |-
                      In ?x (log (_ _ ?h)) ] =>
                    specialize (Hentries leader h e1 e2 x)
-              end. repeat concludes. intuition.
+              end.
+              assert (eIndex x <= eIndex e1) by omega.
+              repeat conclude. intuition.
           }
     - use_packet_subset_clear; unfold log_matching in *; intuition.
       + unfold log_matching_nw in *; intuition. use_nw_invariant.

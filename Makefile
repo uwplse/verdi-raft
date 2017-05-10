@@ -1,8 +1,8 @@
 PYTHON=python2.7
-COQVERSION := $(shell coqc --version|grep "version 8.5")
+COQVERSION := $(shell coqc --version|grep "version 8.6")
 
 ifeq "$(COQVERSION)" ""
-$(error "Verdi Raft is only compatible with Coq version 8.5")
+$(error "Verdi Raft is only compatible with Coq version 8.6")
 endif
 
 COQPROJECT_EXISTS=$(wildcard _CoqProject)
@@ -48,7 +48,7 @@ Makefile.coq: raft/RaftState.v _CoqProject
 	    'extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
           -extra-phony 'distclean' 'clean' \
-	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.aux,$$(VFILES)))))'
+	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
 
 raft/RaftState.v:
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v

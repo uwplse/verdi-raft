@@ -9,8 +9,8 @@ addons:
       - aspcud
 env:
   global:
-    - COQ_VERSION=8.5.3
-    - SSREFLECT_VERSION=1.6
+    - COQ_VERSION=8.6
+    - SSREFLECT_VERSION=1.6.1
   matrix:
     - MODE=build
       TARGET=default

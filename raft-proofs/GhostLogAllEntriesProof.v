@@ -64,7 +64,7 @@ Section GhostLogAllEntriesProof.
         break_exists_exists.
         eauto using update_elections_data_appendEntries_preserves_allEntries'.
       + remember (pSrc p0).
-        subst. simpl in *.
+        subst_max. simpl in *.
         unfold write_ghost_log in *.
         simpl in *.
         match goal with

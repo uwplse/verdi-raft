@@ -974,7 +974,7 @@ Section RaftLinearizableProofs.
         rewrite <- app_ass.
         rewrite log_to_IR_app.
         simpl.
-        specialize (H x). concludes.
+        specialize (H x). conclude_using eauto.
         specialize (H0 l [] x l0 d).
         break_match; subst; simpl in *.
         rewrite app_nil_r.
@@ -1201,8 +1201,12 @@ Section RaftLinearizableProofs.
         find_apply_lem_hyp app_inv_head. find_inversion.
         unfold execute_log in *.
         find_rewrite_lem execute_log'_app. simpl in *.
-        repeat break_let. repeat find_inversion.
+        repeat break_let.
+        find_inversion.
+        find_inversion.
         rewrite rev_app_distr in *. simpl in *.
+        find_injection.
+        find_injection.
         unfold value in *. find_inversion.
         repeat find_rewrite. find_inversion. auto.
   Qed.
