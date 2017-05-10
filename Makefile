@@ -45,7 +45,7 @@ Makefile.coq: raft/RaftState.v _CoqProject
 	    'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v' \
           -extra '$(MLFILES)' \
-	    'extraction/vard/coq/ExtractVarDRaft.v extraction/vard/coq/VarDRaft.vo' \
+	    'extraction/vard/coq/ExtractVarDRaft.v systems/VarDRaft.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
           -extra-phony 'distclean' 'clean' \
 	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
