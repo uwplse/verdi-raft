@@ -4,7 +4,7 @@
 
 ## Configuration options for coqproject.sh
 DEPS=(StructTact Verdi)
-DIRS=(raft raft-proofs extraction/vard/coq)
+DIRS=(raft raft-proofs systems extraction/vard/coq)
 CANARIES=("mathcomp.ssreflect.ssreflect" "Verdi Raft requires mathcomp to be installed" "StructTact.StructTactics" "Build StructTact before building Verdi Raft" "Verdi.Verdi" "Build Verdi before building Verdi Raft")
 EXTRA=(raft/RaftState.v)
 Verdi_DIRS=(core lib systems extraction)
