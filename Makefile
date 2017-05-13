@@ -19,7 +19,7 @@ endif
 
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq
-	+$(MAKE) -C extraction/vard
+#	+$(MAKE) -C extraction/vard
 
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
@@ -64,9 +64,9 @@ clean:
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
 
-vard:
-	@echo "To build everything (including vard) use the default target."
-	@echo "To quickly provision vard use the vard-quick target."
+vard: vard-quick
+#	@echo "To build everything (including vard) use the default target."
+#	@echo "To quickly provision vard use the vard-quick target."
 
 $(MLFILES): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
