@@ -1,5 +1,5 @@
 PYTHON=python2.7
-COQVERSION := $(shell coqc --version|grep "version 8.6")
+COQVERSION := $(shell coqc --version|egrep "version (8\\.5|8\\.6|trunk)")
 
 ifeq "$(COQVERSION)" ""
 $(error "Verdi Raft is only compatible with Coq version 8.6")
@@ -24,6 +24,9 @@ default: Makefile.coq
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
 
+install: Makefile.coq
+	$(MAKE) -f Makefile.coq install
+
 proofalytics:
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C proofalytics
@@ -39,8 +42,8 @@ proofalytics-aux: Makefile.coq
 
 MLFILES = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 
-Makefile.coq: raft/RaftState.v _CoqProject
-	coq_makefile -f _CoqProject -o Makefile.coq -no-install \
+Makefile.coq: _CoqProject
+	coq_makefile -f _CoqProject -o Makefile.coq \
 	  -extra 'script/assumptions.vo script/assumptions.glob script/assumptions.v.d' \
 	    'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v' \
@@ -50,13 +53,13 @@ Makefile.coq: raft/RaftState.v _CoqProject
           -extra-phony 'distclean' 'clean' \
 	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
 
-raft/RaftState.v:
+raft/RaftState.v: raft/RaftState.v.rec
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
 
 clean:
 	if [ -f Makefile.coq ]; then \
 	  $(MAKE) -f Makefile.coq distclean; fi
-	rm -f Makefile.coq raft/RaftState.v script/.assumptions.aux
+	rm -f Makefile.coq script/.assumptions.aux
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
@@ -81,4 +84,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick clean vard vard-quick vard-test lint proofalytics distclean $(MLFILES)
+.PHONY: default quick install clean vard vard-quick vard-test lint proofalytics distclean $(MLFILES)
