@@ -1,13 +1,13 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import NoAppendEntriesToSelfInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import AppendEntriesRequestsCameFromLeadersInterface.
-Require Import LeadersHaveLeaderLogsInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.NoAppendEntriesToSelfInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.AppendEntriesRequestsCameFromLeadersInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
 
-Require Import NoAppendEntriesToLeaderInterface.
+Require Import VerdiRaft.NoAppendEntriesToLeaderInterface.
 
 Section NoAppendEntriesToLeader.
   Context {orig_base_params : BaseParams}.

@@ -1,4 +1,4 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section PrevLogLeaderSublogInterface.
   Context {orig_base_params : BaseParams}.

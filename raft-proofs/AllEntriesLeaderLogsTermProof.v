@@ -1,13 +1,13 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import RaftRefinementInterface.
-Require Import RefinementSpecLemmas.
-Require Import SpecLemmas.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RefinementSpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AllEntriesLeaderLogsTermInterface.
-Require Import AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsTermInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
 
 Section AllEntriesLeaderLogsTerm.
 

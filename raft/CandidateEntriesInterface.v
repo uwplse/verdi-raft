@@ -1,6 +1,6 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import RefinementCommonDefinitions.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RefinementCommonDefinitions.
 
 Section CandidateEntriesInterface.
   Context {orig_base_params : BaseParams}.

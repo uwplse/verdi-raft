@@ -1,11 +1,11 @@
 Require Import PeanoNat.
 
-Require Import RaftState.
-Require Import Raft.
+Require Import VerdiRaft.RaftState.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Export CommonDefinitions.
+Require Export VerdiRaft.CommonDefinitions.
 
 Section CommonTheorems.
   Context {orig_base_params : BaseParams}.

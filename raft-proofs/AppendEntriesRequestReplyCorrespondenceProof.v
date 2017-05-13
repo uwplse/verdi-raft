@@ -1,11 +1,11 @@
 Require Import FunctionalExtensionality.
 
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
-Require Import AppendEntriesRequestReplyCorrespondenceInterface.
+Require Import VerdiRaft.AppendEntriesRequestReplyCorrespondenceInterface.
 
 Require Import Verdi.DupDropReordering.
 

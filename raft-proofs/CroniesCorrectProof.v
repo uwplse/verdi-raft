@@ -1,11 +1,11 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CandidatesVoteForSelvesInterface.
-Require Import CommonTheorems.
-Require Import VotesCorrectInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CandidatesVoteForSelvesInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.VotesCorrectInterface.
 
-Require Import CroniesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
 
 Section CroniesCorrectProof.
 

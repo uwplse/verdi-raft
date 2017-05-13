@@ -1,13 +1,13 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import RaftRefinementInterface.
-Require Import CroniesCorrectInterface.
-Require Import VotesCorrectInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
 
-Require Import OneLeaderPerTermInterface.
+Require Import VerdiRaft.OneLeaderPerTermInterface.
 
 Section OneLeaderPerTermProof.
   Context {orig_base_params : BaseParams}.

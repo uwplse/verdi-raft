@@ -1,4 +1,4 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section CommonDefinitions.
   Context {orig_base_params : BaseParams}.

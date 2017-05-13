@@ -1,10 +1,10 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import GhostLogsLogPropertiesInterface.
+Require Import VerdiRaft.GhostLogsLogPropertiesInterface.
 
 Section GhostLogsLogProperties.
   Context {orig_base_params : BaseParams}.

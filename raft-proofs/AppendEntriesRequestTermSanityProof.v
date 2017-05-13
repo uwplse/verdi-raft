@@ -1,10 +1,10 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import SortedInterface.
-Require Import AppendEntriesRequestTermSanityInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.AppendEntriesRequestTermSanityInterface.
 
 Section AppendEntriesRequestTermSanity.
 

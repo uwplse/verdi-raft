@@ -1,10 +1,10 @@
-Require Import Raft.
-Require Import SpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.SpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import TermSanityInterface.
-Require Import CandidateTermGtLogInterface.
+Require Import VerdiRaft.TermSanityInterface.
+Require Import VerdiRaft.CandidateTermGtLogInterface.
 
 Section CandidateTermGtLog.
   Context {orig_base_params : BaseParams}.

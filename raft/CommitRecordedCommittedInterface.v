@@ -1,8 +1,8 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import LeaderCompletenessInterface.
-Require Import CommonDefinitions.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.CommonDefinitions.
 
 Section CommitRecordedCommitted.
 

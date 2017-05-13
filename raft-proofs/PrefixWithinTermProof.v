@@ -1,25 +1,25 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
-Require Import SpecLemmas.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import PrefixWithinTermInterface.
-Require Import LogsLeaderLogsInterface.
-Require Import RefinedLogMatchingLemmasInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import LeaderLogsSortedInterface.
-Require Import LeaderLogsSublogInterface.
-Require Import LeaderSublogInterface.
-Require Import NextIndexSafetyInterface.
-Require Import LeaderLogsContiguousInterface.
-Require Import AllEntriesLogMatchingInterface.
-Require Import AppendEntriesRequestTermSanityInterface.
-Require Import AllEntriesLeaderSublogInterface.
+Require Import VerdiRaft.PrefixWithinTermInterface.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.LeaderLogsSublogInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.NextIndexSafetyInterface.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.AllEntriesLogMatchingInterface.
+Require Import VerdiRaft.AppendEntriesRequestTermSanityInterface.
+Require Import VerdiRaft.AllEntriesLeaderSublogInterface.
 
 Section PrefixWithinTerm.
   Context {orig_base_params : BaseParams}.

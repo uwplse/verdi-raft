@@ -1,12 +1,12 @@
 Require Import FunctionalExtensionality.
 
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 Require Import Verdi.DupDropReordering.
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import RaftRefinementInterface.
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 
 Section RaftMsgRefinement.
   Context {orig_base_params : BaseParams}.

@@ -1,9 +1,9 @@
 Require Import FunctionalExtensionality.
 
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Set Bullet Behavior "Strict Subproofs".
 

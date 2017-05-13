@@ -1,5 +1,5 @@
-Require Import Raft.
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 
 Section GhostLogsLogProperties.
   Context {orig_base_params : BaseParams}.

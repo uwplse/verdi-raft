@@ -1,13 +1,13 @@
 Require Import Verdi.TraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.TraceUtil.
 
-Require Import CausalOrderPreservedInterface.
-Require Import OutputImpliesAppliedInterface.
-Require Import AppliedImpliesInputInterface.
-Require Import AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.CausalOrderPreservedInterface.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
+Require Import VerdiRaft.AppliedImpliesInputInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
 Section CausalOrderPreserved.

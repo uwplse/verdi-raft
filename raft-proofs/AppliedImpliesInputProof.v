@@ -1,15 +1,15 @@
 Require Import Verdi.InverseTraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import TraceUtil.
-Require Import OutputImpliesAppliedInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.TraceUtil.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AppliedImpliesInputInterface.
+Require Import VerdiRaft.AppliedImpliesInputInterface.
 
 Section AppliedImpliesInputProof.
   Context {orig_base_params : BaseParams}.

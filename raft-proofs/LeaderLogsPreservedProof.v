@@ -1,17 +1,17 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
-Require Import RefinementCommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.RefinementCommonTheorems.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import LeaderLogsPreservedInterface.
-Require Import LogsLeaderLogsInterface.
-Require Import LeaderLogsTermSanityInterface.
-Require Import LeaderLogsCandidateEntriesInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import VotesCorrectInterface.
-Require Import CroniesCorrectInterface.
+Require Import VerdiRaft.LeaderLogsPreservedInterface.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.LeaderLogsTermSanityInterface.
+Require Import VerdiRaft.LeaderLogsCandidateEntriesInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
 
 Section LeaderLogsPreserved.
 

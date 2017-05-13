@@ -1,279 +1,279 @@
-Require Import Raft.
-Require Import Linearizability.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.Linearizability.
 
-Require Import RaftLinearizableProofs.
+Require Import VerdiRaft.RaftLinearizableProofs.
 
-Require Import OutputCorrectInterface.
-Require Import OutputCorrectProof.
+Require Import VerdiRaft.OutputCorrectInterface.
+Require Import VerdiRaft.OutputCorrectProof.
 
-Require Import InputBeforeOutputInterface.
-Require Import InputBeforeOutputProof.
+Require Import VerdiRaft.InputBeforeOutputInterface.
+Require Import VerdiRaft.InputBeforeOutputProof.
 
-Require Import CausalOrderPreservedInterface.
-Require Import CausalOrderPreservedProof.
+Require Import VerdiRaft.CausalOrderPreservedInterface.
+Require Import VerdiRaft.CausalOrderPreservedProof.
 
-Require Import AppliedImpliesInputInterface.
-Require Import AppliedImpliesInputProof.
+Require Import VerdiRaft.AppliedImpliesInputInterface.
+Require Import VerdiRaft.AppliedImpliesInputProof.
 
-Require Import OutputImpliesAppliedInterface.
-Require Import OutputImpliesAppliedProof.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
+Require Import VerdiRaft.OutputImpliesAppliedProof.
 
-Require Import LogMatchingInterface.
-Require Import LogMatchingProof.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.LogMatchingProof.
 
-Require Import SortedInterface.
-Require Import SortedProof.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.SortedProof.
 
-Require Import TermSanityInterface.
-Require Import TermSanityProof.
+Require Import VerdiRaft.TermSanityInterface.
+Require Import VerdiRaft.TermSanityProof.
 
-Require Import LeaderSublogInterface.
-Require Import LeaderSublogProof.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.LeaderSublogProof.
 
-Require Import RaftRefinementInterface.
-Require Import RaftRefinementProof.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RaftRefinementProof.
 
-Require Import CandidateEntriesInterface.
-Require Import CandidateEntriesProof.
+Require Import VerdiRaft.CandidateEntriesInterface.
+Require Import VerdiRaft.CandidateEntriesProof.
 
-Require Import CroniesTermInterface.
-Require Import CroniesTermProof.
+Require Import VerdiRaft.CroniesTermInterface.
+Require Import VerdiRaft.CroniesTermProof.
 
-Require Import CroniesCorrectInterface.
-Require Import CroniesCorrectProof.
+Require Import VerdiRaft.CroniesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectProof.
 
-Require Import VotesLeCurrentTermInterface.
-Require Import VotesLeCurrentTermProof.
+Require Import VerdiRaft.VotesLeCurrentTermInterface.
+Require Import VerdiRaft.VotesLeCurrentTermProof.
 
-Require Import VotesCorrectInterface.
-Require Import VotesCorrectProof.
+Require Import VerdiRaft.VotesCorrectInterface.
+Require Import VerdiRaft.VotesCorrectProof.
 
-Require Import CandidatesVoteForSelvesInterface.
-Require Import CandidatesVoteForSelvesProof.
+Require Import VerdiRaft.CandidatesVoteForSelvesInterface.
+Require Import VerdiRaft.CandidatesVoteForSelvesProof.
 
-Require Import OneLeaderPerTermInterface.
-Require Import OneLeaderPerTermProof.
+Require Import VerdiRaft.OneLeaderPerTermInterface.
+Require Import VerdiRaft.OneLeaderPerTermProof.
 
-Require Import UniqueIndicesInterface.
-Require Import UniqueIndicesProof.
+Require Import VerdiRaft.UniqueIndicesInterface.
+Require Import VerdiRaft.UniqueIndicesProof.
 
-Require Import AppliedEntriesMonotonicInterface.
-Require Import AppliedEntriesMonotonicProof.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicProof.
 
-Require Import StateMachineSafetyInterface.
-Require Import StateMachineSafetyProof.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.StateMachineSafetyProof.
 
-Require Import MaxIndexSanityInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
 
-Require Import LeaderCompletenessInterface.
-Require Import LeaderCompletenessProof.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.LeaderCompletenessProof.
 
-Require Import TransitiveCommitInterface.
-Require Import TransitiveCommitProof.
+Require Import VerdiRaft.TransitiveCommitInterface.
+Require Import VerdiRaft.TransitiveCommitProof.
 
-Require Import AllEntriesLeaderLogsInterface.
-Require Import AllEntriesLeaderLogsProof.
+Require Import VerdiRaft.AllEntriesLeaderLogsInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsProof.
 
-Require Import CommitRecordedCommittedInterface.
+Require Import VerdiRaft.CommitRecordedCommittedInterface.
 
-Require Import LeaderLogsTermSanityInterface.
-Require Import LeaderLogsTermSanityProof.
+Require Import VerdiRaft.LeaderLogsTermSanityInterface.
+Require Import VerdiRaft.LeaderLogsTermSanityProof.
 
 
-Require Import AllEntriesTermSanityInterface.
-Require Import AllEntriesTermSanityProof.
+Require Import VerdiRaft.AllEntriesTermSanityInterface.
+Require Import VerdiRaft.AllEntriesTermSanityProof.
 
-Require Import VotesWithLogTermSanityInterface.
-Require Import VotesWithLogTermSanityProof.
+Require Import VerdiRaft.VotesWithLogTermSanityInterface.
+Require Import VerdiRaft.VotesWithLogTermSanityProof.
 
-Require Import LeaderLogsPreservedInterface.
-Require Import LeaderLogsPreservedProof.
+Require Import VerdiRaft.LeaderLogsPreservedInterface.
+Require Import VerdiRaft.LeaderLogsPreservedProof.
 
-Require Import PrefixWithinTermInterface.
-Require Import PrefixWithinTermProof.
+Require Import VerdiRaft.PrefixWithinTermInterface.
+Require Import VerdiRaft.PrefixWithinTermProof.
 
-Require Import EveryEntryWasCreatedInterface.
-Require Import EveryEntryWasCreatedProof.
+Require Import VerdiRaft.EveryEntryWasCreatedInterface.
+Require Import VerdiRaft.EveryEntryWasCreatedProof.
 
-Require Import EveryEntryWasCreatedHostLogInterface.
-Require Import EveryEntryWasCreatedHostLogProof.
+Require Import VerdiRaft.EveryEntryWasCreatedHostLogInterface.
+Require Import VerdiRaft.EveryEntryWasCreatedHostLogProof.
 
-Require Import LeaderLogsVotesWithLogInterface.
-Require Import LeaderLogsVotesWithLogProof.
+Require Import VerdiRaft.LeaderLogsVotesWithLogInterface.
+Require Import VerdiRaft.LeaderLogsVotesWithLogProof.
 
-Require Import AllEntriesLogInterface.
-Require Import AllEntriesLogProof.
+Require Import VerdiRaft.AllEntriesLogInterface.
+Require Import VerdiRaft.AllEntriesLogProof.
 
-Require Import AllEntriesVotesWithLogInterface.
-Require Import AllEntriesVotesWithLogProof.
+Require Import VerdiRaft.AllEntriesVotesWithLogInterface.
+Require Import VerdiRaft.AllEntriesVotesWithLogProof.
 
-Require Import VotesWithLogSortedInterface.
-Require Import VotesWithLogSortedProof.
+Require Import VerdiRaft.VotesWithLogSortedInterface.
+Require Import VerdiRaft.VotesWithLogSortedProof.
 
-Require Import LeaderLogsLogMatchingInterface.
-Require Import LeaderLogsLogMatchingProof.
+Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
+Require Import VerdiRaft.LeaderLogsLogMatchingProof.
 
-Require Import StateMachineSafetyPrimeInterface.
-Require Import StateMachineSafetyPrimeProof.
+Require Import VerdiRaft.StateMachineSafetyPrimeInterface.
+Require Import VerdiRaft.StateMachineSafetyPrimeProof.
 
-Require Import AppendEntriesRequestLeaderLogsInterface.
-Require Import AppendEntriesRequestLeaderLogsProof.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsProof.
 
-Require Import AppendEntriesRequestsCameFromLeadersInterface.
-Require Import AppendEntriesRequestsCameFromLeadersProof.
+Require Import VerdiRaft.AppendEntriesRequestsCameFromLeadersInterface.
+Require Import VerdiRaft.AppendEntriesRequestsCameFromLeadersProof.
 
-Require Import LeaderLogsSortedInterface.
-Require Import LeaderLogsSortedProof.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.LeaderLogsSortedProof.
 
-Require Import LeaderLogsContiguousInterface.
-Require Import LeaderLogsContiguousProof.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.LeaderLogsContiguousProof.
 
-Require Import LogsLeaderLogsInterface.
-Require Import LogsLeaderLogsProof.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.LogsLeaderLogsProof.
 
-Require Import OneLeaderLogPerTermInterface.
-Require Import OneLeaderLogPerTermProof.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermProof.
 
-Require Import LeaderLogsSublogInterface.
-Require Import LeaderLogsSublogProof.
+Require Import VerdiRaft.LeaderLogsSublogInterface.
+Require Import VerdiRaft.LeaderLogsSublogProof.
 
-Require Import LeadersHaveLeaderLogsInterface.
-Require Import LeadersHaveLeaderLogsProof.
+Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsProof.
 
-Require Import LeadersHaveLeaderLogsStrongInterface.
-Require Import LeadersHaveLeaderLogsStrongProof.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongProof.
 
-Require Import NextIndexSafetyInterface.
-Require Import NextIndexSafetyProof.
+Require Import VerdiRaft.NextIndexSafetyInterface.
+Require Import VerdiRaft.NextIndexSafetyProof.
 
-Require Import RefinedLogMatchingLemmasInterface.
-Require Import RefinedLogMatchingLemmasProof.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasProof.
 
-Require Import LeaderLogsCandidateEntriesInterface.
-Require Import LeaderLogsCandidateEntriesProof.
+Require Import VerdiRaft.LeaderLogsCandidateEntriesInterface.
+Require Import VerdiRaft.LeaderLogsCandidateEntriesProof.
 
-Require Import AllEntriesCandidateEntriesInterface.
-Require Import AllEntriesCandidateEntriesProof.
+Require Import VerdiRaft.AllEntriesCandidateEntriesInterface.
+Require Import VerdiRaft.AllEntriesCandidateEntriesProof.
 
-Require Import AllEntriesLogMatchingInterface.
-Require Import AllEntriesLogMatchingProof.
+Require Import VerdiRaft.AllEntriesLogMatchingInterface.
+Require Import VerdiRaft.AllEntriesLogMatchingProof.
 
-Require Import AppendEntriesRequestTermSanityInterface.
-Require Import AppendEntriesRequestTermSanityProof.
+Require Import VerdiRaft.AppendEntriesRequestTermSanityInterface.
+Require Import VerdiRaft.AppendEntriesRequestTermSanityProof.
 
-Require Import AllEntriesLeaderSublogInterface.
-Require Import AllEntriesLeaderSublogProof.
+Require Import VerdiRaft.AllEntriesLeaderSublogInterface.
+Require Import VerdiRaft.AllEntriesLeaderSublogProof.
 
-Require Import LastAppliedCommitIndexMatchingInterface.
-Require Import LastAppliedCommitIndexMatchingProof.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingProof.
 
-Require Import LastAppliedLeCommitIndexInterface.
-Require Import LastAppliedLeCommitIndexProof.
+Require Import VerdiRaft.LastAppliedLeCommitIndexInterface.
+Require Import VerdiRaft.LastAppliedLeCommitIndexProof.
 
-Require Import AllEntriesLeaderLogsTermInterface.
-Require Import AllEntriesLeaderLogsTermProof.
+Require Import VerdiRaft.AllEntriesLeaderLogsTermInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsTermProof.
 
-Require Import StateMachineCorrectInterface.
-Require Import StateMachineCorrectProof.
+Require Import VerdiRaft.StateMachineCorrectInterface.
+Require Import VerdiRaft.StateMachineCorrectProof.
 
-Require Import OutputGreatestIdInterface.
-Require Import OutputGreatestIdProof.
+Require Import VerdiRaft.OutputGreatestIdInterface.
+Require Import VerdiRaft.OutputGreatestIdProof.
 
-Require Import CurrentTermGtZeroInterface.
-Require Import CurrentTermGtZeroProof.
+Require Import VerdiRaft.CurrentTermGtZeroInterface.
+Require Import VerdiRaft.CurrentTermGtZeroProof.
 
-Require Import TermsAndIndicesFromOneLogInterface.
-Require Import TermsAndIndicesFromOneLogProof.
+Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
+Require Import VerdiRaft.TermsAndIndicesFromOneLogProof.
 
-Require Import TermsAndIndicesFromOneInterface.
-Require Import TermsAndIndicesFromOneProof.
+Require Import VerdiRaft.TermsAndIndicesFromOneInterface.
+Require Import VerdiRaft.TermsAndIndicesFromOneProof.
 
-Require Import CandidateTermGtLogInterface.
-Require Import CandidateTermGtLogProof.
+Require Import VerdiRaft.CandidateTermGtLogInterface.
+Require Import VerdiRaft.CandidateTermGtLogProof.
 
-Require Import VotesVotesWithLogCorrespondInterface.
-Require Import VotesVotesWithLogCorrespondProof.
+Require Import VerdiRaft.VotesVotesWithLogCorrespondInterface.
+Require Import VerdiRaft.VotesVotesWithLogCorrespondProof.
 
-Require Import PrevLogLeaderSublogInterface.
-Require Import PrevLogLeaderSublogProof.
+Require Import VerdiRaft.PrevLogLeaderSublogInterface.
+Require Import VerdiRaft.PrevLogLeaderSublogProof.
 
-Require Import AllEntriesIndicesGt0Interface.
-Require Import AllEntriesIndicesGt0Proof.
+Require Import VerdiRaft.AllEntriesIndicesGt0Interface.
+Require Import VerdiRaft.AllEntriesIndicesGt0Proof.
 
-Require Import PrevLogCandidateEntriesTermInterface.
-Require Import PrevLogCandidateEntriesTermProof.
+Require Import VerdiRaft.PrevLogCandidateEntriesTermInterface.
+Require Import VerdiRaft.PrevLogCandidateEntriesTermProof.
 
-Require Import MatchIndexAllEntriesInterface.
-Require Import MatchIndexAllEntriesProof.
+Require Import VerdiRaft.MatchIndexAllEntriesInterface.
+Require Import VerdiRaft.MatchIndexAllEntriesProof.
 
-Require Import MatchIndexLeaderInterface.
-Require Import MatchIndexLeaderProof.
+Require Import VerdiRaft.MatchIndexLeaderInterface.
+Require Import VerdiRaft.MatchIndexLeaderProof.
 
-Require Import MatchIndexSanityInterface.
-Require Import MatchIndexSanityProof.
+Require Import VerdiRaft.MatchIndexSanityInterface.
+Require Import VerdiRaft.MatchIndexSanityProof.
 
-Require Import NoAppendEntriesToLeaderInterface.
-Require Import NoAppendEntriesToLeaderProof.
+Require Import VerdiRaft.NoAppendEntriesToLeaderInterface.
+Require Import VerdiRaft.NoAppendEntriesToLeaderProof.
 
-Require Import NoAppendEntriesToSelfInterface.
-Require Import NoAppendEntriesToSelfProof.
+Require Import VerdiRaft.NoAppendEntriesToSelfInterface.
+Require Import VerdiRaft.NoAppendEntriesToSelfProof.
 
-Require Import NoAppendEntriesRepliesToSelfInterface.
-Require Import NoAppendEntriesRepliesToSelfProof.
+Require Import VerdiRaft.NoAppendEntriesRepliesToSelfInterface.
+Require Import VerdiRaft.NoAppendEntriesRepliesToSelfProof.
 
-Require Import LogAllEntriesInterface.
-Require Import LogAllEntriesProof.
+Require Import VerdiRaft.LogAllEntriesInterface.
+Require Import VerdiRaft.LogAllEntriesProof.
 
-Require Import AppendEntriesReplySublogInterface.
-Require Import AppendEntriesReplySublogProof.
+Require Import VerdiRaft.AppendEntriesReplySublogInterface.
+Require Import VerdiRaft.AppendEntriesReplySublogProof.
 
-Require Import LeaderLogsLogPropertiesInterface.
-Require Import LeaderLogsLogPropertiesProof.
+Require Import VerdiRaft.LeaderLogsLogPropertiesInterface.
+Require Import VerdiRaft.LeaderLogsLogPropertiesProof.
 
-Require Import AppendEntriesRequestReplyCorrespondenceInterface.
-Require Import AppendEntriesRequestReplyCorrespondenceProof.
+Require Import VerdiRaft.AppendEntriesRequestReplyCorrespondenceInterface.
+Require Import VerdiRaft.AppendEntriesRequestReplyCorrespondenceProof.
 
-Require Import AppendEntriesLeaderInterface.
-Require Import AppendEntriesLeaderProof.
+Require Import VerdiRaft.AppendEntriesLeaderInterface.
+Require Import VerdiRaft.AppendEntriesLeaderProof.
 
-Require Import RequestVoteMaxIndexMaxTermInterface.
-Require Import RequestVoteMaxIndexMaxTermProof.
+Require Import VerdiRaft.RequestVoteMaxIndexMaxTermInterface.
+Require Import VerdiRaft.RequestVoteMaxIndexMaxTermProof.
 
-Require Import RequestVoteReplyMoreUpToDateInterface.
-Require Import RequestVoteReplyMoreUpToDateProof.
+Require Import VerdiRaft.RequestVoteReplyMoreUpToDateInterface.
+Require Import VerdiRaft.RequestVoteReplyMoreUpToDateProof.
 
-Require Import RequestVoteReplyTermSanityInterface.
-Require Import RequestVoteReplyTermSanityProof.
+Require Import VerdiRaft.RequestVoteReplyTermSanityInterface.
+Require Import VerdiRaft.RequestVoteReplyTermSanityProof.
 
-Require Import RequestVoteTermSanityInterface.
-Require Import RequestVoteTermSanityProof.
+Require Import VerdiRaft.RequestVoteTermSanityInterface.
+Require Import VerdiRaft.RequestVoteTermSanityProof.
 
-Require Import VotedForMoreUpToDateInterface.
-Require Import VotedForMoreUpToDateProof.
+Require Import VerdiRaft.VotedForMoreUpToDateInterface.
+Require Import VerdiRaft.VotedForMoreUpToDateProof.
 
-Require Import VotedForTermSanityInterface.
-Require Import VotedForTermSanityProof.
+Require Import VerdiRaft.VotedForTermSanityInterface.
+Require Import VerdiRaft.VotedForTermSanityProof.
 
-Require Import VotesReceivedMoreUpToDateInterface.
-Require Import VotesReceivedMoreUpToDateProof.
+Require Import VerdiRaft.VotesReceivedMoreUpToDateInterface.
+Require Import VerdiRaft.VotesReceivedMoreUpToDateProof.
 
-Require Import RaftMsgRefinementInterface.
-Require Import RaftMsgRefinementProof.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
+Require Import VerdiRaft.RaftMsgRefinementProof.
 
-Require Import GhostLogCorrectInterface.
-Require Import GhostLogCorrectProof.
+Require Import VerdiRaft.GhostLogCorrectInterface.
+Require Import VerdiRaft.GhostLogCorrectProof.
 
-Require Import GhostLogsLogPropertiesInterface.
-Require Import GhostLogsLogPropertiesProof.
+Require Import VerdiRaft.GhostLogsLogPropertiesInterface.
+Require Import VerdiRaft.GhostLogsLogPropertiesProof.
 
-Require Import InLogInAllEntriesInterface.
-Require Import InLogInAllEntriesProof.
+Require Import VerdiRaft.InLogInAllEntriesInterface.
+Require Import VerdiRaft.InLogInAllEntriesProof.
 
-Require Import GhostLogAllEntriesInterface.
-Require Import GhostLogAllEntriesProof.
+Require Import VerdiRaft.GhostLogAllEntriesInterface.
+Require Import VerdiRaft.GhostLogAllEntriesProof.
 
-Require Import GhostLogLogMatchingInterface.
-Require Import GhostLogLogMatchingProof.
+Require Import VerdiRaft.GhostLogLogMatchingInterface.
+Require Import VerdiRaft.GhostLogLogMatchingProof.
 
 
 Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
