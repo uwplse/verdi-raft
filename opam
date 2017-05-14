@@ -12,7 +12,7 @@ build: [
   [ "./configure" ]
   [ make "-j%{jobs}%" ]
 ]
-install: [ make install ]
+install: [ make "install" ]
 remove: [ "sh" "-c" "rm -rf '%{lib}%/coq/user-contrib/VerdiRaft'" ]
 depends: [
   "coq" {((>= "8.5" & < "8.6~") | (>= "8.6" & < "8.7~"))}

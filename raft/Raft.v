@@ -64,18 +64,18 @@ Section Raft.
   Proof. decide equality. Defined.
 
   Definition term_eq_dec : forall x y : term, {x = y} + {x <> y}.
-  Proof using.  apply eq_nat_dec. Qed.
+  Proof.  apply eq_nat_dec. Defined.
 
   Definition entry_eq_dec : forall x y : entry, {x = y} + {x <> y}.
-  Proof using.  decide equality; eauto using input_eq_dec, name_eq_dec, term_eq_dec. Qed.
+  Proof.  decide equality; eauto using input_eq_dec, name_eq_dec, term_eq_dec. Defined.
 
 
   Definition msg_eq_dec : forall x y: msg, {x = y} + {x <> y}.
-  Proof using. 
+  Proof.
     decide equality;
       eauto using name_eq_dec, input_eq_dec, term_eq_dec, Bool.bool_dec,
                   list_eq_dec, entry_eq_dec.
-  Qed.
+  Defined.
 
   Definition raft_data :=
     RaftState.raft_data term name entry logIndex serverType data output.
