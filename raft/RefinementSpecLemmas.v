@@ -1,7 +1,7 @@
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import RaftRefinementInterface.
-Require Import SpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.SpecLemmas.
 
 Section SpecLemmas.
 

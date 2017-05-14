@@ -1,6 +1,6 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import LeaderCompletenessInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
 
 Section TransitiveCommit.
 

@@ -8,17 +8,18 @@ opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.ne
 
 opam pin add coq $COQ_VERSION --yes --verbose
 opam pin add coq-mathcomp-ssreflect $SSREFLECT_VERSION --yes --verbose
-opam install StructTact verdi verdi-runtime --yes --verbose
+opam install StructTact verdi --yes --verbose
 
 case $MODE in
   analytics)
     ./script/analytics.sh
     ;;
-  vard-quick)
-    ./build.sh vard-quick
+  vard)
+    opam install verdi-runtime --yes --verbose
+    ./build.sh vard
     ;;
   vard-test)
-    opam install ounit.2.0.0 --yes --verbose
+    opam install verdi-runtime ounit.2.0.0 --yes --verbose
     ./build.sh vard-test
     ;;
   *)

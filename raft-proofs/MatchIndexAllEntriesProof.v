@@ -1,30 +1,30 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import CommonTheorems.
-Require Import RefinementCommonTheorems.
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.RefinementCommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import NoAppendEntriesToLeaderInterface.
-Require Import NoAppendEntriesToSelfInterface.
-Require Import TermsAndIndicesFromOneLogInterface.
-Require Import RefinedLogMatchingLemmasInterface.
-Require Import LogAllEntriesInterface.
-Require Import AppendEntriesRequestLeaderLogsInterface.
-Require Import LeaderSublogInterface.
-Require Import LeadersHaveLeaderLogsStrongInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import MatchIndexLeaderInterface.
-Require Import MatchIndexSanityInterface.
-Require Import AppendEntriesReplySublogInterface.
-Require Import CandidateEntriesInterface.
-Require Import VotesCorrectInterface.
-Require Import CroniesCorrectInterface.
+Require Import VerdiRaft.NoAppendEntriesToLeaderInterface.
+Require Import VerdiRaft.NoAppendEntriesToSelfInterface.
+Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.LogAllEntriesInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.MatchIndexLeaderInterface.
+Require Import VerdiRaft.MatchIndexSanityInterface.
+Require Import VerdiRaft.AppendEntriesReplySublogInterface.
+Require Import VerdiRaft.CandidateEntriesInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
 
-Require Import MatchIndexAllEntriesInterface.
+Require Import VerdiRaft.MatchIndexAllEntriesInterface.
 
 Section MatchIndexAllEntries.
   Context {orig_base_params : BaseParams}.

@@ -1,7 +1,7 @@
-Require Import Raft.
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 
-Require Import CommonDefinitions.
+Require Import VerdiRaft.CommonDefinitions.
 
 Section GhostLogLogMatching.
 

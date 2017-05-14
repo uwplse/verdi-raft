@@ -1,6 +1,6 @@
 Require Import FunctionalExtensionality.
 
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section DecompositionWithPostState.
 

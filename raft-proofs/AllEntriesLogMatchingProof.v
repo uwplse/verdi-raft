@@ -1,17 +1,17 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
-Require Import RefinementCommonTheorems.
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.RefinementCommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import AllEntriesLeaderSublogInterface.
-Require Import LeaderSublogInterface.
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.AllEntriesLeaderSublogInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
-Require Import AllEntriesLogMatchingInterface.
+Require Import VerdiRaft.AllEntriesLogMatchingInterface.
 
 Section AllEntriesLogMatching.
 

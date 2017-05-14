@@ -1,5 +1,5 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section RaftRefinementInterface.
   Context {orig_base_params : BaseParams}.

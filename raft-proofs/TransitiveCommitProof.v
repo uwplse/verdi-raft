@@ -1,10 +1,10 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import LeaderCompletenessInterface.
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
-Require Import TransitiveCommitInterface.
+Require Import VerdiRaft.TransitiveCommitInterface.
 
 Section TransitiveCommit.
 

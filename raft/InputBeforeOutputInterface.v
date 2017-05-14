@@ -1,5 +1,5 @@
-Require Import Raft.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.TraceUtil.
 
 Section InputBeforeOutputInterface.
   Context {orig_base_params : BaseParams}.

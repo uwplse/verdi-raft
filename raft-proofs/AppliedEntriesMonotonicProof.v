@@ -1,22 +1,22 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CommonTheorems.
-Require Import StateMachineSafetyInterface.
-Require Import SortedInterface.
-Require Import UniqueIndicesInterface.
-Require Import LogMatchingInterface.
-Require Import MaxIndexSanityInterface.
-Require Import CommitRecordedCommittedInterface.
-Require Import LeaderCompletenessInterface.
-Require Import LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.CommitRecordedCommittedInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
 
 Section AppliedEntriesMonotonicProof.
   Context {orig_base_params : BaseParams}.

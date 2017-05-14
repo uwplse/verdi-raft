@@ -1,8 +1,8 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import LastAppliedLeCommitIndexInterface.
-Require Import SpecLemmas.
-Require Import CommonTheorems.
+Require Import VerdiRaft.LastAppliedLeCommitIndexInterface.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 

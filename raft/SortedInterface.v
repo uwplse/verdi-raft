@@ -1,6 +1,6 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import CommonDefinitions.
+Require Import VerdiRaft.CommonDefinitions.
 
 Section SortedInterface.
   Context {orig_base_params : BaseParams}.

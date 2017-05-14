@@ -1,21 +1,21 @@
 Require Import Verdi.GhostSimulations.
 Require Import Verdi.InverseTraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.TraceUtil.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import InputBeforeOutputInterface.
-Require Import AppliedImpliesInputInterface.
-Require Import OutputImpliesAppliedInterface.
-Require Import LastAppliedCommitIndexMatchingInterface.
-Require Import SortedInterface.
-Require Import LogMatchingInterface.
-Require Import StateMachineSafetyInterface.
-Require Import MaxIndexSanityInterface.
-Require Import UniqueIndicesInterface.
+Require Import VerdiRaft.InputBeforeOutputInterface.
+Require Import VerdiRaft.AppliedImpliesInputInterface.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section InputBeforeOutput.

@@ -1,7 +1,7 @@
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Section RefinedLogMatchingLemmas.
   Context {orig_base_params : BaseParams}.

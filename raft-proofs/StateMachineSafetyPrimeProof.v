@@ -1,21 +1,21 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import CommonTheorems.
-Require Import Raft.
-Require Import SortedInterface.
-Require Import RaftRefinementInterface.
-Require Import StateMachineSafetyPrimeInterface.
-Require Import LeaderCompletenessInterface.
-Require Import LeaderLogsContiguousInterface.
-Require Import AllEntriesLeaderLogsInterface.
-Require Import LogMatchingInterface.
-Require Import UniqueIndicesInterface.
-Require Import AppendEntriesRequestLeaderLogsInterface.
-Require Import LeaderLogsSortedInterface.
-Require Import LeaderLogsLogMatchingInterface.
-Require Import LogsLeaderLogsInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.StateMachineSafetyPrimeInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 

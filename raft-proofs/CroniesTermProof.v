@@ -1,11 +1,11 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CroniesTermInterface.
+Require Import VerdiRaft.CroniesTermInterface.
 
 Section CroniesTermProof.
   Context {orig_base_params : BaseParams}.

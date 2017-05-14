@@ -1,20 +1,20 @@
 Require Import Verdi.TraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import LogMatchingInterface.
-Require Import StateMachineSafetyInterface.
-Require Import AppliedEntriesMonotonicInterface.
-Require Import MaxIndexSanityInterface.
-Require Import StateMachineCorrectInterface.
-Require Import LastAppliedCommitIndexMatchingInterface.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.StateMachineCorrectInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.TraceUtil.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SortedInterface.
+Require Import VerdiRaft.SortedInterface.
 
-Require Import OutputGreatestIdInterface.
+Require Import VerdiRaft.OutputGreatestIdInterface.
 
 Section OutputGreatestId.
   Context {orig_base_params : BaseParams}.

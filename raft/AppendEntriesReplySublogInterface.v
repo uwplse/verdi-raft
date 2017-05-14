@@ -1,4 +1,4 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section AppendEntriesReplySublog.
   Context {orig_base_params : BaseParams}.

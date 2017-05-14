@@ -1,9 +1,9 @@
-Require Import Raft.
-Require Import SpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.SpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CurrentTermGtZeroInterface.
+Require Import VerdiRaft.CurrentTermGtZeroInterface.
 
 Section CurrentTermGtZero.
   Context {orig_base_params : BaseParams}.

@@ -1,9 +1,9 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import LeadersHaveLeaderLogsInterface.
-Require Import EveryEntryWasCreatedInterface.
-Require Import EveryEntryWasCreatedHostLogInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
+Require Import VerdiRaft.EveryEntryWasCreatedInterface.
+Require Import VerdiRaft.EveryEntryWasCreatedHostLogInterface.
 
 Section EveryEntryWasCreated.
   Context {orig_base_params : BaseParams}.

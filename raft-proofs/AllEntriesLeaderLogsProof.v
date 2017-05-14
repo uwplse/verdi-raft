@@ -1,20 +1,20 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import AppendEntriesRequestLeaderLogsInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import LeaderLogsSortedInterface.
-Require Import RefinedLogMatchingLemmasInterface.
-Require Import AppendEntriesRequestsCameFromLeadersInterface.
-Require Import AllEntriesLogInterface.
-Require Import LeaderSublogInterface.
-Require Import LeadersHaveLeaderLogsStrongInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.AppendEntriesRequestsCameFromLeadersInterface.
+Require Import VerdiRaft.AllEntriesLogInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
 
-Require Import AllEntriesLeaderLogsInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsInterface.
 
 Section AllEntriesLeaderLogs.
 

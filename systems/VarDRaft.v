@@ -1,4 +1,4 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 Require Import Verdi.VarD.
 
 Section VarDRaft.

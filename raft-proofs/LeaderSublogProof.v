@@ -1,15 +1,15 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import OneLeaderPerTermInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.OneLeaderPerTermInterface.
 
-Require Import CandidateEntriesInterface.
-Require Import RaftRefinementInterface.
-Require Import VotesCorrectInterface.
-Require Import CroniesCorrectInterface.
-Require Import RefinementCommonTheorems.
+Require Import VerdiRaft.CandidateEntriesInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
+Require Import VerdiRaft.RefinementCommonTheorems.
 
-Require Import LeaderSublogInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
 
 Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
 Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.

@@ -1,10 +1,10 @@
-Require Import Raft.
-Require Import CommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import TermSanityInterface.
-Require Import SortedInterface.
+Require Import VerdiRaft.TermSanityInterface.
+Require Import VerdiRaft.SortedInterface.
 
 Section SortedProof.
   Context {orig_base_params : BaseParams}.

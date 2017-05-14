@@ -1,14 +1,14 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonDefinitions.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonDefinitions.
 
-Require Import LogMatchingInterface.
-Require Import SortedInterface.
-Require Import AllEntriesIndicesGt0Interface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.AllEntriesIndicesGt0Interface.
 
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
 Section RefinedLogMatchingLemmas.
   Context {orig_base_params : BaseParams}.

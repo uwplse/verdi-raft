@@ -1,19 +1,19 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import CommonTheorems.
-Require Import CroniesCorrectInterface.
-Require Import VotesCorrectInterface.
-Require Import TermSanityInterface.
-Require Import CroniesTermInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.CroniesCorrectInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
+Require Import VerdiRaft.TermSanityInterface.
+Require Import VerdiRaft.CroniesTermInterface.
 
-Require Import RefinementCommonTheorems.
+Require Import VerdiRaft.RefinementCommonTheorems.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CandidateEntriesInterface.
+Require Import VerdiRaft.CandidateEntriesInterface.
 
 Section CandidateEntriesProof.
   Context {orig_base_params : BaseParams}.

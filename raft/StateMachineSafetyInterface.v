@@ -1,6 +1,6 @@
-Require Import CommonDefinitions.
+Require Import VerdiRaft.CommonDefinitions.
 
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section StateMachineSafety.
   Context {orig_base_params : BaseParams}.
