@@ -19,7 +19,6 @@ endif
 
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq
-#	+$(MAKE) -C extraction/vard
 
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
@@ -59,19 +58,15 @@ raft/RaftState.v: raft/RaftState.v.rec
 clean:
 	if [ -f Makefile.coq ]; then \
 	  $(MAKE) -f Makefile.coq distclean; fi
-	rm -f Makefile.coq script/.assumptions.aux
+	rm -f Makefile.coq script/.assumptions.vo.aux
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
 
-vard: vard-quick
-#	@echo "To build everything (including vard) use the default target."
-#	@echo "To quickly provision vard use the vard-quick target."
-
 $(MLFILES): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
-vard-quick:
+vard:
 	+$(MAKE) -C extraction/vard
 
 vard-test:
@@ -84,4 +79,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick install clean vard vard-quick vard-test lint proofalytics distclean $(MLFILES)
+.PHONY: default quick install clean vard vard-test lint proofalytics distclean $(MLFILES)

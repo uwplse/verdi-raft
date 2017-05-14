@@ -49,11 +49,13 @@ this can be overridden by setting the `Verdi_PATH` and `StructTact_PATH`
 environment variables.
 
 Finally, run `make` in the root directory. This will compile the Raft
-implementation and proof interfaces, check all the proofs, and
-build the `vard` key-value store program in `extaction/vard`.
+implementation and proof interfaces, and check all the proofs.
 
-Alternatively, `make vard-quick` in the root directory builds `vard`
-without checking any proofs.
+To build the `vard` key-value store program in `extraction/vard`,
+run `make vard` in the root directory. If the implementation has
+been compiled as above, this simply extracts code to OCaml and
+compiles the result to a native program; otherwise, the implementation
+Coq code is compiled without checking any proofs.
 
 Files
 -----
@@ -91,11 +93,9 @@ semantics in the `VarD.v` example system distributed with Verdi. When the Raft t
 is applied, `vard` can be run as a strongly-consistent, fault-tolerant key-value store
 along the lines of [`etcd`](https://github.com/coreos/etcd).
 
-By default, after running `make` in the root directory, OCaml code for `vard`
+After running `make vard` in the root directory, OCaml code for `vard`
 is extracted, compiled, and linked against a Verdi shim and some `vard`-specific
 serialization/debugging code, to produce a `vard.native` binary in `extraction/vard`.
-The binary can also be produced without checking the correctness proofs by running
-`make vard-quick` in the root directory or simply `make` in `extraction/vard`.
 
 Running `make bench-vard` in `extraction/vard` will produce some 
 benchmark numbers, which are largely meaningless on
