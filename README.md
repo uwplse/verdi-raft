@@ -16,7 +16,7 @@ Definitions and proofs:
 
 Executable `vard` key-value store:
 
-- [`OCaml 4.02.3`](https://coq.inria.fr/download) (or later)
+- [`OCaml 4.02.3`](https://ocaml.org/docs/install.html) (or later)
 - [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 
@@ -24,9 +24,12 @@ Client for `vard`:
 
 - [`Python 2.7`](https://www.python.org/download/releases/2.7/)
 
-Testing of unverified code in `vard`:
+Integration testing of `vard`:
 
 - [`Python 2.7`](https://www.python.org/download/releases/2.7/)
+
+Unit testing of unverified `vard` code:
+
 - [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org)
 
 Building
@@ -133,64 +136,69 @@ For example, to run `vard` on a cluster with IP addresses
 `192.168.0.1`, `192.168.0.2`, `192.168.0.3`, client (input) port 8000,
 and port 9000 for inter-node communication, use the following:
 
-    # on 192.168.0.1
-    $ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 0 -node 0,192.168.0.1:9000 \
-                    -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
+```
+# on 192.168.0.1
+$ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 0 -node 0,192.168.0.1:9000 \
+                -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
 
-    # on 192.168.0.2
-    $ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 1 -node 0,192.168.0.1:9000 \
-                    -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
+# on 192.168.0.2
+$ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 1 -node 0,192.168.0.1:9000 \
+                -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
 
-    # on 192.168.0.3
-    $ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 2 -node 0,192.168.0.1:9000 \
+# on 192.168.0.3
+$ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 2 -node 0,192.168.0.1:9000 \
                     -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
+```
 
 When the cluster is set up, a benchmark can be run as follows:
 
-    # on the client machine
-    $ python2 bench/setup.py --service vard --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
-    $ python2 bench/bench.py --service vard --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
-                             --threads 8 --requests 100
-
+```
+# on the client machine
+$ python2 bench/setup.py --service vard --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
+$ python2 bench/bench.py --service vard --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
+                         --threads 8 --requests 100
+```
 
 Running `etcd` on a cluster
 -------------------------
 
-We can compare `vard`'s numbers to `etcd` running on the same cluster as
+We can compare numbers for `vard` and `etcd` running on the same cluster as
 follows:
 
-    # on 192.168.0.1
-    $ etcd --name=one \
-     --listen-client-urls http://192.168.0.1:8000 \
-     --advertise-client-urls http://192.168.0.1:8000 \
-     --initial-advertise-peer-urls http://192.168.0.1:9000 \
-     --listen-peer-urls http://192.168.0.1:9000 \
-     --data-dir=/tmp/etcd \
-     --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
+```
+# on 192.168.0.1
+$ etcd --name=one \
+ --listen-client-urls http://192.168.0.1:8000 \
+ --advertise-client-urls http://192.168.0.1:8000 \
+ --initial-advertise-peer-urls http://192.168.0.1:9000 \
+ --listen-peer-urls http://192.168.0.1:9000 \
+ --data-dir=/tmp/etcd \
+ --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
 
-    # on 192.168.0.2
-    $ etcd --name=two \
-     --listen-client-urls http://192.168.0.2:8000 \
-     --advertise-client-urls http://192.168.0.2:8000 \
-     --initial-advertise-peer-urls http://192.168.0.2:9000 \
-     --listen-peer-urls http://192.168.0.2:9000 \
-     --data-dir=/tmp/etcd \
-     --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
+# on 192.168.0.2
+$ etcd --name=two \
+ --listen-client-urls http://192.168.0.2:8000 \
+ --advertise-client-urls http://192.168.0.2:8000 \
+ --initial-advertise-peer-urls http://192.168.0.2:9000 \
+ --listen-peer-urls http://192.168.0.2:9000 \
+ --data-dir=/tmp/etcd \
+ --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
 
-    # on 192.168.0.3
-    $ etcd --name=three \
-     --listen-client-urls http://192.168.0.3:8000 \
-     --advertise-client-urls http://192.168.0.3:8000 \
-     --initial-advertise-peer-urls http://192.168.0.3:9000 \
-     --listen-peer-urls http://192.168.0.3:9000 \
-     --data-dir=/tmp/etcd \
-     --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
+# on 192.168.0.3
+$ etcd --name=three \
+ --listen-client-urls http://192.168.0.3:8000 \
+ --advertise-client-urls http://192.168.0.3:8000 \
+ --initial-advertise-peer-urls http://192.168.0.3:9000 \
+ --listen-peer-urls http://192.168.0.3:9000 \
+ --data-dir=/tmp/etcd \
+ --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
 
-    # on the client machine
-    $ python2 bench/setup.py --service etcd --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
-    $ python2 bench/bench.py --service etcd --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
-                             --threads 8 --requests 100
+# on the client machine
+$ python2 bench/setup.py --service etcd --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
+$ python2 bench/bench.py --service etcd --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
+                         --threads 8 --requests 100
+```
