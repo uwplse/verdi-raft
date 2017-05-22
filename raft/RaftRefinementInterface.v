@@ -145,7 +145,7 @@ Section RaftRefinementInterface.
       | ClientRequest client id c => update_elections_data_client_request me st client id c
     end.
 
-  Instance elections_ghost_params : GhostFailureParams failure_params :=
+  Instance elections_ghost_params : GhostMultiParams multi_params :=
     {
       ghost_data := electionsData ;
       ghost_init := {| votes := [] ; votesWithLog := []; cronies := fun _ => [];
