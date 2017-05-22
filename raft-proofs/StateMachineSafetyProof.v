@@ -1078,9 +1078,9 @@ Section StateMachineSafetyProof.
   Qed.
 
   Lemma msg_deghost_spec' :
-    forall base multi failure ghost
+    forall base multi ghost
       (net : @network (@mgv_refined_base_params base)
-                      (@mgv_refined_multi_params base multi failure ghost)) h,
+                      (@mgv_refined_multi_params base multi ghost)) h,
       nwState (mgv_deghost net) h = nwState net h.
   Proof using. 
     unfold mgv_deghost.
@@ -1354,7 +1354,7 @@ Section StateMachineSafetyProof.
       msg_refined_raft_intermediate_reachable net ->
       (forall h', st' h' = update name_eq_dec (nwState net) h (gd, d) h') ->
       (forall p', In p' ps' -> In p' (nwPackets net) \/
-                         In p' (send_packets h (add_ghost_msg (params := ghost_log_params) h (gd, d) l))) ->
+                         In p' (send_packets h (add_ghost_msg (msg_ghost_params := ghost_log_params) h (gd, d) l))) ->
       commit_invariant (mkNetwork ps' st').
   Proof using rmri rri. 
     unfold msg_refined_raft_net_invariant_client_request, commit_invariant.
@@ -1535,7 +1535,7 @@ Section StateMachineSafetyProof.
     find_apply_lem_hyp in_mgv_ghost_packet.
     match goal with
       | _ : snd (pBody ?p) = ?x |- _ =>
-        assert (pBody (@mgv_deghost_packet _ _ _ ghost_log_params p) = x)
+        assert (pBody (@mgv_deghost_packet _ _ ghost_log_params p) = x)
           by (rewrite pBody_mgv_deghost_packet; auto)
     end.
     eapply state_machine_safety'_invariant; eauto.
@@ -1553,7 +1553,7 @@ Section StateMachineSafetyProof.
     find_apply_lem_hyp in_mgv_ghost_packet.
     match goal with
       | _ : snd (pBody ?p) = ?x |- _ =>
-        assert (pBody (@mgv_deghost_packet _ _ _ ghost_log_params p) = x)
+        assert (pBody (@mgv_deghost_packet _ _ ghost_log_params p) = x)
           by (rewrite pBody_mgv_deghost_packet; auto)
     end.
     find_eapply_lem_hyp entries_sorted_nw_invariant; eauto.
@@ -2672,7 +2672,7 @@ Section StateMachineSafetyProof.
       nwState net h = (gd, d) ->
       (forall h', st' h' = update name_eq_dec (nwState net) h (gd, d') h') ->
       (forall p,
-          In p ps' -> In p (nwPackets net) \/ In p (send_packets h (add_ghost_msg (params := ghost_log_params) h (gd, d') ms))) ->
+          In p ps' -> In p (nwPackets net) \/ In p (send_packets h (add_ghost_msg (msg_ghost_params := ghost_log_params) h (gd, d') ms))) ->
       commit_invariant {| nwPackets := ps'; nwState := st' |}.
   Proof using rmri miaei. 
     unfold commit_invariant.

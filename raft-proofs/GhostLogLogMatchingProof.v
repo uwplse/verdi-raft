@@ -98,7 +98,7 @@ Section GhostLogLogMatching.
       repeat break_match; simpl in *; auto.
     match goal with
       | H : context [contiguous_range_exact_lo] |- _ =>
-        specialize (H (@mgv_deghost_packet _ _ _ ghost_log_params p));
+        specialize (H (@mgv_deghost_packet _ _ ghost_log_params p));
           eapply H; simpl in *; eauto
     end.
     apply in_map_iff. eexists; eauto.
