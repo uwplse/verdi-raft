@@ -1,0 +1,1 @@
+bin: ["extraction/vard/_build/ml/vard.native" {"vard"}]
