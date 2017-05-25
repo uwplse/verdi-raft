@@ -12,7 +12,6 @@ env:
     - COQ_VERSION=8.6
   matrix:
     - MODE=build
-    - MODE=vard
     - MODE=vard-test
 script: bash -ex .travis-ci.sh
 sudo: false
