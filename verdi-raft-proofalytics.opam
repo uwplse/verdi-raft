@@ -13,7 +13,7 @@ build: [
   [ make "proofalytics" ]
 ]
 depends: [
-  "coq" {((>= "8.5" & < "8.6~") | (>= "8.6" & < "8.7~"))}
+  "coq" {>= "8.6" & < "8.7~"}
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
 ]
