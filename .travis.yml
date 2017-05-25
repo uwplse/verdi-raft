@@ -10,11 +10,10 @@ addons:
 env:
   global:
     - COQ_VERSION=8.6
-    - SSREFLECT_VERSION=1.6.1
   matrix:
-    - MODE=build TARGET=default
-    - MODE=build TARGET=quick
-    - MODE=vard-test TARGET=default
+    - MODE=build
+    - MODE=vard
+    - MODE=vard-test
 script: bash -ex .travis-ci.sh
 sudo: false
 notifications:
