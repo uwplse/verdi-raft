@@ -15,9 +15,6 @@ case $MODE in
   vard)
     opam pin add vard . --yes --verbose
     ;;
-  vard-test)
-    OPAMBUILDTEST=1 opam pin add vard . --yes --verbose
-    ;;
   *)
     opam pin add verdi-raft . --yes --verbose
     ;;
