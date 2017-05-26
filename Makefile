@@ -23,6 +23,10 @@ default: Makefile.coq
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
 
+checkproofs: Makefile.coq
+	$(MAKE) -f Makefile.coq quick
+	$(MAKE) -f Makefile.coq checkproofs
+
 install: Makefile.coq
 	$(MAKE) -f Makefile.coq install
 
@@ -79,4 +83,4 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick install clean vard vard-test lint proofalytics distclean $(MLFILES)
+.PHONY: default quick install clean vard vard-test lint proofalytics distclean checkproofs $(MLFILES)

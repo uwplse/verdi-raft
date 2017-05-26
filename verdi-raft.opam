@@ -1,5 +1,4 @@
 opam-version: "1.2"
-name: "verdi-raft"
 version: "dev"
 maintainer: "palmskog@gmail.com"
 
@@ -19,6 +18,7 @@ depends: [
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
 ]
+
 tags: [
   "category:Computer Science/Concurrent Systems and Protocols/Theory of concurrent systems"
   "keyword:program verification"

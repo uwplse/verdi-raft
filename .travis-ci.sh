@@ -12,11 +12,11 @@ case $MODE in
   proofalytics)
     opam pin add verdi-raft-proofalytics . --yes --verbose
     ;;
+  checkproofs)
+    opam pin add verdi-raft-checkproofs . --yes --verbose
+    ;;
   vard)
     opam pin add vard . --yes --verbose
-    ;;
-  vard-test)
-    OPAMBUILDTEST=1 opam pin add vard . --yes --verbose
     ;;
   *)
     opam pin add verdi-raft . --yes --verbose
