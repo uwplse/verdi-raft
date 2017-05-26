@@ -12,6 +12,7 @@ env:
     - COQ_VERSION=8.6
   matrix:
     - MODE=build
+    - MODE=checkproofs
     - MODE=vard OPAMBUILDTEST=1
 script: bash -ex .travis-ci.sh
 sudo: false
