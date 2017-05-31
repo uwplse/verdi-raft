@@ -84,3 +84,4 @@ distclean: clean
 	rm -f _CoqProject
 
 .PHONY: default quick install clean vard vard-test lint proofalytics distclean checkproofs $(MLFILES)
+.NOTPARALLEL: $(MLFILES)
