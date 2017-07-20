@@ -8,12 +8,10 @@ addons:
       - opam
       - aspcud
 env:
-  global:
-    - COQ_VERSION=8.6
   matrix:
-    - MODE=build
-    - MODE=checkproofs
-    - MODE=vard OPAMBUILDTEST=1
+    - MODE=build COQ_VERSION=8.6
+    - MODE=build COQ_VERSION=8.6.1
+    - MODE=vard COQ_VERSION=8.6 OPAMBUILDTEST=1
 script: bash -ex .travis-ci.sh
 sudo: false
 notifications:
