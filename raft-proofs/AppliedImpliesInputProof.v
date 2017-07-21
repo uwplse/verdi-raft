@@ -1,15 +1,15 @@
 Require Import Verdi.InverseTraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import TraceUtil.
-Require Import OutputImpliesAppliedInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.TraceUtil.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AppliedImpliesInputInterface.
+Require Import VerdiRaft.AppliedImpliesInputInterface.
 
 Section AppliedImpliesInputProof.
   Context {orig_base_params : BaseParams}.
@@ -304,10 +304,7 @@ Section AppliedImpliesInputProof.
       - congruence.
       - unfold applied_implies_input_state in H2.
         break_exists. intuition; break_exists; simpl in *.
-        + break_if.
-          * subst. unfold reboot in *. simpl in *.
-            exfalso. eauto using aiis_intro_state.
-          * exfalso. eauto using aiis_intro_state.
+        + update_destruct_max_simplify; exfalso; eauto using aiis_intro_state.
         + intuition.
           exfalso. eauto using aiis_intro_packet.
     Qed.

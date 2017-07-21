@@ -1,4 +1,4 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section MaxIndexSanity.
   Context {orig_base_params : BaseParams}.

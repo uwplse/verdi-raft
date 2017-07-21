@@ -1,24 +1,24 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import LeaderSublogInterface.
-Require Import LeaderLogsTermSanityInterface.
-Require Import EveryEntryWasCreatedInterface.
-Require Import LeaderLogsCandidateEntriesInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.LeaderLogsTermSanityInterface.
+Require Import VerdiRaft.EveryEntryWasCreatedInterface.
+Require Import VerdiRaft.LeaderLogsCandidateEntriesInterface.
 
-Require Import CroniesCorrectInterface.
-Require Import VotesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
 
-Require Import RefinementCommonTheorems.
+Require Import VerdiRaft.RefinementCommonTheorems.
 
-Require Import LeaderLogsSublogInterface.
+Require Import VerdiRaft.LeaderLogsSublogInterface.
 
 Section LeaderLogsSublog.
   Context {orig_base_params : BaseParams}.

@@ -1,17 +1,17 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
-Require Import RefinementCommonTheorems.
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.RefinementCommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import AllEntriesLeaderSublogInterface.
-Require Import LeaderSublogInterface.
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.AllEntriesLeaderSublogInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
-Require Import AllEntriesLogMatchingInterface.
+Require Import VerdiRaft.AllEntriesLogMatchingInterface.
 
 Section AllEntriesLogMatching.
 
@@ -117,21 +117,21 @@ Section AllEntriesLogMatching.
 
   Lemma allEntries_log_matching_client_request :
     refined_raft_net_invariant_client_request allEntries_log_matching_inductive.
-  Proof using rlmli lsi aelsi rri. 
+  Proof using rlmli lsi aelsi rri.
     start_update.
     - subst.
       find_copy_apply_lem_hyp update_elections_data_client_request_log_allEntries.
       intuition; simpl in *; repeat find_rewrite; eauto.
       break_exists; intuition; repeat find_rewrite; simpl in *; intuition; subst; simpl in *; eauto.
+      + contradict_maxIndex.
       + enough (In e' (log (snd (nwState net h0)))) by 
             contradict_maxIndex.
         eapply allEntries_leader_sublog_invariant; repeat find_rewrite; eauto.
-      + contradict_maxIndex.
     - find_apply_lem_hyp update_elections_data_client_request_log_allEntries.
       intuition; simpl in *; repeat find_rewrite; eauto.
       break_exists. intuition; repeat find_rewrite; simpl in *; intuition; eauto.
       subst.
-      enough (In e (log (snd (nwState net h')))) by 
+      enough (In e (log (snd (nwState net h')))) by
             contradict_maxIndex.
       eapply lifted_leader_sublog_invariant; repeat find_rewrite; eauto.
     - find_apply_lem_hyp update_elections_data_client_request_log_allEntries.
@@ -238,7 +238,7 @@ Section AllEntriesLogMatching.
     intuition. repeat find_reverse_rewrite.
     eapply entries_contiguous_nw_invariant; eauto.
   Qed.
-  
+
   Lemma allEntries_log_matching_append_entries :
     refined_raft_net_invariant_append_entries allEntries_log_matching_inductive.
   Proof using rlmli. 
@@ -288,18 +288,37 @@ Section AllEntriesLogMatching.
       match goal with
         | H : context [handleAppendEntries] |- _ =>
           eapply update_elections_data_appendEntries_log_allEntries with (h' := n) in H
-      end ; intuition; repeat find_rewrite; simpl in *; intuition; subst; eauto;
-      try (find_rewrite_lem map_app; find_rewrite_lem map_map; simpl in *; find_rewrite_lem map_id;
-           do_in_app; intuition; eauto);
-      eauto using packets_entries_eq.
+      end.
+      intuition; repeat find_rewrite; simpl in *; subst; intuition; eauto.
+      + find_rewrite_lem map_app.
+        find_rewrite_lem map_map.
+        simpl in *.
+        find_rewrite_lem map_id.
+        apply in_app_or in H11.
+        intuition; eauto.
+        eauto using packets_entries_eq.
+      + find_rewrite_lem map_app.
+        find_rewrite_lem map_map.
+        simpl in *.
+        find_rewrite_lem map_id.
+        apply in_app_or in H11.
+        intuition; eauto.
+        eauto using packets_entries_eq.
+      + find_rewrite_lem map_app.
+        find_rewrite_lem map_map.
+        simpl in *.
+        find_rewrite_lem map_id.
+        apply in_app_or in H11.
+        intuition; eauto.
+        eauto using packets_entries_eq.
     - find_apply_hyp_hyp.
       intuition;
         [|exfalso; do_in_map; subst; simpl in *;
          eapply handleAppendEntries_not_append_entries; eauto;
          intuition; repeat find_rewrite; repeat eexists; eauto].
       eauto.
-  Qed.
-      
+Qed.
+
   Lemma allEntries_log_matching_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply allEntries_log_matching_inductive.
   Proof using. 
@@ -321,7 +340,9 @@ Section AllEntriesLogMatching.
     exfalso; subst; simpl in *;
     subst;
     find_eapply_lem_hyp handleRequestVote_no_append_entries; eauto;
-    intuition; repeat find_rewrite; find_false; repeat eexists; eauto.
+    intuition; repeat find_rewrite; try (find_false; repeat eexists; eauto).
+    contradict H.
+    repeat eexists; eauto.
   Qed.
 
 

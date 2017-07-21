@@ -1,24 +1,24 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
-Require Import LogsLeaderLogsInterface.
-Require Import AppendEntriesRequestLeaderLogsInterface.
-Require Import RefinedLogMatchingLemmasInterface.
-Require Import AllEntriesLeaderLogsTermInterface.
-Require Import LeaderLogsContiguousInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import LeaderLogsSortedInterface.
-Require Import TermSanityInterface.
-Require Import AllEntriesTermSanityInterface.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsTermInterface.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.TermSanityInterface.
+Require Import VerdiRaft.AllEntriesTermSanityInterface.
 
-Require Import AllEntriesLogInterface.
+Require Import VerdiRaft.AllEntriesLogInterface.
 
 Section AllEntriesLog.
 
@@ -317,7 +317,7 @@ Ltac all f ls :=
     - subst.
       find_copy_eapply_lem_hyp allEntries_term_sanity_invariant; eauto.
       destruct (lt_eq_lt_dec t0 (currentTerm d)); intuition; unfold ghost_data in *; simpl in *; try omega.
-      + find_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+      + eapply append_entries_leaderLogs_invariant in H1; eauto.
         break_exists. break_and.
         match goal with
           | H : In (?t, ?ll) (leaderLogs (fst (nwState _ ?leader))) |- _ =>
@@ -335,7 +335,8 @@ Ltac all f ls :=
         find_eapply_lem_hyp allEntries_leaderLogs_term_invariant; eauto. intuition.
         * subst. exfalso.
           find_copy_eapply_lem_hyp logs_leaderLogs_invariant; eauto.
-          find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+          pose proof H1 as H1'.
+          eapply append_entries_leaderLogs_invariant in H1; eauto.
           break_exists; intuition;
           [break_exists; intuition;
            find_eapply_lem_hyp leaderLogs_contiguous_invariant; eauto; omega|].
@@ -376,7 +377,8 @@ Ltac all f ls :=
           end; eauto using sorted_uniqueIndices.
           subst. auto.
         * exfalso.
-          find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+          pose proof H1 as H1'.
+          eapply append_entries_leaderLogs_invariant in H1; eauto.
           break_exists; intuition;
           [break_exists; intuition;
            find_eapply_lem_hyp leaderLogs_contiguous_invariant; eauto; omega|].
@@ -391,7 +393,7 @@ Ltac all f ls :=
     - subst.
       find_copy_eapply_lem_hyp allEntries_term_sanity_invariant; eauto.
       destruct (lt_eq_lt_dec t0 (currentTerm d)); intuition; unfold ghost_data in *; simpl in *; try omega.
-      + find_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+      + eapply append_entries_leaderLogs_invariant in H1; eauto.
         break_exists. break_and.
         match goal with
           | H : In (?t, ?ll) (leaderLogs (fst (nwState _ ?leader))) |- _ =>
@@ -410,7 +412,8 @@ Ltac all f ls :=
         find_eapply_lem_hyp allEntries_leaderLogs_term_invariant; eauto. intuition.
         * { subst. exfalso.
             find_copy_eapply_lem_hyp logs_leaderLogs_invariant; eauto.
-            find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+            pose proof H1 as H1'.
+            eapply append_entries_leaderLogs_invariant in H1; eauto.
             break_exists; intuition;
             [break_exists; intuition;
              find_eapply_lem_hyp leaderLogs_contiguous_invariant; eauto; omega|].
@@ -481,7 +484,8 @@ Ltac all f ls :=
                 subst. intuition.
           }
         * exfalso.
-          find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+          pose proof H1 as H1'.
+          eapply append_entries_leaderLogs_invariant in H1; eauto.
           break_exists; intuition;
           [break_exists; intuition;
            find_eapply_lem_hyp leaderLogs_contiguous_invariant; eauto; omega|].
@@ -509,7 +513,7 @@ Ltac all f ls :=
             destruct_update; simpl in *;
             eauto; rewrite update_elections_data_appendEntries_leaderLogs; eauto|];
           split; auto. intuition; subst.
-        * find_false.
+        * contradict n0.
           apply in_app_iff. right. eapply removeAfterIndex_le_In; eauto.
           find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
           eapply le_trans; [eapply maxIndex_is_max; eauto|]. omega.
@@ -530,19 +534,20 @@ Ltac all f ls :=
                 find_copy_eapply_lem_hyp entries_sorted_nw_invariant; eauto.
                 eapply contiguous_app; eauto.
                 eapply entries_contiguous_nw_invariant; eauto.
-            - find_false.
+            - contradict n0.
               repeat find_rewrite.
               apply in_app_iff. right.
               find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
               apply removeAfterIndex_le_In; auto.
               eapply maxIndex_is_max; eauto.
           }
-        * find_false. intuition.
+        * contradict n0. intuition.
       + subst.
         find_eapply_lem_hyp allEntries_leaderLogs_term_invariant; eauto. intuition.
         * { subst. exfalso.
             find_copy_eapply_lem_hyp logs_leaderLogs_invariant; eauto.
-            find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+            pose proof H1 as H1'.
+            eapply append_entries_leaderLogs_invariant in H1; eauto.
             break_exists. break_and.
             repeat find_rewrite.
             find_eapply_lem_hyp one_leaderLog_per_term_log_invariant; eauto.
@@ -725,7 +730,7 @@ Ltac all f ls :=
             destruct_update; simpl in *;
             eauto; rewrite update_elections_data_appendEntries_leaderLogs; eauto|];
           split; auto. intuition; subst.
-        * find_false.
+        * contradict n0.
           apply in_app_iff. right. eapply removeAfterIndex_le_In; eauto.
           find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
           eapply le_trans; [eapply maxIndex_is_max; eauto|]. omega.
@@ -746,19 +751,20 @@ Ltac all f ls :=
                 find_copy_eapply_lem_hyp entries_sorted_nw_invariant; eauto.
                 eapply contiguous_app; eauto.
                 eapply entries_contiguous_nw_invariant; eauto.
-            - find_false.
+            - contradict n0.
               repeat find_rewrite.
               apply in_app_iff. right.
               find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
               apply removeAfterIndex_le_In; auto.
               eapply maxIndex_is_max; eauto.
           }
-        * find_false. intuition.
+        * contradict n0. intuition.
       + subst.
         find_eapply_lem_hyp allEntries_leaderLogs_term_invariant; eauto. intuition.
         * { subst. exfalso.
             find_copy_eapply_lem_hyp logs_leaderLogs_invariant; eauto.
-            find_copy_eapply_lem_hyp append_entries_leaderLogs_invariant; eauto.
+            pose proof H1 as H1'.
+            eapply append_entries_leaderLogs_invariant in H1; eauto.
             break_exists. break_and.
             find_eapply_lem_hyp one_leaderLog_per_term_log_invariant; eauto.
             repeat find_rewrite.
@@ -951,7 +957,7 @@ Ltac all f ls :=
     red. unfold allEntries_log in *. intros. simpl in *.
     repeat find_higher_order_rewrite.
     destruct_update; simpl in *;
-    try (find_eapply_lem_hyp update_elections_data_client_request_allEntries'; eauto; [idtac]);
+    try (find_copy_eapply_lem_hyp update_elections_data_client_request_allEntries'; eauto; [idtac]);
     intuition;
     find_copy_apply_lem_hyp handleClientRequest_log;
     find_apply_lem_hyp handleClientRequest_currentTerm_leaderId;

@@ -1,12 +1,12 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import RefinementCommonDefinitions.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RefinementCommonDefinitions.
 
-Require Import LeadersHaveLeaderLogsInterface.
-Require Import EveryEntryWasCreatedInterface.
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
-Require Import CommonTheorems.
+Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
+Require Import VerdiRaft.EveryEntryWasCreatedInterface.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 

@@ -1,23 +1,23 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 
-Require Import LogsLeaderLogsInterface.
-Require Import LeaderLogsSortedInterface.
-Require Import LeaderLogsContiguousInterface.
-Require Import LeaderLogsLogMatchingInterface.
-Require Import RefinedLogMatchingLemmasInterface.
-Require Import LeadersHaveLeaderLogsStrongInterface.
-Require Import NextIndexSafetyInterface.
-Require Import SortedInterface.
-Require Import LeaderLogsLogPropertiesInterface.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
+Require Import VerdiRaft.NextIndexSafetyInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.LeaderLogsLogPropertiesInterface.
 
 Section LogsLeaderLogs.
   Context {orig_base_params : BaseParams}.
@@ -205,7 +205,6 @@ Section LogsLeaderLogs.
     intros. pattern ll.
     eapply log_properties_hold_on_leader_logs_invariant; eauto using contiguous_log_property.
   Qed.
-
   
   Lemma logs_leaderLogs_inductive_appendEntries :
     refined_raft_net_invariant_append_entries logs_leaderLogs_inductive.
@@ -258,7 +257,7 @@ Section LogsLeaderLogs.
               prove_in.
               copy_eapply_prop_hyp In In; eauto.
               match goal with
-                | H:exists _, _ |- _ => destruct H as (leader)
+                | H:exists _, _ |- _ => destruct H as [leader]
               end.
               break_exists; intuition.
               + (* all of the new entries, as well as x, are in the
@@ -360,6 +359,7 @@ Section LogsLeaderLogs.
                             (apply removeAfterIndex_in with (i := index);
                              repeat find_rewrite; intuition)
                     end.
+                    clear H0 H7.
                     eapply_prop_hyp In In. omega.
                   } subst. simpl.
                   find_copy_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
@@ -657,9 +657,9 @@ Section LogsLeaderLogs.
             break_and. find_apply_hyp_hyp.
             match goal with
               | H : exists _ _ _, _ |- _ =>
-                destruct H as (leader);
-                  destruct H as (ll);
-                  destruct H as (es)
+                destruct H as [leader];
+                  destruct H as [ll];
+                  destruct H as [es]
             end.
             break_and.
             destruct (lt_eq_lt_dec (maxIndex ll) pli); intuition.

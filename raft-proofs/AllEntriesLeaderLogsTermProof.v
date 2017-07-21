@@ -1,13 +1,13 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import RaftRefinementInterface.
-Require Import RefinementSpecLemmas.
-Require Import SpecLemmas.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RefinementSpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AllEntriesLeaderLogsTermInterface.
-Require Import AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsTermInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
 
 Section AllEntriesLeaderLogsTerm.
 
@@ -43,7 +43,7 @@ Section AllEntriesLeaderLogsTerm.
         eapply append_entries_leaderLogs_invariant in H; eauto
     end.
     break_exists. break_and. subst. do_in_app.
-    break_or_hyp; try find_apply_hyp_hyp; auto.
+    case H7; intros; try find_apply_hyp_hyp; auto.
     right.
     find_eapply_lem_hyp Prefix_In; eauto.
     repeat eexists; eauto.

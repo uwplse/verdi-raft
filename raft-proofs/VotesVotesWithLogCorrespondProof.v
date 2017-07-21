@@ -1,9 +1,9 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import VotesVotesWithLogCorrespondInterface.
+Require Import VerdiRaft.VotesVotesWithLogCorrespondInterface.
 
 Section VotesVotesWithLogCorrespond.
   Context {orig_base_params : BaseParams}.

@@ -1,10 +1,10 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonTheorems.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import LeadersHaveLeaderLogsStrongInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
 
 Section LeadersHaveLeaderLogsStrong.
   Context {orig_base_params : BaseParams}.

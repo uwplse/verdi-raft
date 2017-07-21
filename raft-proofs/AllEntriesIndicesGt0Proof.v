@@ -1,15 +1,15 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RaftRefinementInterface.
-Require Import CommonDefinitions.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.CommonDefinitions.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import TermsAndIndicesFromOneLogInterface.
+Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
 
-Require Import AllEntriesIndicesGt0Interface.
+Require Import VerdiRaft.AllEntriesIndicesGt0Interface.
 
 Section AllEntriesIndicesGt0.
   Context {orig_base_params : BaseParams}.

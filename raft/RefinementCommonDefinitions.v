@@ -1,5 +1,5 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Section CommonDefinitions.
   Context {orig_base_params : BaseParams}.

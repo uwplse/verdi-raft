@@ -1,15 +1,15 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import RefinementSpecLemmas.
-Require Import RaftRefinementInterface.
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RefinementSpecLemmas.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 
-Require Import InLogInAllEntriesInterface.
+Require Import VerdiRaft.InLogInAllEntriesInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import GhostLogAllEntriesInterface.
+Require Import VerdiRaft.GhostLogAllEntriesInterface.
 
 Section GhostLogAllEntriesProof.
   Context {orig_base_params : BaseParams}.
@@ -64,7 +64,7 @@ Section GhostLogAllEntriesProof.
         break_exists_exists.
         eauto using update_elections_data_appendEntries_preserves_allEntries'.
       + remember (pSrc p0).
-        subst. simpl in *.
+        subst_max. simpl in *.
         unfold write_ghost_log in *.
         simpl in *.
         match goal with

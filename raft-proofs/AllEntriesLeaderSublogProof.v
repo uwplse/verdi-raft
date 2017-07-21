@@ -1,21 +1,21 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
-Require Import RefinementCommonTheorems.
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.RefinementCommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import AllEntriesLeaderSublogInterface.
+Require Import VerdiRaft.AllEntriesLeaderSublogInterface.
 
-Require Import CandidateEntriesInterface.
-Require Import AllEntriesCandidateEntriesInterface.
-Require Import VotesCorrectInterface.
-Require Import CroniesCorrectInterface.
-Require Import LeaderSublogInterface.
-Require Import OneLeaderPerTermInterface.
+Require Import VerdiRaft.CandidateEntriesInterface.
+Require Import VerdiRaft.AllEntriesCandidateEntriesInterface.
+Require Import VerdiRaft.VotesCorrectInterface.
+Require Import VerdiRaft.CroniesCorrectInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.OneLeaderPerTermInterface.
 
 Section AllEntriesLeaderSublog.
 

@@ -10,15 +10,27 @@ Requirements
 
 Definitions and proofs:
 
-- [`Coq 8.5`](https://coq.inria.fr/coq-85)
+- [`Coq 8.6`](https://coq.inria.fr/coq-86)
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
 
 Executable `vard` key-value store:
 
-- [`OCaml 4.02.3`](https://coq.inria.fr/download)
+- [`OCaml 4.02.3`](https://ocaml.org/docs/install.html) (or later)
 - [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
+
+Client for `vard`:
+
+- [`Python 2.7`](https://www.python.org/download/releases/2.7/)
+
+Integration testing of `vard`:
+
+- [`Python 2.7`](https://www.python.org/download/releases/2.7/)
+
+Unit testing of unverified `vard` code:
+
+- [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org)
 
 Building
 --------
@@ -40,8 +52,13 @@ this can be overridden by setting the `Verdi_PATH` and `StructTact_PATH`
 environment variables.
 
 Finally, run `make` in the root directory. This will compile the Raft
-implementation and proof interfaces, check all the proofs, and
-build the `vard` key-value store.
+implementation and proof interfaces, and check all the proofs.
+
+To build the `vard` key-value store program in `extraction/vard`,
+run `make vard` in the root directory. If the implementation has
+been compiled as above, this simply extracts code to OCaml and
+compiles the result to a native program; otherwise, the implementation
+Coq code is compiled without checking any proofs.
 
 Files
 -----
@@ -79,12 +96,9 @@ semantics in the `VarD.v` example system distributed with Verdi. When the Raft t
 is applied, `vard` can be run as a strongly-consistent, fault-tolerant key-value store
 along the lines of [`etcd`](https://github.com/coreos/etcd).
 
-If the Raft implementation and its proofs have been compiled, all the files
-necessary to run `vard` on real hardware are in `extraction/vard`. It then
-suffices to run `make` in that directory to compile the extracted OCaml code, link it
-against the Verdi shim and some `vard`-specific serialization/debugging code,
-and produce the `vard.native` binary. Alternatively, `make vard-quick` in the
-root directory produces the same result, but without compiling the Raft proofs.
+After running `make vard` in the root directory, OCaml code for `vard`
+is extracted, compiled, and linked against a Verdi shim and some `vard`-specific
+serialization/debugging code, to produce a `vard.native` binary in `extraction/vard`.
 
 Running `make bench-vard` in `extraction/vard` will produce some 
 benchmark numbers, which are largely meaningless on
@@ -122,64 +136,69 @@ For example, to run `vard` on a cluster with IP addresses
 `192.168.0.1`, `192.168.0.2`, `192.168.0.3`, client (input) port 8000,
 and port 9000 for inter-node communication, use the following:
 
-    # on 192.168.0.1
-    $ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 0 -node 0,192.168.0.1:9000 \
-                    -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
+```
+# on 192.168.0.1
+$ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 0 -node 0,192.168.0.1:9000 \
+                -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
 
-    # on 192.168.0.2
-    $ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 1 -node 0,192.168.0.1:9000 \
-                    -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
+# on 192.168.0.2
+$ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 1 -node 0,192.168.0.1:9000 \
+                -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
 
-    # on 192.168.0.3
-    $ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 2 -node 0,192.168.0.1:9000 \
+# on 192.168.0.3
+$ ./vard.native -dbpath /tmp/vard-8000 -port 8000 -me 2 -node 0,192.168.0.1:9000 \
                     -node 1,192.168.0.2:9000 -node 2,192.168.0.3:9000
+```
 
 When the cluster is set up, a benchmark can be run as follows:
 
-    # on the client machine
-    $ python2 bench/setup.py --service vard --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
-    $ python2 bench/bench.py --service vard --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
-                             --threads 8 --requests 100
-
+```
+# on the client machine
+$ python2 bench/setup.py --service vard --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
+$ python2 bench/bench.py --service vard --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
+                         --threads 8 --requests 100
+```
 
 Running `etcd` on a cluster
 -------------------------
 
-We can compare `vard`'s numbers to `etcd` running on the same cluster as
+We can compare numbers for `vard` and `etcd` running on the same cluster as
 follows:
 
-    # on 192.168.0.1
-    $ etcd --name=one \
-     --listen-client-urls http://192.168.0.1:8000 \
-     --advertise-client-urls http://192.168.0.1:8000 \
-     --initial-advertise-peer-urls http://192.168.0.1:9000 \
-     --listen-peer-urls http://192.168.0.1:9000 \
-     --data-dir=/tmp/etcd \
-     --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
+```
+# on 192.168.0.1
+$ etcd --name=one \
+ --listen-client-urls http://192.168.0.1:8000 \
+ --advertise-client-urls http://192.168.0.1:8000 \
+ --initial-advertise-peer-urls http://192.168.0.1:9000 \
+ --listen-peer-urls http://192.168.0.1:9000 \
+ --data-dir=/tmp/etcd \
+ --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
 
-    # on 192.168.0.2
-    $ etcd --name=two \
-     --listen-client-urls http://192.168.0.2:8000 \
-     --advertise-client-urls http://192.168.0.2:8000 \
-     --initial-advertise-peer-urls http://192.168.0.2:9000 \
-     --listen-peer-urls http://192.168.0.2:9000 \
-     --data-dir=/tmp/etcd \
-     --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
+# on 192.168.0.2
+$ etcd --name=two \
+ --listen-client-urls http://192.168.0.2:8000 \
+ --advertise-client-urls http://192.168.0.2:8000 \
+ --initial-advertise-peer-urls http://192.168.0.2:9000 \
+ --listen-peer-urls http://192.168.0.2:9000 \
+ --data-dir=/tmp/etcd \
+ --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
 
-    # on 192.168.0.3
-    $ etcd --name=three \
-     --listen-client-urls http://192.168.0.3:8000 \
-     --advertise-client-urls http://192.168.0.3:8000 \
-     --initial-advertise-peer-urls http://192.168.0.3:9000 \
-     --listen-peer-urls http://192.168.0.3:9000 \
-     --data-dir=/tmp/etcd \
-     --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
+# on 192.168.0.3
+$ etcd --name=three \
+ --listen-client-urls http://192.168.0.3:8000 \
+ --advertise-client-urls http://192.168.0.3:8000 \
+ --initial-advertise-peer-urls http://192.168.0.3:9000 \
+ --listen-peer-urls http://192.168.0.3:9000 \
+ --data-dir=/tmp/etcd \
+ --initial-cluster "one=http://192.168.0.1:9000,two=http://192.168.0.2:9000,three=http://192.168.0.3:9000"
 
-    # on the client machine
-    $ python2 bench/setup.py --service etcd --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
-    $ python2 bench/bench.py --service etcd --keys 50 \
-                             --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
-                             --threads 8 --requests 100
+# on the client machine
+$ python2 bench/setup.py --service etcd --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000"
+$ python2 bench/bench.py --service etcd --keys 50 \
+                         --cluster "192.168.0.1:8000,192.168.0.2:8000,192.168.0.3:8000" \
+                         --threads 8 --requests 100
+```

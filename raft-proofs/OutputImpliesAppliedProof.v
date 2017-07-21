@@ -1,18 +1,18 @@
 Require Import Verdi.TraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import LogMatchingInterface.
-Require Import StateMachineSafetyInterface.
-Require Import AppliedEntriesMonotonicInterface.
-Require Import MaxIndexSanityInterface.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.TraceUtil.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SortedInterface.
+Require Import VerdiRaft.SortedInterface.
 
-Require Import OutputImpliesAppliedInterface.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
 
 Section OutputImpliesApplied.
   Context {orig_base_params : BaseParams}.
@@ -109,8 +109,10 @@ Section OutputImpliesApplied.
     intros. unfold key_in_output_list in *.
     match goal with | H : exists _, _ |- _ => destruct H as [o] end.
     unfold doGenericServer in *. break_let. simpl in *.
-    find_inversion. simpl in *. find_copy_eapply_lem_hyp applyEntries_In; eauto.
-    use_applyEntries_spec; subst; simpl in *.
+    find_inversion. simpl in *. 
+    pose proof Heqp as Happ.
+    find_eapply_lem_hyp applyEntries_In; eauto.
+    use_applyEntries_spec; subst_max; simpl in *.
     eexists; intuition eauto.
     find_apply_lem_hyp In_rev.
     find_apply_lem_hyp filter_In.

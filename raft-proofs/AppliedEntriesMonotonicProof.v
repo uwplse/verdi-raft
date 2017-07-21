@@ -1,22 +1,22 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CommonTheorems.
-Require Import StateMachineSafetyInterface.
-Require Import SortedInterface.
-Require Import UniqueIndicesInterface.
-Require Import LogMatchingInterface.
-Require Import MaxIndexSanityInterface.
-Require Import CommitRecordedCommittedInterface.
-Require Import LeaderCompletenessInterface.
-Require Import LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.CommitRecordedCommittedInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
 
 Section AppliedEntriesMonotonicProof.
   Context {orig_base_params : BaseParams}.
@@ -364,7 +364,9 @@ Section AppliedEntriesMonotonicProof.
     match goal with
       | |- context [update _ ?sigma ?h ?st] => pose proof applied_entries_update sigma h st
     end.
-    simpl in *. concludes. intuition.
+    simpl in *.
+    assert (commitIndex (sigma h) >= lastApplied (sigma h)) by omega.
+    concludes. intuition.
     - find_rewrite. eauto using app_nil_r.
     - pose proof applied_entries_cases sigma.
       intuition; repeat find_rewrite; eauto.
@@ -458,7 +460,7 @@ Section AppliedEntriesMonotonicProof.
     - exists nil.
       rewrite app_nil_r.
       apply applied_entries_log_lastApplied_same;
-        intros; unfold reboot in *; break_if; simpl; auto.
+        intros; unfold reboot in *; update_destruct_max_simplify; auto.
   Qed.
 
   Theorem applied_entries_monotonic :

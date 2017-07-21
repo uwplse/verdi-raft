@@ -1,20 +1,20 @@
 Require Import Verdi.TraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import LogMatchingInterface.
-Require Import StateMachineSafetyInterface.
-Require Import AppliedEntriesMonotonicInterface.
-Require Import MaxIndexSanityInterface.
-Require Import StateMachineCorrectInterface.
-Require Import LastAppliedCommitIndexMatchingInterface.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.StateMachineCorrectInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.TraceUtil.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SortedInterface.
+Require Import VerdiRaft.SortedInterface.
 
-Require Import OutputGreatestIdInterface.
+Require Import VerdiRaft.OutputGreatestIdInterface.
 
 Section OutputGreatestId.
   Context {orig_base_params : BaseParams}.
@@ -159,10 +159,9 @@ Section OutputGreatestId.
             exfalso.
             unfold cacheApplyEntry, applyEntry in *.
             find_apply_lem_hyp has_key_true_necessary. intuition.
-            repeat break_match; repeat find_rewrite; find_inversion; do_bool; subst.
-            - find_eapply_lem_hyp applyEntries_cache; auto;
-              [eapply lt_trans; [|eauto]; eauto|idtac|]; eauto.
-            - find_eapply_lem_hyp applyEntries_cache; eauto.
+            repeat break_match; repeat find_rewrite; find_inversion; do_bool; subst_max.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
             - find_eapply_lem_hyp applyEntries_cache; eauto;
               unfold getLastId in *; simpl in *; eauto using get_set_same.
             - find_eapply_lem_hyp applyEntries_cache; eauto;
@@ -170,17 +169,16 @@ Section OutputGreatestId.
           }
       + simpl in *. find_inversion.
         { destruct (has_key client id' a) eqn:?; eauto.
-            exfalso.
-            unfold cacheApplyEntry, applyEntry in *.
-            find_apply_lem_hyp has_key_true_necessary. intuition.
-            repeat break_match; repeat find_rewrite; find_inversion; do_bool; subst.
-            - find_eapply_lem_hyp applyEntries_cache; auto;
-              [eapply lt_trans; [|eauto]; eauto|idtac|]; eauto.
-            - find_eapply_lem_hyp applyEntries_cache; eauto.
-            - find_eapply_lem_hyp applyEntries_cache; eauto;
-              unfold getLastId in *; simpl in *; eauto using get_set_same.
-            - find_eapply_lem_hyp applyEntries_cache; eauto;
-              unfold getLastId in *; simpl in *; eauto using get_set_same.
+          exfalso.
+          unfold cacheApplyEntry, applyEntry in *.
+          find_apply_lem_hyp has_key_true_necessary. intuition.
+          repeat break_match; repeat find_rewrite; find_inversion; do_bool; subst.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
+            - eapply applyEntries_cache in Heqp0; eauto;
+                unfold getLastId in *; simpl in *; eauto using get_set_same.
+            - eapply applyEntries_cache in Heqp0; eauto;
+                unfold getLastId in *; simpl in *; eauto using get_set_same.
           }
   Qed.
 
@@ -240,7 +238,9 @@ Section OutputGreatestId.
     unfold key_in_output_list in *.
     match goal with | H : exists _, _ |- _ => destruct H as [o] end.
     unfold doGenericServer in *. break_let. simpl in *.
-    find_inversion. simpl in *. find_copy_eapply_lem_hyp applyEntries_before; eauto.
+    find_inversion. simpl in *.
+    pose proof Heqp as Heqp'.
+    eapply applyEntries_before in Heqp; eauto.
     match goal with
       | H : before_func _ _ ?l |- _=>
         eapply before_func_prepend with

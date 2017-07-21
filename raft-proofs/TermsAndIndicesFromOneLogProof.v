@@ -1,11 +1,11 @@
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import SpecLemmas.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import TermsAndIndicesFromOneLogInterface.
-Require Import CurrentTermGtZeroInterface.
+Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
+Require Import VerdiRaft.CurrentTermGtZeroInterface.
 
 Section TermsAndIndicesFromOneLog.
   Context {orig_base_params : BaseParams}.

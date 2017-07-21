@@ -1,12 +1,12 @@
 Require Import FunctionalExtensionality.
 
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 Require Import Verdi.DupDropReordering.
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import RaftRefinementInterface.
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 
 Section RaftMsgRefinement.
   Context {orig_base_params : BaseParams}.
@@ -27,7 +27,7 @@ Section RaftMsgRefinement.
       nwPackets net = xs ++ p :: ys ->
       (forall h, st' h = update name_eq_dec (nwState net) (pDst p) (gd, d) h) ->
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
-                             In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) l))) ->
+                             In p' (send_packets (pDst p) (@add_ghost_msg _ _ ghost_log_params (pDst p) (gd, d) l))) ->
       P (mkNetwork ps' st').
   Proof using. 
     intros.
@@ -50,7 +50,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_intermediate_reachable net ->
       (forall h', st' h' = update name_eq_dec (nwState net) h (gd, d) h') ->
       (forall p', In p' ps' -> In p' (nwPackets net) \/
-                         In p' (send_packets h (@add_ghost_msg _ _ _ ghost_log_params h (gd, d) l))) ->
+                         In p' (send_packets h (@add_ghost_msg _ _ ghost_log_params h (gd, d) l))) ->
       P (mkNetwork ps' st').
   Proof using. 
     intros.
@@ -75,7 +75,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_net_invariant_reboot P ->
       msg_refined_raft_intermediate_reachable net ->
       P net.
-  Proof using. 
+  Proof using.
     intros.
     induction H10.
     - intuition.
@@ -92,7 +92,7 @@ Section RaftMsgRefinement.
            (msg_refined_raft_intermediate_reachable
               {|
                 nwPackets := (xs ++ ys) ++ send_packets (pDst p)
-                                       (@add_ghost_msg _ _ _ ghost_log_params (pDst p)
+                                       (@add_ghost_msg _ _ ghost_log_params (pDst p)
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) (pDst p)
                                   (post_ghost_state, r0) |})
@@ -102,11 +102,11 @@ Section RaftMsgRefinement.
               {|
                 nwPackets := (xs ++ ys) ++
                                        send_packets (pDst p)
-                                       (@add_ghost_msg _ _ _ ghost_log_params (pDst p)
+                                       (@add_ghost_msg _ _ ghost_log_params (pDst p)
                                                        (post_ghost_state, r0) l4)
                                        ++
                                        send_packets (pDst p)
-                                       (@add_ghost_msg _ _ _ ghost_log_params (pDst p)
+                                       (@add_ghost_msg _ _ ghost_log_params (pDst p)
                                                        (post_ghost_state, r1) l5);
                 nwState := update name_eq_dec (nwState net) (pDst p)
                                   (post_ghost_state, r1) |}) by
@@ -122,7 +122,7 @@ Section RaftMsgRefinement.
          eauto.
          simpl. eapply in_app_or.
          simpl.
-         {
+         { clear H11.
            match goal with
              | H : msg_refined_raft_intermediate_reachable ?net |-
                msg_refined_raft_intermediate_reachable ?net' =>
@@ -180,7 +180,7 @@ Section RaftMsgRefinement.
            (msg_refined_raft_intermediate_reachable
               {|
                 nwPackets := (nwPackets net) ++ send_packets h
-                                       (@add_ghost_msg _ _ _ ghost_log_params h
+                                       (@add_ghost_msg _ _ ghost_log_params h
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) h
                                   (post_ghost_state, r0) |})
@@ -190,11 +190,11 @@ Section RaftMsgRefinement.
               {|
                 nwPackets := (nwPackets net) ++
                                        send_packets h
-                                       (@add_ghost_msg _ _ _ ghost_log_params h
+                                       (@add_ghost_msg _ _ ghost_log_params h
                                                        (post_ghost_state, r0) l4)
                                        ++
                                        send_packets h
-                                       (@add_ghost_msg _ _ _ ghost_log_params h
+                                       (@add_ghost_msg _ _ ghost_log_params h
                                                        (post_ghost_state, r1) l6);
                 nwState := update name_eq_dec (nwState net) h
                                   (post_ghost_state, r1) |}) by
@@ -210,7 +210,7 @@ Section RaftMsgRefinement.
          eauto.
          simpl. eapply in_app_or.
          simpl.
-         {
+         { clear H11.
            match goal with
              | H : msg_refined_raft_intermediate_reachable ?net |-
                msg_refined_raft_intermediate_reachable ?net' =>
@@ -293,7 +293,7 @@ Section RaftMsgRefinement.
       nwPackets net = xs ++ p :: ys ->
       (forall h, st' h = update name_eq_dec (nwState net) (pDst p) (gd, d) h) ->
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
-                             In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) l))) ->
+                             In p' (send_packets (pDst p) (@add_ghost_msg _ _ ghost_log_params (pDst p) (gd, d) l))) ->
       P (mkNetwork ps' st').
   Proof using. 
     intros.
@@ -317,7 +317,7 @@ Section RaftMsgRefinement.
       msg_refined_raft_intermediate_reachable (mkNetwork ps' st') ->
       (forall h', st' h' = update name_eq_dec (nwState net) h (gd, d) h') ->
       (forall p', In p' ps' -> In p' (nwPackets net) \/
-                         In p' (send_packets h (@add_ghost_msg _ _ _ ghost_log_params h (gd, d) l))) ->
+                         In p' (send_packets h (@add_ghost_msg _ _ ghost_log_params h (gd, d) l))) ->
       P (mkNetwork ps' st').
   Proof using. 
     intros.
@@ -370,24 +370,24 @@ Section RaftMsgRefinement.
            (msg_refined_raft_intermediate_reachable
               {|
                 nwPackets := (xs ++ ys) ++ send_packets (pDst p)
-                                       (@add_ghost_msg _ _ _ ghost_log_params (pDst p)
+                                       (@add_ghost_msg _ _ ghost_log_params (pDst p)
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) (pDst p)
-                                  (post_ghost_state, r0) |})
+                                  (post_ghost_state, r0) |}) as Hr0
            by (subst; eapply MRRIR_handleMessage; eauto; in_crush).
          assert
            (msg_refined_raft_intermediate_reachable
               {|
                 nwPackets := (xs ++ ys) ++
                                        send_packets (pDst p)
-                                       (@add_ghost_msg _ _ _ ghost_log_params (pDst p)
+                                       (@add_ghost_msg _ _ ghost_log_params (pDst p)
                                                        (post_ghost_state, r0) l4)
                                        ++
                                        send_packets (pDst p)
-                                       (@add_ghost_msg _ _ _ ghost_log_params (pDst p)
+                                       (@add_ghost_msg _ _ ghost_log_params (pDst p)
                                                        (post_ghost_state, r1) l5);
                 nwState := update name_eq_dec (nwState net) (pDst p)
-                                  (post_ghost_state, r1) |}) by
+                                  (post_ghost_state, r1) |}) as Hr1 by
              (eapply MRRIR_doLeader; eauto;
               try solve [in_crush];
               simpl in *; intros; repeat break_if; try congruence; auto).
@@ -396,7 +396,7 @@ Section RaftMsgRefinement.
          eapply_prop msg_refined_raft_net_invariant_do_leader'. eauto.
          eapply msg_refined_raft_invariant_handle_message' with (P := P); auto.
          eauto. eauto.   auto. eauto.  eauto. eauto using in_app_or. auto.
-         eauto.
+         exact Hr1.
          simpl. break_if; intuition eauto.
          simpl. intros. break_if; intuition eauto.
          simpl. in_crush. auto. auto.
@@ -435,7 +435,7 @@ Section RaftMsgRefinement.
            rewrite map_map.
            apply in_map_iff.
            eexists; intuition; eauto.
-       + match goal with 
+       + match goal with
          | [ H : msg_refined_raft_intermediate_reachable _ |- _ ?x ] => 
            assert (msg_refined_raft_intermediate_reachable x) as Hpost
                   by (eapply MRRIR_step_failure; eauto; eapply StepFailure_input; eauto)
@@ -459,24 +459,24 @@ Section RaftMsgRefinement.
            (msg_refined_raft_intermediate_reachable
               {|
                 nwPackets := (nwPackets net) ++ send_packets h
-                                       (@add_ghost_msg _ _ _ ghost_log_params h
+                                       (@add_ghost_msg _ _ ghost_log_params h
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) h
-                                  (post_ghost_state, r0) |})
+                                  (post_ghost_state, r0) |}) as Hr0
            by (subst; eapply MRRIR_handleInput; eauto; in_crush).
          assert
            (msg_refined_raft_intermediate_reachable
               {|
                 nwPackets := (nwPackets net) ++
                                        send_packets h
-                                       (@add_ghost_msg _ _ _ ghost_log_params h
+                                       (@add_ghost_msg _ _ ghost_log_params h
                                                        (post_ghost_state, r0) l4)
                                        ++
                                        send_packets h
-                                       (@add_ghost_msg _ _ _ ghost_log_params h
+                                       (@add_ghost_msg _ _ ghost_log_params h
                                                        (post_ghost_state, r1) l6);
                 nwState := update name_eq_dec (nwState net) h
-                                  (post_ghost_state, r1) |}) by
+                                  (post_ghost_state, r1) |}) as Hr1 by
              (eapply MRRIR_doLeader; eauto;
               try solve [in_crush];
               simpl in *; intros; repeat break_if; try congruence; auto).
@@ -485,7 +485,7 @@ Section RaftMsgRefinement.
          eapply_prop msg_refined_raft_net_invariant_do_leader'. eauto.
          eapply msg_refined_raft_invariant_handle_input' with (P := P); auto.
          eauto. eauto.   auto. eauto.  eauto. eauto using in_app_or. auto.
-         eauto.
+         exact Hr1.
          simpl. break_if; intuition eauto.
          simpl. intros. break_if; intuition eauto.
          simpl. in_crush. auto. auto.
@@ -567,7 +567,7 @@ Section RaftMsgRefinement.
       repeat rewrite map_map.
 
 
-  Notation mgv_deghost := (@mgv_deghost _ _ _ ghost_log_params).
+  Notation mgv_deghost := (@mgv_deghost _ _ ghost_log_params).
   
   Theorem simulation_1 :
     forall net,
@@ -696,7 +696,7 @@ Section RaftMsgRefinement.
 
   Lemma mgv_deghost_packet_mgv_ghost_packet_partial_inverses :
     forall p,
-      (@mgv_deghost_packet _ _ _ ghost_log_params (mgv_ghost_packet p)) = p.
+      (@mgv_deghost_packet _ _ ghost_log_params (mgv_ghost_packet p)) = p.
   Proof using. 
     intros.
     unfold mgv_deghost_packet, mgv_ghost_packet.
@@ -722,7 +722,7 @@ Section RaftMsgRefinement.
       eapply MRRIR_step_failure; eauto.
     - break_exists. break_and.
       subst.
-      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (nwPackets x) ++ (@send_packets _ raft_msg_refined_multi_params h (@add_ghost_msg _ _ _ ghost_log_params h (update_elections_data_input h inp (nwState (mgv_deghost x) h), d) l));
+      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (nwPackets x) ++ (@send_packets _ raft_msg_refined_multi_params h (@add_ghost_msg _ _ ghost_log_params h (update_elections_data_input h inp (nwState (mgv_deghost x) h), d) l));
            nwState := st'
                                                        |})) by
           (unfold mgv_deghost in *; repeat break_match; simpl in *;
@@ -731,7 +731,7 @@ Section RaftMsgRefinement.
       pose proof map_subset _ _ mgv_deghost_packet
            (nwPackets x ++
                       @send_packets _ raft_msg_refined_multi_params h
-                      (@add_ghost_msg _ _ _ ghost_log_params h
+                      (@add_ghost_msg _ _ ghost_log_params h
                                      (update_elections_data_input h inp
                                                                   (nwState (mgv_deghost x) h), d) l)) (map mgv_ghost_packet ps').
       forwards.
@@ -770,7 +770,7 @@ Section RaftMsgRefinement.
       subst. simpl in *.
       repeat break_match. simpl in *.
       subst. simpl in *.
-      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (xs' ++ ys') ++ (@send_packets _ raft_msg_refined_multi_params (pDst p') (@add_ghost_msg _ _ _ ghost_log_params (pDst p') (update_elections_data_net (pDst p') (pSrc p') (snd (pBody p')) (nwState  (pDst p')), d) l));
+      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (xs' ++ ys') ++ (@send_packets _ raft_msg_refined_multi_params (pDst p') (@add_ghost_msg _ _ ghost_log_params (pDst p') (update_elections_data_net (pDst p') (pSrc p') (snd (pBody p')) (nwState  (pDst p')), d) l));
            nwState := st'
                                                        |})).
       { unfold mgv_deghost in *; repeat break_match; simpl in *.
@@ -781,7 +781,7 @@ Section RaftMsgRefinement.
       pose proof map_subset _ _ mgv_deghost_packet
            ((xs' ++ ys') ++
                       @send_packets _ raft_msg_refined_multi_params (pDst p')
-                      (@add_ghost_msg _ _ _ ghost_log_params (pDst p')
+                      (@add_ghost_msg _ _ ghost_log_params (pDst p')
                                       (update_elections_data_net (pDst p') (pSrc p')
                                                                  (snd (pBody p'))
                                                                  (nwState  (pDst p')), d) l)) (map mgv_ghost_packet ps').
@@ -819,7 +819,7 @@ Section RaftMsgRefinement.
         auto using packet_eq_dec.
     - break_exists. break_and.
       subst.
-      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (nwPackets x) ++ (@send_packets _ raft_msg_refined_multi_params h (@add_ghost_msg _ _ _ ghost_log_params h (gd, d') ms));
+      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (nwPackets x) ++ (@send_packets _ raft_msg_refined_multi_params h (@add_ghost_msg _ _ ghost_log_params h (gd, d') ms));
            nwState := st'
                                                        |})).
       { unfold mgv_deghost in *; repeat break_match; simpl in *.
@@ -829,7 +829,7 @@ Section RaftMsgRefinement.
       pose proof map_subset _ _ mgv_deghost_packet
            (nwPackets x ++
                       @send_packets _ raft_msg_refined_multi_params h
-                      (@add_ghost_msg _ _ _ ghost_log_params h
+                      (@add_ghost_msg _ _ ghost_log_params h
                                      (gd, d') ms)) (map mgv_ghost_packet ps').
       forwards.
       {
@@ -860,7 +860,7 @@ Section RaftMsgRefinement.
         auto using packet_eq_dec.
     - break_exists. break_and.
       subst.
-      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (nwPackets x) ++ (@send_packets _ raft_msg_refined_multi_params h (@add_ghost_msg _ _ _ ghost_log_params h (gd, d') ms));
+      assert (msg_refined_raft_intermediate_reachable ({| nwPackets := (nwPackets x) ++ (@send_packets _ raft_msg_refined_multi_params h (@add_ghost_msg _ _ ghost_log_params h (gd, d') ms));
            nwState := st'
                                                        |})).
       { unfold mgv_deghost in *; repeat break_match; simpl in *.
@@ -870,7 +870,7 @@ Section RaftMsgRefinement.
       pose proof map_subset _ _ mgv_deghost_packet
            (nwPackets x ++
                       @send_packets _ raft_msg_refined_multi_params h
-                      (@add_ghost_msg _ _ _ ghost_log_params h
+                      (@add_ghost_msg _ _ ghost_log_params h
                                      (gd, d') ms)) (map mgv_ghost_packet ps').
       forwards.
       {

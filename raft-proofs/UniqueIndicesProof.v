@@ -1,10 +1,10 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import SortedInterface.
+Require Import VerdiRaft.SortedInterface.
 
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import UniqueIndicesInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
 
 Section UniqueIndices.
   Context {orig_base_params : BaseParams}.

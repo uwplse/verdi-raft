@@ -1,21 +1,21 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import CommonTheorems.
-Require Import Raft.
-Require Import SortedInterface.
-Require Import RaftRefinementInterface.
-Require Import StateMachineSafetyPrimeInterface.
-Require Import LeaderCompletenessInterface.
-Require Import LeaderLogsContiguousInterface.
-Require Import AllEntriesLeaderLogsInterface.
-Require Import LogMatchingInterface.
-Require Import UniqueIndicesInterface.
-Require Import AppendEntriesRequestLeaderLogsInterface.
-Require Import LeaderLogsSortedInterface.
-Require Import LeaderLogsLogMatchingInterface.
-Require Import LogsLeaderLogsInterface.
-Require Import OneLeaderLogPerTermInterface.
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.StateMachineSafetyPrimeInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.AllEntriesLeaderLogsInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
+Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
+Require Import VerdiRaft.LeaderLogsSortedInterface.
+Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
+Require Import VerdiRaft.LogsLeaderLogsInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
@@ -225,7 +225,9 @@ Section StateMachineSafety'.
       eIndex e' < eIndex e.
   Proof using. 
     intros; induction l1; simpl in *; intuition.
-    subst. specialize (H2 e'). concludes. intuition.
+    subst_max. specialize (H2 e').
+    assert (In e' (l1 ++ l2)) by auto with datatypes.
+    concludes. intuition.
   Qed.
 
   Lemma Prefix_In :
@@ -251,6 +253,8 @@ Section StateMachineSafety'.
   Proof using. 
     destruct l; simpl; intuition congruence.
   Qed.
+
+  Set Bullet Behavior "Strict Subproofs".
 
   Theorem state_machine_safety_nw'_invariant :
     forall net,
@@ -308,6 +312,7 @@ Section StateMachineSafety'.
             find_apply_lem_hyp (@maxIndex_is_max _ _ x2 e); eauto.
             omega.
           }
+          pose proof H1 as Happ.
           find_copy_eapply_lem_hyp entries_contiguous; eauto.
           eapply contiguous_app; eauto. eapply entries_sorted_nw_invariant; eauto.
         * cut (e = x5); [intros; subst; intuition|].

@@ -7,21 +7,18 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
 
 opam pin add coq $COQ_VERSION --yes --verbose
-opam pin add coq-mathcomp-ssreflect $SSREFLECT_VERSION --yes --verbose
-opam install StructTact verdi verdi-runtime --yes --verbose
 
 case $MODE in
-  analytics)
-    ./script/analytics.sh
+  proofalytics)
+    opam pin add verdi-raft-proofalytics . --yes --verbose
     ;;
-  vard-quick)
-    ./build.sh vard-quick
+  checkproofs)
+    opam pin add verdi-raft-checkproofs . --yes --verbose
     ;;
-  vard-test)
-    opam install ounit.2.0.0 --yes --verbose
-    ./build.sh vard-test
+  vard)
+    opam pin add vard . --yes --verbose
     ;;
   *)
-    ./build.sh $TARGET
+    opam pin add verdi-raft . --yes --verbose
     ;;
 esac

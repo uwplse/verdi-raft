@@ -1,6 +1,6 @@
-Require Import RaftState.
-Require Import Raft.
-Require Import CommonTheorems.
+Require Import VerdiRaft.RaftState.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
 
 Section SpecLemmas.
 

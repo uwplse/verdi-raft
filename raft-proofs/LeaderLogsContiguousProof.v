@@ -1,13 +1,13 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CommonTheorems.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import LeaderLogsContiguousInterface.
-Require Import LogMatchingInterface.
+Require Import VerdiRaft.LeaderLogsContiguousInterface.
+Require Import VerdiRaft.LogMatchingInterface.
 
 Section LeaderLogsContiguous.
 

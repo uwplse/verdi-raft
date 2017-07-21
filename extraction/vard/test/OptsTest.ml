@@ -1,6 +1,6 @@
 open OUnit2
 open ListLabels
-open TestCommon
+open Util
 
 let tear_down () text_ctxt =
   Opts.cluster := Opts.cluster_default;

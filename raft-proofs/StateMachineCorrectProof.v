@@ -1,16 +1,16 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SpecLemmas.
-Require Import CommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import SortedInterface.
-Require Import DecompositionWithPostState.
-Require Import MaxIndexSanityInterface.
-Require Import StateMachineSafetyInterface.
-Require Import LogMatchingInterface.
-Require Import StateMachineCorrectInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.DecompositionWithPostState.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineCorrectInterface.
 
 Section StateMachineCorrect.
   Context {orig_base_params : BaseParams}.

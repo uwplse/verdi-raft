@@ -1,4 +1,4 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Section NoAppendEntriesRepliesToSelfInterface.
   Context {orig_base_params : BaseParams}.

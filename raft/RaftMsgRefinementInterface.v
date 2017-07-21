@@ -1,7 +1,7 @@
 Require Import Verdi.GhostSimulations.
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
 
 Section RaftMsgRefinementInterface.
   Context {orig_base_params : BaseParams}.
@@ -18,7 +18,7 @@ Section RaftMsgRefinementInterface.
 
   Definition write_ghost_log (h : name) (st : @data raft_refined_base_params) : ghost_log := log (snd st).
 
-  Instance ghost_log_params : MsgGhostFailureParams raft_refined_failure_params :=
+  Instance ghost_log_params : MsgGhostMultiParams raft_refined_multi_params :=
     {| ghost_msg := ghost_log ;
        ghost_msg_eq_dec := ghost_log_eq_dec ;
        ghost_msg_default := [] ;
@@ -57,7 +57,7 @@ Section RaftMsgRefinementInterface.
         nwPackets net = xs ++ p :: ys ->
         (forall h, st' h = update name_eq_dec (nwState net) (pDst p) (gd, d) h) ->
         (forall p', In p' ps' -> In p' (xs ++ ys) \/
-                           In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) l))) ->
+                           In p' (send_packets (pDst p) (@add_ghost_msg _ _ ghost_log_params (pDst p) (gd, d) l))) ->
         msg_refined_raft_intermediate_reachable (mkNetwork ps' st')
   | MRRIR_doLeader :
       forall net st' ps' h os gd d d' ms,
@@ -123,7 +123,7 @@ Section RaftMsgRefinementInterface.
       nwPackets net = xs ++ p :: ys ->
       (forall h, st' h = update name_eq_dec (nwState net) (pDst p) (gd, d) h) ->
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
-                         In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) m))) ->
+                         In p' (send_packets (pDst p) (@add_ghost_msg _ _ ghost_log_params (pDst p) (gd, d) m))) ->
       P (mkNetwork ps' st').
 
   Definition msg_refined_raft_net_invariant_request_vote (P : network -> Prop) :=
@@ -243,7 +243,7 @@ Section RaftMsgRefinementInterface.
       nwPackets net = xs ++ p :: ys ->
       (forall h, st' h = update name_eq_dec (nwState net) (pDst p) (gd, d) h) ->
       (forall p', In p' ps' -> In p' (xs ++ ys) \/
-                         In p' (send_packets (pDst p) (@add_ghost_msg _ _ _ ghost_log_params (pDst p) (gd, d) m))) ->
+                         In p' (send_packets (pDst p) (@add_ghost_msg _ _ ghost_log_params (pDst p) (gd, d) m))) ->
       P (mkNetwork ps' st').
 
   Definition msg_refined_raft_net_invariant_request_vote' (P : network -> Prop) :=

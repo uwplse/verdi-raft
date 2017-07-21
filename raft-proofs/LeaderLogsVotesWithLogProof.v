@@ -1,14 +1,14 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
-Require Import VotesReceivedMoreUpToDateInterface.
-Require Import RequestVoteReplyMoreUpToDateInterface.
+Require Import VerdiRaft.VotesReceivedMoreUpToDateInterface.
+Require Import VerdiRaft.RequestVoteReplyMoreUpToDateInterface.
 
-Require Import LeaderLogsVotesWithLogInterface.
+Require Import VerdiRaft.LeaderLogsVotesWithLogInterface.
 
 Section LeaderLogsVotesWithLog.
   Context {orig_base_params : BaseParams}.
@@ -162,7 +162,7 @@ Section LeaderLogsVotesWithLog.
     - subst.
       find_eapply_lem_hyp requestVoteReply_moreUpToDate_invariant; eauto.
       repeat find_rewrite.
-      repeat concludes.
+      repeat conclude_using eauto.
       break_exists_exists. intuition.
       find_higher_order_rewrite.
       simpl in *.

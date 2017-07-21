@@ -1,12 +1,12 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
-Require Import SpecLemmas.
-Require Import CommonTheorems.
-Require Import SortedInterface.
-Require Import UniqueIndicesInterface.
-Require Import LeaderSublogInterface.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
 
-Require Import LogMatchingInterface.
+Require Import VerdiRaft.LogMatchingInterface.
 
 Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
 Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
@@ -289,7 +289,9 @@ Section LogMatchingProof.
                      _ : In ?x (log (_ _ ?leader)) |-
                      In ?x (log (_ _ ?h)) ] =>
                    specialize (Hentries leader h e1 e2 x)
-              end. repeat concludes. intuition.
+              end.
+              assert (eIndex x <= eIndex e1) by omega.
+              repeat conclude. intuition.
           }
     - use_packet_subset_clear; unfold log_matching in *; intuition.
       + unfold log_matching_nw in *; intuition. use_nw_invariant.

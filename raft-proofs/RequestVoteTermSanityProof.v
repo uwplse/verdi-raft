@@ -1,10 +1,10 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import RequestVoteTermSanityInterface.
+Require Import VerdiRaft.RequestVoteTermSanityInterface.
 
 Section RequestVoteTermSanity.
   Context {orig_base_params : BaseParams}.

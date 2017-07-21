@@ -1,10 +1,10 @@
-Require Import Raft.
-Require Import CommonDefinitions.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonDefinitions.
 
-Require Import LastAppliedCommitIndexMatchingInterface.
-Require Import LogMatchingInterface.
-Require Import StateMachineSafetyInterface.
-Require Import MaxIndexSanityInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
 
 Section LastAppliedCommitIndexMatching.
 

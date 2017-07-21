@@ -1,16 +1,16 @@
-Require Import Raft.
-Require Import RaftRefinementInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.RaftRefinementInterface.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
-Require Import CommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import RequestVoteMaxIndexMaxTermInterface.
-Require Import RequestVoteReplyTermSanityInterface.
-Require Import VotedForMoreUpToDateInterface.
+Require Import VerdiRaft.RequestVoteMaxIndexMaxTermInterface.
+Require Import VerdiRaft.RequestVoteReplyTermSanityInterface.
+Require Import VerdiRaft.VotedForMoreUpToDateInterface.
 
-Require Import RequestVoteReplyMoreUpToDateInterface.
+Require Import VerdiRaft.RequestVoteReplyMoreUpToDateInterface.
 
 Section RequestVoteReplyMoreUpToDate.
   Context {orig_base_params : BaseParams}.
@@ -72,7 +72,7 @@ Section RequestVoteReplyMoreUpToDate.
         break_exists_exists. intuition.
         eauto using update_elections_data_request_vote_votesWithLog_old.
       + remember (pSrc p0) as h.
-        subst. simpl in *. subst.
+        subst_max. simpl in *. subst_max.
         find_copy_apply_lem_hyp handleRequestVote_reply_true.
         find_eapply_lem_hyp update_elections_data_request_vote_votedFor; eauto;
         intuition; eauto; repeat find_rewrite.
@@ -90,7 +90,7 @@ Section RequestVoteReplyMoreUpToDate.
         repeat find_rewrite.
         eapply_prop_hyp pBody pBody; eauto.
       + remember (pDst p0) as h.
-        subst. simpl in *. subst.
+        subst_max. simpl in *. subst_max.
         find_copy_apply_lem_hyp handleRequestVote_reply_true. intuition.
     - find_apply_hyp_hyp; intuition.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).

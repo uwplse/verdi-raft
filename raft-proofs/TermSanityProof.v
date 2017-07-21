@@ -1,7 +1,7 @@
-Require Import Raft.
-Require Import CommonTheorems.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
 
-Require Import TermSanityInterface.
+Require Import VerdiRaft.TermSanityInterface.
 
 Section TermSanityProof.
   Context {orig_base_params : BaseParams}.

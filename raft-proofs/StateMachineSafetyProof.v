@@ -1,36 +1,36 @@
 Require Import Verdi.GhostSimulations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import CommitRecordedCommittedInterface.
-Require Import StateMachineSafetyInterface.
-Require Import StateMachineSafetyPrimeInterface.
-Require Import RaftRefinementInterface.
-Require Import MaxIndexSanityInterface.
-Require Import LeaderCompletenessInterface.
-Require Import SortedInterface.
-Require Import LogMatchingInterface.
-Require Import PrevLogLeaderSublogInterface.
-Require Import CurrentTermGtZeroInterface.
-Require Import LastAppliedLeCommitIndexInterface.
-Require Import MatchIndexAllEntriesInterface.
-Require Import LeadersHaveLeaderLogsInterface.
-Require Import LeaderSublogInterface.
-Require Import TermsAndIndicesFromOneLogInterface.
-Require Import GhostLogCorrectInterface.
-Require Import GhostLogsLogPropertiesInterface.
-Require Import GhostLogLogMatchingInterface.
-Require Import TransitiveCommitInterface.
-Require Import TermSanityInterface.
-Require Import LeadersHaveLeaderLogsStrongInterface.
-Require Import OneLeaderLogPerTermInterface.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.CommitRecordedCommittedInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.StateMachineSafetyPrimeInterface.
+Require Import VerdiRaft.RaftRefinementInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.LeaderCompletenessInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.PrevLogLeaderSublogInterface.
+Require Import VerdiRaft.CurrentTermGtZeroInterface.
+Require Import VerdiRaft.LastAppliedLeCommitIndexInterface.
+Require Import VerdiRaft.MatchIndexAllEntriesInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
+Require Import VerdiRaft.LeaderSublogInterface.
+Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
+Require Import VerdiRaft.GhostLogCorrectInterface.
+Require Import VerdiRaft.GhostLogsLogPropertiesInterface.
+Require Import VerdiRaft.GhostLogLogMatchingInterface.
+Require Import VerdiRaft.TransitiveCommitInterface.
+Require Import VerdiRaft.TermSanityInterface.
+Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
+Require Import VerdiRaft.OneLeaderLogPerTermInterface.
 
-Require Import RefinedLogMatchingLemmasInterface.
+Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
 
-Require Import SpecLemmas.
-Require Import RefinementSpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
+Require Import VerdiRaft.RefinementSpecLemmas.
 
-Require Import RaftMsgRefinementInterface.
+Require Import VerdiRaft.RaftMsgRefinementInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
@@ -1078,9 +1078,9 @@ Section StateMachineSafetyProof.
   Qed.
 
   Lemma msg_deghost_spec' :
-    forall base multi failure ghost
+    forall base multi ghost
       (net : @network (@mgv_refined_base_params base)
-                      (@mgv_refined_multi_params base multi failure ghost)) h,
+                      (@mgv_refined_multi_params base multi ghost)) h,
       nwState (mgv_deghost net) h = nwState net h.
   Proof using. 
     unfold mgv_deghost.
@@ -1354,7 +1354,7 @@ Section StateMachineSafetyProof.
       msg_refined_raft_intermediate_reachable net ->
       (forall h', st' h' = update name_eq_dec (nwState net) h (gd, d) h') ->
       (forall p', In p' ps' -> In p' (nwPackets net) \/
-                         In p' (send_packets h (add_ghost_msg (params := ghost_log_params) h (gd, d) l))) ->
+                         In p' (send_packets h (add_ghost_msg (msg_ghost_params := ghost_log_params) h (gd, d) l))) ->
       commit_invariant (mkNetwork ps' st').
   Proof using rmri rri. 
     unfold msg_refined_raft_net_invariant_client_request, commit_invariant.
@@ -1535,7 +1535,7 @@ Section StateMachineSafetyProof.
     find_apply_lem_hyp in_mgv_ghost_packet.
     match goal with
       | _ : snd (pBody ?p) = ?x |- _ =>
-        assert (pBody (@mgv_deghost_packet _ _ _ ghost_log_params p) = x)
+        assert (pBody (@mgv_deghost_packet _ _ ghost_log_params p) = x)
           by (rewrite pBody_mgv_deghost_packet; auto)
     end.
     eapply state_machine_safety'_invariant; eauto.
@@ -1553,7 +1553,7 @@ Section StateMachineSafetyProof.
     find_apply_lem_hyp in_mgv_ghost_packet.
     match goal with
       | _ : snd (pBody ?p) = ?x |- _ =>
-        assert (pBody (@mgv_deghost_packet _ _ _ ghost_log_params p) = x)
+        assert (pBody (@mgv_deghost_packet _ _ ghost_log_params p) = x)
           by (rewrite pBody_mgv_deghost_packet; auto)
     end.
     find_eapply_lem_hyp entries_sorted_nw_invariant; eauto.
@@ -2007,7 +2007,7 @@ Section StateMachineSafetyProof.
                        unfold msg_log_property in *.
                        specialize (Hprop (fun l => forall e, In e l -> eIndex e > 0) p).
                        conclude_using ltac:(intros; eapply lifted_entries_gt_0_invariant; eauto).
-                       concludes. simpl in *.
+                       conclude_using eauto. simpl in *.
                        find_apply_hyp_hyp.
                        omega.
                    }
@@ -2140,7 +2140,9 @@ Section StateMachineSafetyProof.
                          pose proof ghost_log_entries_match_invariant _ ltac:(eauto) (pDst p) _ ltac:(eauto)
                            as Hem.
                          specialize (Hem ple gple e').
-                         repeat concludes. intuition.
+                         repeat concludes.
+                         assert (eIndex e' <= eIndex ple) by omega.
+                         intuition.
                        }
                        subst.
 
@@ -2670,7 +2672,7 @@ Section StateMachineSafetyProof.
       nwState net h = (gd, d) ->
       (forall h', st' h' = update name_eq_dec (nwState net) h (gd, d') h') ->
       (forall p,
-          In p ps' -> In p (nwPackets net) \/ In p (send_packets h (add_ghost_msg (params := ghost_log_params) h (gd, d') ms))) ->
+          In p ps' -> In p (nwPackets net) \/ In p (send_packets h (add_ghost_msg (msg_ghost_params := ghost_log_params) h (gd, d') ms))) ->
       commit_invariant {| nwPackets := ps'; nwState := st' |}.
   Proof using rmri miaei. 
     unfold commit_invariant.

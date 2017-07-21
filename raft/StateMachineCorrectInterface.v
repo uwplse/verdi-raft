@@ -1,5 +1,5 @@
-Require Import Raft.
-Require Import CommonDefinitions.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonDefinitions.
 
 Section StateMachineCorrect.
   Context {orig_base_params : BaseParams}.

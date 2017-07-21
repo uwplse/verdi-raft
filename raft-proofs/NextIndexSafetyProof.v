@@ -1,14 +1,14 @@
-Require Import Raft.
+Require Import VerdiRaft.Raft.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
-Require Import CommonTheorems.
-Require Import SpecLemmas.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import AppendEntriesReplySublogInterface.
-Require Import SortedInterface.
+Require Import VerdiRaft.AppendEntriesReplySublogInterface.
+Require Import VerdiRaft.SortedInterface.
 
-Require Import NextIndexSafetyInterface.
+Require Import VerdiRaft.NextIndexSafetyInterface.
 
 Section NextIndexSafety.
   Context {orig_base_params : BaseParams}.

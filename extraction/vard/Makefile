@@ -1,11 +1,11 @@
 PYTHON=python2.7
 
-OCAMLBUILD = ocamlbuild -package verdi-runtime -I ml -cflag -g
+OCAMLBUILD = ocamlbuild -tag safe_string -package verdi-runtime -I ml -cflag -g
 OCAMLBUILD_TEST = $(OCAMLBUILD) -package oUnit -I test
 
 VARDRAFT = ml/VarDRaft.ml ml/VarDRaft.mli
 VARD = ml/VarDArrangement.ml ml/vard.ml ml/VarDSerialization.ml
-VARD_TEST = test/OptsTest.ml test/TestCommon.ml test/VarDSerializationTest.ml test/VarDTest.ml
+VARD_TEST = test/OptsTest.ml test/VarDSerializationTest.ml test/VarDTest.ml
 
 default: vard.native
 

@@ -1,21 +1,21 @@
 Require Import Verdi.GhostSimulations.
 Require Import Verdi.InverseTraceRelations.
 
-Require Import Raft.
-Require Import CommonTheorems.
-Require Import TraceUtil.
+Require Import VerdiRaft.Raft.
+Require Import VerdiRaft.CommonTheorems.
+Require Import VerdiRaft.TraceUtil.
 
-Require Import SpecLemmas.
+Require Import VerdiRaft.SpecLemmas.
 
-Require Import InputBeforeOutputInterface.
-Require Import AppliedImpliesInputInterface.
-Require Import OutputImpliesAppliedInterface.
-Require Import LastAppliedCommitIndexMatchingInterface.
-Require Import SortedInterface.
-Require Import LogMatchingInterface.
-Require Import StateMachineSafetyInterface.
-Require Import MaxIndexSanityInterface.
-Require Import UniqueIndicesInterface.
+Require Import VerdiRaft.InputBeforeOutputInterface.
+Require Import VerdiRaft.AppliedImpliesInputInterface.
+Require Import VerdiRaft.OutputImpliesAppliedInterface.
+Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
+Require Import VerdiRaft.SortedInterface.
+Require Import VerdiRaft.LogMatchingInterface.
+Require Import VerdiRaft.StateMachineSafetyInterface.
+Require Import VerdiRaft.MaxIndexSanityInterface.
+Require Import VerdiRaft.UniqueIndicesInterface.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section InputBeforeOutput.
@@ -89,7 +89,9 @@ Section InputBeforeOutput.
     match goal with
       | |- context [update _ ?sigma ?h ?st] => pose proof applied_entries_update sigma h st
     end.
-    simpl in *. concludes. intuition; [find_rewrite; exists nil; simpl in *; intuition|].
+    simpl in *.
+    assert (commitIndex (sigma h) >= lastApplied (sigma h)) by omega.
+    concludes. intuition; [find_rewrite; exists nil; simpl in *; intuition|].
     pose proof applied_entries_cases sigma.
     intuition; repeat find_rewrite; eauto;
     [eexists; intuition; eauto;
@@ -514,7 +516,7 @@ Section InputBeforeOutput.
       unfold ghost_data in *. simpl in *.
       repeat find_rewrite.
       do_in_app. intuition.
-      + find_false. eexists; intuition; repeat find_rewrite; eauto.
+      + contradict H1. eexists; intuition; repeat find_rewrite; eauto.
       + find_apply_hyp_hyp. break_exists. intuition.
         eapply handleMessage_log with (h'' := x1); eauto;
         [destruct p; simpl in *; repeat find_rewrite; intuition|].
@@ -564,7 +566,7 @@ Section InputBeforeOutput.
         | H : In _ (applied_entries _) |- In _ (applied_entries ?sig) =>
           erewrite applied_entries_log_lastApplied_same with (sigma := sig) in H
       end; auto;
-      intros; simpl in *; break_if; auto.
+      intros; simpl in *; update_destruct_max_simplify; auto.
   Qed.
   
   Lemma in_applied_entries_step_applied_implies_input_state :
