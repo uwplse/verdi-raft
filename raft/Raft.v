@@ -851,6 +851,173 @@ Section Raft.
   
 End Raft.
 
+Section Serialized.
+  Import ByteListReader.
+  Notation "a +++ b" := (IOStreamWriter.append (fun _ => a) (fun _ => b))
+                          (at level 100, right associativity).
+
+  Context {orig_base_params : BaseParams}.
+  Context {one_node_params : OneNodeParams orig_base_params}.
+  Context {raft_params : RaftParams orig_base_params}.
+  Context {sInput : Serializer input}.
+
+  Definition raft_base_params := base_params.
+  Definition raft_multi_params := multi_params.
+
+
+  
+  (* entry *)
+  Definition entry_serialize (e : entry) :=
+    serialize (eAt e) +++
+              serialize (eClient e) +++
+              serialize (eId e) +++
+              serialize (eIndex e) +++
+              serialize (eTerm e) +++
+              serialize (eInput e).
+  
+  Definition entry_deserialize : ByteListReader.t entry := 
+    bind deserialize
+         (fun At =>
+            bind deserialize
+                 (fun Client =>
+                    bind deserialize
+                         (fun Id =>
+                            bind deserialize
+                                 (fun Index =>
+                                    bind deserialize
+                                         (fun Term =>
+                                            bind deserialize
+                                                 (fun Input =>
+                                                    ret (mkEntry At
+                                                                 Client
+                                                                 Id
+                                                                 Index
+                                                                 Term
+                                                                 Input))))))).
+
+  Lemma entry_serialize_deserialize_id :
+    serialize_deserialize_id_spec entry_serialize entry_deserialize.
+  Proof.
+    intros.
+    unfold entry_serialize, entry_deserialize.
+    cheerios_crush.
+    destruct a;
+      reflexivity.
+  Qed.
+  
+  Instance entry_Serializer : Serializer entry.
+  Proof.
+    exact {| serialize := entry_serialize;
+             deserialize := entry_deserialize;
+             serialize_deserialize_id := entry_serialize_deserialize_id |}.
+  Qed.
+
+  (* msg *)
+  Definition msg_serialize (m : msg) : IOStreamWriter.t :=
+    match m with
+    | RequestVote t1 n i t2 =>
+      serialize x00 +++
+                serialize t1 +++
+                serialize n +++
+                serialize i +++
+                serialize t2
+    | RequestVoteReply t b =>
+      serialize x01 +++ serialize t +++ serialize b
+    | AppendEntries t1 n i1 t2 l2 i2 =>
+      serialize x02 +++
+                serialize t1 +++
+                serialize n +++
+                serialize i1 +++
+                serialize t2 +++
+                serialize l2 +++
+                serialize i2
+    | AppendEntriesReply t l b =>
+      serialize x03 +++ serialize t +++ serialize l +++ serialize b
+    end.
+
+  Definition RequestVote_deserialize :=
+    bind
+      deserialize
+      (fun t1 =>
+         bind
+           deserialize
+           (fun n =>
+              bind
+                deserialize
+                (fun i =>
+                   bind
+                     deserialize
+                     (fun t2 => ret (RequestVote t1 n i t2))))).
+
+  Definition RequestVoteReply_deserialize :=
+    bind deserialize
+         (fun t => bind deserialize
+                        (fun b => ret (RequestVoteReply t b))).
+
+  Definition AppendEntries_deserialize :=
+    bind
+      deserialize
+      (fun t1 =>
+         bind
+           deserialize
+           (fun n =>
+              bind
+                deserialize
+                (fun i1 =>
+                   bind
+                     deserialize
+                     (fun t2 =>
+                        bind
+                          deserialize
+                          (fun l =>
+                             bind
+                               deserialize
+                               (fun i2 =>
+                                  ret (AppendEntries t1 n i1 t2 l i2))))))).
+  
+  Definition AppendEntriesReply_deserialize :=
+    bind deserialize
+         (fun t => bind deserialize
+                        (fun l => bind deserialize
+                                       (fun b =>  ret (AppendEntriesReply t l b)))).
+  
+  Definition msg_deserialize :=
+    bind deserialize
+         (fun tag =>
+            match tag with
+            | x00 => RequestVote_deserialize
+            | x01 => RequestVoteReply_deserialize
+            | x02 => AppendEntries_deserialize
+            | x03 => AppendEntriesReply_deserialize
+            | _ => error
+            end).
+
+  Lemma msg_serialize_deserialize_id :
+    serialize_deserialize_id_spec msg_serialize msg_deserialize.
+  Proof.
+    intros.
+    unfold msg_serialize, msg_deserialize.
+    destruct a;
+      cheerios_crush;
+      simpl;
+      (unfold RequestVote_deserialize ||
+       unfold RequestVoteReply_deserialize ||
+       unfold AppendEntries_deserialize ||
+       unfold AppendEntriesReply_deserialize);
+      cheerios_crush.
+  Qed.
+
+  Instance msg_Serializer : Serializer msg.
+  Proof.
+    exact {| serialize := msg_serialize;
+             deserialize := msg_deserialize;
+             serialize_deserialize_id := msg_serialize_deserialize_id |}.
+  Qed.
+
+  Definition transformed_base_params :=
+    @serialized_multi_params raft_base_params raft_multi_params msg_Serializer.
+End Serialized.
+
 Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data output).
 Notation votedFor            := (RaftState.votedFor term name entry logIndex serverType data output).
 Notation leaderId            := (RaftState.leaderId term name entry logIndex serverType data output).
