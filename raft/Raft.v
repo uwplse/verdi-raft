@@ -1,3 +1,4 @@
+Require Import Cheerios.Cheerios.
 Require Export Verdi.Verdi.
 Require Import VerdiRaft.RaftState.
 Require Export StructTact.Fin.
@@ -853,6 +854,8 @@ End Raft.
 
 Section Serialized.
   Import ByteListReader.
+  Import DeserializerNotations.
+
   Notation "a +++ b" := (IOStreamWriter.append (fun _ => a) (fun _ => b))
                           (at level 100, right associativity).
 
@@ -876,24 +879,13 @@ Section Serialized.
               serialize (eInput e).
   
   Definition entry_deserialize : ByteListReader.t entry := 
-    bind deserialize
-         (fun At =>
-            bind deserialize
-                 (fun Client =>
-                    bind deserialize
-                         (fun Id =>
-                            bind deserialize
-                                 (fun Index =>
-                                    bind deserialize
-                                         (fun Term =>
-                                            bind deserialize
-                                                 (fun Input =>
-                                                    ret (mkEntry At
-                                                                 Client
-                                                                 Id
-                                                                 Index
-                                                                 Term
-                                                                 Input))))))).
+    At <- deserialize;;
+       Client <- deserialize;;
+       Id <- deserialize;;
+       Index <- deserialize;;
+       Term <- deserialize;;
+       Input <- deserialize;;
+       ret (mkEntry At Client Id Index Term Input).
 
   Lemma entry_serialize_deserialize_id :
     serialize_deserialize_id_spec entry_serialize entry_deserialize.
@@ -936,61 +928,41 @@ Section Serialized.
     end.
 
   Definition RequestVote_deserialize :=
-    bind
-      deserialize
-      (fun t1 =>
-         bind
-           deserialize
-           (fun n =>
-              bind
-                deserialize
-                (fun i =>
-                   bind
-                     deserialize
-                     (fun t2 => ret (RequestVote t1 n i t2))))).
+    t1 <- deserialize;;
+       n <- deserialize;;
+       i <- deserialize;;
+       t2 <- deserialize;;
+       ret (RequestVote t1 n i t2).
 
   Definition RequestVoteReply_deserialize :=
-    bind deserialize
-         (fun t => bind deserialize
-                        (fun b => ret (RequestVoteReply t b))).
+    t <- deserialize;;
+      b <- deserialize;;
+      ret (RequestVoteReply t b).
 
   Definition AppendEntries_deserialize :=
-    bind
-      deserialize
-      (fun t1 =>
-         bind
-           deserialize
-           (fun n =>
-              bind
-                deserialize
-                (fun i1 =>
-                   bind
-                     deserialize
-                     (fun t2 =>
-                        bind
-                          deserialize
-                          (fun l =>
-                             bind
-                               deserialize
-                               (fun i2 =>
-                                  ret (AppendEntries t1 n i1 t2 l i2))))))).
+    t1 <- deserialize;;
+       n <- deserialize;;
+       i1 <- deserialize;;
+       t2 <- deserialize;;
+       l <- deserialize;;
+       i2 <- deserialize;;
+       ret (AppendEntries t1 n i1 t2 l i2).
   
   Definition AppendEntriesReply_deserialize :=
-    bind deserialize
-         (fun t => bind deserialize
-                        (fun l => bind deserialize
-                                       (fun b =>  ret (AppendEntriesReply t l b)))).
+    t <- deserialize;;
+      l <- deserialize;;
+      b <- deserialize;;
+      ret (AppendEntriesReply t l b).
   
   Definition msg_deserialize :=
-    bind deserialize
-         (fun tag =>
-            match tag with
-            | x00 => RequestVote_deserialize
-            | x01 => RequestVoteReply_deserialize
-            | x02 => AppendEntries_deserialize
-            | x03 => AppendEntriesReply_deserialize
-            | _ => error
-            end).
+    tag <- deserialize;;
+    match tag with
+    | x00 => RequestVote_deserialize
+    | x01 => RequestVoteReply_deserialize
+    | x02 => AppendEntries_deserialize
+    | x03 => AppendEntriesReply_deserialize
+    | _ => error
+    end.
 
   Lemma msg_serialize_deserialize_id :
     serialize_deserialize_id_spec msg_serialize msg_deserialize.
@@ -1013,9 +985,6 @@ Section Serialized.
              deserialize := msg_deserialize;
              serialize_deserialize_id := msg_serialize_deserialize_id |}.
   Qed.
-
-  Definition transformed_base_params :=
-    @serialized_multi_params raft_base_params raft_multi_params msg_Serializer.
 End Serialized.
 
 Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data output).
