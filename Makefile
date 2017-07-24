@@ -1,5 +1,5 @@
 PYTHON=python2.7
-COQVERSION := $(shell coqc --version|egrep "version (8\\.5|8\\.6|trunk)")
+COQVERSION := $(shell coqc --version|egrep "version (8\\.6|trunk)")
 
 ifeq "$(COQVERSION)" ""
 $(error "Verdi Raft is only compatible with Coq version 8.6")
