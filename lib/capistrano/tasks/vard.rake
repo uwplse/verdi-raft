@@ -66,6 +66,14 @@ namespace :vard do
   desc 'get status'
   task :status do
     cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
+    run_locally do
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{cluster.join(',')} status)
+    end
+  end
+
+  desc 'get status remote'
+  task :status_remote do
+    cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
     on roles(:node, name: '0') do |server|
       execute 'python2.7',
         "#{current_path}/extraction/vard/bench/vardctl.py",
@@ -74,16 +82,16 @@ namespace :vard do
     end
   end
 
-  desc 'get status (remote)'
-  task :status_locally do
+  desc 'put key-value pair'
+  task :put do
     cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
     run_locally do
-      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{cluster.join(',')} status)
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{cluster.join(',')} put #{ENV['KEY']} #{ENV['VALUE']})
     end
   end
 
-  desc 'put key-value pair'
-  task :put do
+  desc 'put key-value pair remote'
+  task :put_remote do
     cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
     on roles(:node, name: '0') do |server|
       execute 'python2.7',
@@ -97,6 +105,14 @@ namespace :vard do
 
   desc 'get value for key'
   task :get do
+    cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
+    run_locally do
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{cluster.join(',')} get #{ENV['KEY']})
+    end
+  end
+
+  desc 'get value for key remote'
+  task :get_remote do
     cluster = roles(:node).collect { |s| "#{s.properties.host}:#{fetch(:client_port)}" }
     on roles(:node, name: '0') do |server|
       execute 'python2.7',
