@@ -1,4 +1,3 @@
-Require Import Cheerios.Cheerios.
 Require Export Verdi.Verdi.
 Require Import VerdiRaft.RaftState.
 Require Export StructTact.Fin.
