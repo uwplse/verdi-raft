@@ -3,7 +3,7 @@ open Printf
 open VarDRaftSerialized
 open VarD
 open Util
-
+       
 module type IntValue = sig
   val v : int
 end
@@ -34,16 +34,16 @@ struct
 end
 
 module VarDSerializedArrangement (P : VardSerializedParams) = struct
-  type name = VarDRaftSerialized.name
+  type name = VarDRaftSerialized.name0
   type state = raft_data0
   type input = VarDRaftSerialized.raft_input
   type output = VarDRaftSerialized.raft_output
-  type msg = VarDRaftSerialized.msg
-  type res = (VarDRaftSerialized.raft_output list * raft_data0) * ((VarDRaftSerialized.name * VarDRaftSerialized.msg) list)
+  type msg = Serializer_primitives.wire
+  type res = (output list * state) * ((name * msg) list)
   type client_id = int
   let systemName = "VarDSerialized"
   let init x = Obj.magic (init_handlers0 vard_base_params vard_one_node_params (raft_params P.num_nodes) x)
-  let reboot = Obj.magic (reboot vard_base_params (raft_params P.num_nodes))
+  let reboot = Obj.magic (reboot0 vard_base_params (raft_params P.num_nodes))
   let handleIO (n : name) (inp : input) (st : state) = Obj.magic ((vard_raft_multi_params P.num_nodes).input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
   let handleNet (n : name) (src: name) (m : msg) (st : state)  = Obj.magic ((vard_raft_multi_params P.num_nodes).net_handlers (Obj.magic n) (Obj.magic src) (Obj.magic m) (Obj.magic st))
   let handleTimeout (me : name) (st : state) =
@@ -52,23 +52,25 @@ module VarDSerializedArrangement (P : VardSerializedParams) = struct
     match s.type0 with
     | Leader -> P.heartbeat_timeout
     | _ -> P.election_timeout +. (Random.float 0.1)
-  let deserializeMsg = fun m -> m
-  let serializeMsg = fun m -> m
+  let deserializeMsg = Bytes.of_string
+  let serializeMsg = Bytes.to_string
   let deserializeInput = VarDSerializedSerialization.deserializeInput
   let serializeOutput = VarDSerializedSerialization.serializeOutput
   let debug = P.debug
-  let debugRecv s (other, m) =
-    (match m with
-     | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
-        printf "[Term %d] Received %d entries from %d (currently have %d entries)\n"
-               s.currentTerm (List.length entries) other (List.length s.log)
-     | AppendEntriesReply (_, entries, success) ->
-        printf "[Term %d] Received AppendEntriesReply %d entries %B, commitIndex %d\n"
-               s.currentTerm (List.length entries) success s.commitIndex
-     | RequestVoteReply (t, votingFor) ->
-        printf "[Term %d] Received RequestVoteReply(%d, %B) from %d, have %d votes\n"
-               s.currentTerm t votingFor other (List.length s.votesReceived)
-     | _ -> ()); flush_all ()
+  let debugRecv (s : state) (name_msg : name * msg) =
+    match name_msg with
+    | (other, m) ->
+       (match m with
+        | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
+           printf "[Term %d] Received %d entries from %d (currently have %d entries)\n"
+                  s.currentTerm (List.length entries) other (List.length s.log)
+        | AppendEntriesReply (_, entries, success) ->
+           printf "[Term %d] Received AppendEntriesReply %d entries %B, commitIndex %d\n"
+                  s.currentTerm (List.length entries) success s.commitIndex
+        | RequestVoteReply (t, votingFor) ->
+           printf "[Term %d] Received RequestVoteReply(%d, %B) from %d, have %d votes\n"
+                  s.currentTerm t votingFor other (List.length s.votesReceived)
+        | _ -> ()); flush_all ()
   let debugSend s (other, m) =
     (match m with
      | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
