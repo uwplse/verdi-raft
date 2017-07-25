@@ -1,22 +1,22 @@
 namespace :vard do
 
   def vard_cluster
-    cluster = roles(:node).collect do |s|
-      "-node #{s.properties.name},#{s.properties.host}:#{fetch(:node_port)}"
+    cluster = roles(:node).collect do |node|
+      "-node #{node.properties.name},#{node.hostname}:#{fetch(:node_port)}"
     end
     cluster.join(' ')
   end
 
   def vardctl_cluster
-    cluster = roles(:node).collect do |s|
-      "#{s.properties.host}:#{fetch(:client_port)}"
+    cluster = roles(:node).collect do |node|
+      "#{node.hostname}:#{fetch(:client_port)}"
     end
     cluster.join(',')
   end
   
   desc 'start vard'
   task :start do
-    on roles(:node) do |server|
+    on roles(:node) do |node|
       execute '/sbin/start-stop-daemon',
         '--start',
         '--quiet',
@@ -26,7 +26,7 @@ namespace :vard do
         '--background',
         "--chdir #{current_path}/extraction/vard",
         '--startas /bin/bash',
-        "-- -c 'exec ./vard.native -me #{server.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
+        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
     end
   end
 
@@ -85,7 +85,7 @@ namespace :vard do
 
   desc 'get status remote'
   task :status_remote do
-    on roles(:node, name: '0') do |server|
+    on roles(:client) do
       execute 'python2.7',
         "#{current_path}/extraction/vard/bench/vardctl.py",
         "--cluster #{vardctl_cluster}",
@@ -102,7 +102,7 @@ namespace :vard do
 
   desc 'put key-value pair remote'
   task :put_remote do
-    on roles(:node, name: '0') do |server|
+    on roles(:client) do
       execute 'python2.7',
         "#{current_path}/extraction/vard/bench/vardctl.py",
         "--cluster #{vardctl_cluster}",
@@ -121,7 +121,7 @@ namespace :vard do
 
   desc 'get value for key remote'
   task :get_remote do
-    on roles(:node, name: '0') do |server|
+    on roles(:client) do
       execute 'python2.7',
         "#{current_path}/extraction/vard/bench/vardctl.py",
         "--cluster #{vardctl_cluster}",

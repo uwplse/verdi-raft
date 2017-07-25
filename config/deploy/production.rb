@@ -7,16 +7,16 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server "db01", roles: %w{node}, host: 'discoberry01.duckdns.org', name: "0"
-server "db02", roles: %w{node}, host: 'discoberry02.duckdns.org', name: "1"
-server "db03", roles: %w{node}, host: 'discoberry03.duckdns.org', name: "2"
-server "db04", roles: %w{node}, host: 'discoberry04.duckdns.org', name: "3"
-server "db05", roles: %w{node}, host: 'discoberry05.duckdns.org', name: "4"
-server "db06", roles: %w{node}, host: 'discoberry06.duckdns.org', name: "5"
-server "db07", roles: %w{node}, host: 'discoberry07.duckdns.org', name: "6"
-server "db08", roles: %w{node}, host: 'discoberry08.duckdns.org', name: "7"
-server "db09", roles: %w{node}, host: 'discoberry09.duckdns.org', name: "8"
-server "db10", roles: %w{node}, host: 'discoberry10.duckdns.org', name: "9"
+server 'discoberry01.duckdns.org', user: 'pi', name: '0', roles: %w{node client}
+server 'discoberry02.duckdns.org', user: 'pi', name: '1', roles: %w{node}
+server 'discoberry03.duckdns.org', user: 'pi', name: '2', roles: %w{node}
+server 'discoberry04.duckdns.org', user: 'pi', name: '3', roles: %w{node}
+server 'discoberry05.duckdns.org', user: 'pi', name: '4', roles: %w{node}
+server 'discoberry06.duckdns.org', user: 'pi', name: '5', roles: %w{node}
+server 'discoberry07.duckdns.org', user: 'pi', name: '6', roles: %w{node}
+server 'discoberry08.duckdns.org', user: 'pi', name: '7', roles: %w{node}
+server 'discoberry09.duckdns.org', user: 'pi', name: '8', roles: %w{node}
+server 'discoberry10.duckdns.org', user: 'pi', name: '9', roles: %w{node}
 
 # role-based syntax
 # ==================
