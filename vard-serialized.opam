@@ -9,22 +9,21 @@ license: "BSD"
 
 build: [
   [ "./configure" ]
-  [ make "-j%{jobs}%" ]
+  [ make "-j%{jobs}%" "vard" ]
 ]
-install: [ make "install" ]
-remove: [ "sh" "-c" "rm -rf '%{lib}%/coq/user-contrib/VerdiRaft'" ]
+build-test: [make "vard-test"]
+available: [ ocaml-version >= "4.02.3" ]
 depends: [
   "coq" {>= "8.6" & < "8.7~"}
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
+  "verdi-runtime" {= "dev"}
+  "ocamlbuild" {build}
+  "ounit" {test & >= "2.0.0"}
+  "cheerios" {= "dev"}
+  "verdi-cheerios" {= "dev"}
 ]
 
-tags: [
-  "category:Computer Science/Concurrent Systems and Protocols/Theory of concurrent systems"
-  "keyword:program verification"
-  "keyword:distributed algorithms"
-  "keyword:raft"
-]
 authors: [
   "James Wilcox <>"
   "Doug Woos <>"
