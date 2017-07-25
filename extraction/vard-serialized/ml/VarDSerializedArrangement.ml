@@ -1,6 +1,6 @@
 open Str
 open Printf
-open VarDRaft
+open VarDRaftSerialized
 open VarD
 open Util
 
@@ -8,7 +8,7 @@ module type IntValue = sig
   val v : int
 end
 
-module type VardParams = sig
+module type VardSerializedParams = sig
   val debug : bool
   val heartbeat_timeout : float
   val election_timeout : float
@@ -33,15 +33,15 @@ struct
   let num_nodes = I.v
 end
 
-module VarDArrangement (P : VardParams) = struct
-  type name = VarDRaft.name
+module VarDSerializedArrangement (P : VardSerializedParams) = struct
+  type name = VarDRaftSerialized.name
   type state = raft_data0
-  type input = VarDRaft.raft_input
-  type output = VarDRaft.raft_output
-  type msg = VarDRaft.msg
-  type res = (VarDRaft.raft_output list * raft_data0) * ((VarDRaft.name * VarDRaft.msg) list)
+  type input = VarDRaftSerialized.raft_input
+  type output = VarDRaftSerialized.raft_output
+  type msg = VarDRaftSerialized.msg
+  type res = (VarDRaftSerialized.raft_output list * raft_data0) * ((VarDRaftSerialized.name * VarDRaftSerialized.msg) list)
   type client_id = int
-  let systemName = "VarD"
+  let systemName = "VarDSerialized"
   let init x = Obj.magic (init_handlers0 vard_base_params vard_one_node_params (raft_params P.num_nodes) x)
   let reboot = Obj.magic (reboot vard_base_params (raft_params P.num_nodes))
   let handleIO (n : name) (inp : input) (st : state) = Obj.magic ((vard_raft_multi_params P.num_nodes).input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
@@ -52,10 +52,10 @@ module VarDArrangement (P : VardParams) = struct
     match s.type0 with
     | Leader -> P.heartbeat_timeout
     | _ -> P.election_timeout +. (Random.float 0.1)
-  let deserializeMsg = VarDSerialization.deserializeMsg
-  let serializeMsg = VarDSerialization.serializeMsg
-  let deserializeInput = VarDSerialization.deserializeInput
-  let serializeOutput = VarDSerialization.serializeOutput
+  let deserializeMsg = fun m -> m
+  let serializeMsg = fun m -> m
+  let deserializeInput = VarDSerializedSerialization.deserializeInput
+  let serializeOutput = VarDSerializedSerialization.serializeOutput
   let debug = P.debug
   let debugRecv s (other, m) =
     (match m with

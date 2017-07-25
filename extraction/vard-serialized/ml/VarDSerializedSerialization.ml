@@ -1,6 +1,6 @@
 open Str
 open Printf
-open VarDRaft
+open VarDRaftSerialized
 open VarD
 open Util
 
@@ -51,7 +51,3 @@ let deserializeInput inp client_id =
   | Some (request_id, input) ->
     Some (ClientRequest (client_id, request_id, Obj.magic input))
   | None -> None
-
-let deserializeMsg (s : string) : VarDRaft.msg = Marshal.from_string s 0
-
-let serializeMsg (msg : VarDRaft.msg) : string = Marshal.to_string msg []

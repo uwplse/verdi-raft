@@ -9,6 +9,7 @@ NAMESPACE_raft="VerdiRaft"
 NAMESPACE_raft_proofs="VerdiRaft"
 NAMESPACE_systems="VerdiRaft"
 NAMESPACE_extraction_vard_coq="VerdiRaft"
+NAMESPACE_extraction_vard_serialized_coq="VerdiRaft"
 CANARIES=("mathcomp.ssreflect.ssreflect" "Verdi Raft requires ssreflect in mathcomp to be installed" "StructTact.StructTactics" "Build StructTact before building Verdi Raft" "Verdi.Verdi" "Build Verdi before building Verdi Raft")
 Verdi_DIRS=(core lib systems extraction)
 Cheerios_DIRS=(core extraction)

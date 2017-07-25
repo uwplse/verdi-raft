@@ -3,25 +3,25 @@ PYTHON=python2.7
 OCAMLBUILD = ocamlbuild -tag safe_string -package verdi-runtime -I ml -cflag -g
 OCAMLBUILD_TEST = $(OCAMLBUILD) -package oUnit -I test
 
-VARDRAFT = ml/VarDRaft.ml ml/VarDRaft.mli
-VARD = ml/VarDArrangement.ml ml/vard.ml ml/VarDSerialization.ml
-VARD_TEST = test/OptsTest.ml test/VarDSerializationTest.ml test/VarDTest.ml
+VARDRAFTSERIALIZED = ml/VarDRaftSerialized.ml ml/VarDRaftSerialized.mli
+VARDSERIALIZED = ml/VarDSerializedArrangement.ml ml/vardserialized.ml ml/VarDSerializedSerialization.ml
+VARDSERIALIZED_TEST = test/OptsTest.ml test/VarDSerializedSerializationTest.ml test/VarDSerializedTest.ml
 
-default: vard.native
+default: vardserialized.native
 
-vard.native: $(VARD) $(VARDRAFT)
-	$(OCAMLBUILD) vard.native
+vardserialized.native: $(VARDSERIALIZED) $(VARDRAFTSERIALIZED)
+	$(OCAMLBUILD) vardserialized.native
 
-$(VARDRAFT):
-	+$(MAKE) -C ../.. extraction/vard/$@
+$(VARDRAFTSERIALIZED):
+	+$(MAKE) -C ../.. extraction/vard-serialized/$@
 
-VarDTest.native: $(VARD) $(VARDRAFT) $(VARD_TEST)
-	$(OCAMLBUILD_TEST) VarDTest.native
+VarDTest.native: $(VARDSERIALIZED) $(VARDRAFTSERIALIZED) $(VARDSERIALIZED_TEST)
+	$(OCAMLBUILD_TEST) VarDSerializedTest.native
 
-test-units: VarDTest.native
-	./VarDTest.native
+test-units: VarDSerializedTest.native
+	./VarDSerializedTest.native
 
-test-integration: vard.native test/integration.py
+test-integration: vardserialized.native test/integration.py
 	$(PYTHON) test/integration.py
 
 test: test-units test-integration
@@ -32,21 +32,21 @@ clean:
 clear-data:
 	./scripts/clear-vard.sh
 
-run: vard.native
+run: vardserialized.native
 	./scripts/start-tmux.sh
 
-debug: vard.native
+debug: vardserialized.native
 	./scripts/start-tmux-debug.sh
 
-bench-vard: vard.native
+bench-vard: vardserialized.native
 	./scripts/bench-vard.sh
 	./scripts/clear-vard.sh
 
-bench-etcd: vard.native
+bench-etcd: vardserialized.native
 	./scripts/bench-etcd.sh
 	./scripts/clear-etcd.sh
 
-.PHONY: default test-units test-integration test clean clear-data run debug bench-vard bench-etcd $(VARDRAFT)
+.PHONY: default test-units test-integration test clean clear-data run debug bench-vard bench-etcd $(VARDRAFTSERIALIZED)
 
-.NOTPARALLEL: vard.native VarDTest.native
-.NOTPARALLEL: $(VARDRAFT)
+.NOTPARALLEL: vardserialized.native VarDSerializedTest.native
+.NOTPARALLEL: $(VARDRAFTSERIALIZED)

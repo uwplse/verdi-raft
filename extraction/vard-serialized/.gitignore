@@ -1,6 +1,5 @@
-ml/VarDRaft.ml
-ml/VarDRaft.mli
+ml/VarDRaftSerialized.ml
+ml/VarDRaftSerialized.mli
 _build
-vard.native
-VarDTest.native
-lib
+vardserialized.native
+VarDSerializedTest.native

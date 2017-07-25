@@ -1,6 +1,5 @@
 Require Import Verdi.Verdi.
 Require Import Verdi.VarD.
-Require Import VerdiRaft.VarDRaft.
 Require Import VerdiRaft.VarDRaftSerialized.
 
 Require Import ExtrOcamlBasic.

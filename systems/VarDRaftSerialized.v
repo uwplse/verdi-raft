@@ -1,10 +1,6 @@
 Require Import Cheerios.Cheerios.
-
-Require Import VerdiRaft.VarDRaft.
-Require Import VerdiRaft.EndToEndLinearizability.
-
 Require Import VerdiCheerios.SerializedMsgParams.
-Require Import VerdiCheerios.SerializedMsgParamsCorrect.
+Require Import VerdiRaft.VarDRaft.
 
 Import VarD.
 Import DeserializerNotations.
