@@ -5,7 +5,7 @@ sys.path.append(os.path.realpath(os.path.join(
 from vard import Client
 import time
 
-VARD = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'vard.native')
+VARDSERIALIZED = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'vardserialized.native')
 
 class TestVard(unittest.TestCase):
     client = None
@@ -16,7 +16,7 @@ class TestVard(unittest.TestCase):
         self.processes = []
         for i in range(3):
             port = 8000 + i
-            args = [VARD,
+            args = [VARDSERIALIZED,
                     '-dbpath', 'db-%d' % i,
                     '-port', '%d' % port,
                     '-node', '0,localhost:9000',
