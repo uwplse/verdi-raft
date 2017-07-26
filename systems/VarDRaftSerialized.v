@@ -1,24 +1,17 @@
+Require Import Verdi.Verdi.
 Require Import Cheerios.Cheerios.
 Require Import VerdiCheerios.SerializedMsgParams.
+Require Import Verdi.VarD.
+Require Import VerdiRaft.Raft.
 Require Import VerdiRaft.VarDRaft.
 
-Import VarD.
 Import DeserializerNotations.
-Import Raft.
 
 Section Serialized.
   Variable n : nat.
 
   Notation "a +++ b" := (IOStreamWriter.append (fun _ => a) (fun _ => b))
-                        (at level 100, right associativity).
-
-  Definition base_params : Net.BaseParams :=
-    VarD.VarD.vard_base_params.
-  
-  Definition raft_params : Raft.RaftParams base_params :=
-    raft_params n.
-  
-  Definition entry := (@Raft.entry base_params raft_params).
+                          (at level 100, right associativity).
 
   Definition serialize_input (i : VarD.input) :=
     match i with
@@ -29,23 +22,22 @@ Section Serialized.
     | CAD k v => serialize x04 +++ serialize k +++ serialize v
     end.
 
-  Import ByteListReader.
   Definition deserialize_input : ByteListReader.t VarD.input :=
     tag <- deserialize;;
         match tag with
         | x00 => k <- deserialize;;
                    v <- deserialize;;
-                   ret (Put k v)
+                   ByteListReader.ret (Put k v)
         | x01 => Get <$> deserialize
         | x02 => Del <$> deserialize
         | x03 => k <- deserialize;;
                    opt <- deserialize;;
                    v <- deserialize;;
-                   ret (CAS k opt v)
+                   ByteListReader.ret (CAS k opt v)
         | x04 => k <- deserialize;;
                    v <- deserialize;;
-                   ret (CAD k v)
-        | _ => error
+                   ByteListReader.ret (CAD k v)
+        | _ => ByteListReader.error
         end.
 
   Lemma input_serialize_deserialize_id :
@@ -57,13 +49,14 @@ Section Serialized.
       repeat (cheerios_crush; simpl).
   Qed.
 
-  Instance input_Serializer : Serializer VarD.input.
-  Proof.
-    exact {| serialize := serialize_input;
-             deserialize := deserialize_input;
-             serialize_deserialize_id := input_serialize_deserialize_id |}.
-  Qed.
-  
+  Instance input_Serializer : Serializer VarD.input :=
+    {| serialize := serialize_input;
+       deserialize := deserialize_input;
+       serialize_deserialize_id := input_serialize_deserialize_id |}.
+
+  Instance raft_params : RaftParams VarD.vard_base_params :=
+    raft_params n.
+
   Definition entry_serialize (e : entry) := 
    serialize (Raft.eAt e) +++
               serialize (Raft.eClient e) +++
@@ -72,14 +65,14 @@ Section Serialized.
               serialize (Raft.eTerm e) +++
               serialize (Raft.eInput e).
 
-    Definition entry_deserialize : ByteListReader.t entry := 
+  Definition entry_deserialize : ByteListReader.t entry :=
     At <- deserialize;;
        Client <- deserialize;;
        Id <- deserialize;;
        Index <- deserialize;;
        Term <- deserialize;;
        Input <- deserialize;;
-       ret (Raft.mkEntry At Client Id Index Term Input).
+       ByteListReader.ret (Raft.mkEntry At Client Id Index Term Input).
 
   Lemma entry_serialize_deserialize_id :
     serialize_deserialize_id_spec entry_serialize entry_deserialize.
@@ -90,18 +83,12 @@ Section Serialized.
     destruct a;
       reflexivity.
   Qed.
-  
-  Instance entry_Serializer : Serializer entry.
-  Proof.
-    exact {| serialize := entry_serialize;
-             deserialize := entry_deserialize;
-             serialize_deserialize_id := entry_serialize_deserialize_id |}.
-  Qed.
 
-  (* msg *)
+  Instance entry_Serializer : Serializer entry :=
+    {| serialize := entry_serialize;
+       deserialize := entry_deserialize;
+       serialize_deserialize_id := entry_serialize_deserialize_id |}.
 
-  Definition msg := @Raft.msg base_params raft_params.
-  
   Definition msg_serialize (m : msg) : IOStreamWriter.t :=
     match m with
     | RequestVote t1 n i t2 =>
@@ -124,17 +111,17 @@ Section Serialized.
       serialize x03 +++ serialize t +++ serialize l +++ serialize b
     end.
 
-  Definition RequestVote_deserialize : ByteListReader.t msg :=
+    Definition RequestVote_deserialize : ByteListReader.t msg :=
     t1 <- deserialize;;
        n <- deserialize;;
        i <- deserialize;;
        t2 <- deserialize;;
-       ret (RequestVote t1 n i t2).
+       ByteListReader.ret (RequestVote t1 n i t2).
 
   Definition RequestVoteReply_deserialize : ByteListReader.t msg :=
     t <- deserialize;;
       b <- deserialize;;
-      ret (RequestVoteReply t b).
+      ByteListReader.ret (RequestVoteReply t b).
 
   Definition AppendEntries_deserialize : ByteListReader.t msg :=
     t1 <- deserialize;;
@@ -143,13 +130,13 @@ Section Serialized.
        t2 <- deserialize;;
        l <- deserialize;;
        i2 <- deserialize;;
-       ret (AppendEntries t1 n i1 t2 l i2).
+       ByteListReader.ret (AppendEntries t1 n i1 t2 l i2).
   
   Definition AppendEntriesReply_deserialize : ByteListReader.t msg :=
     t <- deserialize;;
       l <- deserialize;;
       b <- deserialize;;
-      ret (AppendEntriesReply t l b).
+      ByteListReader.ret (AppendEntriesReply t l b).
   
   Definition msg_deserialize :=
     tag <- deserialize;;
@@ -158,7 +145,7 @@ Section Serialized.
     | x01 => RequestVoteReply_deserialize
     | x02 => AppendEntries_deserialize
     | x03 => AppendEntriesReply_deserialize
-    | _ => error
+    | _ => ByteListReader.error
     end.
 
   Lemma msg_serialize_deserialize_id :
@@ -176,27 +163,21 @@ Section Serialized.
       cheerios_crush.
   Qed.
 
-  Instance msg_Serializer : Serializer msg.
-  Proof.
-    exact {| serialize := msg_serialize;
-             deserialize := msg_deserialize;
-             serialize_deserialize_id := msg_serialize_deserialize_id |}.
-  Qed.
+  Instance msg_Serializer : Serializer msg :=
+    {| serialize := msg_serialize;
+       deserialize := msg_deserialize;
+       serialize_deserialize_id := msg_serialize_deserialize_id |}.
 
-  Definition orig_base_params := vard_raft_base_params n.
-  Definition orig_multi_params := vard_raft_multi_params n.
+  Definition orig_base_params := base_params.
+  Definition orig_multi_params := multi_params.
+  Definition orig_failure_params := failure_params.
 
   Definition transformed_base_params :=
     @serialized_base_params orig_base_params.
 
   Definition transformed_multi_params :=
-    @serialized_multi_params orig_base_params
-                             orig_multi_params
-                             msg_Serializer.
+    @serialized_multi_params orig_base_params orig_multi_params msg_Serializer.
 
   Definition transformed_failure_params :=
-    @serialized_failure_params orig_base_params
-                               orig_multi_params
-                               (vard_raft_failure_params n)
-                               msg_Serializer.
+    @serialized_failure_params orig_base_params orig_multi_params orig_failure_params msg_Serializer.
 End Serialized.
