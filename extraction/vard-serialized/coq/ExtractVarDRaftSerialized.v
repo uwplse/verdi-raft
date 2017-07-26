@@ -20,4 +20,7 @@ Extract Inlined Constant nat_serialize => "(fun i -> Serializer_primitives.putIn
 
 Extract Inlined Constant nat_deserialize => "(Serializer_primitives.map Int32.to_int Serializer_primitives.getInt)".
 
+Extract Inlined Constant ascii_serialize => "Serializer_primitives.putByte".
+Extract Inlined Constant ascii_deserialize => "Serializer_primitives.getByte".
+
 Extraction "extraction/vard-serialized/ml/VarDRaftSerialized.ml" seq transformed_base_params transformed_multi_params transformed_failure_params.
