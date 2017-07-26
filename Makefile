@@ -1,11 +1,14 @@
 PYTHON=python2.7
-COQVERSION := $(shell coqc --version|egrep "version (8\\.5|8\\.6|trunk)")
 
-ifeq "$(COQVERSION)" ""
-$(error "Verdi Raft is only compatible with Coq version 8.6")
+# sets COQVERSION
+include Makefile.detect-coq-version
+
+ifeq (,$(filter $(COQVERSION),8.6 8.7 trunk))
+$(error "Verdi Raft is only compatible with Coq version 8.6 or later")
 endif
 
-COQPROJECT_EXISTS=$(wildcard _CoqProject)
+COQPROJECT_EXISTS := $(wildcard _CoqProject)
+
 ifeq "$(COQPROJECT_EXISTS)" ""
 $(error "Run ./configure before running make")
 endif
@@ -23,8 +26,7 @@ default: Makefile.coq
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
 
-checkproofs: Makefile.coq
-	$(MAKE) -f Makefile.coq quick
+checkproofs: quick
 	$(MAKE) -f Makefile.coq checkproofs
 
 install: Makefile.coq
