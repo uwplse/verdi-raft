@@ -37,7 +37,7 @@ let _ =
          }
   else
     let module VarDSerialized =
-      Shim.Shim(VarDSerializedArrangement.VarDArrangement(VarDSerializedArrangement.BenchParams(NumNodes)))
+      Shim.Shim(VarDSerializedArrangement.VarDSerializedArrangement(VarDSerializedArrangement.BenchParams(NumNodes)))
     in
     let open VarDSerialized in
     main { cluster = !cluster

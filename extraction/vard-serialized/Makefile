@@ -10,6 +10,7 @@ VARDSERIALIZED_TEST = test/OptsTest.ml test/VarDSerializedSerializationTest.ml t
 default: vardserialized.native
 
 vardserialized.native: $(VARDSERIALIZED) $(VARDRAFTSERIALIZED)
+	perl scripts/remove_module.pl ml/VarDRaftSerialized
 	$(OCAMLBUILD) vardserialized.native
 
 $(VARDRAFTSERIALIZED):
