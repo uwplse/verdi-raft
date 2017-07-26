@@ -42,10 +42,8 @@ module VarDSerializedArrangement (P : VardSerializedParams) = struct
   type res = (output list * state) * ((name * msg) list)
   type client_id = int
   let systemName = "VarDSerialized"
-  let init x = Obj.magic (init_handlers0 (transformed_base_params P.num_nodes)
-                                         vard_one_node_params (raft_params P.num_nodes) x)
-  let reboot = Obj.magic (reboot0 (transformed_base_params P.num_nodes)
-                                  (raft_params P.num_nodes))
+  let init x = Obj.magic ((transformed_multi_params P.num_nodes).init_handlers)
+  let reboot = Obj.magic (transformed_failure_params P.num_nodes)
   let handleIO (n : name) (inp : input) (st : state) = Obj.magic ((transformed_multi_params P.num_nodes).input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
   let handleNet (n : name) (src: name) (m : msg) (st : state)  = Obj.magic ((transformed_multi_params P.num_nodes).net_handlers (Obj.magic n) (Obj.magic src) (Obj.magic m) (Obj.magic st))
   let handleTimeout (me : name) (st : state) =
