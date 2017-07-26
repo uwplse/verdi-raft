@@ -6,5 +6,5 @@ let () =
     ("VarD" >:::
 	[
           OptsTest.tests;
-          VarDSerializationTest.tests
+          VarDSerializedSerializationTest.tests
 	])
