@@ -40,8 +40,8 @@ server 'discoberry10.duckdns.org', user: 'pi', name: '9', roles: %w{node}
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-set :node_port, 5000
-set :client_port, 4000
+set :node_port, 7000
+set :client_port, 6000
 set :make_jobs, 2
 
 # Custom SSH Options
