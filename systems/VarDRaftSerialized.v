@@ -7,52 +7,52 @@ Require Import VerdiRaft.VarDRaft.
 
 Import DeserializerNotations.
 
+Notation "a +++ b" := (IOStreamWriter.append (fun _ => a) (fun _ => b))
+                      (at level 100, right associativity).
+
+Definition serialize_input (i : VarD.input) :=
+  match i with
+  | Put k v => serialize x00 +++ serialize k +++ serialize v
+  | Get k => serialize x01 +++ serialize k
+  | Del k => serialize x02 +++ serialize k
+  | CAS k opt v => serialize x03 +++ serialize k +++ serialize opt +++ serialize v
+  | CAD k v => serialize x04 +++ serialize k +++ serialize v
+  end.
+
+Definition deserialize_input : ByteListReader.t VarD.input :=
+  tag <- deserialize;;
+      match tag with
+      | x00 => k <- deserialize;;
+                 v <- deserialize;;
+                 ByteListReader.ret (Put k v)
+      | x01 => Get <$> deserialize
+      | x02 => Del <$> deserialize
+      | x03 => k <- deserialize;;
+                 opt <- deserialize;;
+                 v <- deserialize;;
+                 ByteListReader.ret (CAS k opt v)
+      | x04 => k <- deserialize;;
+                 v <- deserialize;;
+                 ByteListReader.ret (CAD k v)
+      | _ => ByteListReader.error
+      end.
+
+Lemma input_serialize_deserialize_id :
+  serialize_deserialize_id_spec serialize_input deserialize_input.
+Proof.
+  intros.
+  unfold serialize_input, deserialize_input.
+  destruct a;
+    repeat (cheerios_crush; simpl).
+Qed.
+
+Instance input_Serializer : Serializer VarD.input :=
+  {| serialize := serialize_input;
+     deserialize := deserialize_input;
+     serialize_deserialize_id := input_serialize_deserialize_id |}.
+
 Section Serialized.
   Variable n : nat.
-
-  Notation "a +++ b" := (IOStreamWriter.append (fun _ => a) (fun _ => b))
-                          (at level 100, right associativity).
-
-  Definition serialize_input (i : VarD.input) :=
-    match i with
-    | Put k v => serialize x00 +++ serialize k +++ serialize v
-    | Get k => serialize x01 +++ serialize k
-    | Del k => serialize x02 +++ serialize k
-    | CAS k opt v => serialize x03 +++ serialize k +++ serialize opt +++ serialize v
-    | CAD k v => serialize x04 +++ serialize k +++ serialize v
-    end.
-
-  Definition deserialize_input : ByteListReader.t VarD.input :=
-    tag <- deserialize;;
-        match tag with
-        | x00 => k <- deserialize;;
-                   v <- deserialize;;
-                   ByteListReader.ret (Put k v)
-        | x01 => Get <$> deserialize
-        | x02 => Del <$> deserialize
-        | x03 => k <- deserialize;;
-                   opt <- deserialize;;
-                   v <- deserialize;;
-                   ByteListReader.ret (CAS k opt v)
-        | x04 => k <- deserialize;;
-                   v <- deserialize;;
-                   ByteListReader.ret (CAD k v)
-        | _ => ByteListReader.error
-        end.
-
-  Lemma input_serialize_deserialize_id :
-    serialize_deserialize_id_spec serialize_input deserialize_input.
-  Proof.
-    intros.
-    unfold serialize_input, deserialize_input.
-    destruct a;
-      repeat (cheerios_crush; simpl).
-  Qed.
-
-  Instance input_Serializer : Serializer VarD.input :=
-    {| serialize := serialize_input;
-       deserialize := deserialize_input;
-       serialize_deserialize_id := input_serialize_deserialize_id |}.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
     raft_params n.
@@ -111,7 +111,7 @@ Section Serialized.
       serialize x03 +++ serialize t +++ serialize l +++ serialize b
     end.
 
-    Definition RequestVote_deserialize : ByteListReader.t msg :=
+  Definition RequestVote_deserialize : ByteListReader.t msg :=
     t1 <- deserialize;;
        n <- deserialize;;
        i <- deserialize;;
