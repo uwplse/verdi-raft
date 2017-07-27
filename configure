@@ -3,7 +3,7 @@
 ## Configures and calls coqproject.sh (https://github.com/dwoos/coqproject)
 
 ## Configuration options for coqproject.sh
-DEPS=(StructTact Verdi Cheerios VerdiCheerios)
+DEPS=(StructTact Verdi Cheerios VerdiCheerios VerdiRuntime)
 DIRS=(raft raft-proofs systems extraction/vard/coq extraction/vard-serialized/coq)
 NAMESPACE_raft="VerdiRaft"
 NAMESPACE_raft_proofs="VerdiRaft"

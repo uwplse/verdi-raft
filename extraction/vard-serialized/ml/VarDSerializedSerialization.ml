@@ -4,7 +4,7 @@ open VarDRaftSerialized
 open VarD
 open Util
 
-let serializeOutput out =
+let outputToString out =
   match (Obj.magic out) with
   | NotLeader (client_id, request_id) ->
     (client_id, sprintf "NotLeader %s" (string_of_int request_id))
@@ -29,7 +29,12 @@ let serializeOutput out =
                              (string_of_int request_id)
                              (string_of_char_list k))
 
-let deserializeInp i =
+let serializeOutput out =
+  let (c, s) = outputToString out in
+  (c, Bytes.of_string s)
+
+let deserializeInp buf =
+  let i = Bytes.to_string buf in
   let inp = String.trim i in
   let r = regexp "\\([0-9]+\\) \\([A-Z]+\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\)[^/A-za-z0-9]*" in
   if string_match r inp 0 then

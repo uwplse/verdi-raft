@@ -52,8 +52,8 @@ module VarDSerializedArrangement (P : VardSerializedParams) = struct
     match s.type0 with
     | Leader -> P.heartbeat_timeout
     | _ -> P.election_timeout +. (Random.float 0.1)
-  let deserializeMsg = Bytes.of_string
-  let serializeMsg = Bytes.to_string
+  let deserializeMsg = fun a -> a
+  let serializeMsg = fun a -> a
   let deserializeInput = VarDSerializedSerialization.deserializeInput
   let serializeOutput = VarDSerializedSerialization.serializeOutput
   let debug = P.debug
