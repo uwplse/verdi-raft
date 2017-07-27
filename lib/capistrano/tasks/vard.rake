@@ -14,7 +14,7 @@ namespace :vard do
     cluster.join(',')
   end
   
-  desc 'start vard'
+  desc 'start vard-serialized'
   task :start do
     on roles(:node) do |node|
       execute '/sbin/start-stop-daemon',
@@ -22,30 +22,30 @@ namespace :vard do
         '--quiet',
         '--oknodo',
         '--make-pidfile',
-        "--pidfile #{current_path}/extraction/vard/tmp/vard.pid",
+        "--pidfile #{current_path}/extraction/vard-serialized/tmp/vard-serialized.pid",
         '--background',
-        "--chdir #{current_path}/extraction/vard",
+        "--chdir #{current_path}/extraction/vard-serialized",
         '--startas /bin/bash',
-        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
+        "-- -c 'exec ./vardserialized.native -me #{node.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard-serialized/tmp #{vard-serialized_cluster} > log/vard-serialized.log 2>&1'"
     end
   end
 
-  desc 'stop vard'
+  desc 'stop vard-serialized'
   task :stop do
     on roles(:node) do
       execute '/sbin/start-stop-daemon', 
         '--stop',
         '--oknodo',
-        "--pidfile #{current_path}/extraction/vard/tmp/vard.pid"
+        "--pidfile #{current_path}/extraction/vard/tmp/vard-serialized.pid"
     end
   end
 
-  desc 'tail vard log'
+  desc 'tail vard-serialized log'
   task :tail_log do
     on roles(:node) do
       execute :tail,
         '-n 20',
-        "#{shared_path}/extraction/vard/log/vard.log"
+        "#{shared_path}/extraction/vard-serialized/log/vard-serialized.log"
     end
   end
 
@@ -54,7 +54,7 @@ namespace :vard do
     on roles(:node) do
       execute :truncate,
         '-s 0',
-        "#{shared_path}/extraction/vard/log/vard.log"
+        "#{shared_path}/extraction/vard/log/vard-serialized.log"
     end
   end
 
@@ -63,7 +63,7 @@ namespace :vard do
     on roles(:node) do
       execute :rm,
         '-f',
-        "#{shared_path}/extraction/vard/tmp/clog.bin"
+        "#{shared_path}/extraction/vard-serialized/tmp/clog.bin"
     end
   end
 
