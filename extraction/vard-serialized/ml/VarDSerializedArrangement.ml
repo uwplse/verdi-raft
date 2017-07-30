@@ -58,14 +58,31 @@ module VarDSerializedArrangement (P : VardSerializedParams) = struct
   let serializeOutput = VarDSerializedSerialization.serializeOutput
   let debug = P.debug
   let debugRecv (s : state) (other, m) =
-    (* todo: reintroduce actual useful debug messages *)
-    printf "[Term %d] Received message from %d" s.currentTerm other;
+    (match Serializer_primitives.deserialize_top (msg_Serializer P.num_nodes) (msg_Serializer P.num_nodes).deserialize m with
+    | Some (AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex)) ->
+      printf "[Term %d] Received %d entries from %d (currently have %d entries)\n"
+        s.currentTerm (List.length entries) other (List.length s.log)
+    | Some (AppendEntriesReply (_, entries, success)) ->
+      printf "[Term %d] Received AppendEntriesReply %d entries %B, commitIndex %d\n"
+        s.currentTerm (List.length entries) success s.commitIndex
+    | Some (RequestVoteReply (t, votingFor)) ->
+      printf "[Term %d] Received RequestVoteReply(%d, %B) from %d, have %d votes\n"
+        s.currentTerm t votingFor other (List.length s.votesReceived)
+    | Some _ -> ()
+    | None -> printf "[Term %d] Received UNDESERIALIZABLE message from %d\n" s.currentTerm other);
     flush_all ()
-
   let debugSend s (other, m) =
-    printf "[Term %d] Sending to %d" s.currentTerm other;
+    (match Serializer_primitives.deserialize_top (msg_Serializer P.num_nodes) (msg_Serializer P.num_nodes).deserialize m with
+    | Some (AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex)) ->
+      printf "[Term %d] Sending %d entries to %d (currently have %d entries), commitIndex=%d\n"
+        s.currentTerm (List.length entries) other (List.length s.log) commitIndex
+    | Some (RequestVote _) ->
+         printf "[Term %d] Sending RequestVote to %d, have %d votes\n"
+           s.currentTerm other (List.length s.votesReceived)
+    | Some _ -> ()
+    | None -> printf "[Term %d] Sending UNDESERIALIZABLE message to %d\n" s.currentTerm other);
     flush_all ()
-    let debugTimeout (s : state) = ()
+  let debugTimeout (s : state) = ()
   let debugInput s inp = ()
   let createClientId () =
     let upper_bound = 1073741823 in
