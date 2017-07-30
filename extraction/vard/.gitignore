@@ -3,5 +3,4 @@ ml/VarDRaft.mli
 _build
 vard.native
 VarDTest.native
-lib
 log
