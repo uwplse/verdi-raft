@@ -17,7 +17,7 @@ set :deploy_to, "/home/pi/lib/verdi-raft-serialized"
 # You can configure the Airbrussh format using :format_options.
 # These are the defaults.
 # set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
-set :format_options, command_output: true, log_file: "extraction/vard/log/capistrano.log", color: :auto, truncate: false
+set :format_options, command_output: true, log_file: "extraction/vard-serialized/log/capistrano.log", color: :auto, truncate: false
 
 # Default value for :pty is false
 # set :pty, true

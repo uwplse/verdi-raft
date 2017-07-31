@@ -17,8 +17,10 @@ Require Import Cheerios.Cheerios.
 Require Import Cheerios.ExtrCheerios.
 
 Extract Inlined Constant nat_serialize => "(fun i -> Serializer_primitives.putInt (Int32.of_int i))".
-
 Extract Inlined Constant nat_deserialize => "(Serializer_primitives.map Int32.to_int Serializer_primitives.getInt)".
+
+Extract Inlined Constant fin_serialize => "(fun _ i -> Serializer_primitives.putInt (Int32.of_int i))".
+Extract Inlined Constant fin_deserialize => "(fun _ -> Serializer_primitives.map Int32.to_int Serializer_primitives.getInt)".
 
 Extract Inlined Constant ascii_serialize => "Serializer_primitives.putByte".
 Extract Inlined Constant ascii_deserialize => "Serializer_primitives.getByte".
