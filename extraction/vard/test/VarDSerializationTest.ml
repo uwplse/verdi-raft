@@ -5,12 +5,12 @@ open Util
 let tear_down () text_ctxt = ()
 
 let test_serialize_output_not_leader text_ctxt =
-  assert_equal (2, "NotLeader 15")
+  assert_equal (2, Bytes.of_string "NotLeader 15")
     (VarDSerialization.serializeOutput (VarDRaft.NotLeader (2, 15)))
 
 let test_serialize_output_client_response test_ctxt =
   let o = VarDRaft.Response (char_list_of_string "awesome", None, None) in
-  assert_equal (3, "Response 34 awesome - -")
+  assert_equal (3, Bytes.of_string "Response 34 awesome - -")
     (VarDSerialization.serializeOutput (VarDRaft.ClientResponse (3, 34, (Obj.magic o))))
   
 let test_list =
