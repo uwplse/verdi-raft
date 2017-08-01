@@ -11,6 +11,6 @@ Require Import Verdi.ExtrOcamlNatIntExt.
 
 Require Import Verdi.ExtrOcamlBool.
 Require Import Verdi.ExtrOcamlList.
-Require Import Verdi.ExtrOcamlFin.
+Require Import Verdi.ExtrOcamlFinInt.
 
 Extraction "extraction/vard/ml/VarDRaft.ml" seq vard_raft_base_params vard_raft_multi_params vard_raft_failure_params.
