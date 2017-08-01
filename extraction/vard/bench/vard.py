@@ -2,6 +2,7 @@ import socket
 import re
 import uuid
 from select import select
+from struct import pack, unpack
 
 def poll(sock, timeout):
     return sock in select([sock], [], [], timeout)[0]
@@ -47,8 +48,13 @@ class Client(object):
         return str(arg)
 
     def send_command(self, cmd, arg1=None, arg2=None, arg3=None):
-        self.sock.send(str(self.request_id) + ' ' + cmd + ' ' + ' '.join(map(self.serialize, (arg1, arg2, arg3))) + '\n')
-        self.request_id += 1
+        msg = str(self.request_id) + ' ' + cmd + ' ' + ' '.join(map(self.serialize, (arg1, arg2, arg3)))
+        n = self.sock.send(pack("<I", len(msg)))
+        if n < 4:
+            raise SendError
+        else:
+            self.sock.send(msg)
+            self.request_id += 1
 
     def parse_response(self, data):
         if data.startswith('NotLeader'):
@@ -61,10 +67,15 @@ class Client(object):
             raise e
         
     def process_response(self):
-        while True:
-            data = self.sock.recv(256).strip()
-            if data != '':
-                return self.parse_response(data)
+        len_bytes = self.sock.recv(4)
+        if len_bytes == '':
+            raise ReceiveError
+        else:
+            len = unpack("<I", len_bytes)[0]
+            while True:
+                data = self.sock.recv(len).strip()
+                if data != '':
+                    return self.parse_response(data)
 
     def get_responses(self, timeout):
         if poll(self.sock, timeout):
