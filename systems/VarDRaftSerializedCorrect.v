@@ -13,8 +13,6 @@ Require Import VerdiCheerios.SerializedMsgParamsCorrect.
 
 Require Import VerdiRaft.VarDRaftSerialized.
 
-Require Import mathcomp.ssreflect.ssreflect.
-
 Section SerializedCorrect.
   Variable n : nat.
 
@@ -35,57 +33,46 @@ Section SerializedCorrect.
       input_correct tr ->
       input_correct (filterMap pt_trace_remove_empty_out tr).
   Proof.
-    elim => //=.
-    case => nm; case.
-    - move => i tr IH H_inp => /=.
-      have H_inp': input_correct tr.
-      move => client id i0 i1 h h' H_in H_in'.
-        by eapply H_inp; right; eauto.
-        apply IH in H_inp'.
-        move => client id i0 i1 h h' H_in H_in'.
-        case: H_in => H_in; case: H_in' => H_in'.
-      * by find_injection; find_injection.
+    induction tr; simpl; intro H_inp; auto.
+    destruct a, s; simpl.
+    - assert (H_inp': input_correct tr).
+        intros client id i0 i1 h h' H_in H_in'.
+        eapply H_inp; right; eauto.
+      concludes.
+      intros client id i0 i1 h h' H_in H_in'.
+      simpl in *.
+      break_or_hyp; break_or_hyp.
+      * find_injection; find_injection; auto.
       * find_injection.
-        rewrite -/(In _ _) in H_in'.
-        eapply H_inp; eauto; first by left; eauto.
-        right.
-        apply In_filterMap in H_in'.
-        break_exists.
-        break_and.
-        destruct x.
-        move: H0.
-        destruct s => //=; last by destruct l => //; find_injection.
-        case => H_eq H_eq'; subst.
-          by eauto.
+        eapply H_inp.
+        + right.
+          find_apply_lem_hyp In_filterMap.
+          break_exists_name e.
+          break_and.
+          destruct e, s; simpl in *; [ find_injection; eauto | destruct l; congruence ].
+        + left; eauto.
       * find_injection.
-        rewrite -/(In _ _) in H_in.
-        eapply H_inp; eauto; last by left; eauto.
-        right.
-        apply In_filterMap in H_in.
-        break_exists.
-        break_and.
-        destruct x.
-        move: H0.
-        destruct s => //=; last by destruct l => //; find_injection.
-        case => H_eq H_eq'; subst.
-          by eauto.
-      * rewrite -/(In _ _) in H_in.
-        rewrite -/(In _ _) in H_in'.
-          by eapply H_inp'; eauto.     
-    - case => //=.
-      * move => l IH H_inp.
-        apply: IH.
-        move => client id i0 i1 h h' H_in H_in'.
-          by eapply H_inp; right; eauto.
-      * move => o l tr IH H_inp.
-        have H_inp': input_correct tr.
-        move => client id i0 i1 h h' H_in H_in'.
-          by eapply H_inp; right; eauto.
-          apply IH in H_inp'.
-          move => client id i0 i1 h h'.
-          case => // H_in.
-          case => // H_in'.
-            by eapply H_inp'; eauto.
+        eapply H_inp.
+        + left; eauto.
+        + right.
+          find_apply_lem_hyp In_filterMap.
+          break_exists_name e.
+          break_and.
+          destruct e, s; simpl in *; [ find_injection; eauto | destruct l; congruence ].
+       * eapply IHtr; eauto.
+     - destruct l.
+       * apply IHtr.
+         intros client id i0 i1 h h' H_in H_in'.
+         eapply H_inp; right; eauto.
+       * assert (H_inp': input_correct tr).
+           intros client id i0 i1 h h' H_in H_in'.
+           eapply H_inp; right; eauto.
+         concludes.
+         intros client id i0 i1 h h' H_in H_in'.
+         simpl in *.
+         break_or_hyp; [ find_inversion | idtac ].
+         break_or_hyp; [ find_inversion | idtac ].
+         eapply IHtr; eauto.
   Qed.
 
   Lemma correct_filterMap_ptr_trace_remove_empty_out_input_correct :
@@ -93,46 +80,42 @@ Section SerializedCorrect.
       input_correct (filterMap pt_trace_remove_empty_out tr) ->
       input_correct tr.
   Proof.
-    elim => //=.
-    case => nm [i|o] tr IH /=.
-    - move: IH.
-      set f := filterMap _ _.
-      move => IH H_inp.
-      have H_inp': input_correct f.
-      move => client id i0 i1 h h' H_in H_in'.
-        by eapply H_inp; right; eauto.
-        concludes.
-        move => client id i0 i1 h h' H_in H_in'.
-        case: H_in => H_in; case: H_in' => H_in'.
-      * by find_injection; find_injection.
+    induction tr; simpl; auto.
+    destruct a, s; simpl; intro H_inp.
+    - assert (H_inp': input_correct (filterMap pt_trace_remove_empty_out tr)).
+        intros client id i0 i1 h h' H_in H_in'.
+        eapply H_inp; right; eauto.
+      concludes.
+      intros client id i0 i1 h h' H_in H_in'.
+      simpl in *.
+      break_or_hyp; break_or_hyp.
+      * find_injection; find_injection; auto.
       * find_injection.
-        eapply H_inp; first by left.
+        eapply H_inp; [ idtac | left; eauto ].
         right.
         eapply filterMap_In; eauto.
-          by rewrite /=; eauto.
+        simpl; eauto.
       * find_injection.
-        eapply H_inp; last by left.
+        eapply H_inp; [ left; eauto | idtac ].
         right.
         eapply filterMap_In; eauto.
-          by rewrite /=; eauto.
-      * by eapply IH; eauto.
-    - case: o => [|o l] H_eq //=.
-      * move => client id i0 i1 h h'.
-        case => H_in //.
-        case => H_in' //.
+        simpl; eauto.
+      * eapply IHtr; eauto.
+    - destruct l.
+      * intros client id i0 i1 h h' H_in H_in'.
+        simpl in *.
+        break_or_hyp; [ find_inversion | idtac ].
+        break_or_hyp; [ find_inversion | idtac ].
+        eapply IHtr; eauto.
+      * assert (H_inp': input_correct (filterMap pt_trace_remove_empty_out tr)).
+          intros client id i0 i1 h h' H_in H_in'.
+          eapply H_inp; right; eauto.
         concludes.
-          by eapply IH; eauto.
-      * move: IH H_eq.
-        set f := filterMap _ _.
-        move => IH H_inp.
-        have H_inp': input_correct f.
-        move => client id i0 i1 h h' H_in H_in'.
-          by eapply H_inp; right; eauto.
-          concludes.
-          move => client id i0 i1 h h'.
-          case => H_in //.
-          case => H_in' //.
-            by eapply IH; eauto.
+        intros client id i0 i1 h h' H_in H_in'.
+        simpl in *.
+        break_or_hyp; [ find_inversion | idtac ].
+        break_or_hyp; [ find_inversion | idtac ].
+        eapply IHtr; eauto.
   Qed.
 
   Lemma input_correct_filterMap_ptr_trace_remove_empty_out :
@@ -141,31 +124,31 @@ Section SerializedCorrect.
       filterMap pt_trace_remove_empty_out tr = filterMap pt_trace_remove_empty_out tr' ->
       input_correct tr'.
   Proof.
-    move => tr tr' H_in H_eq.
+    intros tr tr' H_in H_eq.
     apply correct_filterMap_ptr_trace_remove_empty_out_input_correct.
-    rewrite -H_eq.
-    exact: correct_input_correct_filterMap_ptr_trace_remove_empty_out.
+    rewrite <- H_eq.
+    apply correct_input_correct_filterMap_ptr_trace_remove_empty_out; auto.
   Qed.
 
   Lemma get_input_tr_filterMap_ptr_trace_remove_empty_out :
     forall tr,
       get_input tr = get_input (filterMap pt_trace_remove_empty_out tr).
   Proof.
-    elim => //=.
-    case => nm [i|o] l IH.
-    - by rewrite /= -IH.
-    - by case: o.
+    induction tr; simpl; auto.
+    destruct a, s; simpl.
+    - rewrite IHtr; auto.
+    - destruct l; auto.
   Qed.
 
   Lemma get_output_tr_filterMap_ptr_trace_remove_empty_out :
     forall tr,
       get_output tr = get_output (filterMap pt_trace_remove_empty_out tr).
   Proof.
-    elim => //=.
-    case => nm [i|o] l IH /=.
-    - by rewrite IH.
-    - rewrite /= IH.
-        by case: o.
+    induction tr; simpl; auto.
+    destruct a, s; simpl.
+    - rewrite IHtr; auto.
+    - destruct l; auto.
+      rewrite IHtr; auto.
   Qed.
 
   Lemma exported_filterMap_pt_trace_remove_empty_out : 
@@ -174,22 +157,24 @@ Section SerializedCorrect.
       filterMap pt_trace_remove_empty_out tr = filterMap pt_trace_remove_empty_out tr' ->
       exported (get_input tr) (get_output tr) l tr1.
   Proof.
-    move => tr tr' l tr1 H_exp H_eq.
-    move: H_exp.
-    rewrite get_input_tr_filterMap_ptr_trace_remove_empty_out get_output_tr_filterMap_ptr_trace_remove_empty_out.
-    rewrite -H_eq.
-      by rewrite -get_input_tr_filterMap_ptr_trace_remove_empty_out -get_output_tr_filterMap_ptr_trace_remove_empty_out.
+    intros tr tr' l tr1 H_exp H_eq.
+    rewrite get_input_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
+    rewrite get_output_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
+    rewrite <- H_eq in H_exp.
+    rewrite <- get_input_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
+    rewrite <- get_output_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
+    auto.
   Qed.
 
   Lemma import_exported_filterMap_pt_trace_remove_empty_out : 
     forall tr,
       import tr = import (filterMap pt_trace_remove_empty_out tr).
   Proof.
-    elim => //=.
-    case => nm [i|o] l IH /=.
-    - by rewrite -IH.
-    - rewrite IH.
-        by case: o.
+    induction tr; simpl; auto.
+    destruct a, s; simpl.
+    - rewrite IHtr; auto.
+    - rewrite IHtr.
+      destruct l; auto.
   Qed.
 
   Lemma equivalent_filterMap_pt_trace_remove_empty_out :
@@ -198,9 +183,11 @@ Section SerializedCorrect.
       filterMap pt_trace_remove_empty_out tr = filterMap pt_trace_remove_empty_out tr' ->
       equivalent key (import tr) l.
   Proof.
-    move => tr tr' l H_equ H_eq.
-    rewrite import_exported_filterMap_pt_trace_remove_empty_out H_eq.
-      by rewrite -import_exported_filterMap_pt_trace_remove_empty_out.
+    intros tr tr' l H_equ H_eq.
+    rewrite import_exported_filterMap_pt_trace_remove_empty_out.
+    rewrite H_eq.
+    rewrite <- import_exported_filterMap_pt_trace_remove_empty_out.
+    auto.
   Qed.
 
   Theorem serialized_raft_linearizable :
@@ -212,16 +199,16 @@ Section SerializedCorrect.
         exported (get_input tr) (get_output tr) l tr1 /\
         step_1_star init st tr1.
   Proof using.
-    intros.
-    apply step_failure_deserialized_simulation_star in H0.
-    break_exists.
+    intros failed net tr H_inp H_step.
+    apply step_failure_deserialized_simulation_star in H_step.
+    break_exists_name tr'.
     break_and.
-    apply raft_linearizable in H0.
-    - break_exists.
+    find_apply_lem_hyp raft_linearizable.
+    - break_exists_name l.
+      break_exists_name tr1.
+      break_exists_name st.
       break_and.
-      exists x0.
-      exists x1.
-      exists x2.
+      exists l, tr1, st.
       split.
       * eapply equivalent_filterMap_pt_trace_remove_empty_out; eauto.
       * split; auto. eapply exported_filterMap_pt_trace_remove_empty_out; eauto.
