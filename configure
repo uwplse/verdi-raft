@@ -10,7 +10,7 @@ NAMESPACE_raft_proofs="VerdiRaft"
 NAMESPACE_systems="VerdiRaft"
 NAMESPACE_extraction_vard_coq="VerdiRaft"
 NAMESPACE_extraction_vard_serialized_coq="VerdiRaft"
-CANARIES=("StructTact.StructTactics" "Build StructTact before building Verdi Raft" "Verdi.Verdi" "Build Verdi before building Verdi Raft")
+CANARIES=("StructTact.StructTactics" "Build StructTact before building Verdi Raft" "Verdi.Verdi" "Build Verdi before building Verdi Raft" "Cheerios.Cheerios" "Build Cheerios before building Verdi Raft" "VerdiCheerios.SerializedMsgParams" "Build Verdi Cheerios before building Verdi Raft")
 Verdi_DIRS=(core lib systems extraction)
 Cheerios_DIRS=(core extraction)
 source script/coqproject.sh
