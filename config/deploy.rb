@@ -1,15 +1,15 @@
 # config valid only for current version of Capistrano
 lock "3.8.2"
 
-set :application, "vardserialized"
-set :repo_url, "git@github.com:uwplse/verdi-raft.git"
+set :application, 'vard'
+set :repo_url, 'git@github.com:uwplse/verdi-raft.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, "cheerios"
+set :branch, 'cheerios'
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/home/pi/lib/verdi-raft-serialized"
+set :deploy_to, '/home/pi/lib/verdi-raft'
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -17,7 +17,7 @@ set :deploy_to, "/home/pi/lib/verdi-raft-serialized"
 # You can configure the Airbrussh format using :format_options.
 # These are the defaults.
 # set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
-set :format_options, command_output: true, log_file: "extraction/vard-serialized/log/capistrano.log", color: :auto, truncate: false
+set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: false
 
 # Default value for :pty is false
 # set :pty, true
@@ -27,7 +27,11 @@ set :format_options, command_output: true, log_file: "extraction/vard-serialized
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
-append :linked_dirs, "extraction/vard-serialized/tmp", "extraction/vard-serialized/log"
+append :linked_dirs,
+  'extraction/vard/tmp',
+  'extraction/vard/log',
+  'extraction/vard-serialized/tmp',
+  'extraction/vard-serialized/log'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
