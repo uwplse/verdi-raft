@@ -214,4 +214,4 @@ Section VarDSerializedCorrect.
       * split; auto. eapply exported_filterMap_pt_trace_remove_empty_out; eauto.
     - eapply input_correct_filterMap_ptr_trace_remove_empty_out; eauto.
   Qed.
-End SerializedCorrect.
+End VarDSerializedCorrect.
