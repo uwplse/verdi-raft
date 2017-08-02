@@ -13,7 +13,7 @@ Require Import VerdiCheerios.SerializedMsgParamsCorrect.
 
 Require Import VerdiRaft.VarDRaftSerialized.
 
-Section SerializedCorrect.
+Section VarDSerializedCorrect.
   Variable n : nat.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
@@ -190,7 +190,7 @@ Section SerializedCorrect.
     auto.
   Qed.
 
-  Theorem serialized_raft_linearizable :
+  Theorem vard_raft_serialized_linearizable :
     forall failed net tr,
       input_correct tr ->
       step_failure_star step_failure_init (failed, net) tr ->
