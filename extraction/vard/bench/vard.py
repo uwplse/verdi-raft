@@ -7,6 +7,12 @@ from struct import pack, unpack
 def poll(sock, timeout):
     return sock in select([sock], [], [], timeout)[0]
 
+class SendError(Exception):
+    pass
+
+class ReceiveError(Exception):
+    pass
+
 class LeaderChanged(Exception):
     pass
 
@@ -71,19 +77,12 @@ class Client(object):
         if len_bytes == '':
             raise ReceiveError
         else:
-            len = unpack("<I", len_bytes)[0]
-            while True:
-                data = self.sock.recv(len).strip()
-                if data != '':
-                    return self.parse_response(data)
-
-    def get_responses(self, timeout):
-        if poll(self.sock, timeout):
-            data = ''
-            while poll(self.sock, 0):
-                data += self.sock.recv(1024)
-            return map(self.parse_response, data.strip().split('\n'))
-        return []
+            len_msg = unpack("<I", len_bytes)[0]
+            data = self.sock.recv(len_msg)
+            if data == '':
+                raise ReceiveError
+            else:
+                return self.parse_response(data)
 
     def get(self, k):
         self.send_command('GET', k)

@@ -2,9 +2,16 @@ import socket
 import re
 import uuid
 from select import select
+from struct import pack, unpack
 
 def poll(sock, timeout):
     return sock in select([sock], [], [], timeout)[0]
+
+class SendError(Exception):
+    pass
+
+class ReceiveError(Exception):
+    pass
 
 class LeaderChanged(Exception):
     pass
@@ -47,8 +54,13 @@ class Client(object):
         return str(arg)
 
     def send_command(self, cmd, arg1=None, arg2=None, arg3=None):
-        self.sock.send(str(self.request_id) + ' ' + cmd + ' ' + ' '.join(map(self.serialize, (arg1, arg2, arg3))) + '\n')
-        self.request_id += 1
+        msg = str(self.request_id) + ' ' + cmd + ' ' + ' '.join(map(self.serialize, (arg1, arg2, arg3)))
+        n = self.sock.send(pack("<I", len(msg)))
+        if n < 4:
+            raise SendError
+        else:
+            self.sock.send(msg)
+            self.request_id += 1
 
     def parse_response(self, data):
         if data.startswith('NotLeader'):
@@ -61,18 +73,16 @@ class Client(object):
             raise e
         
     def process_response(self):
-        while True:
-            data = self.sock.recv(256).strip()
-            if data != '':
+        len_bytes = self.sock.recv(4)
+        if len_bytes == '':
+            raise ReceiveError
+        else:
+            len_msg = unpack("<I", len_bytes)[0]
+            data = self.sock.recv(len_msg)
+            if data == '':
+                raise ReceiveError
+            else:
                 return self.parse_response(data)
-
-    def get_responses(self, timeout):
-        if poll(self.sock, timeout):
-            data = ''
-            while poll(self.sock, 0):
-                data += self.sock.recv(1024)
-            return map(self.parse_response, data.strip().split('\n'))
-        return []
 
     def get(self, k):
         self.send_command('GET', k)
