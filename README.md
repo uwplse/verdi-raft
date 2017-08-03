@@ -14,7 +14,7 @@ Definitions and proofs:
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
 - [`Cheerios`](https://github.com/uwplse/cheerios)
-- [`VerdiCheerios`](https://github.com/DistributedComponents/verdi-cheerios)
+- [`Verdi Cheerios`](https://github.com/DistributedComponents/verdi-cheerios)
 
 Executable `vard` key-value store:
 
