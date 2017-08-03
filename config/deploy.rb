@@ -6,7 +6,6 @@ set :repo_url, 'git@github.com:uwplse/verdi-raft.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, 'cheerios'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/home/pi/lib/verdi-raft'
