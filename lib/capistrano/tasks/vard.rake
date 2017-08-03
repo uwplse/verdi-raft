@@ -2,19 +2,19 @@ namespace :vard do
 
   def vard_cluster
     cluster = roles(:node).collect do |node|
-      "-node #{node.properties.name},#{node.hostname}:#{fetch(:node_port)}"
+      "-node #{node.properties.name},#{node.hostname}:#{fetch(:vard_node_port)}"
     end
     cluster.join(' ')
   end
 
   def vardctl_cluster
     cluster = roles(:node).collect do |node|
-      "#{node.hostname}:#{fetch(:client_port)}"
+      "#{node.hostname}:#{fetch(:vard_client_port)}"
     end
     cluster.join(',')
   end
-  
-  desc 'start vard-serialized'
+
+  desc 'start vard'
   task :start do
     on roles(:node) do |node|
       execute '/sbin/start-stop-daemon',
@@ -22,30 +22,30 @@ namespace :vard do
         '--quiet',
         '--oknodo',
         '--make-pidfile',
-        "--pidfile #{current_path}/extraction/vard-serialized/tmp/vard-serialized.pid",
+        "--pidfile #{current_path}/extraction/vard/tmp/vard.pid",
         '--background',
-        "--chdir #{current_path}/extraction/vard-serialized",
+        "--chdir #{current_path}/extraction/vard",
         '--startas /bin/bash',
-        "-- -c 'exec ./vardserialized.native -me #{node.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard-serialized/tmp #{vard_cluster} > log/vard-serialized.log 2>&1'"
+        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:vard_client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
     end
   end
 
-  desc 'stop vard-serialized'
+  desc 'stop vard'
   task :stop do
     on roles(:node) do
       execute '/sbin/start-stop-daemon', 
         '--stop',
         '--oknodo',
-        "--pidfile #{current_path}/extraction/vard-serialized/tmp/vard-serialized.pid"
+        "--pidfile #{current_path}/extraction/vard/tmp/vard.pid"
     end
   end
 
-  desc 'tail vard-serialized log'
+  desc 'tail vard log'
   task :tail_log do
     on roles(:node) do
       execute :tail,
         '-n 20',
-        "#{shared_path}/extraction/vard-serialized/log/vard-serialized.log"
+        "#{shared_path}/extraction/vard/log/vard.log"
     end
   end
 
@@ -54,7 +54,7 @@ namespace :vard do
     on roles(:node) do
       execute :truncate,
         '-s 0',
-        "#{shared_path}/extraction/vard-serialized/log/vard-serialized.log"
+        "#{shared_path}/extraction/vard/log/vard.log"
     end
   end
 
@@ -63,7 +63,7 @@ namespace :vard do
     on roles(:node) do
       execute :rm,
         '-f',
-        "#{shared_path}/extraction/vard-serialized/tmp/clog.bin"
+        "#{shared_path}/extraction/vard/tmp/clog.bin"
     end
   end
 
@@ -72,14 +72,14 @@ namespace :vard do
     on roles(:node) do
       execute :rm,
         '-f',
-        "#{shared_path}/extraction/vard-serialized/tmp/snapshot.bin"
+        "#{shared_path}/extraction/vard/tmp/snapshot.bin"
     end
   end
 
   desc 'get status'
   task :status do
     run_locally do
-      info %x(python2.7 extraction/vard-serialized/bench/vardctl.py --cluster #{vardctl_cluster} status)
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{vardctl_cluster} status)
     end
   end
 
@@ -87,7 +87,7 @@ namespace :vard do
   task :status_remote do
     on roles(:client) do
       execute 'python2.7',
-        "#{current_path}/extraction/vard-serialized/bench/vardctl.py",
+        "#{current_path}/extraction/vard/bench/vardctl.py",
         "--cluster #{vardctl_cluster}",
         'status'
     end
@@ -96,7 +96,7 @@ namespace :vard do
   desc 'put key-value pair'
   task :put do
     run_locally do
-      info %x(python2.7 extraction/vard-serialized/bench/vardctl.py --cluster #{vardctl_cluster} put #{ENV['KEY']} #{ENV['VALUE']})
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{vardctl_cluster} put #{ENV['KEY']} #{ENV['VALUE']})
     end
   end
 
@@ -104,7 +104,7 @@ namespace :vard do
   task :put_remote do
     on roles(:client) do
       execute 'python2.7',
-        "#{current_path}/extraction/vard-serialized/bench/vardctl.py",
+        "#{current_path}/extraction/vard/bench/vardctl.py",
         "--cluster #{vardctl_cluster}",
         'put',
         ENV['KEY'],
@@ -115,7 +115,7 @@ namespace :vard do
   desc 'get value for key'
   task :get do
     run_locally do
-      info %x(python2.7 extraction/vard-serialized/bench/vardctl.py --cluster #{vardctl_cluster} get #{ENV['KEY']})
+      info %x(python2.7 extraction/vard/bench/vardctl.py --cluster #{vardctl_cluster} get #{ENV['KEY']})
     end
   end
 
@@ -123,7 +123,7 @@ namespace :vard do
   task :get_remote do
     on roles(:client) do
       execute 'python2.7',
-        "#{current_path}/extraction/vard-serialized/bench/vardctl.py",
+        "#{current_path}/extraction/vard/bench/vardctl.py",
         "--cluster #{vardctl_cluster}",
         'get',
         ENV['KEY']
