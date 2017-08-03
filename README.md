@@ -13,12 +13,18 @@ Definitions and proofs:
 - [`Coq 8.6`](https://coq.inria.fr/coq-86)
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
+- [`Cheerios`](https://github.com/uwplse/cheerios)
+- [`VerdiCheerios`](https://github.com/DistributedComponents/verdi-cheerios)
 
 Executable `vard` key-value store:
 
 - [`OCaml 4.02.3`](https://ocaml.org/docs/install.html) (or later)
 - [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
+
+Executable `vard-serialized` key-value store with verified message serialization:
+
+- [`cheerios-runtime`](https://github.com/uwplse/cheerios)
 
 Client for `vard`:
 
@@ -41,14 +47,15 @@ We recommend installing the dependencies of Verdi Raft via
 ```
 opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-opam install verdi StructTact verdi-runtime ocamlbuild
+opam install verdi StructTact verdi-runtime ocamlbuild cheerios verdi-cheerios
 ```
 
 Then, run `./configure` in the Verdi Raft root directory.  This will check
 for the appropriate version of Coq and ensure all necessary
-Coq dependencies can be located. By default, `Verdi` and `StructTact`
-are assumed to be installed in Coq's `user-contrib` directory, but
-this can be overridden by setting the `Verdi_PATH` and `StructTact_PATH`
+Coq dependencies can be located. By default, `Verdi`, `StructTact`,
+`Cheerios`, and `VerdiCheerios` are assumed to be installed in Coq's
+`user-contrib` directory, but this can be overridden by setting the
+`Verdi_PATH`, `StructTact_PATH`, `Cheerios_PATH`, and `VerdiCheerios_PATH`
 environment variables.
 
 Finally, run `make` in the root directory. This will compile the Raft

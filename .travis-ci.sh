@@ -18,6 +18,9 @@ case $MODE in
   vard)
     opam pin add vard . --yes --verbose
     ;;
+  vard-serialized)
+    opam pin add vard-serialized . --yes --verbose
+    ;;
   *)
     opam pin add verdi-raft . --yes --verbose
     ;;

@@ -7,7 +7,8 @@ namespace :compilation do
         execute './configure'
         execute :make,
           "-j #{fetch(:make_jobs)}",
-          'vard'
+          'vard',
+          'vard-serialized'
       end
     end
   end
@@ -18,7 +19,8 @@ namespace :compilation do
       within release_path do
         execute :make,
           "-j #{fetch(:make_jobs)}",
-          'vard'
+          'vard',
+          'vard-serialized'
       end
     end
   end

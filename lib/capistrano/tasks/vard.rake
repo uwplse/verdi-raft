@@ -2,18 +2,18 @@ namespace :vard do
 
   def vard_cluster
     cluster = roles(:node).collect do |node|
-      "-node #{node.properties.name},#{node.hostname}:#{fetch(:node_port)}"
+      "-node #{node.properties.name},#{node.hostname}:#{fetch(:vard_node_port)}"
     end
     cluster.join(' ')
   end
 
   def vardctl_cluster
     cluster = roles(:node).collect do |node|
-      "#{node.hostname}:#{fetch(:client_port)}"
+      "#{node.hostname}:#{fetch(:vard_client_port)}"
     end
     cluster.join(',')
   end
-  
+
   desc 'start vard'
   task :start do
     on roles(:node) do |node|
@@ -26,7 +26,7 @@ namespace :vard do
         '--background',
         "--chdir #{current_path}/extraction/vard",
         '--startas /bin/bash',
-        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
+        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:vard_client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
     end
   end
 
