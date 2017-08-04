@@ -13,6 +13,22 @@ namespace :vard_serialized do
     end
     cluster.join(',')
   end
+
+  def vard_serialized_snapshot_path
+    "#{shared_path}/extraction/vard-serialized/tmp/snapshot.bin"
+  end
+
+  def vard_serialized_clog_path
+    "#{shared_path}/extraction/vard-serialized/tmp/clog.bin"
+  end
+
+  def vard_serialized_log_path
+    "#{shared_path}/extraction/vard-serialized/log/vard-serialized.log"
+  end
+
+  def vard_serialized_pidfile_path
+    "#{current_path}/extraction/vard-serialized/tmp/vard-serialized.pid"
+  end
   
   desc 'start vard-serialized'
   task :start do
@@ -22,7 +38,7 @@ namespace :vard_serialized do
         '--quiet',
         '--oknodo',
         '--make-pidfile',
-        "--pidfile #{current_path}/extraction/vard-serialized/tmp/vard-serialized.pid",
+        "--pidfile #{vard_serialized_pidfile_path}",
         '--background',
         "--chdir #{current_path}/extraction/vard-serialized",
         '--startas /bin/bash',
@@ -36,43 +52,44 @@ namespace :vard_serialized do
       execute '/sbin/start-stop-daemon', 
         '--stop',
         '--oknodo',
-        "--pidfile #{current_path}/extraction/vard-serialized/tmp/vard-serialized.pid"
+        "--pidfile #{vard_serialized_pidfile_path}"
     end
   end
 
   desc 'tail vard-serialized log'
   task :tail_log do
     on roles(:node) do
-      execute :tail,
-        '-n 20',
-        "#{shared_path}/extraction/vard-serialized/log/vard-serialized.log"
+      execute 'tail', '-n 20', vard_serialized_log_path
     end
   end
 
   desc 'truncate vard log'
   task :truncate_log do
     on roles(:node) do
-      execute :truncate,
-        '-s 0',
-        "#{shared_path}/extraction/vard-serialized/log/vard-serialized.log"
+      execute 'truncate', '-s 0', vard_serialized_log_path
     end
   end
 
   desc 'remove command log'
   task :remove_clog do
     on roles(:node) do
-      execute :rm,
-        '-f',
-        "#{shared_path}/extraction/vard-serialized/tmp/clog.bin"
+      execute 'rm', '-f', vard_serialized_clog_path
     end
   end
 
   desc 'remove snapshot'
   task :remove_snapshot do
     on roles(:node) do
-      execute :rm,
-        '-f',
-        "#{shared_path}/extraction/vard-serialized/tmp/snapshot.bin"
+      execute 'rm', '-f', vard_serialized_snapshot_path
+    end
+  end
+
+  desc 'clean out volatile files'
+  task :clean do
+    on roles(:node) do
+      execute 'rm', '-f', vard_serialized_clog_path
+      execute 'rm', '-f', vard_serialized_snapshot_path
+      execute 'truncate', '-s 0', vard_serialized_log_path
     end
   end
 

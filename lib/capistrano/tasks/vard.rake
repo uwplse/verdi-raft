@@ -14,6 +14,22 @@ namespace :vard do
     cluster.join(',')
   end
 
+  def vard_snapshot_path
+    "#{shared_path}/extraction/vard/tmp/snapshot.bin"
+  end
+
+  def vard_clog_path
+    "#{shared_path}/extraction/vard/tmp/clog.bin"
+  end
+
+  def vard_log_path
+    "#{shared_path}/extraction/vard/log/vard.log"
+  end
+
+  def vard_pidfile_path
+    "#{current_path}/extraction/vard/tmp/vard.pid"
+  end
+
   desc 'start vard'
   task :start do
     on roles(:node) do |node|
@@ -22,7 +38,7 @@ namespace :vard do
         '--quiet',
         '--oknodo',
         '--make-pidfile',
-        "--pidfile #{current_path}/extraction/vard/tmp/vard.pid",
+        "--pidfile #{vard_pidfile_path}",
         '--background',
         "--chdir #{current_path}/extraction/vard",
         '--startas /bin/bash',
@@ -36,43 +52,44 @@ namespace :vard do
       execute '/sbin/start-stop-daemon', 
         '--stop',
         '--oknodo',
-        "--pidfile #{current_path}/extraction/vard/tmp/vard.pid"
+        "--pidfile #{vard_pidfile_path}"
     end
   end
 
   desc 'tail vard log'
   task :tail_log do
     on roles(:node) do
-      execute :tail,
-        '-n 20',
-        "#{shared_path}/extraction/vard/log/vard.log"
+      execute 'tail', '-n 20', vard_log_path
     end
   end
 
   desc 'truncate vard log'
   task :truncate_log do
     on roles(:node) do
-      execute :truncate,
-        '-s 0',
-        "#{shared_path}/extraction/vard/log/vard.log"
+      execute 'truncate', '-s 0', vard_log_path
     end
   end
 
   desc 'remove command log'
   task :remove_clog do
     on roles(:node) do
-      execute :rm,
-        '-f',
-        "#{shared_path}/extraction/vard/tmp/clog.bin"
+      execute 'rm', '-f', vard_clog_path
     end
   end
 
   desc 'remove snapshot'
   task :remove_snapshot do
     on roles(:node) do
-      execute :rm,
-        '-f',
-        "#{shared_path}/extraction/vard/tmp/snapshot.bin"
+      execute 'rm', '-f', vard_snapshot_path
+    end
+  end
+
+  desc 'clean out volatile files'
+  task :clean do
+    on roles(:node) do
+      execute 'rm', '-f', vard_clog_path
+      execute 'rm', '-f', vard_snapshot_path
+      execute 'truncate', '-s 0', vard_log_path
     end
   end
 
