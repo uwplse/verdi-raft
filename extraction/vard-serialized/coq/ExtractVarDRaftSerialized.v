@@ -15,7 +15,7 @@ Require Import Verdi.ExtrOcamlBool.
 Require Import Verdi.ExtrOcamlList.
 Require Import Verdi.ExtrOcamlFinInt.
 
-Require Import Cheerios.ExtrOcamlCheerios.
+Require Import Cheerios.ExtrOcamlCheeriosBasic.
 Require Import Cheerios.ExtrOcamlCheeriosNatInt.
 Require Import Cheerios.ExtrOcamlCheeriosString.
 Require Import Cheerios.ExtrOcamlCheeriosFinInt.
