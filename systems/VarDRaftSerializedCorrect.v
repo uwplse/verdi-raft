@@ -28,10 +28,10 @@ Section VarDSerializedCorrect.
   Instance failure_params : FailureParams _ :=
     transformed_failure_params n.
 
-  Lemma correct_input_correct_filterMap_ptr_trace_remove_empty_out :
+  Lemma correct_input_correct_filterMap_trace_non_empty_out :
     forall tr,
       input_correct tr ->
-      input_correct (filterMap pt_trace_remove_empty_out tr).
+      input_correct (filterMap trace_non_empty_out tr).
   Proof.
     induction tr; simpl; intro H_inp; auto.
     destruct a, s; simpl.
@@ -75,14 +75,14 @@ Section VarDSerializedCorrect.
          eapply IHtr; eauto.
   Qed.
 
-  Lemma correct_filterMap_ptr_trace_remove_empty_out_input_correct :
+  Lemma correct_filterMap_trace_non_empty_out_input_correct :
     forall tr,
-      input_correct (filterMap pt_trace_remove_empty_out tr) ->
+      input_correct (filterMap trace_non_empty_out tr) ->
       input_correct tr.
   Proof.
     induction tr; simpl; auto.
     destruct a, s; simpl; intro H_inp.
-    - assert (H_inp': input_correct (filterMap pt_trace_remove_empty_out tr)).
+    - assert (H_inp': input_correct (filterMap trace_non_empty_out tr)).
         intros client id i0 i1 h h' H_in H_in'.
         eapply H_inp; right; eauto.
       concludes.
@@ -107,7 +107,7 @@ Section VarDSerializedCorrect.
         break_or_hyp; [ find_inversion | idtac ].
         break_or_hyp; [ find_inversion | idtac ].
         eapply IHtr; eauto.
-      * assert (H_inp': input_correct (filterMap pt_trace_remove_empty_out tr)).
+      * assert (H_inp': input_correct (filterMap trace_non_empty_out tr)).
           intros client id i0 i1 h h' H_in H_in'.
           eapply H_inp; right; eauto.
         concludes.
@@ -118,21 +118,21 @@ Section VarDSerializedCorrect.
         eapply IHtr; eauto.
   Qed.
 
-  Lemma input_correct_filterMap_ptr_trace_remove_empty_out :
+  Lemma input_correct_filterMap_trace_non_empty_out :
     forall tr tr',
       input_correct tr ->
-      filterMap pt_trace_remove_empty_out tr = filterMap pt_trace_remove_empty_out tr' ->
+      filterMap trace_non_empty_out tr = filterMap trace_non_empty_out tr' ->
       input_correct tr'.
   Proof.
     intros tr tr' H_in H_eq.
-    apply correct_filterMap_ptr_trace_remove_empty_out_input_correct.
+    apply correct_filterMap_trace_non_empty_out_input_correct.
     rewrite <- H_eq.
-    apply correct_input_correct_filterMap_ptr_trace_remove_empty_out; auto.
+    apply correct_input_correct_filterMap_trace_non_empty_out; auto.
   Qed.
 
-  Lemma get_input_tr_filterMap_ptr_trace_remove_empty_out :
+  Lemma get_input_tr_filterMap_trace_non_empty_out :
     forall tr,
-      get_input tr = get_input (filterMap pt_trace_remove_empty_out tr).
+      get_input tr = get_input (filterMap trace_non_empty_out tr).
   Proof.
     induction tr; simpl; auto.
     destruct a, s; simpl.
@@ -140,9 +140,9 @@ Section VarDSerializedCorrect.
     - destruct l; auto.
   Qed.
 
-  Lemma get_output_tr_filterMap_ptr_trace_remove_empty_out :
+  Lemma get_output_tr_filterMap_trace_non_empty_out :
     forall tr,
-      get_output tr = get_output (filterMap pt_trace_remove_empty_out tr).
+      get_output tr = get_output (filterMap trace_non_empty_out tr).
   Proof.
     induction tr; simpl; auto.
     destruct a, s; simpl.
@@ -151,24 +151,24 @@ Section VarDSerializedCorrect.
       rewrite IHtr; auto.
   Qed.
 
-  Lemma exported_filterMap_pt_trace_remove_empty_out : 
+  Lemma exported_filterMap_trace_non_empty_out : 
     forall tr tr' l tr1,
       exported (get_input tr') (get_output tr') l tr1 ->
-      filterMap pt_trace_remove_empty_out tr = filterMap pt_trace_remove_empty_out tr' ->
+      filterMap trace_non_empty_out tr = filterMap trace_non_empty_out tr' ->
       exported (get_input tr) (get_output tr) l tr1.
   Proof.
     intros tr tr' l tr1 H_exp H_eq.
-    rewrite get_input_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
-    rewrite get_output_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
+    rewrite get_input_tr_filterMap_trace_non_empty_out in H_exp.
+    rewrite get_output_tr_filterMap_trace_non_empty_out in H_exp.
     rewrite <- H_eq in H_exp.
-    rewrite <- get_input_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
-    rewrite <- get_output_tr_filterMap_ptr_trace_remove_empty_out in H_exp.
+    rewrite <- get_input_tr_filterMap_trace_non_empty_out in H_exp.
+    rewrite <- get_output_tr_filterMap_trace_non_empty_out in H_exp.
     auto.
   Qed.
 
-  Lemma import_exported_filterMap_pt_trace_remove_empty_out : 
+  Lemma import_exported_filterMap_trace_non_empty_out : 
     forall tr,
-      import tr = import (filterMap pt_trace_remove_empty_out tr).
+      import tr = import (filterMap trace_non_empty_out tr).
   Proof.
     induction tr; simpl; auto.
     destruct a, s; simpl.
@@ -177,16 +177,16 @@ Section VarDSerializedCorrect.
       destruct l; auto.
   Qed.
 
-  Lemma equivalent_filterMap_pt_trace_remove_empty_out :
+  Lemma equivalent_filterMap_trace_non_empty_out :
     forall tr tr' l,
       equivalent key (import tr') l ->
-      filterMap pt_trace_remove_empty_out tr = filterMap pt_trace_remove_empty_out tr' ->
+      filterMap trace_non_empty_out tr = filterMap trace_non_empty_out tr' ->
       equivalent key (import tr) l.
   Proof.
     intros tr tr' l H_equ H_eq.
-    rewrite import_exported_filterMap_pt_trace_remove_empty_out.
+    rewrite import_exported_filterMap_trace_non_empty_out.
     rewrite H_eq.
-    rewrite <- import_exported_filterMap_pt_trace_remove_empty_out.
+    rewrite <- import_exported_filterMap_trace_non_empty_out.
     auto.
   Qed.
 
@@ -210,8 +210,8 @@ Section VarDSerializedCorrect.
       break_and.
       exists l, tr1, st.
       split.
-      * eapply equivalent_filterMap_pt_trace_remove_empty_out; eauto.
-      * split; auto. eapply exported_filterMap_pt_trace_remove_empty_out; eauto.
-    - eapply input_correct_filterMap_ptr_trace_remove_empty_out; eauto.
+      * eapply equivalent_filterMap_trace_non_empty_out; eauto.
+      * split; auto. eapply exported_filterMap_trace_non_empty_out; eauto.
+    - eapply input_correct_filterMap_trace_non_empty_out; eauto.
   Qed.
 End VarDSerializedCorrect.
