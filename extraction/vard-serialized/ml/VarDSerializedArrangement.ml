@@ -4,9 +4,6 @@ open VarDRaftSerialized
 open VarD
 open Util
 
-type __ = Obj.t
-let __ = let rec f _ = Obj.repr f in Obj.repr f
-
 module type IntValue = sig
   val v : int
 end
@@ -61,7 +58,7 @@ module VarDSerializedArrangement (P : VardSerializedParams) = struct
   let serializeOutput = VarDSerializedSerialization.serializeOutput
   let debug = P.debug
   let debugRecv (s : state) (other, m) =
-    (match (Serializer_primitives.deserialize_top __) (Obj.magic (msg_Serializer P.num_nodes).deserialize) m with
+    (match Serializer_primitives.deserialize_top (Obj.magic (msg_Serializer P.num_nodes).deserialize) m with
     | Some (AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex)) ->
       printf "[Term %d] Received %d entries from %d (currently have %d entries)\n"
         s.currentTerm (List.length entries) other (List.length s.log)
@@ -75,7 +72,7 @@ module VarDSerializedArrangement (P : VardSerializedParams) = struct
     | None -> printf "[Term %d] Received UNDESERIALIZABLE message from %d\n" s.currentTerm other);
     flush_all ()
   let debugSend s (other, m) =
-    (match (Serializer_primitives.deserialize_top __) (Obj.magic (msg_Serializer P.num_nodes).deserialize) m with
+    (match Serializer_primitives.deserialize_top (Obj.magic (msg_Serializer P.num_nodes).deserialize) m with
     | Some (AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex)) ->
       printf "[Term %d] Sending %d entries to %d (currently have %d entries), commitIndex=%d\n"
         s.currentTerm (List.length entries) other (List.length s.log) commitIndex
