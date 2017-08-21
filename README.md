@@ -47,7 +47,7 @@ We recommend installing the dependencies of Verdi Raft via
 ```
 opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-opam install verdi StructTact verdi-runtime ocamlbuild cheerios verdi-cheerios
+opam install verdi StructTact verdi-runtime ocamlbuild cheerios verdi-cheerios cheerios-runtime
 ```
 
 Then, run `./configure` in the Verdi Raft root directory.  This will check

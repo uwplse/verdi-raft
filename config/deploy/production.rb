@@ -9,14 +9,14 @@
 
 server 'discoberry01.duckdns.org', user: 'pi', name: '0', roles: %w{node client}
 server 'discoberry02.duckdns.org', user: 'pi', name: '1', roles: %w{node}
-server 'discoberry03.duckdns.org', user: 'pi', name: '2', roles: %w{node}
-server 'discoberry04.duckdns.org', user: 'pi', name: '3', roles: %w{node}
-server 'discoberry05.duckdns.org', user: 'pi', name: '4', roles: %w{node}
-server 'discoberry06.duckdns.org', user: 'pi', name: '5', roles: %w{node}
-server 'discoberry07.duckdns.org', user: 'pi', name: '6', roles: %w{node}
-server 'discoberry08.duckdns.org', user: 'pi', name: '7', roles: %w{node}
-server 'discoberry09.duckdns.org', user: 'pi', name: '8', roles: %w{node}
-server 'discoberry10.duckdns.org', user: 'pi', name: '9', roles: %w{node}
+#server 'discoberry03.duckdns.org', user: 'pi', name: '2', roles: %w{node}
+#server 'discoberry04.duckdns.org', user: 'pi', name: '3', roles: %w{node}
+server 'discoberry05.duckdns.org', user: 'pi', name: '2', roles: %w{node}
+server 'discoberry06.duckdns.org', user: 'pi', name: '3', roles: %w{node}
+server 'discoberry07.duckdns.org', user: 'pi', name: '4', roles: %w{node}
+server 'discoberry08.duckdns.org', user: 'pi', name: '5', roles: %w{node}
+server 'discoberry09.duckdns.org', user: 'pi', name: '6', roles: %w{node}
+server 'discoberry10.duckdns.org', user: 'pi', name: '7', roles: %w{node}
 
 # role-based syntax
 # ==================
@@ -29,8 +29,6 @@ server 'discoberry10.duckdns.org', user: 'pi', name: '9', roles: %w{node}
 # role :app, %w{deploy@example.com}, my_property: :my_value
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
-
-
 
 # Configuration
 # =============
