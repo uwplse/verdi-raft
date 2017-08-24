@@ -7,16 +7,13 @@ Require Import VerdiRaft.VarDRaft.
 
 Import DeserializerNotations.
 
-Notation "a +++ b" := (IOStreamWriter.append (fun _ => a) (fun _ => b))
-                      (at level 100, right associativity).
-
 Definition serialize_input (i : VarD.input) :=
   match i with
-  | Put k v => serialize x00 +++ serialize k +++ serialize v
-  | Get k => serialize x01 +++ serialize k
-  | Del k => serialize x02 +++ serialize k
-  | CAS k opt v => serialize x03 +++ serialize k +++ serialize opt +++ serialize v
-  | CAD k v => serialize x04 +++ serialize k +++ serialize v
+  | Put k v => serialize x00 +$+ serialize k +$+ serialize v
+  | Get k => serialize x01 +$+ serialize k
+  | Del k => serialize x02 +$+ serialize k
+  | CAS k opt v => serialize x03 +$+ serialize k +$+ serialize opt +$+ serialize v
+  | CAD k v => serialize x04 +$+ serialize k +$+ serialize v
   end.
 
 Definition deserialize_input : ByteListReader.t VarD.input :=
@@ -58,21 +55,21 @@ Section Serialized.
     raft_params n.
 
   Definition entry_serialize (e : entry) := 
-   serialize (Raft.eAt e) +++
-              serialize (Raft.eClient e) +++
-              serialize (Raft.eId e) +++
-              serialize (Raft.eIndex e) +++
-              serialize (Raft.eTerm e) +++
-              serialize (Raft.eInput e).
+   serialize (Raft.eAt e) +$+
+   serialize (Raft.eClient e) +$+
+   serialize (Raft.eId e) +$+
+   serialize (Raft.eIndex e) +$+
+   serialize (Raft.eTerm e) +$+
+   serialize (Raft.eInput e).
 
   Definition entry_deserialize : ByteListReader.t entry :=
     At <- deserialize;;
-       Client <- deserialize;;
-       Id <- deserialize;;
-       Index <- deserialize;;
-       Term <- deserialize;;
-       Input <- deserialize;;
-       ByteListReader.ret (Raft.mkEntry At Client Id Index Term Input).
+    Client <- deserialize;;
+    Id <- deserialize;;
+    Index <- deserialize;;
+    Term <- deserialize;;
+    Input <- deserialize;;
+    ByteListReader.ret (Raft.mkEntry At Client Id Index Term Input).
 
   Lemma entry_serialize_deserialize_id :
     serialize_deserialize_id_spec entry_serialize entry_deserialize.
@@ -92,51 +89,51 @@ Section Serialized.
   Definition msg_serialize (m : msg) : IOStreamWriter.t :=
     match m with
     | RequestVote t1 n i t2 =>
-      serialize x00 +++
-                serialize t1 +++
-                serialize n +++
-                serialize i +++
-                serialize t2
+      serialize x00 +$+
+      serialize t1 +$+
+      serialize n +$+
+      serialize i +$+
+      serialize t2
     | RequestVoteReply t b =>
-      serialize x01 +++ serialize t +++ serialize b
+      serialize x01 +$+ serialize t +$+ serialize b
     | AppendEntries t1 n i1 t2 l2 i2 =>
-      serialize x02 +++
-                serialize t1 +++
-                serialize n +++
-                serialize i1 +++
-                serialize t2 +++
-                serialize l2 +++
-                serialize i2
+      serialize x02 +$+
+      serialize t1 +$+
+      serialize n +$+
+      serialize i1 +$+
+      serialize t2 +$+
+      serialize l2 +$+
+      serialize i2
     | AppendEntriesReply t l b =>
-      serialize x03 +++ serialize t +++ serialize l +++ serialize b
+      serialize x03 +$+ serialize t +$+ serialize l +$+ serialize b
     end.
 
   Definition RequestVote_deserialize : ByteListReader.t msg :=
     t1 <- deserialize;;
-       n <- deserialize;;
-       i <- deserialize;;
-       t2 <- deserialize;;
-       ByteListReader.ret (RequestVote t1 n i t2).
+    n <- deserialize;;
+    i <- deserialize;;
+    t2 <- deserialize;;
+    ByteListReader.ret (RequestVote t1 n i t2).
 
   Definition RequestVoteReply_deserialize : ByteListReader.t msg :=
     t <- deserialize;;
-      b <- deserialize;;
-      ByteListReader.ret (RequestVoteReply t b).
+    b <- deserialize;;
+    ByteListReader.ret (RequestVoteReply t b).
 
   Definition AppendEntries_deserialize : ByteListReader.t msg :=
     t1 <- deserialize;;
-       n <- deserialize;;
-       i1 <- deserialize;;
-       t2 <- deserialize;;
-       l <- deserialize;;
-       i2 <- deserialize;;
-       ByteListReader.ret (AppendEntries t1 n i1 t2 l i2).
+    n <- deserialize;;
+    i1 <- deserialize;;
+    t2 <- deserialize;;
+    l <- deserialize;;
+    i2 <- deserialize;;
+    ByteListReader.ret (AppendEntries t1 n i1 t2 l i2).
   
   Definition AppendEntriesReply_deserialize : ByteListReader.t msg :=
     t <- deserialize;;
-      l <- deserialize;;
-      b <- deserialize;;
-      ByteListReader.ret (AppendEntriesReply t l b).
+    l <- deserialize;;
+    b <- deserialize;;
+    ByteListReader.ret (AppendEntriesReply t l b).
   
   Definition msg_deserialize :=
     tag <- deserialize;;
