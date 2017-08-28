@@ -848,7 +848,18 @@ Section Raft.
     - eapply_prop raft_net_invariant_do_leader; eauto.
     - eapply_prop raft_net_invariant_do_generic_server; eauto.
   Qed.
-  
+
+  Lemma reboot_init_handlers :
+    forall h, reboot (init_handlers h) = init_handlers h.
+  Proof using.
+    reflexivity.
+  Qed.
+
+  Lemma reboot_idem :
+    forall d, reboot (reboot d) = reboot d.
+  Proof using.
+    reflexivity.
+  Qed.
 End Raft.
 
 Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data output).
