@@ -17,7 +17,6 @@ Require Import VerdiRaft.VarDRaftLog.
 
 Section VarDLogCorrect.
   Variables n i : nat.
-  Context {data_serializer : Serializer VarD.data}.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
     raft_params n.

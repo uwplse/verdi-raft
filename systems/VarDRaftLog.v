@@ -1,5 +1,6 @@
 Require Import Verdi.Verdi.
 Require Import Cheerios.Cheerios.
+Require Import Cheerios.Tree.
 
 Require Import Verdi.VarD.
 Require Import Verdi.Log.
@@ -55,7 +56,6 @@ Instance input_Serializer : Serializer VarD.input :=
 
 Section Logged.
   Variables n i : nat.
-  Context {data_serializer : Serializer VarD.data}.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
     raft_params n.
