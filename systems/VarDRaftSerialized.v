@@ -18,21 +18,24 @@ Definition serialize_input (i : VarD.input) :=
 
 Definition deserialize_input : ByteListReader.t VarD.input :=
   tag <- deserialize;;
-      match tag with
-      | x00 => k <- deserialize;;
-                 v <- deserialize;;
-                 ByteListReader.ret (Put k v)
-      | x01 => Get <$> deserialize
-      | x02 => Del <$> deserialize
-      | x03 => k <- deserialize;;
-                 opt <- deserialize;;
-                 v <- deserialize;;
-                 ByteListReader.ret (CAS k opt v)
-      | x04 => k <- deserialize;;
-                 v <- deserialize;;
-                 ByteListReader.ret (CAD k v)
-      | _ => ByteListReader.error
-      end.
+  match tag with
+  | x00 =>
+    k <- deserialize;;
+    v <- deserialize;;
+    ByteListReader.ret (Put k v)
+  | x01 => Get <$> deserialize
+  | x02 => Del <$> deserialize
+  | x03 =>
+    k <- deserialize;;
+    opt <- deserialize;;
+    v <- deserialize;;
+    ByteListReader.ret (CAS k opt v)
+  | x04 =>
+    k <- deserialize;;
+    v <- deserialize;;
+    ByteListReader.ret (CAD k v)
+  | _ => ByteListReader.error
+  end.
 
 Lemma input_serialize_deserialize_id :
   serialize_deserialize_id_spec serialize_input deserialize_input.
