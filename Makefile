@@ -45,20 +45,24 @@ proofalytics-aux: Makefile.coq
 	mv Makefile.coq_tmp Makefile.coq
 	$(MAKE) -f Makefile.coq
 
-VARDMLFILES = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
-VARDSERIALIZEDMLFILES = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
+VARDML = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
+VARDSERIALIZEDML = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
+VARDLOGML = extraction/vard-log/ml/VarDRaftLog.ml extraction/vard-log/ml/VarDRaftLog.mli
 
 Makefile.coq: _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
 	  -extra 'script/assumptions.vo script/assumptions.glob script/assumptions.v.d' \
 	    'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v' \
-          -extra '$(VARDMLFILES)' \
+          -extra '$(VARDML)' \
 	    'extraction/vard/coq/ExtractVarDRaft.v systems/VarDRaft.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
-          -extra '$(VARDSERIALIZEDMLFILES)' \
+          -extra '$(VARDSERIALIZEDML)' \
 	    'extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v systems/VarDRaftSerialized.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v' \
+          -extra '$(VARDLOGML)' \
+	    'extraction/vard-log/coq/ExtractVarDRaftLog.v systems/VarDRaftLog.vo' \
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v' \
           -extra-phony 'distclean' 'clean' \
 	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
 
@@ -73,7 +77,7 @@ clean:
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
 
-$(VARDMLFILES) $(VARDSERIALIZEDMLFILES): Makefile.coq
+$(VARDML) $(VARDSERIALIZEDML) $(VARDLOGML): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
 vard:
@@ -95,6 +99,7 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick install clean vard vard-test lint proofalytics distclean checkproofs $(VARDMLFILES) $(VARDSERIALIZEDMLFILES)
-.NOTPARALLEL: $(VARDMLFILES)
-.NOTPARALLEL: $(VARDSERIALIZEDMLFILES)
+.PHONY: default quick install clean vard vard-test lint proofalytics distclean checkproofs $(VARDML) $(VARDSERIALIZEDML) $(VARDLOGML)
+.NOTPARALLEL: $(VARDML)
+.NOTPARALLEL: $(VARDSERIALIZEDML)
+.NOTPARALLEL: $(VARDLOGML)
