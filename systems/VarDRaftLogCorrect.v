@@ -28,7 +28,7 @@ Section VarDLogCorrect.
   Theorem vard_raft_log_linearizable :
     forall failed net tr,
       input_correct tr ->
-      step_failure_log_star step_failure_log_init (failed, net) tr ->
+      step_failure_disk_ops_star step_failure_disk_ops_init (failed, net) tr ->
       exists l tr1 st,
         equivalent _ (import tr) l /\
         exported (get_input tr) (get_output tr) l tr1 /\
