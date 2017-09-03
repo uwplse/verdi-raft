@@ -55,7 +55,7 @@ Instance input_Serializer : Serializer VarD.input :=
      serialize_deserialize_id := input_serialize_deserialize_id |}.
 
 Section Logged.
-  Variables n i : nat.
+  Variables n snapshot_interval : nat.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
     raft_params n.
@@ -310,12 +310,7 @@ Section Logged.
        deserialize := deserialize_raft_input;
        serialize_deserialize_id := raft_input_serialize_deserialize_id |}.
 
-  Instance raft_log_params : LogParams multi_params :=
-    {
-      log_snapshot_interval := i
-    }.
-
   Definition transformed_base_params : BaseParams := @log_base_params base_params.
-  Definition transformed_multi_params : DiskOpMultiParams transformed_base_params := log_multi_params.
-  Definition transformed_failure_params : DiskOpFailureParams transformed_multi_params := log_failure_params.
+  Definition transformed_multi_params : DiskOpMultiParams transformed_base_params := log_multi_params snapshot_interval.
+  Definition transformed_failure_params : DiskOpFailureParams transformed_multi_params := log_failure_params snapshot_interval.
 End Logged.

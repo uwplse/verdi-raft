@@ -16,14 +16,14 @@ Require Import Verdi.LogCorrect.
 Require Import VerdiRaft.VarDRaftLog.
 
 Section VarDLogCorrect.
-  Variables n i : nat.
+  Variables n snapshot_interval : nat.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
     raft_params n.
 
   Instance transformed_base_params : BaseParams := transformed_base_params n.
-  Instance transformed_multi_params : DiskOpMultiParams _ := transformed_multi_params n i.
-  Instance transformed_failure_params : DiskOpFailureParams _ := transformed_failure_params n i.
+  Instance transformed_multi_params : DiskOpMultiParams _ := transformed_multi_params n snapshot_interval.
+  Instance transformed_failure_params : DiskOpFailureParams _ := transformed_failure_params n snapshot_interval.
 
   Theorem vard_raft_log_linearizable :
     forall failed net tr,
