@@ -1,6 +1,6 @@
 Require Import Verdi.Verdi.
 Require Import Cheerios.Cheerios.
-Require Import VerdiCheerios.SerializedMsgParams.
+Require Import Verdi.SerializedMsgParams.
 Require Import Verdi.VarD.
 Require Import VerdiRaft.Raft.
 Require Import VerdiRaft.VarDRaft.
