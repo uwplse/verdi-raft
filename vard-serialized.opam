@@ -21,7 +21,6 @@ depends: [
   "ocamlbuild" {build}
   "ounit" {test & >= "2.0.0"}
   "cheerios" {= "dev"}
-  "verdi-cheerios" {= "dev"}
   "cheerios-runtime" {= "dev"}
 ]
 

@@ -16,7 +16,6 @@ depends: [
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
   "cheerios" {= "dev"}
-  "verdi-cheerios" {= "dev"}
 ]
 
 authors: [
@@ -27,4 +26,5 @@ authors: [
   "Steve Anton <>"
   "Karl Palmskog <>"
   "Ryan Doenges <>"
+  "Justin Adsuara <>"
 ]
