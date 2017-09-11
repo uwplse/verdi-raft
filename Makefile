@@ -46,8 +46,9 @@ proofalytics-aux: Makefile.coq
 	$(MAKE) -f Makefile.coq
 
 VARDML = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
-VARDSERIALIZEDML = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
+VARDSERML = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
 VARDLOGML = extraction/vard-log/ml/VarDRaftLog.ml extraction/vard-log/ml/VarDRaftLog.mli
+VARDSERLOGML = extraction/vard-serialized-log/ml/VarDRaftSerializedLog.ml extraction/vard-serialized-log/ml/VarDRaftSerializedLog.mli
 
 Makefile.coq: _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
@@ -57,12 +58,15 @@ Makefile.coq: _CoqProject
           -extra '$(VARDML)' \
 	    'extraction/vard/coq/ExtractVarDRaft.v systems/VarDRaft.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
-          -extra '$(VARDSERIALIZEDML)' \
+          -extra '$(VARDSERML)' \
 	    'extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v systems/VarDRaftSerialized.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v' \
           -extra '$(VARDLOGML)' \
 	    'extraction/vard-log/coq/ExtractVarDRaftLog.v systems/VarDRaftLog.vo' \
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v' \
+          -extra '$(VARDSERLOGML)' \
+	    'extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v systems/VarDRaftSerializedLog.vo' \
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v' \
           -extra-phony 'distclean' 'clean' \
 	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
 
@@ -77,7 +81,7 @@ clean:
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
 
-$(VARDML) $(VARDSERIALIZEDML) $(VARDLOGML): Makefile.coq
+$(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
 vard:
@@ -99,7 +103,11 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick install clean vard vard-test lint proofalytics distclean checkproofs $(VARDML) $(VARDSERIALIZEDML) $(VARDLOGML)
+.PHONY: default quick install clean lint proofalytics distclean checkproofs
+.PHONY: vard vard-test vard-serialized vard-serialized-test
+.PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML)
+
 .NOTPARALLEL: $(VARDML)
-.NOTPARALLEL: $(VARDSERIALIZEDML)
+.NOTPARALLEL: $(VARDSERML)
 .NOTPARALLEL: $(VARDLOGML)
+.NOTPARALLEL: $(VARDSERLOGML)
