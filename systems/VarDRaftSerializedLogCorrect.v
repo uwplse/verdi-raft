@@ -7,14 +7,13 @@ Require Import VerdiRaft.CommonDefinitions.
 Require Import VerdiRaft.Linearizability.
 Require Import VerdiRaft.RaftLinearizableProofs.
 
-Require Import VerdiRaft.EndToEndLinearizability.
-
-Require Import Verdi.Log.
 Require Import Verdi.LogCorrect.
+Require Import VerdiRaft.VarDRaftSerializedCorrect.
 
-Require Import VerdiRaft.VarDRaftLog.
+Require Import VerdiRaft.VarDRaftSerializedLog.
 
-Section VarDLogCorrect.
+Section SerializedLogCorrect.
+  Context {sW : Serializer IOStreamWriter.wire}.
   Variables n snapshot_interval : nat.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
@@ -35,6 +34,6 @@ Section VarDLogCorrect.
   Proof using.
     intros failed net tr H_inp H_step.
     apply log_step_failure_star_simulation in H_step.
-    find_apply_lem_hyp raft_linearizable; auto.
+    find_apply_lem_hyp vard_raft_serialized_linearizable; auto.
   Qed.
-End VarDLogCorrect.
+End SerializedLogCorrect.

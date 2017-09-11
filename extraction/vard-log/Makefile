@@ -1,5 +1,3 @@
-PYTHON=python2.7
-
 OCAMLBUILD = ocamlbuild -tag safe_string -pkgs 'verdi-runtime cheerios-runtime' -I ml -cflag -g
 OCAMLBUILD_TEST := $(OCAMLBUILD) -package oUnit -I test
 
