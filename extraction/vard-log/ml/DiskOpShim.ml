@@ -5,7 +5,7 @@ type 'file_name disk_op =
   | Append of file_name * Serialize_primitives.serializer
   | Write of file_name * Serialize_primitives.serializer
   | Delete of file_name
-   
+
 module type ARRANGEMENT = sig
   type name
   type file_name
@@ -18,8 +18,8 @@ module type ARRANGEMENT = sig
   type disk = file_name -> Serializer_primitives.serializer
   val system_name : string
   val init : name -> state
-  val disk_init : disk
-  val reboot : name -> disk -> disk
+  val disk_init : name -> disk
+  val reboot : name -> (file_name -> Serializer_primitives.wire) -> state * disk
   val handle_input : name -> input -> state -> res
   val handle_msg : name -> name -> msg -> state -> res
   val handle_timeout : name -> state -> res
@@ -39,7 +39,7 @@ module type ARRANGEMENT = sig
   val file_name_of_string : string -> file_name
   val files : file_name list
 end
-                        
+
 module Shim (A: ARRANGEMENT) = struct
   type cfg =
       { cluster : (A.name * (string * int)) list
@@ -88,7 +88,7 @@ module Shim (A: ARRANGEMENT) = struct
     | Append (f, v) -> aux f v true
     | Write (f, v) -> aux f v false
     | Delete f -> Unix.truncate (A.string_of_file_name f) 0
-    
+
   (* Translate node name to UDP socket address. *)
   let denote_node (env : env) (name : A.name) : Unix.sockaddr =
     List.assoc name env.nodes
@@ -106,20 +106,24 @@ module Shim (A: ARRANGEMENT) = struct
   let undenote_client (env : env) (fd : Unix.file_descr) : A.client_id =
     Hashtbl.find env.client_read_fds fd
 
-  (* Return state with as many entries from the log applied as possible. *)
-  let rec restore_from_log (log : in_channel) (name : A.name) (state : A.state) : A.state =
-    try
-      let state' = update_state_from_log_entry log name state in
-      restore_from_log log name state'
-    with End_of_file -> (close_in log); state
+  (* maybe return a function that returns cached results? *)
+  let file_name_to_wire (fspath) : file_name -> Serializer_primitives.wire =
+    fun f -> let channel = open_in_bin (fspath ^ "/" ^ string_of_file_name f);
+                           let rec reads () =
+                             let size = 512 in
+                             let buf = Bytes.make size (Char.chr 0) in
+                             let res = Unix.read (Unix.descr_of_in_channel channel) buf 0 size in
+                             buf :: if (res < size) then [] else reads () in
+                           Bytes.concat Bytes.empty (reads ())
 
-  (* Gets state from the most recent snapshot, or the initial state from the arrangement. *)
-  let restore (cfg : cfg) : A.state =
-    let initial_state = get_initial_state cfg in
-    try
-      let log = open_in_bin (command_log_path cfg) in
-      restore_from_log log cfg.me initial_state
-    with Sys_error _ -> initial_state
+
+
+  let restore (cfg : cfg) =
+    try reboot cfg.me (file_name_to_wire cfg.fspath)
+    with Sys_error -> (A.init cfg.me, A.disk_init cfg.me)
+
+  let save_disk (cfg : cfg) (dsk : disk) =
+    failwith "Unimplemented"
 
   (* Load state from disk, initialize environment, and start server. *)
   let setup (cfg : cfg) : (env * A.state) =
@@ -135,7 +139,8 @@ module Shim (A: ARRANGEMENT) = struct
         if err != Unix.EEXIST then
           raise (Unix.Unix_error (err, fn, param))
     end;
-    let initial_state = A.reboot (restore cfg) in
+    let (initial_state, initial_disk) = restore cfg in
+    save cfg initial_disk;
     let env =
       { cfg = cfg
       ; nodes_fd = Unix.socket Unix.PF_INET Unix.SOCK_DGRAM 0
@@ -182,7 +187,7 @@ module Shim (A: ARRANGEMENT) = struct
   let output env o =
     let (c, out) = A.serialize_output o in
     try send_chunk (denote_client env c) out
-    with 
+    with
     | Not_found ->
       eprintf "output: failed to find socket for client %s" (A.string_of_client_id c);
       prerr_newline ()
@@ -192,7 +197,7 @@ module Shim (A: ARRANGEMENT) = struct
     | Unix.Unix_error (err, fn, _) ->
        disconnect_client env (denote_client env c)
          (sprintf "output: error %s" (Unix.error_message err))
-      
+
   let respond env (((ops, os), s), ps) =
     List.iter (output env) os;
     List.iter (fun p -> if A.debug then A.debug_send s p; send env p) ps;
