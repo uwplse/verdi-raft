@@ -116,14 +116,22 @@ module Shim (A: ARRANGEMENT) = struct
                              buf :: if (res < size) then [] else reads () in
                            Bytes.concat Bytes.empty (reads ())
 
-
-
   let restore (cfg : cfg) =
     try reboot cfg.me (file_name_to_wire cfg.fspath)
     with Sys_error -> (A.init cfg.me, A.disk_init cfg.me)
 
   let save_disk (cfg : cfg) (dsk : disk) =
-    failwith "Unimplemented"
+    List.iter
+      (fun f ->
+        let f_out = Unix.out_channel_of_descr
+                        (Unix.openfile
+                           (cfg.fspath ^ "/" ^ string_of_file_name f)
+                           [Unix.O_WRONLY ; Unix.O_TRUNC ; Unix.O_CREAT ; Unix.O_DSYNC]
+                           0o640) in
+        output_string f_out (Bytes.to_string (Serializer_primitives.wire_wrap (dsk f)));
+        flush f_out;
+        close_out f_out)
+      A.files
 
   (* Load state from disk, initialize environment, and start server. *)
   let setup (cfg : cfg) : (env * A.state) =
@@ -140,7 +148,7 @@ module Shim (A: ARRANGEMENT) = struct
           raise (Unix.Unix_error (err, fn, param))
     end;
     let (initial_state, initial_disk) = restore cfg in
-    save cfg initial_disk;
+    save_disk cfg initial_disk;
     let env =
       { cfg = cfg
       ; nodes_fd = Unix.socket Unix.PF_INET Unix.SOCK_DGRAM 0
