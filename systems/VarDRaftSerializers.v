@@ -300,6 +300,10 @@ Section Serializers.
     unfold serialize_raft_input, deserialize_raft_input.
     destruct a;
       repeat (cheerios_crush; simpl).
+    rewrite nat_serialize_deserialize_id.
+    repeat (cheerios_crush; simpl).
+    rewrite nat_serialize_deserialize_id.
+    repeat (cheerios_crush; simpl).
     rewrite input_serialize_deserialize_id.
     cheerios_crush.
   Qed.
