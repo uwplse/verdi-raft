@@ -96,6 +96,9 @@ vard-serialized:
 vard-serialized-test:
 	+$(MAKE) -C extraction/vard-serialized test
 
+vard-log:
+	+$(MAKE) -C extraction/vard-log
+
 lint:
 	@echo "Possible use of hypothesis names:"
 	find . -name '*.v' -exec grep -Hn 'H[0-9][0-9]*' {} \;
