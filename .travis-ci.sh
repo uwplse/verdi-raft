@@ -8,6 +8,17 @@ opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.ne
 
 opam pin add coq $COQ_VERSION --yes --verbose
 
+pushd ..
+  git clone -b channel https://github.com/uwplse/cheerios.git
+  pushd cheerios
+    opam pin add cheerios . --yes --verbose
+  popd
+  git clone -b disk https://github.com/uwplse/verdi.git
+  pushd verdi
+    opam pin add verdi . --yes --verbose
+  popd
+popd
+
 case $MODE in
   proofalytics)
     opam pin add verdi-raft-proofalytics . --yes --verbose
