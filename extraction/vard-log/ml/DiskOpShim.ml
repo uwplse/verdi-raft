@@ -71,8 +71,8 @@ module Shim (A: ARRANGEMENT) = struct
       Serializer_primitives.to_channel s f_out;
       flush f_out in
     match op with
-    | Append (f, s) -> aux f v true
-    | Write (f, v) -> aux f v false
+    | Append (f, s) -> aux f s true
+    | Write (f, s) -> aux f s false
     | Delete f -> Unix.truncate (full_path f) 0
 
   (* Translate node name to UDP socket address. *)
@@ -116,14 +116,14 @@ module Shim (A: ARRANGEMENT) = struct
     (* open files for reboot, call reboot, close files *)
     let reboot_channels = in_channel_of_file_name cfg in
     let (initial_state, ops) = A.reboot cfg.me reboot_channels in
-    List.iter (fun x -> match x with
+    List.iter (fun f -> match reboot_channels f with
                         | Some channel -> close_in channel
                         | None -> ())
-              (map reboot_channels A.files);
+              A.files;
     (* open files for disk ops *)
     let disk_channels = Hashtbl.create 17 in
     List.iter (fun f -> Hashtbl.add f (open_out (full_path cfg f)));
-    List.iter (apply_disk_op cfg.env) ops;
+    List.iter (apply_disk_op disk_channels) ops;
     let env =
       { cfg = cfg
       ; nodes_fd = Unix.socket Unix.PF_INET Unix.SOCK_DGRAM 0
@@ -132,6 +132,7 @@ module Shim (A: ARRANGEMENT) = struct
       ; client_read_fds = Hashtbl.create 17
       ; client_write_fds = Hashtbl.create 17
       ; client_read_bufs = Hashtbl.create 17
+      ; disk_channels = disk_channels
       }
     in
     let (node_addr, node_port) =
