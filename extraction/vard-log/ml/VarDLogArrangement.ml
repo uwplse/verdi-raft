@@ -39,11 +39,11 @@ end
 module VarDLogArrangement (P : VardLogParams) = struct
   type name = VarDRaftLog.name0
   type file_name = VarDRaftLog.log_files
-  type state = raft_data0
+  type state = log_state
   type input = VarDRaftLog.raft_input
   type output = VarDRaftLog.raft_output
   type msg = VarDRaftLog.msg0
-  type res = ((log_files disk_op list * output list) * log_state) * (name * msg)
+  type res = ((log_files DiskOpShim.disk_op list * output list) * log_state) * (name * msg)
   type disk = log_files -> in_channel option
   type client_id = int
   let system_name = "VarDLog"
@@ -65,13 +65,13 @@ module VarDLogArrangement (P : VardLogParams) = struct
     (match m with
      | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
         printf "[Term %d] Received %d entries from %d (currently have %d entries)\n"
-               s.currentTerm (List.length entries) other (List.length s.log)
+               s.log_data.currentTerm (List.length entries) other (List.length s.log_data.log)
      | AppendEntriesReply (_, entries, success) ->
       printf "[Term %d] Received AppendEntriesReply %d entries %B, commitIndex %d\n"
-        s.currentTerm (List.length entries) success s.commitIndex
+        s.log_data.currentTerm (List.length entries) success s.log_data.commitIndex
     | RequestVoteReply (t, votingFor) ->
       printf "[Term %d] Received RequestVoteReply(%d, %B) from %d, have %d votes\n"
-        s.currentTerm t votingFor other (List.length s.votesReceived)
+        s.log_data.currentTerm t votingFor other (List.length s.log_data.votesReceived)
     | _ -> ());
     flush_all ()
   let debug_send s (other, m) =
