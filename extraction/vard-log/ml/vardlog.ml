@@ -25,6 +25,6 @@ let _ =
       exit 2
   in
   let module NumNodes = struct let v = length !cluster end in
-  let module VDL = VarDRaftLog in
+  let module VDL = DiskOpShim.DiskOpShim(VarDLogArrangement.VarDLogArrangement(VarDLogArrangement.BenchParams(NumNodes))) in
   printf "stuff goes here";
   print_newline () 

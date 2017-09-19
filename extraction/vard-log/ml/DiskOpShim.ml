@@ -14,11 +14,10 @@ module type ARRANGEMENT = sig
   type output
   type msg
   type client_id
-  type res = ((disk_op list * output list) * state) * ((name * msg) list) (* product is left-associative? *)
+  type res = (((file_name disk_op) list * output list) * state) * ((name * msg) list) (* product is left-associative? *)
   type disk = file_name -> in_channel option
   val system_name : string
-  val init : name -> state
-  val reboot : name -> disk -> state * disk_op list
+  val reboot : name -> disk -> state * file_name disk_op list
   val handle_input : name -> input -> state -> res
   val handle_msg : name -> name -> msg -> state -> res
   val handle_timeout : name -> state -> res
@@ -39,7 +38,7 @@ module type ARRANGEMENT = sig
   val files : file_name list
 end
 
-module Shim (A: ARRANGEMENT) = struct
+module DiskOpShim (A: ARRANGEMENT) = struct
   type cfg =
       { cluster : (A.name * (string * int)) list
       ; me : A.name
@@ -58,22 +57,21 @@ module Shim (A: ARRANGEMENT) = struct
       ; disk_channels : (A.file_name, out_channel) Hashtbl.t
       }
 
-  let full_path (cfg : cfg) (f : file_name) =
-    cfg.db_path ^ "/" ^ A.string_of_file_name f
+  let full_path (cfg : cfg) (f : A.file_name) =
+    cfg.fspath ^ "/" ^ A.string_of_file_name f
 
   (* keep all files open? currently assumes we reopen on each op *)
-  let apply_disk_op disk_channels (op : disk_op) =
+  let apply_disk_op cfg disk_channels (op : A.file_name disk_op) =
     let aux f s (append : bool) =
       let f_out = Hashtbl.find disk_channels f in
-      if A.debug
-      then print_endline (if append then "appending" else "writing") ^ " to " ^ full_path f;
-      if (not append) then Unix.ftruncate (Unix.descr_out_of_channel f_out) 0;
-      Serializer_primitives.to_channel s f_out;
+      if (not append) then Unix.ftruncate (Unix.descr_of_out_channel f_out) 0;
+      let _ = Serializer_primitives.bind in
+      (*      Serializer_primitives.to_channel s f_out); *)
       flush f_out in
     match op with
     | Append (f, s) -> aux f s true
     | Write (f, s) -> aux f s false
-    | Delete f -> Unix.truncate (full_path f) 0
+    | Delete f -> Unix.truncate (full_path cfg f) 0
 
   (* Translate node name to UDP socket address. *)
   let denote_node (env : env) (name : A.name) : Unix.sockaddr =
@@ -92,11 +90,11 @@ module Shim (A: ARRANGEMENT) = struct
   let undenote_client (env : env) (fd : Unix.file_descr) : A.client_id =
     Hashtbl.find env.client_read_fds fd
 
-  let in_channel_of_file_name (cfg : cfg) : file_name -> in_channel =
+  let in_channel_of_file_name (cfg : cfg) : A.file_name -> in_channel option =
     let try_open f = try Some (open_in_bin (full_path cfg f))
-                     with Sys_error -> None in
+                     with Sys_error _ -> None in
     let tbl = Hashtbl.create 17 in
-    List.iter (fun f -> Hashtbl.add tbl f (try_open f));
+    List.iter (fun f -> Hashtbl.add tbl f (try_open f)) A.files;
     Hashtbl.find tbl
 
   (* Load state from disk, initialize environment, and start server. *)
@@ -122,8 +120,8 @@ module Shim (A: ARRANGEMENT) = struct
               A.files;
     (* open files for disk ops *)
     let disk_channels = Hashtbl.create 17 in
-    List.iter (fun f -> Hashtbl.add f (open_out (full_path cfg f)));
-    List.iter (apply_disk_op disk_channels) ops;
+    List.iter (fun f -> Hashtbl.add disk_channels f (open_out (full_path cfg f))) A.files;
+    List.iter (apply_disk_op cfg disk_channels) ops;
     let env =
       { cfg = cfg
       ; nodes_fd = Unix.socket Unix.PF_INET Unix.SOCK_DGRAM 0
@@ -185,7 +183,7 @@ module Shim (A: ARRANGEMENT) = struct
   let respond env (((ops, os), s), ps) =
     List.iter (output env) os;
     List.iter (fun p -> if A.debug then A.debug_send s p; send env p) ps;
-    List.iter (apply_disk_op env.disk_channels) ops;
+    List.iter (apply_disk_op env.cfg env.disk_channels) ops;
     s
 
   let new_client_conn env =
