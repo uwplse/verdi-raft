@@ -39,13 +39,13 @@ end
 module VarDLogArrangement (P : VardLogParams) = struct
   type name = VarDRaftLog.name0
   type file_name = VarDRaftLog.log_files
-  type state = log_state
+  type state = VarDRaftLog.log_state
   type input = VarDRaftLog.raft_input
   type output = VarDRaftLog.raft_output
   type msg = VarDRaftLog.msg0
-  type res = ((log_files DiskOpShim.disk_op list * output list) * log_state) * (name * msg)
-  type disk = log_files -> in_channel option
   type client_id = int
+  type res = (((file_name DiskOpShim.disk_op) list * output list) * state) * ((name * msg) list)
+  type disk = log_files -> in_channel option
   let system_name = "VarDLog"
   let reboot = Obj.magic (transformed_failure_params P.num_nodes)
   let handle_input (n : name) (inp : input) (st : state) = Obj.magic ((transformed_multi_params P.num_nodes P.snapshot_interval).do_input_handlers (Obj.magic n) (Obj.magic inp) (Obj.magic st))
@@ -53,7 +53,7 @@ module VarDLogArrangement (P : VardLogParams) = struct
   let handle_timeout (me : name) (st : state) =
     (Obj.magic (transformed_multi_params P.num_nodes P.snapshot_interval).do_input_handlers (Obj.magic me) (Obj.magic Timeout) (Obj.magic st))
   let set_timeout _ s =
-    match s.type0 with
+    match (Obj.magic s.log_data).type0 with
     | Leader -> P.heartbeat_timeout
     | _ -> P.election_timeout +. (Random.float 0.1)
   let deserialize_msg = fun b -> Marshal.from_bytes b 0
@@ -65,23 +65,23 @@ module VarDLogArrangement (P : VardLogParams) = struct
     (match m with
      | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
         printf "[Term %d] Received %d entries from %d (currently have %d entries)\n"
-               s.log_data.currentTerm (List.length entries) other (List.length s.log_data.log)
+          (Obj.magic s.log_data).currentTerm (List.length entries) other (List.length (Obj.magic s.log_data).log)
      | AppendEntriesReply (_, entries, success) ->
       printf "[Term %d] Received AppendEntriesReply %d entries %B, commitIndex %d\n"
-        s.log_data.currentTerm (List.length entries) success s.log_data.commitIndex
+        (Obj.magic s.log_data).currentTerm (List.length entries) success (Obj.magic s.log_data).commitIndex
     | RequestVoteReply (t, votingFor) ->
       printf "[Term %d] Received RequestVoteReply(%d, %B) from %d, have %d votes\n"
-        s.log_data.currentTerm t votingFor other (List.length s.log_data.votesReceived)
+        (Obj.magic s.log_data).currentTerm t votingFor other (List.length (Obj.magic s.log_data).votesReceived)
     | _ -> ());
     flush_all ()
   let debug_send s (other, m) =
     (match m with
     | AppendEntries (t, leaderId, prevLogIndex, prevLogTerm, entries, commitIndex) ->
        printf "[Term %d] Sending %d entries to %d (currently have %d entries), commitIndex=%d\n"
-              s.currentTerm (List.length entries) other (List.length s.log) commitIndex
+              (Obj.magic s.log_data).currentTerm (List.length entries) other (List.length (Obj.magic s.log_data).log) commitIndex
     | RequestVote _ ->
        printf "[Term %d] Sending RequestVote to %d, have %d votes\n"
-              s.currentTerm other (List.length s.votesReceived)
+              (Obj.magic s.log_data).currentTerm other (List.length (Obj.magic s.log_data).votesReceived)
     | _ -> ());
     flush_all ()
   let debug_timeout (s : state) = ()
@@ -99,5 +99,5 @@ module VarDLogArrangement (P : VardLogParams) = struct
                                      | "snapshot" -> Snapshot
                                      | "log" -> Log
                                      | _ -> failwith "Unrecognized file name"
-  let files = [Count, Snapshot, Log]
+  let files = [Count; Snapshot; Log]
 end
