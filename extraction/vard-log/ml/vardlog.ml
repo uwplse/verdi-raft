@@ -25,6 +25,23 @@ let _ =
       exit 2
   in
   let module NumNodes = struct let v = length !cluster end in
-  let module VDL = DiskOpShim.DiskOpShim(VarDLogArrangement.VarDLogArrangement(VarDLogArrangement.BenchParams(NumNodes))) in
-  printf "stuff goes here";
-  print_newline () 
+  if !debug then
+    let module VarDLog =
+	  DiskOpShim.DiskOpShim(VarDLogArrangement.VarDLogArrangement(VarDLogArrangement.DebugParams(NumNodes)))
+    in
+    let open VarDLog in
+    main { cluster = !cluster
+         ; me = !me
+         ; port = !port
+         ; fspath = !dbpath
+         }
+  else
+    let module VarDLog =
+	  DiskOpShim.DiskOpShim(VarDLogArrangement.VarDLogArrangement(VarDLogArrangement.BenchParams(NumNodes)))
+    in
+    let open VarDLog in
+    main { cluster = !cluster
+         ; me = !me
+         ; port = !port
+         ; fspath = !dbpath
+         }
