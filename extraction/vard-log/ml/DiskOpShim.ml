@@ -65,8 +65,7 @@ module DiskOpShim (A: ARRANGEMENT) = struct
     let aux f s (append : bool) =
       let f_out = Hashtbl.find disk_channels f in
       if (not append) then Unix.ftruncate (Unix.descr_of_out_channel f_out) 0;
-      let _ = Serializer_primitives.bind in
-      (*      Serializer_primitives.to_channel s f_out); *)
+      Serializer_primitives.to_channel s f_out;
       flush f_out in
     match op with
     | Append (f, s) -> aux f s true
