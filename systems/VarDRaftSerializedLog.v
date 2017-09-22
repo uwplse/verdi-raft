@@ -11,7 +11,6 @@ Require Import VerdiRaft.VarDRaftSerializers.
 Require Import VerdiRaft.VarDRaftSerialized.
 
 Section SerializedLog.
-  Context {sW : Serializer IOStreamWriter.wire}.
   Variables n snapshot_interval : nat.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
