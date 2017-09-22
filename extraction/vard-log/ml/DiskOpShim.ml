@@ -64,7 +64,9 @@ module DiskOpShim (A: ARRANGEMENT) = struct
   let apply_disk_op cfg disk_channels (op : A.file_name disk_op) =
     let aux f s (append : bool) =
       let f_out = Hashtbl.find disk_channels f in
-      if (not append) then Unix.ftruncate (Unix.descr_of_out_channel f_out) 0;
+      let fd = Unix.descr_of_out_channel f_out in
+      if (not append) then (Unix.ftruncate fd 0;
+                            ignore(Unix.lseek fd 0 Unix.SEEK_SET));
       Serializer_primitives.to_channel s f_out;
       flush f_out in
     match op with
@@ -93,7 +95,6 @@ module DiskOpShim (A: ARRANGEMENT) = struct
     let try_open f = try Some (open_in_bin (full_path cfg f))
                      with Sys_error _ -> None in
     let tbl = Hashtbl.create 17 in
-
     List.iter (fun f -> Hashtbl.add tbl f (try_open f))
               A.files;
     Hashtbl.find tbl
