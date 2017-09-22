@@ -1,3 +1,5 @@
+PYTHON=python2.7
+
 OCAMLBUILD = ocamlbuild -tag safe_string -pkgs 'verdi-runtime cheerios-runtime' -I ml -cflag -g
 OCAMLBUILD_TEST := $(OCAMLBUILD) -package oUnit -I test
 
@@ -12,9 +14,13 @@ vardlog.native: $(VARDLOG) $(VARDRAFTLOG) scripts/remove_module.pl
 
 $(VARDRAFTLOG):
 	+$(MAKE) -C ../.. extraction/vard-log/$@
+
+test: vardlog.native test/integration.py
+	$(PYTHON) test/integration.py
+
 clean:
 	ocamlbuild -clean
 
-.PHONY: default clean $(VARDRAFTLOG)
+.PHONY: default test clean $(VARDRAFTLOG)
 
 .NOTPARALLEL: $(VARDRAFTLOG)
