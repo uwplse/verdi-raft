@@ -93,7 +93,9 @@ module DiskOpShim (A: ARRANGEMENT) = struct
     let try_open f = try Some (open_in_bin (full_path cfg f))
                      with Sys_error _ -> None in
     let tbl = Hashtbl.create 17 in
-    List.iter (fun f -> Hashtbl.add tbl f (try_open f)) A.files;
+
+    List.iter (fun f -> Hashtbl.add tbl f (try_open f))
+              A.files;
     Hashtbl.find tbl
 
   (* Load state from disk, initialize environment, and start server. *)
@@ -117,6 +119,7 @@ module DiskOpShim (A: ARRANGEMENT) = struct
                         | Some channel -> close_in channel
                         | None -> ())
               A.files;
+
     (* open files for disk ops *)
     let disk_channels = Hashtbl.create 17 in
     List.iter (fun f -> Hashtbl.add disk_channels f (open_out (full_path cfg f))) A.files;
