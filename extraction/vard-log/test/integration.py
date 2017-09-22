@@ -36,14 +36,24 @@ class TestVard(unittest.TestCase):
     def tearDown(self):
         for i in range(3):
             self.processes[i].terminate()
-            shutil.rmtree('db-%d' % i)
+#            shutil.rmtree('db-%d' % i)
         self.client = None
         self.processes = None
 
     def test_put_get(self):
-        self.client.put('answer', '42')
-        self.assertEqual(self.client.get('answer'), '42')
+       self.client.put('answer', '42')
+       self.assertEqual(self.client.get('answer'), '42')
 
+    def test_crash(self):
+       self.client.put('answer', '42')
+       self.client.put('plse', 'lab')
+       self.client.put('average', 'joe')
+       self.tearDown()
+       self.setUp()
+       self.assertEqual(self.client.get('answer'), '42')
+       self.assertEqual(self.client.get('plse'), 'lab')
+       self.assertEqual(self.client.get('average'), 'joe')
+    
     def test_put_delete_get(self):
         self.client.put('answer', '42')
         self.client.delete('answer')
