@@ -62,17 +62,17 @@ module DiskOpShim (A: ARRANGEMENT) = struct
 
   (* keep all files open? currently assumes we reopen on each op *)
   let apply_disk_op cfg disk_channels (op : A.file_name disk_op) =
-    let aux f s (append : bool) =
+    let aux f s (truncate : bool) =
       let f_out = Hashtbl.find disk_channels f in
-      let fd = Unix.descr_of_out_channel f_out in
-      if (not append) then (Unix.ftruncate fd 0;
-                            ignore(Unix.lseek fd 0 Unix.SEEK_SET));
+      if truncate then (let fd = Unix.descr_of_out_channel f_out in
+                        Unix.ftruncate fd 0;
+                        ignore(Unix.lseek fd 0 Unix.SEEK_SET));
       Serializer_primitives.to_channel s f_out;
       flush f_out in
     match op with
-    | Append (f, s) -> aux f s true
-    | Write (f, s) -> aux f s false
-    | Delete f -> Unix.truncate (full_path cfg f) 0
+    | Append (f, s) -> aux f s false
+    | Write (f, s) -> aux f s true
+    | Delete f -> aux f Serializer_primitives.empty true
 
   (* Translate node name to UDP socket address. *)
   let denote_node (env : env) (name : A.name) : Unix.sockaddr =
