@@ -33,12 +33,16 @@ class TestVard(unittest.TestCase):
         host, port = Client.find_leader(cluster)
         self.client = Client(host, port)
 
-    def tearDown(self):
+    def tearDownProcesses(self):
         for i in range(3):
             self.processes[i].terminate()
-#            shutil.rmtree('db-%d' % i)
         self.client = None
         self.processes = None
+    
+    def tearDown(self):
+        self.tearDownProcesses()
+        for i in range(3):
+            shutil.rmtree('db-%d' % i)
 
     def test_put_get(self):
        self.client.put('answer', '42')
@@ -48,7 +52,7 @@ class TestVard(unittest.TestCase):
        self.client.put('answer', '42')
        self.client.put('plse', 'lab')
        self.client.put('average', 'joe')
-       self.tearDown()
+       self.tearDownProcesses()
        self.setUp()
        self.assertEqual(self.client.get('answer'), '42')
        self.assertEqual(self.client.get('plse'), 'lab')
@@ -59,7 +63,5 @@ class TestVard(unittest.TestCase):
         self.client.delete('answer')
         self.assertEqual(self.client.get('answer'), None)
 
-
 if __name__ == '__main__':
     unittest.main()
-
