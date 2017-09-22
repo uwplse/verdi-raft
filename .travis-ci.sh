@@ -12,6 +12,7 @@ pushd ..
   git clone -b channel https://github.com/uwplse/cheerios.git
   pushd cheerios
     opam pin add cheerios . --yes --verbose
+    opam pin add cheerios-runtime . --yes --verbose
   popd
   git clone -b disk https://github.com/uwplse/verdi.git
   pushd verdi
