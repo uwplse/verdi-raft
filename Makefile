@@ -99,6 +99,9 @@ vard-serialized-test:
 vard-log:
 	+$(MAKE) -C extraction/vard-log
 
+vard-log-test:
+	+$(MAKE) -C extraction/vard-log test
+
 lint:
 	@echo "Possible use of hypothesis names:"
 	find . -name '*.v' -exec grep -Hn 'H[0-9][0-9]*' {} \;
@@ -107,7 +110,7 @@ distclean: clean
 	rm -f _CoqProject
 
 .PHONY: default quick install clean lint proofalytics distclean checkproofs
-.PHONY: vard vard-test vard-serialized vard-serialized-test
+.PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test
 .PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML)
 
 .NOTPARALLEL: $(VARDML)
