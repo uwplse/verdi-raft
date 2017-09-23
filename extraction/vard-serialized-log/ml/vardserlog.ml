@@ -25,6 +25,23 @@ let _ =
       exit 2
   in
   let module NumNodes = struct let v = length !cluster end in
-  let module VSDL = VarDRaftSerializedLog in
-  printf "stuff goes here";
-  print_newline () 
+  if !debug then
+    let module VarDSerializedLog =
+	  DiskOpShim.DiskOpShim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.DebugParams(NumNodes)))
+    in
+    let open VarDSerializedLog in
+    main { cluster = !cluster
+         ; me = !me
+         ; port = !port
+         ; fspath = !dbpath
+         }
+  else
+    let module VarDSerializedLog =
+	  DiskOpShim.DiskOpShim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.BenchParams(NumNodes)))
+    in
+    let open VarDSerializedLog in
+    main { cluster = !cluster
+         ; me = !me
+         ; port = !port
+         ; fspath = !dbpath
+         }  
