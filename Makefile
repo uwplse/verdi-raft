@@ -116,7 +116,7 @@ distclean: clean
 	rm -f _CoqProject
 
 .PHONY: default quick install clean lint proofalytics distclean checkproofs
-.PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test
+.PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test vard-serialized-log vard-serialized-log-test
 .PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML)
 
 .NOTPARALLEL: $(VARDML)
