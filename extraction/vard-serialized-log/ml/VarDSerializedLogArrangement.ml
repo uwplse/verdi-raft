@@ -96,10 +96,5 @@ module VarDSerializedLogArrangement (P : VarDSerializedLogParams) = struct
                                      | Count -> "count"
                                      | Snapshot -> "snapshot"
                                      | Log -> "log"
-  let file_name_of_string = fun s -> match s with
-                                     | "count" -> Count
-                                     | "snapshot" -> Snapshot
-                                     | "log" -> Log
-                                     | _ -> failwith "Unrecognized file name"
   let files = [Count; Snapshot; Log]
 end

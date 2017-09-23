@@ -14,7 +14,7 @@ module type ARRANGEMENT = sig
   type output
   type msg
   type client_id
-  type res = (((file_name disk_op) list * output list) * state) * ((name * msg) list) (* product is left-associative? *)
+  type res = ((file_name disk_op list * output list) * state) * ((name * msg) list) (* product is left-associative? *)
   type disk = file_name -> in_channel option
   val system_name : string
   val reboot : name -> disk -> state * file_name disk_op list
@@ -34,7 +34,6 @@ module type ARRANGEMENT = sig
   val create_client_id : unit -> client_id
   val string_of_client_id : client_id -> string
   val string_of_file_name : file_name -> string
-  val file_name_of_string : string -> file_name
   val files : file_name list
 end
 

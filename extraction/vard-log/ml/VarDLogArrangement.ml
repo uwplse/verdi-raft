@@ -44,7 +44,7 @@ module VarDLogArrangement (P : VardLogParams) = struct
   type output = VarDRaftLog.raft_output
   type msg = VarDRaftLog.msg0
   type client_id = int
-  type res = (((file_name DiskOpShim.disk_op) list * output list) * state) * ((name * msg) list)
+  type res = ((file_name DiskOpShim.disk_op list * output list) * state) * ((name * msg) list)
   type disk = log_files -> in_channel option
   let system_name = "VarDLog"
   let reboot = Obj.magic (transformed_failure_params P.num_nodes P.snapshot_interval)
@@ -94,10 +94,5 @@ module VarDLogArrangement (P : VardLogParams) = struct
                                      | Count -> "count"
                                      | Snapshot -> "snapshot"
                                      | Log -> "log"
-  let file_name_of_string = fun s -> match s with
-                                     | "count" -> Count
-                                     | "snapshot" -> Snapshot
-                                     | "log" -> Log
-                                     | _ -> failwith "Unrecognized file name"
   let files = [Count; Snapshot; Log]
 end
