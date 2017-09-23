@@ -11,8 +11,7 @@ class TestVard(unittest.TestCase):
     client = None
     processes = None
 
-    def setUp(self):
-        """Start up a cluster"""
+    def startProcesses(self):
         self.processes = []
         for i in range(3):
             port = 8000 + i
@@ -27,22 +26,32 @@ class TestVard(unittest.TestCase):
             proc = subprocess.Popen(args, stdout=FNULL, stderr=subprocess.STDOUT, close_fds=True)
             self.processes.append(proc)
             time.sleep(1)
+
+    def connectClient(self):
         cluster = [('localhost', 8000),
                    ('localhost', 8001),
                    ('localhost', 8002)]
         host, port = Client.find_leader(cluster)
         self.client = Client(host, port)
 
-    def tearDownProcesses(self):
+    def terminateProcesses(self):
         for i in range(3):
             self.processes[i].terminate()
         self.client = None
         self.processes = None
-    
-    def tearDown(self):
-        self.tearDownProcesses()
+
+    def removeProcessDirs(self):
         for i in range(3):
             shutil.rmtree('db-%d' % i)
+
+    def setUp(self):
+        """Start up a cluster"""
+        self.startProcesses()
+        self.connectClient()
+
+    def tearDown(self):
+        self.terminateProcesses()
+        self.removeProcessDirs()
 
     def test_put_get(self):
        self.client.put('answer', '42')
@@ -52,8 +61,9 @@ class TestVard(unittest.TestCase):
        self.client.put('answer', '42')
        self.client.put('plse', 'lab')
        self.client.put('average', 'joe')
-       self.tearDownProcesses()
-       self.setUp()
+       self.terminateProcesses()
+       self.startProcesses()
+       self.connectClient()
        self.assertEqual(self.client.get('answer'), '42')
        self.assertEqual(self.client.get('plse'), 'lab')
        self.assertEqual(self.client.get('average'), 'joe')
@@ -65,3 +75,4 @@ class TestVard(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

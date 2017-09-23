@@ -13,7 +13,6 @@ Require Import VerdiRaft.VarDRaftSerializedCorrect.
 Require Import VerdiRaft.VarDRaftSerializedLog.
 
 Section SerializedLogCorrect.
-  Context {sW : Serializer IOStreamWriter.wire}.
   Variables n snapshot_interval : nat.
 
   Instance raft_params : RaftParams VarD.vard_base_params :=
