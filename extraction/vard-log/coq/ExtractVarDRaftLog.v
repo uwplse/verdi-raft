@@ -21,5 +21,4 @@ Require Import Cheerios.ExtrOcamlCheeriosNatInt.
 Require Import Cheerios.ExtrOcamlCheeriosString.
 Require Import Cheerios.ExtrOcamlCheeriosFinInt.
 
-
 Extraction "extraction/vard-log/ml/VarDRaftLog.ml" seq transformed_base_params transformed_multi_params transformed_failure_params.
