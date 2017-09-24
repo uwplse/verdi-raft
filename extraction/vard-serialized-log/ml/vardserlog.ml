@@ -27,7 +27,7 @@ let _ =
   let module NumNodes = struct let v = length !cluster end in
   if !debug then
     let module VarDSerializedLog =
-	  DiskOpShim.DiskOpShim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.DebugParams(NumNodes)))
+	  DiskOpShim.Shim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.DebugParams(NumNodes)))
     in
     let open VarDSerializedLog in
     main { cluster = !cluster
@@ -37,7 +37,7 @@ let _ =
          }
   else
     let module VarDSerializedLog =
-	  DiskOpShim.DiskOpShim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.BenchParams(NumNodes)))
+	  DiskOpShim.Shim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.BenchParams(NumNodes)))
     in
     let open VarDSerializedLog in
     main { cluster = !cluster

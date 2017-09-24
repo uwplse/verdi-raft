@@ -4,7 +4,7 @@ OCAMLBUILD = ocamlbuild -tag safe_string -pkgs 'verdi-runtime cheerios-runtime' 
 OCAMLBUILD_TEST := $(OCAMLBUILD) -package oUnit -I test
 
 VARDRAFTSERLOG = ml/VarDRaftSerializedLog.ml ml/VarDRaftSerializedLog.mli
-VARDSERLOG = ml/vardserlog.ml ml/DiskOpShim.ml ml/VarDSerializedLogSerialization.ml ml/VarDSerializedLogArrangement.ml
+VARDSERLOG = ml/vardserlog.ml ml/VarDSerializedLogSerialization.ml ml/VarDSerializedLogArrangement.ml
 
 default: vardserlog.native
 
