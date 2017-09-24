@@ -9,7 +9,7 @@ Require Import VerdiRaft.Linearizability.
 Require Import VerdiRaft.RaftLinearizableProofs.
 
 Require Import VerdiRaft.EndToEndLinearizability.
-Require Import VerdiCheerios.SerializedMsgParamsCorrect.
+Require Import Verdi.SerializedMsgParamsCorrect.
 
 Require Import VerdiRaft.VarDRaftSerialized.
 

@@ -18,7 +18,6 @@ depends: [
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
   "cheerios" {= "dev"}
-  "verdi-cheerios" {= "dev"}
   "verdi-runtime" {= "dev"}
   "ocamlbuild" {build}
   "ounit" {test & >= "2.0.0"}

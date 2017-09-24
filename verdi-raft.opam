@@ -18,7 +18,6 @@ depends: [
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
   "cheerios" {= "dev"}
-  "verdi-cheerios" {= "dev"}
 ]
 
 tags: [

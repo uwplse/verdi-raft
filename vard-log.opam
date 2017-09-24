@@ -9,9 +9,9 @@ license: "BSD"
 
 build: [
   [ "./configure" ]
-  [ make "-j%{jobs}%" "vard-serialized" ]
+  [ make "-j%{jobs}%" "vard-log" ]
 ]
-build-test: [make "vard-serialized-test"]
+build-test: [make "vard-log-test"]
 available: [ ocaml-version >= "4.02.3" ]
 depends: [
   "coq" {>= "8.6" & < "8.7~"}
