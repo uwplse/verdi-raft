@@ -8,7 +8,9 @@ namespace :compilation do
         execute :make,
           "-j #{fetch(:make_jobs)}",
           'vard',
-          'vard-serialized'
+          'vard-serialized',
+          'vard-log',
+          'vard-serialized-log'
       end
     end
   end
@@ -20,7 +22,9 @@ namespace :compilation do
         execute :make,
           "-j #{fetch(:make_jobs)}",
           'vard',
-          'vard-serialized'
+          'vard-serialized',
+          'vard-log',
+          'vard-serialized-log'
       end
     end
   end

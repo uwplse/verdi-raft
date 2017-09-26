@@ -30,7 +30,11 @@ append :linked_dirs,
   'extraction/vard/tmp',
   'extraction/vard/log',
   'extraction/vard-serialized/tmp',
-  'extraction/vard-serialized/log'
+  'extraction/vard-serialized/log',
+  'extraction/vard-log/tmp',
+  'extraction/vard-log/log',
+  'extraction/vard-serialized-log/tmp',
+  'extraction/vard-serialized-log/log'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

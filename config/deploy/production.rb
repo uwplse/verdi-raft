@@ -38,8 +38,14 @@ server 'discoberry10.cs.washington.edu', user: 'pi', name: '9', roles: %w{node}
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
+set :vard_log_node_port, 9500
+set :vard_log_client_port, 8500
+
 set :vard_node_port, 9000
 set :vard_client_port, 8000
+
+set :vard_serialized_log_node_port, 7500
+set :vard_serialized_log_client_port, 6500
 
 set :vard_serialized_node_port, 7000
 set :vard_serialized_client_port, 6000
