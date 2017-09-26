@@ -80,6 +80,9 @@ clean:
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
+	$(MAKE) -C extraction/vard-serialized clean
+	$(MAKE) -C extraction/vard-log clean
+	$(MAKE) -C extraction/vard-serialized-log clean
 
 $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
