@@ -24,24 +24,21 @@ let _ =
       prerr_newline ();
       exit 2
   in
-  let module NumNodes = struct let v = length !cluster end in
-  if !debug then
-    let module VarDSerialized =
-      Shim.Shim(VarDSerializedArrangement.VarDSerializedArrangement(VarDSerializedArrangement.DebugParams(NumNodes)))
-    in
-    let open VarDSerialized in
-    main { cluster = !cluster
-         ; me = !me
-         ; port = !port
-         ; dbpath = !dbpath
-         }
-  else
-    let module VarDSerialized =
-      Shim.Shim(VarDSerializedArrangement.VarDSerializedArrangement(VarDSerializedArrangement.BenchParams(NumNodes)))
-    in
-    let open VarDSerialized in
-    main { cluster = !cluster
-         ; me = !me
-         ; port = !port
-         ; dbpath = !dbpath
-         }
+  let module NumNodes =
+      struct
+	let v = length !cluster
+      end
+  in
+  let module Params =
+	(val (if !debug then
+	    (module VarDSerializedArrangement.DebugParams(NumNodes) : VarDSerializedArrangement.VarDParams)
+	  else
+	    (module VarDSerializedArrangement.BenchParams(NumNodes) : VarDSerializedArrangement.VarDParams)))
+  in
+  let module VarD = Shim.Shim(VarDSerializedArrangement.VarDArrangement(Params)) in
+  let open VarD in
+  main { cluster = !cluster
+       ; me = !me
+       ; port = !port
+       ; dbpath = !dbpath
+       }

@@ -8,7 +8,7 @@ module type IntValue = sig
   val v : int
 end
 
-module type VardSerializedParams = sig
+module type VarDParams = sig
   val debug : bool
   val heartbeat_timeout : float
   val election_timeout : float
@@ -33,7 +33,7 @@ struct
   let num_nodes = I.v
 end
 
-module VarDSerializedArrangement (P : VardSerializedParams) = struct
+module VarDArrangement (P : VarDParams) = struct
   type name = VarDRaftSerialized.name0
   type state = raft_data0
   type input = VarDRaftSerialized.raft_input

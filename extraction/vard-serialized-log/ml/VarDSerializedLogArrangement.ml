@@ -8,7 +8,7 @@ module type IntValue = sig
   val v : int
 end
   
-module type VarDSerializedLogParams = sig
+module type VarDParams = sig
   val debug : bool
   val heartbeat_timeout : float
   val election_timeout : float
@@ -36,7 +36,7 @@ struct
   let snapshot_interval = 1000
 end
 
-module VarDSerializedLogArrangement (P : VarDSerializedLogParams) = struct
+module VarDArrangement (P : VarDParams) = struct
   type name = VarDRaftSerializedLog.name0
   type file_name = VarDRaftSerializedLog.log_files
   type state = VarDRaftSerializedLog.log_state

@@ -24,24 +24,21 @@ let _ =
       prerr_newline ();
       exit 2
   in
-  let module NumNodes = struct let v = length !cluster end in
-  if !debug then
-    let module VarDSerializedLog =
-	  DiskOpShim.Shim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.DebugParams(NumNodes)))
-    in
-    let open VarDSerializedLog in
-    main { cluster = !cluster
-         ; me = !me
-         ; port = !port
-         ; fspath = !dbpath
-         }
-  else
-    let module VarDSerializedLog =
-	  DiskOpShim.Shim(VarDSerializedLogArrangement.VarDSerializedLogArrangement(VarDSerializedLogArrangement.BenchParams(NumNodes)))
-    in
-    let open VarDSerializedLog in
-    main { cluster = !cluster
-         ; me = !me
-         ; port = !port
-         ; fspath = !dbpath
-         }  
+  let module NumNodes =
+      struct
+	let v = length !cluster
+      end
+  in
+  let module Params =
+	(val (if !debug then
+	    (module VarDSerializedLogArrangement.DebugParams(NumNodes) : VarDSerializedLogArrangement.VarDParams)
+	  else
+	    (module VarDSerializedLogArrangement.BenchParams(NumNodes) : VarDSerializedLogArrangement.VarDParams)))
+  in
+  let module VarD = DiskOpShim.Shim(VarDSerializedLogArrangement.VarDArrangement(Params)) in
+  let open VarD in
+  main { cluster = !cluster
+       ; me = !me
+       ; port = !port
+       ; fspath = !dbpath
+       }

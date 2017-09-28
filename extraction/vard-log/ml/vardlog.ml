@@ -24,24 +24,21 @@ let _ =
       prerr_newline ();
       exit 2
   in
-  let module NumNodes = struct let v = length !cluster end in
-  if !debug then
-    let module VarDLog =
-	  DiskOpShim.Shim(VarDLogArrangement.VarDLogArrangement(VarDLogArrangement.DebugParams(NumNodes)))
-    in
-    let open VarDLog in
-    main { cluster = !cluster
-         ; me = !me
-         ; port = !port
-         ; fspath = !dbpath
-         }
-  else
-    let module VarDLog =
-	  DiskOpShim.Shim(VarDLogArrangement.VarDLogArrangement(VarDLogArrangement.BenchParams(NumNodes)))
-    in
-    let open VarDLog in
-    main { cluster = !cluster
-         ; me = !me
-         ; port = !port
-         ; fspath = !dbpath
-         }
+  let module NumNodes =
+      struct
+	let v = length !cluster
+      end
+  in
+  let module Params =
+	(val (if !debug then
+	    (module VarDLogArrangement.DebugParams(NumNodes) : VarDLogArrangement.VarDParams)
+	  else
+	    (module VarDLogArrangement.BenchParams(NumNodes) : VarDLogArrangement.VarDParams)))
+  in
+  let module VarD = DiskOpShim.Shim(VarDLogArrangement.VarDArrangement(Params)) in
+  let open VarD in
+  main { cluster = !cluster
+       ; me = !me
+       ; port = !port
+       ; fspath = !dbpath
+       }
