@@ -33,7 +33,7 @@ Section VarDRaftCorrect.
         equivalent _ (import tr) l /\
         exported (get_input tr) (get_output tr) l tr1 /\
         step_1_star init st tr1.
-   Proof.
+   Proof using.
      exact raft_linearizable.
    Qed.
 End VarDRaftCorrect.

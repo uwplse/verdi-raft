@@ -78,7 +78,7 @@ Section Serializers.
 
   Lemma entry_serialize_deserialize_id :
     serialize_deserialize_id_spec entry_serialize entry_deserialize.
-  Proof.
+  Proof using.
     intros.
     unfold entry_serialize, entry_deserialize.
     cheerios_crush.
@@ -152,7 +152,7 @@ Section Serializers.
 
   Lemma msg_serialize_deserialize_id :
     serialize_deserialize_id_spec msg_serialize msg_deserialize.
-  Proof.
+  Proof using.
     intros.
     unfold msg_serialize, msg_deserialize.
     destruct a;
@@ -188,7 +188,7 @@ Section Serializers.
 
   Lemma serverType_serialize_deserialize_id :
     serialize_deserialize_id_spec serialize_serverType deserialize_serverType.
-  Proof.
+  Proof using.
     intros.
     unfold serialize_serverType, deserialize_serverType.
     destruct a;
@@ -214,7 +214,7 @@ Section Serializers.
 
   Lemma output_serialize_deserialize_id :
     serialize_deserialize_id_spec serialize_output deserialize_output.
-  Proof.
+  Proof using.
     intros.
     unfold serialize_output, deserialize_output.
     destruct a;
@@ -261,7 +261,7 @@ Section Serializers.
 
   Lemma raft_data_serialize_deserialize_id :
     serialize_deserialize_id_spec serialize_raft_data deserialize_raft_data.
-  Proof.
+  Proof using.
     intros.
     unfold serialize_raft_data, deserialize_raft_data.
     cheerios_crush.
@@ -295,7 +295,7 @@ Section Serializers.
 
   Lemma raft_input_serialize_deserialize_id :
     serialize_deserialize_id_spec serialize_raft_input deserialize_raft_input.
-  Proof.
+  Proof using.
     intros.
     unfold serialize_raft_input, deserialize_raft_input.
     destruct a;

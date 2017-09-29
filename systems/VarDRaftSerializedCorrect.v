@@ -32,7 +32,7 @@ Section VarDSerializedCorrect.
     forall tr,
       input_correct tr ->
       input_correct (filterMap trace_non_empty_out tr).
-  Proof.
+  Proof using.
     induction tr; simpl; intro H_inp; auto.
     destruct a, s; simpl.
     - assert (H_inp': input_correct tr).
@@ -79,7 +79,7 @@ Section VarDSerializedCorrect.
     forall tr,
       input_correct (filterMap trace_non_empty_out tr) ->
       input_correct tr.
-  Proof.
+  Proof using.
     induction tr; simpl; auto.
     destruct a, s; simpl; intro H_inp.
     - assert (H_inp': input_correct (filterMap trace_non_empty_out tr)).
@@ -123,7 +123,7 @@ Section VarDSerializedCorrect.
       input_correct tr ->
       filterMap trace_non_empty_out tr = filterMap trace_non_empty_out tr' ->
       input_correct tr'.
-  Proof.
+  Proof using.
     intros tr tr' H_in H_eq.
     apply correct_filterMap_trace_non_empty_out_input_correct.
     rewrite <- H_eq.
@@ -133,7 +133,7 @@ Section VarDSerializedCorrect.
   Lemma get_input_tr_filterMap_trace_non_empty_out :
     forall tr,
       get_input tr = get_input (filterMap trace_non_empty_out tr).
-  Proof.
+  Proof using.
     induction tr; simpl; auto.
     destruct a, s; simpl.
     - rewrite IHtr; auto.
@@ -143,7 +143,7 @@ Section VarDSerializedCorrect.
   Lemma get_output_tr_filterMap_trace_non_empty_out :
     forall tr,
       get_output tr = get_output (filterMap trace_non_empty_out tr).
-  Proof.
+  Proof using.
     induction tr; simpl; auto.
     destruct a, s; simpl.
     - rewrite IHtr; auto.
@@ -156,7 +156,7 @@ Section VarDSerializedCorrect.
       exported (get_input tr') (get_output tr') l tr1 ->
       filterMap trace_non_empty_out tr = filterMap trace_non_empty_out tr' ->
       exported (get_input tr) (get_output tr) l tr1.
-  Proof.
+  Proof using.
     intros tr tr' l tr1 H_exp H_eq.
     rewrite get_input_tr_filterMap_trace_non_empty_out in H_exp.
     rewrite get_output_tr_filterMap_trace_non_empty_out in H_exp.
@@ -169,7 +169,7 @@ Section VarDSerializedCorrect.
   Lemma import_exported_filterMap_trace_non_empty_out : 
     forall tr,
       import tr = import (filterMap trace_non_empty_out tr).
-  Proof.
+  Proof using.
     induction tr; simpl; auto.
     destruct a, s; simpl.
     - rewrite IHtr; auto.
@@ -182,7 +182,7 @@ Section VarDSerializedCorrect.
       equivalent key (import tr') l ->
       filterMap trace_non_empty_out tr = filterMap trace_non_empty_out tr' ->
       equivalent key (import tr) l.
-  Proof.
+  Proof using.
     intros tr tr' l H_equ H_eq.
     rewrite import_exported_filterMap_trace_non_empty_out.
     rewrite H_eq.
