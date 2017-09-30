@@ -12,16 +12,15 @@ env:
     - COQ_VERSION=8.6.1
   matrix:
     - MODE=build
-    - MODE=proofalytics
     - MODE=vard OPAMBUILDTEST=1
     - MODE=vard-serialized OPAMBUILDTEST=1
     - MODE=vard-log OPAMBUILDTEST=1
     - MODE=vard-serialized-log OPAMBUILDTEST=1
-before_install:
-  - openssl aes-256-cbc -K $encrypted_130bc391cda8_key -iv $encrypted_130bc391cda8_iv -in .travis/travis_rsa.enc -out .travis/travis_rsa -d
-  - cp .travis/travis_rsa ~/.ssh
-  - chmod 600 ~/.ssh/travis_rsa
-  - cp .travis/ssh_config ~/.ssh/config
+#before_install:
+#  - openssl aes-256-cbc -K $encrypted_130bc391cda8_key -iv $encrypted_130bc391cda8_iv -in .travis/travis_rsa.enc -out .travis/travis_rsa -d
+#  - cp .travis/travis_rsa ~/.ssh
+#  - chmod 600 ~/.ssh/travis_rsa
+#  - cp .travis/ssh_config ~/.ssh/config
 script: bash -ex .travis-ci.sh
 sudo: false
 notifications:
