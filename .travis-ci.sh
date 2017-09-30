@@ -10,7 +10,16 @@ opam pin add coq $COQ_VERSION --yes --verbose
 
 case $MODE in
   proofalytics)
-    opam pin add verdi-raft-proofalytics . --yes --verbose
+    opam pin add verdi-raft . --yes --verbose --no-action
+    opam install verdi-raft --yes --verbose --deps-only
+    ./configure
+    make proofalytics &
+    # Output to the screen every 9 minutes to prevent a travis timeout
+    export PID=$!
+    while [[ `ps -p $PID | tail -n +2` ]]; do
+	echo 'proofalyzing...'
+	sleep 540
+    done
     ;;
   checkproofs)
     opam pin add verdi-raft-checkproofs . --yes --verbose
