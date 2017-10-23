@@ -7,6 +7,8 @@ Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Require Export VerdiRaft.CommonDefinitions.
 
+Require Import FunInd.
+
 Section CommonTheorems.
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.

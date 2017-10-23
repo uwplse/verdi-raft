@@ -4,7 +4,7 @@ PYTHON=python2.7
 include Makefile.detect-coq-version
 
 ifeq (,$(filter $(COQVERSION),8.6 8.7 trunk))
-$(error "Verdi Raft is only compatible with Coq version 8.6 or later")
+$(error "Verdi Raft is only compatible with Coq version 8.6.1 or later")
 endif
 
 COQPROJECT_EXISTS := $(wildcard _CoqProject)
@@ -64,16 +64,14 @@ Makefile.coq: _CoqProject
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v' \
           -extra '$(VARDSERLOGML)' \
 	    'extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v systems/VarDRaftSerializedLog.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v' \
-          -extra-phony 'distclean' 'clean' \
-	    'rm -f $$(join $$(dir $$(VFILES)),$$(addprefix .,$$(notdir $$(patsubst %.v,%.vo.aux,$$(VFILES)))))'
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v'
 
 raft/RaftState.v: raft/RaftState.v.rec
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
 
 clean:
 	if [ -f Makefile.coq ]; then \
-	  $(MAKE) -f Makefile.coq distclean; fi
+	  $(MAKE) -f Makefile.coq cleanall; fi
 	rm -f Makefile.coq script/.assumptions.vo.aux
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
