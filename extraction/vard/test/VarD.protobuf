@@ -1,0 +1,29 @@
+Message VarDInput {
+  enum Tag {
+    PUT = 0;
+    GET = 1;
+    DEL = 2;
+    CAS = 3;
+    CAD = 4;
+  }
+  required Tag = 0;
+  required string key = 1;
+  optional string value1 = 2;
+  optional string value2 = 3;
+}
+
+Message VarDOutput {
+  enum Tag {
+    TIMEOUT = 0;
+    RESPONSE = 1;
+  }
+
+  Message Response {
+    required string key = 0;
+    optional string value1 = 1;
+    optional string value2 = 2;
+  }
+
+  required Tag = 0;
+  optional Message = 1;  
+}
