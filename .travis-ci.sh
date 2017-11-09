@@ -1,12 +1,12 @@
 set -ev
 
-opam init --yes --no-setup
+[ -e .opam ] || opam init --compiler=${COMPILER} --yes --no-setup
 eval $(opam config env)
 
 opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
 
-opam pin add coq $COQ_VERSION --yes --verbose
+opam pin add coq ${COQ_VERSION} --yes --verbose
 
 case $MODE in
   proofalytics)

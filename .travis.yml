@@ -1,13 +1,18 @@
 language: c
+cache:
+  apt: true
+  directories:
+  - $HOME/.opam
 addons:
   apt:
     sources:
       - avsm
     packages:
-      - ocaml:i386
-      - opam:i386
+      - opam
       - aspcud
 env:
+  global:
+    - COMPILER="4.02.3+32bit"
   matrix:
     - COQ_VERSION=8.6.1 MODE=build
     - COQ_VERSION=8.7.0 MODE=build
