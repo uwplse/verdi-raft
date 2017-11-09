@@ -4,17 +4,13 @@ addons:
     sources:
       - avsm
     packages:
-      - ocaml
-      - opam
+      - ocaml:i386
+      - opam:i386
       - aspcud
 env:
   matrix:
     - COQ_VERSION=8.6.1 MODE=build
     - COQ_VERSION=8.7.0 MODE=build
-    - COQ_VERSION=8.6.1 MODE=vard OPAMBUILDTEST=1
-    - COQ_VERSION=8.6.1 MODE=vard-serialized OPAMBUILDTEST=1
-    - COQ_VERSION=8.6.1 MODE=vard-log OPAMBUILDTEST=1
-    - COQ_VERSION=8.6.1 MODE=vard-serialized-log OPAMBUILDTEST=1
 #before_install:
 #  - openssl aes-256-cbc -K $encrypted_130bc391cda8_key -iv $encrypted_130bc391cda8_iv -in .travis/travis_rsa.enc -out .travis/travis_rsa -d
 #  - cp .travis/travis_rsa ~/.ssh
