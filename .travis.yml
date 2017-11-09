@@ -10,6 +10,8 @@ addons:
     packages:
       - opam
       - aspcud
+      - gcc-multilib
+      - g++-multilib
 env:
   global:
     - COMPILER="4.02.3+32bit"
