@@ -1,6 +1,6 @@
 set -ev
 
-[ -e .opam ] || opam init --compiler=${COMPILER} --yes --no-setup
+opam init --compiler=${COMPILER} --yes --no-setup
 eval $(opam config env)
 
 opam repo add coq-released https://coq.inria.fr/opam/released
