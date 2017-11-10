@@ -1,12 +1,12 @@
 set -ev
 
-if [ ! -d .opam ]; then
+if [ ! -d ~/.opam ]; then
   opam init --compiler=${COMPILER} --yes --no-setup
 fi
 
 eval $(opam config env)
 
-if [ ! -d .opam ]; then
+if [ ! -d ~/.opam ]; then
   opam repo add coq-released https://coq.inria.fr/opam/released
   opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
 fi
