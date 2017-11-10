@@ -32,7 +32,7 @@ Integration testing of `vard`:
 
 Unit testing of unverified `vard` code:
 
-- [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org)
+- [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org) (or later)
 
 Building
 --------
