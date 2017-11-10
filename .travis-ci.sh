@@ -42,6 +42,6 @@ case ${MODE} in
     ;;
   *)
     opam pin add verdi-raft . --yes --verbose
-    opam pin remove verdi-raft
+    opam pin remove verdi-raft --yes --verbose
     ;;
 esac
