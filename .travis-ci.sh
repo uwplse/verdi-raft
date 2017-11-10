@@ -1,10 +1,15 @@
 set -ev
 
-[ -e .opam ] || opam init --compiler=${COMPILER} --yes --no-setup
+if [ ! -d .opam ]; then
+  opam init --compiler=${COMPILER} --yes --no-setup
+fi
+
 eval $(opam config env)
 
-[ -e .opam ] || opam repo add coq-released https://coq.inria.fr/opam/released
-[ -e .opam ] || opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
+if [ ! -d .opam ]; then
+  opam repo add coq-released https://coq.inria.fr/opam/released
+  opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
+fi
 
 opam pin add coq ${COQ_VERSION} --yes --verbose
 
