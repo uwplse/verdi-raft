@@ -1,15 +1,11 @@
 set -ev
 
-if [ ! -d ~/.opam ]; then
-  opam init --compiler=${COMPILER} --yes --no-setup
-fi
+[ -d "/home/travis/.opam" ] || opam init --compiler=${COMPILER} --yes --no-setup
 
 eval $(opam config env)
 
-if [ ! -d ~/.opam ]; then
-  opam repo add coq-released https://coq.inria.fr/opam/released
-  opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-fi
+[ -d "/home/travis/.opam" ] || opam repo add coq-released https://coq.inria.fr/opam/released
+[ -d "/home/travis/.opam" ] || opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
 
 opam pin add coq ${COQ_VERSION} --yes --verbose
 
@@ -46,5 +42,6 @@ case ${MODE} in
     ;;
   *)
     opam pin add verdi-raft . --yes --verbose
+    opam pin remove verdi-raft
     ;;
 esac
