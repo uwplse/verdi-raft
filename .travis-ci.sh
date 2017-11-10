@@ -1,11 +1,13 @@
 set -ev
 
-[ -e "/home/travis/.opam/config" ] || opam init --compiler=${COMPILER} --yes --no-setup
-
-eval $(opam config env)
-
-[ -e "/home/travis/.opam/config" ] || opam repo add coq-released https://coq.inria.fr/opam/released
-[ -e "/home/travis/.opam/config" ] || opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
+if [ -e "/home/travis/.opam/config" ]; then
+    eval $(opam config env)
+else
+    opam init --compiler=${COMPILER} --yes --no-setup
+    eval $(opam config env)
+    opam repo add coq-released https://coq.inria.fr/opam/released
+    opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
+fi
 
 opam pin add coq ${COQ_VERSION} --yes --verbose
 
