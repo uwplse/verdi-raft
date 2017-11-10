@@ -1,6 +1,6 @@
 set -ev
 
-opam init --compiler=${COMPILER} --yes --no-setup
+[ -e .opam ] || opam init --compiler=${COMPILER} --yes --no-setup
 eval $(opam config env)
 
 opam repo add coq-released https://coq.inria.fr/opam/released
@@ -8,7 +8,10 @@ opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.ne
 
 opam pin add coq ${COQ_VERSION} --yes --verbose
 
-case $MODE in
+opam update --yes --verbose
+opam upgrade --yes --verbose
+
+case ${MODE} in
   proofalytics)
     opam pin add verdi-raft . --yes --verbose --no-action
     opam install verdi-raft --yes --verbose --deps-only
