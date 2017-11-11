@@ -55,6 +55,8 @@ and `Cheerios` are assumed to be installed in Coq's
 
 Finally, run `make` in the root directory. This will compile the Raft
 implementation and proof interfaces, and check all the proofs.
+To speed up proof checking on multi-core machines, use `make -jX`,
+where `X` is at least the number of cores.
 
 To build the `vard` key-value store program in `extraction/vard`,
 run `make vard` in the root directory. If the implementation has
