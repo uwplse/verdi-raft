@@ -1,3 +1,4 @@
+import random
 import socket
 import re
 import uuid
@@ -36,6 +37,7 @@ class Client(object):
     response_re = re.compile(r'Response\W+([0-9]+)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)')
 
     def __init__(self, host, port, sock=None):
+        self.client_id = random.randint(0, 2**31 - 1)
         if not sock:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((host, port))
@@ -54,7 +56,7 @@ class Client(object):
         return str(arg)
 
     def send_command(self, cmd, arg1=None, arg2=None, arg3=None):
-        msg = str(self.request_id) + ' ' + cmd + ' ' + ' '.join(map(self.serialize, (arg1, arg2, arg3)))
+        msg = str(self.client_id) + ' ' + str(self.request_id) + ' ' + cmd + ' ' + ' '.join(map(self.serialize, (arg1, arg2, arg3)))
         n = self.sock.send(pack("<I", len(msg)))
         if n < 4:
             raise SendError
