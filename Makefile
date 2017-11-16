@@ -47,6 +47,7 @@ VARDML = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 VARDSERML = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
 VARDLOGML = extraction/vard-log/ml/VarDRaftLog.ml extraction/vard-log/ml/VarDRaftLog.mli
 VARDSERLOGML = extraction/vard-serialized-log/ml/VarDRaftSerializedLog.ml extraction/vard-serialized-log/ml/VarDRaftSerializedLog.mli
+VARDDISKLESSML = extraction/vard-diskless/ml/VarDRaftDiskless.ml extraction/vard-diskless/ml/VarDRaftDiskless.mli
 
 Makefile.coq: _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
@@ -64,7 +65,11 @@ Makefile.coq: _CoqProject
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v' \
           -extra '$(VARDSERLOGML)' \
 	    'extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v systems/VarDRaftSerializedLog.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v'
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v' \
+          -extra '$(VARDDISKLESSML)' \
+	    'extraction/vard-diskless/coq/ExtractVarDRaftDiskless.v systems/VarDRaft.vo' \
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-diskless/coq/ExtractVarDRaftDiskless.v' \
+
 
 raft/RaftState.v: raft/RaftState.v.rec
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
@@ -80,7 +85,7 @@ clean:
 	$(MAKE) -C extraction/vard-log clean
 	$(MAKE) -C extraction/vard-serialized-log clean
 
-$(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML): Makefile.coq
+$(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDISKLESSML): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
 vard:
@@ -107,6 +112,12 @@ vard-serialized-log:
 vard-serialized-log-test:
 	+$(MAKE) -C extraction/vard-serialized-log test
 
+vard-diskless:
+	+$(MAKE) -C extraction/vard-diskless
+
+vard-diskless-test:
+	+$(MAKE) -C extraction/vard-diskless test
+
 lint:
 	@echo "Possible use of hypothesis names:"
 	find . -name '*.v' -exec grep -Hn 'H[0-9][0-9]*' {} \;
@@ -116,9 +127,10 @@ distclean: clean
 
 .PHONY: default quick install clean lint proofalytics distclean checkproofs
 .PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test vard-serialized-log vard-serialized-log-test
-.PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML)
+.PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDISKLESS)
 
 .NOTPARALLEL: $(VARDML)
 .NOTPARALLEL: $(VARDSERML)
 .NOTPARALLEL: $(VARDLOGML)
 .NOTPARALLEL: $(VARDSERLOGML)
+.NOTPARALLEL: $(VARDDISKLESSML)
