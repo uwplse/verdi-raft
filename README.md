@@ -60,9 +60,9 @@ where `X` is at least the number of cores.
 
 To build the `vard` key-value store program in `extraction/vard`,
 run `make vard` in the root directory. If the implementation has
-been compiled as above, this simply compiles extracted OCaml
+been compiled as above, this simply compiles the extracted OCaml
 code to a native program; otherwise, the implementation
-Coq code is extracted to OCaml and compiled without checking any proofs.
+is extracted to OCaml and compiled without checking any proofs.
 
 Files
 -----
