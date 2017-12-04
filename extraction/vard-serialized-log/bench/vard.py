@@ -1,6 +1,6 @@
 import socket
 import re
-import uuid
+from random import randint
 from select import select
 from struct import pack, unpack
 
@@ -36,12 +36,31 @@ class Client(object):
     response_re = re.compile(r'Response\W+([0-9]+)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)')
 
     def __init__(self, host, port, sock=None):
-        if not sock:
+        self.client_id = randint(0, 2**32 - 1)
+        self.request_id = 0
+        if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((host, port))
         else:
             self.sock = sock
-        self.request_id = 0
+        self.send_client_id()
+
+    def send_client_id(self):
+        n = self.sock.send(pack("<I", 4))
+        if n < 4:
+            raise SendError
+        else:
+            self.sock.send(pack("<I", self.client_id))
+
+    def reconnect(self, host, port, sock=None):
+        self.sock.shutdown(1)
+        self.sock.close()
+        if sock is None:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.connect((host, port))
+        else:
+            self.sock = sock
+        self.send_client_id()
         
     def deserialize(self, data):
         if data == '-':

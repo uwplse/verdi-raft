@@ -88,9 +88,7 @@ module VarDArrangement (P : VarDParams) = struct
     flush_all ()
   let debug_timeout (s : state) = ()
   let debug_input s inp = ()
-  let create_client_id () =
-    let upper_bound = 1073741823 in
-    Random.int upper_bound
+  let deserialize_client_id = VarDSerializedLogSerialization.deserializeClientId
   let string_of_client_id = string_of_int
   let string_of_file_name = fun f -> match f with
                                      | Count -> "count"
