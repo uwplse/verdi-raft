@@ -10,7 +10,7 @@ Requirements
 
 Definitions and proofs:
 
-- [`Coq 8.6.1`](https://coq.inria.fr/coq-86) or [`Coq 8.7`](https://coq.inria.fr/coq-87)
+- [`Coq 8.6.1`](https://coq.inria.fr/coq-86) or [`Coq 8.7.0`](https://coq.inria.fr/coq-87)
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
 - [`Cheerios`](https://github.com/uwplse/cheerios)
@@ -32,7 +32,7 @@ Integration testing of `vard`:
 
 Unit testing of unverified `vard` code:
 
-- [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org)
+- [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org) (or later)
 
 Building
 --------
@@ -55,12 +55,14 @@ and `Cheerios` are assumed to be installed in Coq's
 
 Finally, run `make` in the root directory. This will compile the Raft
 implementation and proof interfaces, and check all the proofs.
+To speed up proof checking on multi-core machines, use `make -jX`,
+where `X` is at least the number of cores.
 
 To build the `vard` key-value store program in `extraction/vard`,
 run `make vard` in the root directory. If the implementation has
-been compiled as above, this simply extracts code to OCaml and
-compiles the result to a native program; otherwise, the implementation
-Coq code is compiled without checking any proofs.
+been compiled as above, this simply compiles the extracted OCaml
+code to a native program; otherwise, the implementation
+is extracted to OCaml and compiled without checking any proofs.
 
 Files
 -----
