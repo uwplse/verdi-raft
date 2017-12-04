@@ -5,29 +5,33 @@ open VarD
 open Util
 
 let outputToString out =
-  match (Obj.magic out) with
+  match Obj.magic out with
   | NotLeader (client_id, request_id) ->
     (client_id, sprintf "NotLeader %s" (string_of_int request_id))
   | ClientResponse (client_id, request_id, o) ->
      let Response (k, value, old) = (Obj.magic o) in
      (client_id,
       match (value, old) with
-      | Some v, Some o -> sprintf "Response %s %s %s %s"
-                                 (string_of_int request_id)
-                                 (string_of_char_list k)
-                                 (string_of_char_list v)
-                                 (string_of_char_list o)
-      | Some v, None -> sprintf "Response %s %s %s -"
-                               (string_of_int request_id)
-                               (string_of_char_list k)
-                               (string_of_char_list v)
-      | None, Some o -> sprintf "Response %s %s - %s"
-                               (string_of_int request_id)
-                               (string_of_char_list k)
-                               (string_of_char_list o)
-      | None, None -> sprintf "Response %s %s - -"
-                             (string_of_int request_id)
-                             (string_of_char_list k))
+      | Some v, Some o ->
+         sprintf "Response %s %s %s %s"
+           (string_of_int request_id)
+           (string_of_char_list k)
+           (string_of_char_list v)
+           (string_of_char_list o)
+      | Some v, None ->
+         sprintf "Response %s %s %s -"
+           (string_of_int request_id)
+           (string_of_char_list k)
+           (string_of_char_list v)
+      | None, Some o ->
+         sprintf "Response %s %s - %s"
+           (string_of_int request_id)
+           (string_of_char_list k)
+           (string_of_char_list o)
+      | None, None ->
+         sprintf "Response %s %s - -"
+           (string_of_int request_id)
+           (string_of_char_list k))
 
 let serializeOutput out =
   let (c, s) = outputToString out in
@@ -36,7 +40,7 @@ let serializeOutput out =
 let deserializeInp buf =
   let i = Bytes.to_string buf in
   let inp = String.trim i in
-  let r = regexp "\\([0-9]+\\) \\([A-Z]+\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\)[^/A-za-z0-9]*" in
+  let r = regexp "\\([0-9]+\\) \\([A-Z]+\\) +\\([/A-Za-z0-9]+\\|-\\) +\\([/A-Za-z0-9]+\\|-\\) +\\([/A-Za-z0-9]+\\|-\\)[^/A-Za-z0-9]*" in
   if string_match r inp 0 then
     (match (matched_group 1 inp, matched_group 2 inp,
             matched_group 3 inp, matched_group 4 inp,
@@ -56,3 +60,6 @@ let deserializeInput inp client_id =
   | Some (request_id, input) ->
     Some (ClientRequest (client_id, request_id, Obj.magic input))
   | None -> None
+
+let deserializeClientId b =
+  if Bytes.length b = 4 then Some (int_of_raw_bytes b) else None

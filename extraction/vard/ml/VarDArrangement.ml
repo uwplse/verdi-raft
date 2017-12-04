@@ -80,8 +80,6 @@ module VarDArrangement (P : VarDParams) = struct
      | _ -> ()); flush_all ()
   let debug_timeout (s : state) = ()
   let debug_input s inp = ()
-  let create_client_id () =
-    let upper_bound = 1073741823 in
-    Random.int upper_bound
+  let deserialize_client_id = VarDSerialization.deserializeClientId
   let string_of_client_id = string_of_int
 end
