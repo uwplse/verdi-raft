@@ -24,11 +24,14 @@ case ${MODE} in
     export PID=$!
     while [[ `ps -p $PID | tail -n +2` ]]; do
 	echo 'proofalyzing...'
-	sleep 540
+	sleep 240
     done
+    opam pin remove verdi-raft --yes --verbose
     ;;
   checkproofs)
     opam pin add verdi-raft-checkproofs . --yes --verbose
+    opam remove verdi-raft-checkproofs --yes --verbose
+    opam pin remove verdi-raft-checkproofs --yes --verbose
     ;;
   vard)
     opam pin add vard . --yes --verbose
@@ -37,12 +40,18 @@ case ${MODE} in
     ;;
   vard-serialized)
     opam pin add vard-serialized . --yes --verbose
+    opam remove vard-serialized --yes --verbose
+    opam pin remove vard-serialized --yes --verbose
     ;;
   vard-log)
     opam pin add vard-log . --yes --verbose
+    opam remove vard-log --yes --verbose
+    opam pin remove vard-log --yes --verbose
     ;;
   vard-serialized-log)
     opam pin add vard-serialized-log . --yes --verbose
+    opam remove vard-serialized-log --yes --verbose
+    opam pin remove vard-serialized-log --yes --verbose
     ;;
   *)
     opam pin add verdi-raft . --yes --verbose
