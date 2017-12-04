@@ -33,25 +33,25 @@ let serializeOutput out =
 
 let deserializeInp i =
   let inp = String.trim (Bytes.to_string i) in
-  let r = regexp "\\([0-9]+\\) \\([A-Z]+\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\)[^/A-za-z0-9]*" in
+  let r = regexp "\\([0-9]+\\) \\([0-9]+\\) \\([A-Z]+\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\) +\\([/A-za-z0-9]+\\|-\\)[^/A-za-z0-9]*" in
   if string_match r inp 0 then
     (match (matched_group 1 inp, matched_group 2 inp,
             matched_group 3 inp, matched_group 4 inp,
-            matched_group 5 inp) with
-     | (i, "GET", k, _, _) -> Some (int_of_string i, Get (char_list_of_string k))
-     | (i, "DEL", k, _, _) -> Some (int_of_string i, Del (char_list_of_string k))
-     | (i, "PUT", k, v, _) -> Some (int_of_string i, Put ((char_list_of_string k), (char_list_of_string v)))
-     | (i, "CAD", k, o, _) -> Some (int_of_string i, CAD (char_list_of_string k, char_list_of_string o))
-     | (i, "CAS", k, "-", v) -> Some (int_of_string i, CAS ((char_list_of_string k), None, (char_list_of_string v)))
-     | (i, "CAS", k, o, v) -> Some (int_of_string i, CAS ((char_list_of_string k), Some (char_list_of_string o), (char_list_of_string v)))
+            matched_group 5 inp, matched_group 6 inp) with
+     | (c, r, "GET", k, _, _) -> Some (int_of_string c, int_of_string r, Get (char_list_of_string k))
+     | (c, r, "DEL", k, _, _) -> Some (int_of_string c, int_of_string r, Del (char_list_of_string k))
+     | (c, r, "PUT", k, v, _) -> Some (int_of_string c, int_of_string r, Put ((char_list_of_string k), (char_list_of_string v)))
+     | (c, r, "CAD", k, o, _) -> Some (int_of_string c, int_of_string r, CAD (char_list_of_string k, char_list_of_string o))
+     | (c, r, "CAS", k, "-", v) -> Some (int_of_string c, int_of_string r, CAS ((char_list_of_string k), None, (char_list_of_string v)))
+     | (c, r, "CAS", k, o, v) -> Some (int_of_string c, int_of_string r, CAS ((char_list_of_string k), Some (char_list_of_string o), (char_list_of_string v)))
      | _ -> None)
   else
     (print_endline "No match" ; None)
 
-let deserializeInput inp client_id =
+let deserializeInput inp =
   match deserializeInp inp with
-  | Some (request_id, input) ->
-    Some (ClientRequest (client_id, request_id, Obj.magic input))
+  | Some (client_id, request_id, input) ->
+    Some (client_id, ClientRequest (client_id, request_id, Obj.magic input))
   | None -> None
 
 let deserializeMsg (b : bytes) : VarDRaft.msg = Marshal.from_bytes b 0
