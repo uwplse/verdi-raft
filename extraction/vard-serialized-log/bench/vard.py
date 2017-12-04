@@ -36,7 +36,7 @@ class Client(object):
     response_re = re.compile(r'Response\W+([0-9]+)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)')
 
     def __init__(self, host, port, sock=None):
-        self.client_id = randint(0, 2**32 - 1)
+        self.client_id = randint(0, 2**31 - 1)
         self.request_id = 0
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
