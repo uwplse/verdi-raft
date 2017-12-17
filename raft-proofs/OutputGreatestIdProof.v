@@ -29,7 +29,6 @@ Section OutputGreatestId.
   Context {smci : state_machine_correct_interface}.
   Context {lacimi : lastApplied_commitIndex_match_interface}.
 
-
   Lemma in_output_changed :
     forall client id tr o,
       ~ key_in_output_trace client id tr ->
@@ -86,7 +85,7 @@ Section OutputGreatestId.
       has_key (eClient e) (eId e) e = true.
   Proof using. 
     intros. unfold has_key. break_match; subst; simpl in *.
-    repeat (do_bool; intuition).
+    break_if; repeat (do_bool; intuition).
   Qed.
 
   Lemma has_key_true_necessary :
@@ -96,9 +95,8 @@ Section OutputGreatestId.
   Proof using. 
     intros. unfold has_key in *. break_match.
     simpl in *. subst.
-    repeat (do_bool; intuition).
+    break_if; repeat (do_bool; intuition); try congruence.
   Qed.
-
 
   Lemma applyEntries_cache :
     forall l h st os st' o client id id' o',
@@ -114,7 +112,7 @@ Section OutputGreatestId.
       try solve 
           [find_inversion; find_rewrite; find_inversion; do_bool; omega];
       try solve [find_inversion; repeat find_rewrite; congruence].
-      + do_bool. destruct (eq_nat_dec (eClient a) client).
+      + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * subst. find_rewrite. find_inversion.
           eapply IHl; [eapply lt_le_trans; eauto|idtac|idtac|]; eauto.
           unfold getLastId.
@@ -122,12 +120,12 @@ Section OutputGreatestId.
         * eapply IHl; eauto.
           unfold getLastId in *.
           simpl. rewrite get_set_diff; eauto.
-      + do_bool. destruct (eq_nat_dec (eClient a) client).
+      + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * repeat find_rewrite. congruence.
         * eapply IHl; eauto.
           unfold getLastId in *.
           simpl. rewrite get_set_diff; eauto.
-      + do_bool. destruct (eq_nat_dec (eClient a) client).
+      + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * repeat find_rewrite. find_inversion.
           eapply IHl; [eapply lt_le_trans; eauto|idtac|idtac|]; eauto.
           unfold getLastId.
@@ -135,7 +133,7 @@ Section OutputGreatestId.
         * eapply IHl; eauto.
           unfold getLastId in *.
           simpl. rewrite get_set_diff; eauto.
-      + do_bool. destruct (eq_nat_dec (eClient a) client).
+      + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * repeat find_rewrite. congruence.
         * eapply IHl; eauto.
           unfold getLastId in *.
@@ -148,7 +146,7 @@ Section OutputGreatestId.
       applyEntries h st l = (os, st') ->
       In (ClientResponse client id o) os ->
       before_func (has_key client id) (has_key client id') l.
-  Proof using. 
+  Proof using.
     induction l; intros; simpl in *; intuition.
     - find_inversion. simpl in *. intuition.
     - repeat break_match.
@@ -190,7 +188,6 @@ Section OutputGreatestId.
   Proof using. 
     induction l'; intros; simpl in *; intuition.
   Qed.
-
 
   Lemma entries_contiguous :
     forall net,
@@ -252,7 +249,7 @@ Section OutputGreatestId.
        find_apply_lem_hyp In_rev;
        apply Bool.not_true_iff_false;
        intuition; unfold has_key in *;
-       break_match; repeat (do_bool; intuition); simpl in *;
+       break_match; break_if; repeat (do_bool; intuition); simpl in *;
        eapply_prop_hyp client_cache_complete In; eauto;
        break_exists; intuition; simpl in *;
        subst;
@@ -310,7 +307,6 @@ Section OutputGreatestId.
         end.
         eapply_prop_hyp le le; eauto. intuition.
   Qed.
-
   
   Lemma output_implies_greatest :
     forall failed net failed' net' o client id id',
@@ -379,10 +375,10 @@ Section OutputGreatestId.
   Qed.
 
   Section inner.
-    Variables client id id' : nat.
-    Variable id_lt_id' : id < id'.
-    
-  
+    Variable client : clientId.
+    Variables id id' : nat.
+    Variable id_lt_id' : id < id'.    
+
     Instance TR : TraceRelation step_failure :=
       {
         init := step_failure_init;

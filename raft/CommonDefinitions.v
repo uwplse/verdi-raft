@@ -69,25 +69,25 @@ Section CommonDefinitions.
     Definition execute_log (log : list entry) : (list (input * output) * data) :=
       execute_log' log init [].
 
-    Definition key : Type := nat * nat.
+    Definition key : Type := clientId * nat.
 
     Definition key_eq_dec : forall x y : key, {x = y} + {x <> y}.
     Proof using. 
-      decide equality; auto using eq_nat_dec.
+      decide equality; auto using clientId_eq_dec, eq_nat_dec.
     Qed.
 
     Definition key_of (e : entry) :=
       (eClient e, eId e).
 
-    Fixpoint deduplicate_log' (log : list entry) (ks : list (nat * nat)) : list entry :=
+    Fixpoint deduplicate_log' (log : list entry) (ks : list (clientId * nat)) : list entry :=
       match log with
         | [] => []
         | e :: es =>
-          match assoc eq_nat_dec ks (eClient e) with
+          match assoc clientId_eq_dec ks (eClient e) with
             | Some n => if n <? eId e
-                        then e :: deduplicate_log' es (assoc_set eq_nat_dec ks (eClient e) (eId e))
+                        then e :: deduplicate_log' es (assoc_set clientId_eq_dec ks (eClient e) (eId e))
                         else deduplicate_log' es ks
-            | None => e :: deduplicate_log' es (assoc_set eq_nat_dec ks (eClient e) (eId e))
+            | None => e :: deduplicate_log' es (assoc_set clientId_eq_dec ks (eClient e) (eId e))
           end
       end.
 

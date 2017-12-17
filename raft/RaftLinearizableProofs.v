@@ -28,7 +28,6 @@ Section RaftLinearizableProofs.
     decide equality; auto using key_eq_dec.
   Qed.
 
-
   Fixpoint import (tr : list (name * (raft_input + list raft_output)))
   : list (op key) :=
     match tr with
@@ -66,7 +65,7 @@ Section RaftLinearizableProofs.
       | [] => None
       | (_, (inl (ClientRequest c id cmd))) :: xs =>
         if (sumbool_and _ _ _ _
-                        (eq_nat_dec c (fst k))
+                        (clientId_eq_dec c (fst k))
                         (eq_nat_dec id (snd k))) then
           Some cmd
         else
@@ -79,7 +78,7 @@ Section RaftLinearizableProofs.
       | [] => None
       | ClientResponse c id o :: xs =>
         if (sumbool_and _ _ _ _
-                        (eq_nat_dec c (fst k))
+                        (clientId_eq_dec c (fst k))
                         (eq_nat_dec id (snd k))) then
           Some o
         else
@@ -106,7 +105,7 @@ Section RaftLinearizableProofs.
     intros.
     destruct e.
     simpl.
-    repeat (do_bool; intuition).
+    break_if; repeat (do_bool; intuition).
   Qed.
 
   Lemma has_key_intro' :
@@ -139,14 +138,14 @@ Section RaftLinearizableProofs.
     intros.
     destruct e'.
     simpl in *.
-    do_bool. left. do_bool. auto.
+    do_bool. left. break_if; congruence.
   Qed.
 
   Lemma deduplicate_log'_In :
     forall l e,
       In e l ->
       forall ks,
-      (forall i, assoc eq_nat_dec ks (eClient e) = Some i -> i < eId e) ->
+      (forall i, assoc clientId_eq_dec ks (eClient e) = Some i -> i < eId e) ->
       (forall id',
          before_func (has_key (eClient e) id') (has_key (eClient e) (eId e)) l ->
          id' <= eId e) ->
@@ -154,11 +153,11 @@ Section RaftLinearizableProofs.
         eClient e' = eClient e /\
         eId e' = eId e /\
         In e' (deduplicate_log' l ks)).
-  Proof using. 
+  Proof using.
     induction l; simpl.
     - intuition.
     - intros. repeat break_match; intuition; subst; simpl in *; intuition eauto.
-      + do_bool. destruct (eq_nat_dec (eClient e) (eClient a)).
+      + do_bool. destruct (clientId_eq_dec (eClient e) (eClient a)).
         * assert (eId a <= eId e).
           { repeat find_rewrite. auto using has_key_intro.
           }
@@ -196,14 +195,14 @@ Section RaftLinearizableProofs.
       + do_bool. assert (n < eId e) by auto. omega.
       + do_bool. apply IHl; auto.
         intros.
-        destruct (eq_nat_dec (eClient e) (eClient a)).
+        destruct (clientId_eq_dec (eClient e) (eClient a)).
         * assert (eId e <> eId a).
           { intro. repeat find_rewrite.
             assert (n < eId a) by auto. omega.
           }
           intuition auto using has_key_different_id_false with *.
         * intuition auto using has_key_different_client_false with *.
-      + destruct (eq_nat_dec (eClient e) (eClient a)).
+      + destruct (clientId_eq_dec (eClient e) (eClient a)).
         * assert (eId a <= eId e).
           { repeat find_rewrite. auto using has_key_intro.
           }
@@ -459,7 +458,7 @@ Section RaftLinearizableProofs.
     - rewrite <- surjective_pairing. intuition.
     - break_match; simpl; eauto.
       subst.
-      destruct (key_eq_dec (n, n0) k).
+      destruct (key_eq_dec (c, n) k).
       + subst. auto.
       + right. apply remove_preserve.
         * congruence.
@@ -562,11 +561,11 @@ Section RaftLinearizableProofs.
         destruct k'.  simpl in *.
         match goal with
           | _ : I (?x, ?y) = I (?x', ?y') -> False |- _ =>
-            destruct (eq_nat_dec x x'); destruct (eq_nat_dec y y')
+            destruct (clientId_eq_dec x x'); destruct (eq_nat_dec y y')
         end; subst; intuition.
         * right. do_bool. intuition.
-        * left. do_bool. intuition.
-        * left. do_bool. intuition.
+        * left. break_if; congruence.
+        * left. break_if; congruence.
       + apply IHtr. eauto using before_remove.
     - break_if; intuition. right.
       intuition. find_apply_lem_hyp before_app; [find_apply_lem_hyp before_remove_all|]; intuition eauto.
@@ -589,7 +588,8 @@ Section RaftLinearizableProofs.
       key_of e = (c, i).
   Proof using. 
     intros. unfold has_key, key_of in *.
-    break_match. subst. simpl in *. repeat (do_bool; intuition).
+    break_match. subst. simpl in *. break_if; try discriminate. repeat (do_bool; intuition).
+    subst; reflexivity.
   Qed.
 
   Lemma key_of_has_key_true :
@@ -598,7 +598,7 @@ Section RaftLinearizableProofs.
       has_key c i e = true.
   Proof using. 
     intros. unfold has_key, key_of in *.
-    break_match. subst. simpl in *. find_inversion. repeat (do_bool; intuition).
+    break_match. subst. simpl in *. find_inversion. break_if; try congruence. repeat (do_bool; intuition).
   Qed.
 
   Lemma has_key_false_key_of :
@@ -607,7 +607,7 @@ Section RaftLinearizableProofs.
       key_of e <> (c, i).
   Proof using. 
     intros. unfold has_key, key_of in *.
-    break_match. subst. simpl in *. repeat (do_bool; intuition); congruence.
+    break_match. subst. simpl in *. break_if; try congruence. repeat (do_bool; intuition); congruence.
   Qed.
 
   Lemma key_of_has_key_false :
@@ -619,11 +619,11 @@ Section RaftLinearizableProofs.
     break_match. subst. simpl in *. repeat (do_bool; intuition).
     match goal with
       | _ : (?x, ?y) = (?x', ?y') -> False |- _ =>
-        destruct (eq_nat_dec x x'); destruct (eq_nat_dec y y')
+        destruct (clientId_eq_dec x x'); destruct (eq_nat_dec y y')
     end; subst; intuition.
     - right. do_bool. congruence.
-    - left. do_bool. congruence.
-    - left. do_bool. congruence.
+    - left. break_if; congruence.
+    - left. break_if; congruence.
   Qed.
 
   Lemma before_func_antisymmetric :
@@ -646,7 +646,7 @@ Section RaftLinearizableProofs.
   Proof using. 
     unfold has_key.
     intros. destruct e.
-    simpl. do_bool. intuition. do_bool. auto.
+    simpl. do_bool. break_and. do_bool. break_if; congruence.
   Qed.
 
   Lemma has_key_true_same_id :
@@ -674,6 +674,7 @@ Section RaftLinearizableProofs.
   Proof using. 
     unfold has_key.
     intros. destruct e. simpl. do_bool. intuition (do_bool; auto).
+    break_if; try congruence. auto.
   Qed.
 
   Lemma before_func_deduplicate' :
@@ -682,7 +683,7 @@ Section RaftLinearizableProofs.
       (forall id',
          before_func (has_key (fst k) id') (has_key (fst k) (snd k)) l ->
          id' <= snd k) ->
-      (forall i, assoc eq_nat_dec ks (fst k) = Some i -> i < snd k) ->
+      (forall i, assoc clientId_eq_dec ks (fst k) = Some i -> i < snd k) ->
       before_func (has_key (fst k) (snd k)) (has_key (fst k') (snd k')) (deduplicate_log' l ks).
   Proof using. 
     induction l; simpl; intros.
@@ -696,7 +697,7 @@ Section RaftLinearizableProofs.
         * { destruct (has_key (fst k) (snd k) a) eqn:?; auto.
             right. intuition. apply IHl; auto.
             do_bool.
-            intros. destruct (eq_nat_dec (eClient a) (fst k)).
+            intros. destruct (clientId_eq_dec (eClient a) (fst k)).
             - repeat find_rewrite. rewrite get_set_same in *. find_inversion.
               repeat match goal with
                 | H : context [ has_key (fst k')] |- _ => clear H
@@ -716,7 +717,7 @@ Section RaftLinearizableProofs.
         * { destruct (has_key (fst k) (snd k) a) eqn:?; auto.
             right. intuition. apply IHl; auto.
             do_bool.
-            intros. destruct (eq_nat_dec (eClient a) (fst k)).
+            intros. destruct (clientId_eq_dec (eClient a) (fst k)).
             - repeat find_rewrite. rewrite get_set_same in *. find_inversion.
               repeat match goal with
                 | H : context [ has_key (fst k')] |- _ => clear H
@@ -758,12 +759,12 @@ Section RaftLinearizableProofs.
     {
       remember (deduplicate_log l) as l'; clear Heql'. clear Heql. clear l. rename l' into l.
       induction l; simpl in *; intuition.
-      - repeat break_match; subst; simpl in *; repeat (do_bool; intuition).
+      - repeat break_match; subst; simpl in *; break_if; try discriminate; repeat (do_bool; intuition).
         + destruct k; simpl in *; subst. right. intuition.
           find_inversion. simpl in *. intuition.
         + exfalso. destruct k; subst; simpl in *.
           find_apply_lem_hyp import_get_output. break_exists. congruence.
-      - repeat break_match; subst; simpl in *; repeat (do_bool; intuition).
+      - repeat break_match; subst; simpl in *; repeat (do_bool; intuition); try break_if; try congruence.
         + right. destruct k'. simpl in *. intuition; try congruence.
           destruct (key_eq_dec k (eClient, eId)); subst; intuition.
           right. intuition; congruence.
@@ -798,7 +799,7 @@ Section RaftLinearizableProofs.
   Proof using. 
     intros; induction tr; simpl in *; intuition.
     - repeat break_match; subst; simpl in *; intuition; try congruence.
-      repeat (do_bool; intuition).
+      break_if; repeat (do_bool; intuition); try congruence.
       destruct k; subst; simpl in *; intuition.
     - repeat break_match; subst; simpl in *; intuition; try congruence.
       + destruct k.
@@ -859,20 +860,20 @@ Section RaftLinearizableProofs.
   Lemma deduplicate_log'_ks :
     forall l ks e id,
       In e (deduplicate_log' l ks) ->
-      assoc eq_nat_dec ks (eClient e) = Some id ->
+      assoc clientId_eq_dec ks (eClient e) = Some id ->
       id < (eId e).
   Proof using. 
     induction l; intros; simpl in *; intuition.
     repeat break_match; simpl in *; do_bool; intuition; subst; eauto;
     repeat find_rewrite; repeat find_inversion; intuition.
-    - destruct (eq_nat_dec (eClient e) (eClient a)); repeat find_rewrite.
+    - destruct (clientId_eq_dec (eClient e) (eClient a)); repeat find_rewrite.
       * find_injection.
         eapply IHl with (id := eId a) in H1; try omega.
         repeat find_rewrite. eauto using get_set_same.
       * eapply IHl with (id := id) in H1; try omega.
         rewrite get_set_diff; auto.
     - congruence.
-    - destruct (eq_nat_dec (eClient e) (eClient a)); repeat find_rewrite.
+    - destruct (clientId_eq_dec (eClient e) (eClient a)); repeat find_rewrite.
       * congruence.
       * eapply IHl with (id := id) in H1; try omega.
         rewrite get_set_diff; auto.

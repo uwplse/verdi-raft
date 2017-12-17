@@ -8,7 +8,9 @@ Section VarDRaft.
     {
       N := n;
       input_eq_dec := input_eq_dec;
-      output_eq_dec := output_eq_dec
+      output_eq_dec := output_eq_dec;
+      clientId := nat;
+      clientId_eq_dec := eq_nat_dec
     }.
 
   Definition vard_raft_base_params := base_params.

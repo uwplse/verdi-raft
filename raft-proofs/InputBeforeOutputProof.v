@@ -33,13 +33,14 @@ Section InputBeforeOutput.
   Context {uii : unique_indices_interface}.
 
   Section inner.
-  Variables client id : nat.
+  Variable client : clientId.
+  Variable id : nat.
 
   Fixpoint client_id_in l :=
     match l with
       | [] => false
       | e :: l' =>
-        if (andb (eClient e =? client)
+        if (andb (if clientId_eq_dec (eClient e) client then true else false)
                  (eId e =? id)) then
           true
         else
@@ -53,7 +54,7 @@ Section InputBeforeOutput.
   Proof using. 
     intros. unfold in_applied_entries.
     induction (applied_entries (nwState net)); simpl in *; try congruence.
-    break_if; do_bool; intuition; do_bool; eauto;
+    break_if; break_if; do_bool; intuition; try congruence; do_bool; eauto;
     break_exists_exists; intuition.
   Qed.
 
@@ -66,8 +67,8 @@ Section InputBeforeOutput.
     induction (applied_entries (nwState net)); simpl in *; try congruence; intuition.
     - break_exists; intuition.
     - break_if; try congruence.
-      do_bool.
-      break_exists; intuition; do_bool; subst; eauto.
+      do_bool.      
+      break_exists; break_if; try congruence; intuition; do_bool; subst; eauto.
   Qed.
 
   Lemma doGenericServer_applied_entries :
@@ -140,7 +141,6 @@ Section InputBeforeOutput.
         find_copy_apply_lem_hyp removeAfterIndex_in.
         find_apply_lem_hyp removeAfterIndex_In_le; eauto.
   Qed.
-
   
   Lemma findAtIndex_max_thing :
     forall net h e i,
@@ -600,7 +600,7 @@ Section InputBeforeOutput.
     - unfold in_input_trace in *.
       break_exists. simpl in *. intuition.
       + subst. unfold input_before_output. simpl.
-        left. do_bool; intuition; do_bool; auto.
+        left. do_bool; break_if; intuition; do_bool; auto.
       + unfold input_before_output. simpl. right. intuition.
         * unfold key_in_output_trace in *. 
           apply Bool.not_true_iff_false. intuition.
@@ -622,7 +622,7 @@ Section InputBeforeOutput.
   Proof using. 
     intros. induction tr; simpl in *.
     -unfold input_before_output. simpl in *.
-     left. repeat (do_bool; intuition).
+     left. break_if; repeat (do_bool; intuition).
     - unfold input_before_output. simpl. right. intuition.
       + unfold key_in_output_trace in *.
         apply Bool.not_true_iff_false. intuition.

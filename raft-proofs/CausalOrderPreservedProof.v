@@ -20,8 +20,12 @@ Section CausalOrderPreserved.
   Context {aemi : applied_entries_monotonic_interface}.
 
   Section inner.
-  Variables client id client' id' : nat.
+  Variable client : clientId.
+  Variable id : nat.
+  Variable client' : clientId.
+  Variable id' : nat.
 
+  (* FIXME: move to StructTact *)
   Lemma before_func_app_necessary :
     forall A f g (l : list A) l',
       ~ before_func f g l ->
@@ -43,14 +47,14 @@ Section CausalOrderPreserved.
     intuition.
     break_exists. unfold in_input_trace in *.
     break_exists. do_in_app. intuition;
-      [find_apply_hyp_hyp; simpl in *; repeat (do_bool; intuition)|].
+      [find_apply_hyp_hyp; simpl in *; break_if; repeat (do_bool; intuition)|].
     invcs H0; intuition.
     - break_if; congruence.
     - find_inversion; try congruence.
       repeat (do_bool; intuition).
+      break_if; try congruence.
     - find_inversion.
   Qed.
-
 
   Lemma output_before_input_key_in_output_trace :
     forall tr,
@@ -75,17 +79,16 @@ Section CausalOrderPreserved.
     intros. unfold in_applied_entries, entries_ordered in *.
     induction (applied_entries (nwState net)); simpl in *; break_exists; intuition.
     - subst. left. unfold has_key. break_match.
-      simpl. repeat (do_bool; intuition).
+      simpl. break_if; repeat (do_bool; intuition).
     - right. intuition.
       + apply Bool.not_true_iff_false. intuition.
         find_false.
-        unfold has_key in *. break_match; simpl in *; repeat (do_bool; intuition).
+        unfold has_key in *. break_match; simpl in *; break_if; repeat (do_bool; intuition); try congruence.
         subst. eexists; intuition; eauto.
       + eapply IHl.
         * eexists; intuition; eauto.
         * intuition. find_false. break_exists_exists. intuition.
   Qed.
-
 
   Lemma in_applied_entries_applied_implies_input_state :
     forall net,

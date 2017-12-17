@@ -28,7 +28,8 @@ Section AppliedImpliesInputProof.
   Qed.
 
   Section inner.
-    Variables client id : nat.
+    Variable client : clientId.
+    Variable id : nat.
     Variable i : input.
 
     Lemma applied_implies_input_update_split :
@@ -332,7 +333,7 @@ Section AppliedImpliesInputProof.
       {correct_entry client id i e} +
       {~ correct_entry client id i e}.
       unfold correct_entry.
-      destruct (eq_nat_dec (eClient e) client),
+      destruct (clientId_eq_dec (eClient e) client),
                (eq_nat_dec (eId e) id),
                (input_eq_dec (eInput e) i); intuition.
     Defined.

@@ -10,7 +10,8 @@ Section OutputImpliesApplied.
 
   Section inner.
 
-  Variables client id : nat.
+  Variable client : clientId.
+  Variable id : nat.
 
 
   Definition in_applied_entries (net : network) : Prop :=
