@@ -14,7 +14,7 @@ addons:
 env:
   global:
     - COMPILER="4.05.0+32bit"
-    - COQ_VERSION="8.7.0"    
+    - COQ_VERSION="8.7.1"    
   matrix:
     - MODE=build
     - MODE=vard OPAMBUILDTEST=1
