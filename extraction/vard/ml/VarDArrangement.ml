@@ -40,7 +40,7 @@ module VarDArrangement (P : VarDParams) = struct
   type output = VarDRaft.raft_output
   type msg = VarDRaft.msg
   type res = (VarDRaft.raft_output list * raft_data0) * ((VarDRaft.name * VarDRaft.msg) list)
-  type client_id = int
+  type client_id = string
   let system_name = "VarD"
   let init = Obj.magic ((vard_raft_multi_params P.num_nodes).init_handlers)
   let reboot = Obj.magic (vard_raft_failure_params P.num_nodes)
@@ -81,5 +81,5 @@ module VarDArrangement (P : VarDParams) = struct
   let debug_timeout (s : state) = ()
   let debug_input s inp = ()
   let deserialize_client_id = VarDSerialization.deserializeClientId
-  let string_of_client_id = string_of_int
+  let string_of_client_id s = s
 end

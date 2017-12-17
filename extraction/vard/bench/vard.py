@@ -1,6 +1,6 @@
 import socket
 import re
-from random import randint
+from uuid import uuid4
 from select import select
 from struct import pack, unpack
 
@@ -36,7 +36,7 @@ class Client(object):
     response_re = re.compile(r'Response\W+([0-9]+)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)\W+([/A-Za-z0-9]+|-)')
 
     def __init__(self, host, port, sock=None):
-        self.client_id = randint(0, 2**31 - 1)
+        self.client_id = uuid4().hex
         self.request_id = 0
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -46,11 +46,11 @@ class Client(object):
         self.send_client_id()
 
     def send_client_id(self):
-        n = self.sock.send(pack("<I", 4))
+        n = self.sock.send(pack("<I", len(self.client_id)))
         if n < 4:
             raise SendError
         else:
-            self.sock.send(pack("<I", self.client_id))
+            self.sock.send(self.client_id)
 
     def reconnect(self, host, port, sock=None):
         self.sock.shutdown(1)

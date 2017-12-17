@@ -43,7 +43,7 @@ module VarDArrangement (P : VarDParams) = struct
   type input = VarDRaftSerializedLog.raft_input
   type output = VarDRaftSerializedLog.raft_output
   type msg = Serializer_primitives.wire
-  type client_id = int
+  type client_id = string
   type res = ((file_name DiskOpShim.disk_op list * output list) * state) * ((name * msg) list)
   type disk = log_files -> in_channel option
   let system_name = "VarDSerializedLog"
@@ -89,7 +89,7 @@ module VarDArrangement (P : VarDParams) = struct
   let debug_timeout (s : state) = ()
   let debug_input s inp = ()
   let deserialize_client_id = VarDSerializedLogSerialization.deserializeClientId
-  let string_of_client_id = string_of_int
+  let string_of_client_id s = s
   let string_of_file_name = fun f -> match f with
                                      | Count -> "count"
                                      | Snapshot -> "snapshot"
