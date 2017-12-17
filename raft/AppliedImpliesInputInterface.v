@@ -8,7 +8,8 @@ Section AppliedImpliesInputInterface.
   Context {raft_params : RaftParams orig_base_params}.
 
   Section inner.
-    Variables client id : nat.
+    Variable client : clientId.
+    Variable id : nat.
     Variable i : input.
 
     Definition correct_entry (e : entry) : Prop :=

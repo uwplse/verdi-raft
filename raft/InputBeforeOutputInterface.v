@@ -7,7 +7,8 @@ Section InputBeforeOutputInterface.
   Context {raft_params : RaftParams orig_base_params}.
 
   Section inner.
-  Variables client id : nat.
+  Variable client : clientId.
+  Variables id : nat.
 
   Definition input_before_output (tr : list (name * (raft_input + list raft_output))) :=
     before_func (is_input_with_key client id) (is_output_with_key client id) tr.

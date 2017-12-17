@@ -9,6 +9,7 @@ Section RaftState.
   Variable logIndex : Type.
   Variable serverType : Type.
   Variable stateMachineData : Type.
+  Variable clientId : Type.
   Variable output : Type.
 
   Record raft_data :=
@@ -31,7 +32,7 @@ Section RaftState.
         (* whoami *)
         type : serverType;
         (* client request state *)
-        clientCache : list (nat * (nat * output));
+        clientCache : list (clientId * (nat * output));
         (* ghost variables *)
         electoralVictories : list (term * list name * list entry)
       }.

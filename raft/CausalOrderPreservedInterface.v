@@ -8,7 +8,10 @@ Section CausalOrderPreserved.
   Context {raft_params : RaftParams orig_base_params}.
 
   Section inner.
-  Variables client id client' id' : nat.
+  Variable client : clientId.
+  Variable id : nat.
+  Variable client' : clientId.
+  Variable id' : nat.
 
   Definition output_before_input (tr : list (name * (raft_input + list raft_output))) :=
     before_func (is_output_with_key client id) (is_input_with_key client' id') tr.

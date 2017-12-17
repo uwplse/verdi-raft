@@ -10,7 +10,9 @@ Class RaftParams (orig_base_params : BaseParams)
   := {
       N : nat ;
       input_eq_dec : forall x y : input, {x = y} + {x <> y} ;
-      output_eq_dec : forall x y : output, {x = y} + {x <> y}
+      output_eq_dec : forall x y : output, {x = y} + {x <> y} ;
+      clientId : Type ;
+      clientId_eq_dec : forall x y : clientId, {x = y} + {x <> y}
     }.
 
 Section Raft.
@@ -34,7 +36,7 @@ Section Raft.
   
   Record entry := mkEntry {
                       eAt : name;
-                      eClient : nat;
+                      eClient : clientId;
                       eId : nat;
                       eIndex : logIndex;
                       eTerm : term;
@@ -49,11 +51,11 @@ Section Raft.
 
   Inductive raft_input : Type :=
   | Timeout : raft_input
-  | ClientRequest : nat -> nat -> input -> raft_input.
+  | ClientRequest : clientId -> nat -> input -> raft_input.
 
   Inductive raft_output : Type :=
-  | NotLeader : nat -> nat -> raft_output
-  | ClientResponse : nat -> nat -> output -> raft_output.
+  | NotLeader : clientId -> nat -> raft_output
+  | ClientResponse : clientId -> nat -> output -> raft_output.
   
   Inductive serverType : Set :=
   | Follower
@@ -67,8 +69,7 @@ Section Raft.
   Proof.  apply eq_nat_dec. Defined.
 
   Definition entry_eq_dec : forall x y : entry, {x = y} + {x <> y}.
-  Proof.  decide equality; eauto using input_eq_dec, name_eq_dec, term_eq_dec. Defined.
-
+  Proof. decide equality; eauto using input_eq_dec, name_eq_dec, term_eq_dec, clientId_eq_dec. Defined.
 
   Definition msg_eq_dec : forall x y: msg, {x = y} + {x <> y}.
   Proof.
@@ -78,23 +79,23 @@ Section Raft.
   Defined.
 
   Definition raft_data :=
-    RaftState.raft_data term name entry logIndex serverType data output.
+    RaftState.raft_data term name entry logIndex serverType data clientId output.
 
-  Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data output).
-  Notation votedFor            := (RaftState.votedFor term name entry logIndex serverType data output).
-  Notation leaderId            := (RaftState.leaderId term name entry logIndex serverType data output).
-  Notation log                 := (RaftState.log term name entry logIndex serverType data output).
-  Notation commitIndex         := (RaftState.commitIndex term name entry logIndex serverType data output).
-  Notation lastApplied         := (RaftState.lastApplied term name entry logIndex serverType data output).
-  Notation nextIndex           := (RaftState.nextIndex term name entry logIndex serverType data output).
-  Notation matchIndex          := (RaftState.matchIndex term name entry logIndex serverType data output).
-  Notation shouldSend          := (RaftState.shouldSend term name entry logIndex serverType data output).
-  Notation votesReceived       := (RaftState.votesReceived term name entry logIndex serverType data output).
-  Notation type                := (RaftState.type term name entry logIndex serverType data output).
-  Notation clientCache := (RaftState.clientCache term name entry logIndex serverType data output).
-  Notation stateMachine := (RaftState.stateMachine term name entry logIndex serverType data output).
-  Notation electoralVictories := (RaftState.electoralVictories term name entry logIndex serverType data output).
-  Notation mkRaft_data              := (RaftState.mkRaft_data term name entry logIndex serverType data output).
+  Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data clientId output).
+  Notation votedFor            := (RaftState.votedFor term name entry logIndex serverType data clientId output).
+  Notation leaderId            := (RaftState.leaderId term name entry logIndex serverType data clientId output).
+  Notation log                 := (RaftState.log term name entry logIndex serverType data clientId output).
+  Notation commitIndex         := (RaftState.commitIndex term name entry logIndex serverType data clientId output).
+  Notation lastApplied         := (RaftState.lastApplied term name entry logIndex serverType data clientId output).
+  Notation nextIndex           := (RaftState.nextIndex term name entry logIndex serverType data clientId output).
+  Notation matchIndex          := (RaftState.matchIndex term name entry logIndex serverType data clientId output).
+  Notation shouldSend          := (RaftState.shouldSend term name entry logIndex serverType data clientId output).
+  Notation votesReceived       := (RaftState.votesReceived term name entry logIndex serverType data clientId output).
+  Notation type                := (RaftState.type term name entry logIndex serverType data clientId output).
+  Notation clientCache := (RaftState.clientCache term name entry logIndex serverType data clientId output).
+  Notation stateMachine := (RaftState.stateMachine term name entry logIndex serverType data clientId output).
+  Notation electoralVictories := (RaftState.electoralVictories term name entry logIndex serverType data clientId output).
+  Notation mkRaft_data              := (RaftState.mkRaft_data term name entry logIndex serverType data clientId output).
 
   Fixpoint findAtIndex (entries : list entry) (i : logIndex) : option entry :=
     match entries with
@@ -323,11 +324,11 @@ Section Raft.
     end.
 
   Definition getLastId state client :=
-    assoc eq_nat_dec (clientCache state) client.
+    assoc clientId_eq_dec (clientCache state) client.
 
   Definition applyEntry st e :=
     let (out, d) := handler (eInput e) (stateMachine st) in
-    ([out], {[ {[ st with clientCache := assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, out) ]}
+    ([out], {[ {[ st with clientCache := assoc_set clientId_eq_dec (clientCache st) (eClient e) (eId e, out) ]}
              with stateMachine := d ]}).
 
   Definition cacheApplyEntry st e :=
@@ -416,7 +417,7 @@ Section Raft.
     (leaderOut ++ genericOut,
      state, pkts ++ leaderPkts ++ genericPkts).
 
-  Definition handleClientRequest (me : name) (state : raft_data) (client : nat) (id : nat) (c : input)
+  Definition handleClientRequest (me : name) (state : raft_data) (client : clientId) (id : nat) (c : input)
   : list raft_output * raft_data * list (name * msg) :=
     match (type state) with
       | Leader => let index := S (maxIndex (log state)) in
@@ -862,21 +863,21 @@ Section Raft.
   Qed.
 End Raft.
 
-Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data output).
-Notation votedFor            := (RaftState.votedFor term name entry logIndex serverType data output).
-Notation leaderId            := (RaftState.leaderId term name entry logIndex serverType data output).
-Notation log                 := (RaftState.log term name entry logIndex serverType data output).
-Notation commitIndex         := (RaftState.commitIndex term name entry logIndex serverType data output).
-Notation lastApplied         := (RaftState.lastApplied term name entry logIndex serverType data output).
-Notation nextIndex           := (RaftState.nextIndex term name entry logIndex serverType data output).
-Notation matchIndex          := (RaftState.matchIndex term name entry logIndex serverType data output).
-Notation shouldSend          := (RaftState.shouldSend term name entry logIndex serverType data output).
-Notation votesReceived       := (RaftState.votesReceived term name entry logIndex serverType data output).
-Notation type                := (RaftState.type term name entry logIndex serverType data output).
-Notation clientCache := (RaftState.clientCache term name entry logIndex serverType data output).
-Notation stateMachine := (RaftState.stateMachine term name entry logIndex serverType data output).
-Notation electoralVictories := (RaftState.electoralVictories term name entry logIndex serverType data output).
-Notation mkRaft_data              := (RaftState.mkRaft_data term name entry logIndex serverType data output).
+Notation currentTerm         := (RaftState.currentTerm term name entry logIndex serverType data clientId output).
+Notation votedFor            := (RaftState.votedFor term name entry logIndex serverType data clientId output).
+Notation leaderId            := (RaftState.leaderId term name entry logIndex serverType data clientId output).
+Notation log                 := (RaftState.log term name entry logIndex serverType data clientId output).
+Notation commitIndex         := (RaftState.commitIndex term name entry logIndex serverType data clientId output).
+Notation lastApplied         := (RaftState.lastApplied term name entry logIndex serverType data clientId output).
+Notation nextIndex           := (RaftState.nextIndex term name entry logIndex serverType data clientId output).
+Notation matchIndex          := (RaftState.matchIndex term name entry logIndex serverType data clientId output).
+Notation shouldSend          := (RaftState.shouldSend term name entry logIndex serverType data clientId output).
+Notation votesReceived       := (RaftState.votesReceived term name entry logIndex serverType data clientId output).
+Notation type                := (RaftState.type term name entry logIndex serverType data clientId output).
+Notation clientCache := (RaftState.clientCache term name entry logIndex serverType data clientId output).
+Notation stateMachine := (RaftState.stateMachine term name entry logIndex serverType data clientId output).
+Notation electoralVictories := (RaftState.electoralVictories term name entry logIndex serverType data clientId output).
+Notation mkRaft_data              := (RaftState.mkRaft_data term name entry logIndex serverType data clientId output).
 
 Hint Extern 5 (@BaseParams) => apply base_params : typeclass_instances.
 Hint Extern 5 (@MultiParams _) => apply multi_params : typeclass_instances.

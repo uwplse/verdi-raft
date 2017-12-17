@@ -25,7 +25,8 @@ Section OutputCorrect.
   Context {lmi : log_matching_interface}.
 
   Section inner.
-  Variables client id : nat.
+  Variable client : clientId.
+  Variables id : nat.
   Variable out : output.
 
   Theorem in_output_trace_dec :
@@ -45,7 +46,7 @@ Section OutputCorrect.
       repeat break_match; try discriminate.
       find_apply_lem_hyp find_some. break_and.
       unfold is_client_response, in_output_list in *.
-      break_match; try discriminate. do_bool. break_and. do_bool. subst.
+      break_match; try discriminate. break_if; try discriminate. do_bool. break_and. do_bool. subst.
       left. exists l, (fst p). clean.
       break_and. do_bool.
       break_if; try congruence. subst. intuition.
@@ -58,7 +59,7 @@ Section OutputCorrect.
       unfold in_output_list in *. break_exists.
       find_eapply_lem_hyp find_none; eauto.
       simpl in *. find_apply_lem_hyp Bool.andb_false_elim.
-      repeat (intuition; do_bool).
+      break_if; repeat (intuition; do_bool).
       break_if; congruence.
   Qed.
 
@@ -119,7 +120,6 @@ Section OutputCorrect.
     repeat find_insterU; break_exists; eexists; f_equal; eauto.
   Qed.
 
-
   Lemma deduplicate_log_app :
     forall l l',
       exists l'',
@@ -127,7 +127,6 @@ Section OutputCorrect.
   Proof using. 
     eauto using deduplicate_log'_app.
   Qed.
-
 
   Lemma in_output_trace_not_nil :
       in_output_trace client id out [] -> False.
@@ -226,7 +225,7 @@ Section OutputCorrect.
 
   Lemma deduplicate_log'_snoc_drop_keys :
     forall es ks e n,
-      assoc eq_nat_dec ks (eClient e) = Some n ->
+      assoc clientId_eq_dec ks (eClient e) = Some n ->
       eId e <= n ->
       deduplicate_log' (es ++ [e]) ks = deduplicate_log' es ks.
   Proof using. 
@@ -234,14 +233,14 @@ Section OutputCorrect.
     - omega.
     - auto.
     - discriminate.
-    - f_equal. destruct (eq_nat_dec (eClient a) (eClient e)).
+    - f_equal. destruct (clientId_eq_dec (eClient a) (eClient e)).
       + repeat find_rewrite. find_injection.
         eapply IHes with (n := eId a); auto with *.
         now rewrite get_set_same.
       + eapply IHes; eauto.
         rewrite get_set_diff by auto. auto.
     - eauto.
-    - f_equal. destruct (eq_nat_dec (eClient a) (eClient e)).
+    - f_equal. destruct (clientId_eq_dec (eClient a) (eClient e)).
       + repeat find_rewrite. discriminate.
       + eapply IHes; eauto.
         rewrite get_set_diff by auto. auto.
@@ -277,7 +276,7 @@ Section OutputCorrect.
   Lemma deduplicate_log'_snoc_split :
     forall es ks e,
       (forall e', In e' es -> eClient e' = eClient e -> eId e' < eId e) ->
-      (forall i, assoc eq_nat_dec ks (eClient e) = Some i -> i < eId e) ->
+      (forall i, assoc clientId_eq_dec ks (eClient e) = Some i -> i < eId e) ->
       deduplicate_log' (es ++ [e]) ks = deduplicate_log' es ks ++ [e].
   Proof using. 
     induction es; intros; simpl in *; intuition.
@@ -288,7 +287,7 @@ Section OutputCorrect.
     - repeat break_match; simpl in *; auto.
       + f_equal. eapply IHes; eauto.
         intros. do_bool.
-        destruct (eq_nat_dec (eClient a) (eClient e)).
+        destruct (clientId_eq_dec (eClient a) (eClient e)).
         * repeat find_rewrite.
           find_rewrite_lem get_set_same. find_injection.
           find_insterU. conclude_using eauto. intuition.
@@ -296,7 +295,7 @@ Section OutputCorrect.
           eauto.
       + f_equal. eapply IHes; eauto.
         intros. do_bool.
-        destruct (eq_nat_dec (eClient a) (eClient e)).
+        destruct (clientId_eq_dec (eClient a) (eClient e)).
         * repeat find_rewrite.
           find_rewrite_lem get_set_same. find_injection.
           match goal with
@@ -349,10 +348,10 @@ Section OutputCorrect.
        (forall e', In e' es -> eClient e' = eClient e -> eId e' < eId e)).
   Proof using. 
     intros.
-    destruct (find (fun e' => andb (eClient e' =? eClient e)
+    destruct (find (fun e' => andb (if clientId_eq_dec (eClient e') (eClient e) then true else false)
                                   (eId e <=? eId e')) es) eqn:?.
     - left. find_apply_lem_hyp find_some.
-      repeat (break_and; do_bool).
+      break_if; repeat (break_and; do_bool); try congruence.
       intuition eauto using deduplicate_log_snoc_drop.
     - right.
       match goal with
@@ -361,9 +360,10 @@ Section OutputCorrect.
       end.
       intros.
       find_eapply_lem_hyp find_none; eauto.
-      simpl in *. repeat (do_bool; intuition).
+      simpl in *. break_if; repeat (do_bool; intuition); try congruence.
   Qed.
 
+  (* FIXME: move to StructTact *)
   Lemma assoc_None :
     forall K V K_eq_dec (l : list (K * V)) k v,
       assoc K_eq_dec l k = None ->
@@ -514,7 +514,7 @@ Section OutputCorrect.
     forall st e l st',
       applyEntry st e = (l, st') ->
       let (out, _) := handler (eInput e) (stateMachine st)
-      in (clientCache st' = assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, out) /\
+      in (clientCache st' = assoc_set clientId_eq_dec (clientCache st) (eClient e) (eId e, out) /\
           In out l).
   Proof using. 
     unfold applyEntry.
@@ -529,7 +529,7 @@ Section OutputCorrect.
        (exists i o, getLastId st (eClient e) = Some (i, o) /\
                     eId e <= i) ) \/
       ((let (out, _) := handler (eInput e) (stateMachine st)
-       in (clientCache st' = assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, out) /\
+       in (clientCache st' = assoc_set clientId_eq_dec (clientCache st) (eClient e) (eId e, out) /\
           In out l)) /\ (getLastId st (eClient e) = None \/
                        (exists i o, getLastId st (eClient e) = Some (i, o) /\
                                     i < eId e))).
@@ -566,7 +566,7 @@ Section OutputCorrect.
       unfold applyEntry in *.
       repeat break_match; find_inversion.
       unfold getLastId in *. simpl in *.
-      destruct (eq_nat_dec (eClient e) c); subst.
+      destruct (clientId_eq_dec (eClient e) c); subst.
       + rewrite get_set_same. find_rewrite.
         find_inversion. eauto.
       + rewrite get_set_diff in *; auto.
@@ -574,7 +574,7 @@ Section OutputCorrect.
     - unfold applyEntry in *.
       repeat break_match; find_inversion.
       unfold getLastId in *. simpl in *.
-      destruct (eq_nat_dec (eClient e) c); subst.
+      destruct (clientId_eq_dec (eClient e) c); subst.
       + repeat find_rewrite.  congruence.
       + rewrite get_set_diff in *; auto.
         repeat find_rewrite. eauto.
@@ -638,7 +638,7 @@ Section OutputCorrect.
             - break_let. break_and.
               unfold getLastId in *.
               repeat find_rewrite.
-              destruct (eq_nat_dec (eClient a) c0).
+              destruct (clientId_eq_dec (eClient a) c0).
               + subst.  rewrite get_set_same in *. find_inversion.
                 eapply cacheApplyEntry_output_correct; eauto.
               + rewrite get_set_diff in * by auto. eauto using output_correct_monotonic.

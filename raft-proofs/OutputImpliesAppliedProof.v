@@ -26,7 +26,8 @@ Section OutputImpliesApplied.
   Context {misi : max_index_sanity_interface}.
 
   Section inner.
-  Variables client id : nat.
+    Variable client : clientId.
+    Variable id : nat.
 
   Lemma in_output_changed :
     forall tr o,

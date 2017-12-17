@@ -9,6 +9,7 @@ Section RaftState.
   Variable logIndex : Type.
   Variable serverType : Type.
   Variable stateMachineData : Type.
+  Variable clientId : Type.
   Variable output : Type.
 
   Record raft_data :=
@@ -31,7 +32,7 @@ Section RaftState.
         (* whoami *)
         type : serverType;
         (* client request state *)
-        clientCache : list (nat * (nat * output));
+        clientCache : list (clientId * (nat * output));
         (* ghost variables *)
         electoralVictories : list (term * list name * list entry)
       }.
@@ -69,59 +70,59 @@ End RaftState.
 
 
 
-Notation "{[ a 'with' 'currentTerm' := v ]}" := (set_raft_data_currentTerm  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'currentTerm' := v ]}" := (set_raft_data_currentTerm  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'votedFor' := v ]}" := (set_raft_data_votedFor  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'votedFor' := v ]}" := (set_raft_data_votedFor  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'leaderId' := v ]}" := (set_raft_data_leaderId  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'leaderId' := v ]}" := (set_raft_data_leaderId  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'log' := v ]}" := (set_raft_data_log  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'log' := v ]}" := (set_raft_data_log  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'commitIndex' := v ]}" := (set_raft_data_commitIndex  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'commitIndex' := v ]}" := (set_raft_data_commitIndex  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'lastApplied' := v ]}" := (set_raft_data_lastApplied  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'lastApplied' := v ]}" := (set_raft_data_lastApplied  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'stateMachine' := v ]}" := (set_raft_data_stateMachine  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'stateMachine' := v ]}" := (set_raft_data_stateMachine  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'nextIndex' := v ]}" := (set_raft_data_nextIndex  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'nextIndex' := v ]}" := (set_raft_data_nextIndex  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'matchIndex' := v ]}" := (set_raft_data_matchIndex  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'matchIndex' := v ]}" := (set_raft_data_matchIndex  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'shouldSend' := v ]}" := (set_raft_data_shouldSend  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'shouldSend' := v ]}" := (set_raft_data_shouldSend  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'votesReceived' := v ]}" := (set_raft_data_votesReceived  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'votesReceived' := v ]}" := (set_raft_data_votesReceived  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'type' := v ]}" := (set_raft_data_type  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'type' := v ]}" := (set_raft_data_type  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'clientCache' := v ]}" := (set_raft_data_clientCache  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'clientCache' := v ]}" := (set_raft_data_clientCache  _ _ _ _ _ _ _ _ a v).
 
-Notation "{[ a 'with' 'electoralVictories' := v ]}" := (set_raft_data_electoralVictories  _ _ _ _ _ _ _ a v).
+Notation "{[ a 'with' 'electoralVictories' := v ]}" := (set_raft_data_electoralVictories  _ _ _ _ _ _ _ _ a v).
 
 
-Arguments set_raft_data_currentTerm  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_currentTerm  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_votedFor  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_votedFor  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_leaderId  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_leaderId  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_log  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_log  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_commitIndex  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_commitIndex  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_lastApplied  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_lastApplied  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_stateMachine  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_stateMachine  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_nextIndex  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_nextIndex  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_matchIndex  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_matchIndex  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_shouldSend  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_shouldSend  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_votesReceived  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_votesReceived  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_type  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_type  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_clientCache  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_clientCache  _ _ _ _ _ _ _ _ _ _/.
 
-Arguments set_raft_data_electoralVictories  _ _ _ _ _ _ _ _ _/.
+Arguments set_raft_data_electoralVictories  _ _ _ _ _ _ _ _ _ _/.

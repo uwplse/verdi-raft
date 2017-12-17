@@ -81,7 +81,7 @@ Section LeaderLogsVotesWithLog.
   Lemma update_elections_data_request_vote_votesWithLog_old :
     forall (h : name)
       (st : electionsData *
-            RaftState.raft_data term name entry logIndex serverType data output)
+            RaftState.raft_data term name entry logIndex serverType data clientId output)
       (t : nat) (src : fin N) (lli llt : nat)
       (t' : term) (h' : name) (l' : list entry),
       In (t', h', l') (votesWithLog (fst st)) ->

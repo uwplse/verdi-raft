@@ -40,8 +40,7 @@ Section StateMachineCorrect.
         end
     end.
   
-
-  Definition clientCache_to_ks (c : list (nat * (nat * output))) :=
+  Definition clientCache_to_ks (c : list (clientId * (nat * output))) :=
     map (fun e => (fst e, fst (snd e))) c.
 
   Lemma snd_execute_log' :
@@ -52,7 +51,6 @@ Section StateMachineCorrect.
     break_let; eauto.
   Qed.
 
-
   Lemma snd_execute_log'_nil :
     forall l st o,
       snd (execute_log' l st o) = snd (execute_log' l st []).
@@ -62,9 +60,9 @@ Section StateMachineCorrect.
   
   Lemma clientCache_to_ks_assoc :
     forall c client id,
-      assoc eq_nat_dec (clientCache_to_ks c) client = Some id ->
+      assoc clientId_eq_dec (clientCache_to_ks c) client = Some id ->
       exists o,
-        assoc eq_nat_dec c client = Some (id, o).
+        assoc clientId_eq_dec c client = Some (id, o).
   Proof using. 
     induction c; intros; simpl in *; try congruence.
     break_if; eauto.
@@ -76,7 +74,7 @@ Section StateMachineCorrect.
 
   Lemma clientCache_to_ks_assoc_getLastId :
     forall st client id,
-      assoc eq_nat_dec (clientCache_to_ks (clientCache st)) client = Some id ->
+      assoc clientId_eq_dec (clientCache_to_ks (clientCache st)) client = Some id ->
       exists o,
         getLastId st client = Some (id, o).
   Proof using. 
@@ -85,8 +83,8 @@ Section StateMachineCorrect.
 
   Lemma clientCache_to_ks_assoc_none :
     forall c client,
-      assoc eq_nat_dec (clientCache_to_ks c) client = None ->
-      assoc eq_nat_dec c client = None.
+      assoc clientId_eq_dec (clientCache_to_ks c) client = None ->
+      assoc clientId_eq_dec c client = None.
   Proof using. 
     induction c; intros; simpl in *; try congruence.
     break_if; eauto; try congruence.
@@ -95,7 +93,7 @@ Section StateMachineCorrect.
 
   Lemma clientCache_to_ks_assoc_getLastId_none :
     forall st client,
-      assoc eq_nat_dec (clientCache_to_ks (clientCache st)) client = None ->
+      assoc clientId_eq_dec (clientCache_to_ks (clientCache st)) client = None ->
       getLastId st client = None.
   Proof using. 
     eauto using clientCache_to_ks_assoc_none.
@@ -121,14 +119,13 @@ Section StateMachineCorrect.
       getLastId st (eClient e) = Some (id, o) ->
       id < eId e ->
       handler (eInput e) (stateMachine st) = (o', d) ->
-      assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, o') = clientCache st'.
+      assoc_set clientId_eq_dec (clientCache st) (eClient e) (eId e, o') = clientCache st'.
   Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
     simpl in *; auto; omega.
   Qed.
-
 
   Lemma cacheApplyEntry_stateMachine_apply_none :
     forall st e os st' o' d,
@@ -148,7 +145,7 @@ Section StateMachineCorrect.
       cacheApplyEntry st e = (os, st') ->
       getLastId st (eClient e) = None ->
       handler (eInput e) (stateMachine st) = (o', d) ->
-      assoc_set eq_nat_dec (clientCache st) (eClient e) (eId e, o') = clientCache st'.
+      assoc_set clientId_eq_dec (clientCache st) (eClient e) (eId e, o') = clientCache st'.
   Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
@@ -184,8 +181,8 @@ Section StateMachineCorrect.
   
   Lemma clientCache_to_ks_assoc_set :
     forall c client id o,
-      assoc_set eq_nat_dec (clientCache_to_ks c) client id =
-      clientCache_to_ks (assoc_set eq_nat_dec c client (id, o)).
+      assoc_set clientId_eq_dec (clientCache_to_ks c) client id =
+      clientCache_to_ks (assoc_set clientId_eq_dec c client (id, o)).
   Proof using. 
     induction c; intros; simpl in *; intuition.
     simpl.
@@ -284,11 +281,11 @@ Section StateMachineCorrect.
     intros. find_apply_hyp_hyp. omega.
   Qed.
 
-  Fixpoint log_to_ks' (l : list entry) (ks : list (nat * nat)) : list (nat * nat) :=
+  Fixpoint log_to_ks' (l : list entry) (ks : list (clientId * nat)) : list (clientId * nat) :=
     match l with
       | e :: l' =>
-        if (assoc_default eq_nat_dec ks (eClient e) 0) <=? eId e then
-          log_to_ks' l' (assoc_set eq_nat_dec ks (eClient e) (eId e))
+        if (assoc_default clientId_eq_dec ks (eClient e) 0) <=? eId e then
+          log_to_ks' l' (assoc_set clientId_eq_dec ks (eClient e) (eId e))
         else
           log_to_ks' l' ks
       | [] => ks
@@ -296,16 +293,15 @@ Section StateMachineCorrect.
 
   Definition log_to_ks l := log_to_ks' l [].
 
-
-
   Definition client_cache_keys_correct net :=
     forall h,
-      a_equiv eq_nat_dec
+      a_equiv clientId_eq_dec
               (clientCache_to_ks (clientCache (nwState net h)))
               (log_to_ks'
                  (rev
                     (removeAfterIndex (log (nwState net h))
                                       (lastApplied (nwState net h)))) []).
+
   Lemma log_to_ks'_app :
     forall l1 l2 ks,
       log_to_ks' (l1 ++ l2) ks = log_to_ks' l2 (log_to_ks' l1 ks).
@@ -316,8 +312,8 @@ Section StateMachineCorrect.
 
   Lemma log_to_ks'_a_equiv :
     forall l ks ks',
-      a_equiv eq_nat_dec ks ks' ->
-      a_equiv eq_nat_dec (log_to_ks' l ks) (log_to_ks' l ks').
+      a_equiv clientId_eq_dec ks ks' ->
+      a_equiv clientId_eq_dec (log_to_ks' l ks) (log_to_ks' l ks').
   Proof using. 
     induction l; intros; simpl.
     - auto.
@@ -325,18 +321,18 @@ Section StateMachineCorrect.
       break_if; auto using assoc_set_a_equiv.
   Qed.
 
-  Fixpoint max_id_for_client_default (default : nat) (c : nat) (l : list entry) : nat :=
+  Fixpoint max_id_for_client_default (default : nat) (c : clientId) (l : list entry) : nat :=
     match l with
     | [] => default
-    | e :: l' => if eq_nat_dec c (eClient e)
+    | e :: l' => if clientId_eq_dec c (eClient e)
                 then max_id_for_client_default (max default (eId e)) c l'
                 else max_id_for_client_default default c l'
     end.
 
   Lemma log_to_ks'_max_id_for_client :
     forall l c ks,
-      assoc_default eq_nat_dec (log_to_ks' l ks) c 0 =
-      max_id_for_client_default (assoc_default eq_nat_dec ks c 0) c l.
+      assoc_default clientId_eq_dec (log_to_ks' l ks) c 0 =
+      max_id_for_client_default (assoc_default clientId_eq_dec ks c 0) c l.
   Proof using. 
     induction l; simpl; intros.
     - auto.
@@ -450,15 +446,15 @@ Section StateMachineCorrect.
 
   Lemma log_to_ks'_assoc_default_ks :
     forall l ks c i,
-      i <= assoc_default eq_nat_dec
-                        (log_to_ks' l (assoc_set Nat.eq_dec ks c i))
+      i <= assoc_default clientId_eq_dec
+                        (log_to_ks' l (assoc_set clientId_eq_dec ks c i))
                         c 0.
   Proof using. 
     induction l; intros; simpl.
     - rewrite assoc_default_assoc_set. auto.
     - break_if; simpl in *; eauto.
       do_bool.
-      destruct (eq_nat_dec (eClient a) c); simpl in *; auto.
+      destruct (clientId_eq_dec (eClient a) c); simpl in *; auto.
       + subst.
         find_rewrite_lem assoc_default_assoc_set.
         rewrite assoc_set_assoc_set_same.
@@ -471,13 +467,13 @@ Section StateMachineCorrect.
 
   Lemma log_to_ks'_assoc_default_assoc_default_le :
     forall l ks c,
-      assoc_default eq_nat_dec ks c 0 <=
-      assoc_default eq_nat_dec (log_to_ks' l ks) c 0.
+      assoc_default clientId_eq_dec ks c 0 <=
+      assoc_default clientId_eq_dec (log_to_ks' l ks) c 0.
   Proof using. 
     induction l; intros; simpl in *; auto.
     break_if; simpl in *; eauto.
     do_bool.
-    destruct (eq_nat_dec (eClient a) c); simpl in *; subst; auto.
+    destruct (clientId_eq_dec (eClient a) c); simpl in *; subst; auto.
     - eapply le_trans; eauto.
       eauto using log_to_ks'_assoc_default_ks.
     - match goal with
@@ -489,12 +485,12 @@ Section StateMachineCorrect.
 
   Lemma log_to_ks'_assoc_default_eq :
     forall l ks ks' c,
-      assoc_default eq_nat_dec (log_to_ks' l ks) c 0 <= assoc_default eq_nat_dec ks' c 0 ->
-      assoc_default eq_nat_dec (log_to_ks' l ks') c 0 = assoc_default eq_nat_dec ks' c 0.
+      assoc_default clientId_eq_dec (log_to_ks' l ks) c 0 <= assoc_default clientId_eq_dec ks' c 0 ->
+      assoc_default clientId_eq_dec (log_to_ks' l ks') c 0 = assoc_default clientId_eq_dec ks' c 0.
   Proof using. 
     induction l; intros; simpl in *; auto.
     repeat break_if; do_bool; simpl in *; eauto.
-    - destruct (eq_nat_dec (eClient a) c); simpl in *; auto.
+    - destruct (clientId_eq_dec (eClient a) c); simpl in *; auto.
       + subst.
         match goal with
           | [ |- context [ assoc_set ?e ?ks ?c ?i ] ] =>
@@ -509,7 +505,7 @@ Section StateMachineCorrect.
             assert (assoc_default e ks c 0 = assoc_default e (assoc_set e ks c' i) c 0)
         end; repeat find_rewrite; eauto.
         rewrite assoc_default_assoc_set_diff; auto.
-    - destruct (eq_nat_dec (eClient a) c); simpl in *; auto.
+    - destruct (clientId_eq_dec (eClient a) c); simpl in *; auto.
       + subst.
         match goal with
           | [ |- context [ assoc_set ?e ?ks ?c ?i ] ] =>
@@ -531,22 +527,22 @@ Section StateMachineCorrect.
   Lemma log_to_ks'_assoc_set_diff :
     forall l ks k v k',
       k <> k' ->
-      assoc eq_nat_dec
-                    (log_to_ks' l (assoc_set Nat.eq_dec ks k v)) k' =
-      assoc eq_nat_dec
+      assoc clientId_eq_dec
+                    (log_to_ks' l (assoc_set clientId_eq_dec ks k v)) k' =
+      assoc clientId_eq_dec
                     (log_to_ks' l ks) k'.
   Proof using. 
     induction l; intros; simpl in *.
     - rewrite get_set_diff by auto. auto.
     - repeat break_match; simpl in *; eauto.
-      + do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
+      + do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
         * rewrite assoc_set_assoc_set_same. auto.
         * erewrite assoc_a_equiv; [|apply log_to_ks'_a_equiv;
                                      apply assoc_set_assoc_set_diff]; eauto.
-      + do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
+      + do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
         * rewrite assoc_set_assoc_set_same. auto.
         * rewrite assoc_default_assoc_set_diff in *; auto; omega.
-      + do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
+      + do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
         * erewrite <- assoc_set_assoc_set_same; eauto.
         * rewrite assoc_default_assoc_set_diff in *; auto; omega.
   Qed.
@@ -554,36 +550,36 @@ Section StateMachineCorrect.
   Lemma log_to_ks'_assoc_default_set_diff :
     forall l ks k v k',
       k <> k' ->
-      assoc_default eq_nat_dec
-                    (log_to_ks' l (assoc_set Nat.eq_dec ks k v)) k' 0 =
-      assoc_default eq_nat_dec
+      assoc_default clientId_eq_dec
+                    (log_to_ks' l (assoc_set clientId_eq_dec ks k v)) k' 0 =
+      assoc_default clientId_eq_dec
                     (log_to_ks' l ks) k' 0.
   Proof using. 
     induction l; intros; simpl in *; auto using assoc_default_assoc_set_diff.
     repeat break_match; simpl in *; eauto.
-    - do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
+    - do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
       + rewrite assoc_set_assoc_set_same. auto.
       + erewrite assoc_default_a_equiv; [|apply log_to_ks'_a_equiv;
                                            apply assoc_set_assoc_set_diff]; eauto.
-    - do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
+    - do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
       + rewrite assoc_set_assoc_set_same. auto.
       + rewrite assoc_default_assoc_set_diff in *; auto; omega.
-    - do_bool. destruct (eq_nat_dec (eClient a) k); subst; simpl in *.
+    - do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
       + erewrite <- assoc_set_assoc_set_same; eauto.
       + rewrite assoc_default_assoc_set_diff in *; auto; omega.
   Qed.
 
   Lemma assoc_set_log_to_ks'_le:
-    forall (l : list entry) (ks : list (nat * nat)) c i,
-      assoc_default eq_nat_dec (log_to_ks' l ks) c 0 <= i ->
-      a_equiv eq_nat_dec
-              (assoc_set Nat.eq_dec (log_to_ks' l ks) c i)
-              (log_to_ks' l (assoc_set Nat.eq_dec ks c i)).
+    forall (l : list entry) (ks : list (clientId * nat)) c i,
+      assoc_default clientId_eq_dec (log_to_ks' l ks) c 0 <= i ->
+      a_equiv clientId_eq_dec
+              (assoc_set clientId_eq_dec (log_to_ks' l ks) c i)
+              (log_to_ks' l (assoc_set clientId_eq_dec ks c i)).
   Proof using. 
     induction l; intros; simpl in *; eauto using a_equiv_refl.
     repeat break_if; simpl in *; eauto.
     - do_bool.
-      destruct (eq_nat_dec (eClient a) c); subst.
+      destruct (clientId_eq_dec (eClient a) c); subst.
       + repeat rewrite assoc_set_assoc_set_same.
         find_rewrite_lem assoc_default_assoc_set.
         assert (i = eId a) by (eapply le_antisym; auto;
@@ -598,7 +594,7 @@ Section StateMachineCorrect.
             eapply assoc_set_assoc_set_diff; auto|].
         eapply a_equiv_sym. eauto.
     - do_bool.
-      destruct (eq_nat_dec (eClient a) c); subst.
+      destruct (clientId_eq_dec (eClient a) c); subst.
       + find_rewrite_lem assoc_default_assoc_set.
         find_apply_hyp_hyp.
         find_rewrite_lem assoc_set_assoc_set_same.
@@ -606,7 +602,7 @@ Section StateMachineCorrect.
       + rewrite assoc_default_assoc_set_diff in *; auto.
         omega.
     - do_bool.
-      destruct (eq_nat_dec (eClient a) c); subst.
+      destruct (clientId_eq_dec (eClient a) c); subst.
       + find_rewrite_lem assoc_default_assoc_set.
         rewrite assoc_set_assoc_set_same. 
         assert (i = eId a); subst; eauto.
@@ -619,16 +615,16 @@ Section StateMachineCorrect.
 
   Lemma in_ks_log_to_ks'_le :
     forall e l ks id,
-      assoc Nat.eq_dec ks (eClient e) = Some id ->
-      exists id', assoc Nat.eq_dec (log_to_ks' l ks) (eClient e) = Some id' /\
+      assoc clientId_eq_dec ks (eClient e) = Some id ->
+      exists id', assoc clientId_eq_dec (log_to_ks' l ks) (eClient e) = Some id' /\
              id <= id'.
   Proof using. 
     induction l; simpl; intuition.
     - eauto.
     - break_if; do_bool.
-      + destruct (eq_nat_dec (eClient e) (eClient a)).
+      + destruct (clientId_eq_dec (eClient e) (eClient a)).
         * repeat find_rewrite. unfold assoc_default in *. find_rewrite.
-          specialize (IHl (assoc_set Nat.eq_dec ks (eClient a) (eId a)) (eId a)).
+          specialize (IHl (assoc_set clientId_eq_dec ks (eClient a) (eId a)) (eId a)).
           conclude_using ltac:(now rewrite get_set_same).
           break_exists_exists. intuition.
         * rewrite log_to_ks'_assoc_set_diff by auto.
@@ -639,7 +635,7 @@ Section StateMachineCorrect.
   Lemma in_l_log_to_ks'_le :
     forall e l ks,
       In e l ->
-      exists id, assoc Nat.eq_dec (log_to_ks' l ks) (eClient e) = Some id /\ eId e <= id.
+      exists id, assoc clientId_eq_dec (log_to_ks' l ks) (eClient e) = Some id /\ eId e <= id.
   Proof using. 
     induction l; simpl; intuition.
     - subst. break_if; do_bool.
@@ -650,7 +646,6 @@ Section StateMachineCorrect.
         break_exists_exists. intuition eauto. omega.
     - break_if; do_bool; auto.
   Qed.
-
 
   Lemma handleAppendEntries_preserves_lastApplied_entries':
     forall (p : packet) (net : network) (d : raft_data) 
@@ -825,7 +820,7 @@ Section StateMachineCorrect.
     unfold client_cache_keys_correct, client_cache_complete.
     intros.
     unfold getLastId.
-    enough (exists id, assoc Nat.eq_dec (clientCache_to_ks (clientCache (nwState net h))) (eClient e) = Some id /\
+    enough (exists id, assoc clientId_eq_dec (clientCache_to_ks (clientCache (nwState net h))) (eClient e) = Some id /\
                   eId e <= id).
     - break_exists_exists.
       intuition.
@@ -855,7 +850,7 @@ Section StateMachineCorrect.
 
   Lemma deduplicate_log'_a_equiv :
     forall l ks ks',
-      a_equiv eq_nat_dec ks ks' ->
+      a_equiv clientId_eq_dec ks ks' ->
       deduplicate_log' l ks = deduplicate_log' l ks'.
   Proof using. 
     induction l; intros; simpl in *; auto.
@@ -888,7 +883,7 @@ Section StateMachineCorrect.
         | H : context [assoc_set] |- _ =>
           unfold getLastId in H; simpl in H
       end.
-      destruct (eq_nat_dec client (eClient e));
+      destruct (clientId_eq_dec client (eClient e));
         try now rewrite get_set_diff in *; auto.
       subst. rewrite get_set_same in *.
       find_inversion. repeat find_rewrite.
@@ -901,7 +896,7 @@ Section StateMachineCorrect.
         | H : context [assoc_set] |- _ =>
           unfold getLastId in H; simpl in H
       end.
-      destruct (eq_nat_dec client (eClient e));
+      destruct (clientId_eq_dec client (eClient e));
         try now rewrite get_set_diff in *; auto.
       subst. rewrite get_set_same in *.
       find_inversion. repeat find_rewrite.
@@ -926,10 +921,10 @@ Section StateMachineCorrect.
 
   Lemma getLastId_clientCache_to_ks_assoc :
     forall
-      (st : RaftState.raft_data term name entry logIndex serverType data output)
-      (client id : nat) o,
+      (st : RaftState.raft_data term name entry logIndex serverType data clientId output)
+      (client : clientId) (id : nat) o,
       getLastId st client = Some (id, o) ->
-      assoc Nat.eq_dec (clientCache_to_ks (clientCache st)) client = Some id.
+      assoc clientId_eq_dec (clientCache_to_ks (clientCache st)) client = Some id.
   Proof using. 
     intros. unfold getLastId in *. induction (clientCache st).
     - simpl in *. congruence.
@@ -937,6 +932,7 @@ Section StateMachineCorrect.
       break_if; repeat find_inversion; auto.
   Qed.
 
+  (* FIXME: move to StructTact *)
   Lemma i_lt_assoc_default_0 :
     forall K K_eq_dec ks (k : K) i,
       i < assoc_default K_eq_dec ks k 0 ->
@@ -952,7 +948,7 @@ Section StateMachineCorrect.
   Lemma applyEntries_log_to_ks' :
     forall l h st o st',
       applyEntries h st l = (o, st') ->
-      a_equiv eq_nat_dec (clientCache_to_ks (clientCache st'))
+      a_equiv clientId_eq_dec (clientCache_to_ks (clientCache st'))
               (log_to_ks' l (clientCache_to_ks (clientCache st))).
   Proof using. 
     induction l; intros; simpl in *; intuition.
@@ -1051,7 +1047,7 @@ Section StateMachineCorrect.
       rewrite app_ass.
       rewrite <- app_comm_cons. eauto.
     - do_bool. subst.
-      destruct (eq_nat_dec (eClient x) client).
+      destruct (clientId_eq_dec (eClient x) client).
       + subst.
         assert (id = eId x).
         {
@@ -1107,7 +1103,7 @@ Section StateMachineCorrect.
         rewrite app_ass.
         rewrite <- app_comm_cons. eauto.
     - do_bool. subst.
-      destruct (eq_nat_dec (eClient x) client).
+      destruct (clientId_eq_dec (eClient x) client).
       + subst.
         assert (id = eId x).
         {
@@ -1205,8 +1201,7 @@ Section StateMachineCorrect.
       intuition.
       do_bool. intuition. do_bool.
       use_applyEntries_spec. subst. simpl in *. omega.
-  Qed.
-      
+  Qed.      
 
   Lemma deduplicate_log_app :
     forall l l',
@@ -1254,6 +1249,7 @@ Section StateMachineCorrect.
       rewrite app_nil_r in *; eauto.
   Qed.
 
+  (* FIXME: move to StructTact *)
   Lemma hd_error_Some_app :
     forall A l l' (x : A),
       hd_error l = Some x ->
@@ -1302,7 +1298,6 @@ Section StateMachineCorrect.
     erewrite handleAppendEntries_preserves_lastApplied_entries; eauto.
   Qed.
 
-
   Lemma client_cache_keys_correct_append_entries_reply :
     raft_net_invariant_append_entries_reply' client_cache_keys_correct.
   Proof using. 
@@ -1313,7 +1308,6 @@ Section StateMachineCorrect.
     erewrite handleAppendEntriesReply_log; eauto.
     erewrite handleAppendEntriesReply_same_lastApplied; eauto.
   Qed.
-
 
   Lemma client_cache_keys_correct_request_vote :
     raft_net_invariant_request_vote' client_cache_keys_correct.

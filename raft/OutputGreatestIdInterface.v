@@ -10,7 +10,8 @@ Section OutputGreatestId.
 
   Section inner.
 
-  Variables client id : nat.
+  Variable client : clientId.
+  Variable id : nat.
 
 
   Definition greatest_id_for_client (net : network) : Prop :=
