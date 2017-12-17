@@ -302,10 +302,8 @@ Section Serializers.
       repeat (cheerios_crush; simpl).
     rewrite nat_serialize_deserialize_id.
     repeat (cheerios_crush; simpl).
-    rewrite nat_serialize_deserialize_id.
-    repeat (cheerios_crush; simpl).
-    rewrite input_serialize_deserialize_id.
-    cheerios_crush.
+    unfold serialize_input, deserialize_input.
+    destruct i; repeat (cheerios_crush; simpl).
   Qed.
 
   Global Instance raft_input_Serializer : Serializer raft_input :=

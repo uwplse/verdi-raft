@@ -40,7 +40,7 @@ module VarDArrangement (P : VarDParams) = struct
   type output = VarDRaftSerialized.raft_output
   type msg = Serializer_primitives.wire
   type res = (output list * state) * ((name * msg) list)
-  type client_id = int
+  type client_id = string
   let system_name = "VarDSerialized"
   let init = Obj.magic ((transformed_multi_params P.num_nodes).init_handlers)
   let reboot = Obj.magic (transformed_failure_params P.num_nodes)
@@ -85,5 +85,5 @@ module VarDArrangement (P : VarDParams) = struct
   let debug_timeout (s : state) = ()
   let debug_input s inp = ()
   let deserialize_client_id = VarDSerializedSerialization.deserializeClientId 
-  let string_of_client_id = string_of_int
+  let string_of_client_id s = s
 end

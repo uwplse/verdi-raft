@@ -1,5 +1,6 @@
 Require Import VerdiRaft.Raft.
 Require Import Verdi.VarD.
+Require Import String.
 
 Section VarDRaft.
   Variable n : nat.
@@ -9,8 +10,8 @@ Section VarDRaft.
       N := n;
       input_eq_dec := input_eq_dec;
       output_eq_dec := output_eq_dec;
-      clientId := nat;
-      clientId_eq_dec := eq_nat_dec
+      clientId := string;
+      clientId_eq_dec := string_dec
     }.
 
   Definition vard_raft_base_params := base_params.

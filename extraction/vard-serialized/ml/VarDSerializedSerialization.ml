@@ -7,10 +7,10 @@ open Util
 let outputToString out =
   match Obj.magic out with
   | NotLeader (client_id, request_id) ->
-    (Obj.magic client_id, sprintf "NotLeader %s" (string_of_int request_id))
+    (string_of_char_list (Obj.magic client_id), sprintf "NotLeader %s" (string_of_int request_id))
   | ClientResponse (client_id, request_id, o) ->
      let Response (k, value, old) = (Obj.magic o) in
-     (Obj.magic client_id,
+     (string_of_char_list (Obj.magic client_id),
       match (value, old) with
       | Some v, Some o ->
          sprintf "Response %s %s %s %s"
@@ -56,8 +56,14 @@ let deserializeInp buf =
 let deserializeInput inp client_id =
   match deserializeInp inp with
   | Some (request_id, input) ->
-    Some (ClientRequest (Obj.magic client_id, request_id, Obj.magic input))
+    Some (ClientRequest (Obj.magic (char_list_of_string client_id), request_id, Obj.magic input))
   | None -> None
 
 let deserializeClientId b =
-  if Bytes.length b = 4 then Some (int_of_raw_bytes b) else None
+  let s = Bytes.to_string b in
+  (*let r = regexp "^[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]$" in*)
+  let r = regexp "^[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]4[0-9a-f][0-9a-f][0-9a-f][89ab][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]$" in
+  if string_match r s 0 then
+    Some s
+  else
+    None
