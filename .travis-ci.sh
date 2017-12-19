@@ -12,6 +12,7 @@ fi
 opam update --yes --verbose
 
 opam pin add coq ${COQ_VERSION} --yes
+opam install coq --yes
 
 opam upgrade --yes --verbose
 
@@ -21,7 +22,7 @@ case ${MODE} in
     opam install verdi-raft --yes --verbose --deps-only
     ./configure
     make proofalytics &
-    # Output to the screen every 9 minutes to prevent a travis timeout
+    # Output to the screen every few minutes to prevent a travis timeout
     export PID=$!
     while [[ `ps -p $PID | tail -n +2` ]]; do
 	echo 'proofalyzing...'
