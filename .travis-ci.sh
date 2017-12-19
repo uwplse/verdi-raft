@@ -12,7 +12,7 @@ fi
 opam update --yes --verbose
 
 opam pin add coq ${COQ_VERSION} --yes
-opam install coq --yes
+opam upgrade coq --yes
 
 opam upgrade --yes --verbose
 
