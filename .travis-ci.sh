@@ -11,7 +11,7 @@ fi
 
 opam update --yes --verbose
 
-opam pin add coq ${COQ_VERSION} --yes --verbose
+opam pin add coq ${COQ_VERSION} --yes
 
 opam upgrade --yes --verbose
 
