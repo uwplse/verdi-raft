@@ -12,9 +12,14 @@ fi
 opam update --yes --verbose
 
 opam pin add coq ${COQ_VERSION} --yes
-opam upgrade coq --yes
 
-opam upgrade --yes --verbose
+# upgrade but avoid full verboseness
+opam upgrade --yes &
+export PID=$!
+while [[ `ps -p $PID | tail -n +2` ]]; do
+    echo 'upgrading...'
+    sleep 10
+done
 
 case ${MODE} in
   proofalytics)
