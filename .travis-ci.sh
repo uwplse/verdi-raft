@@ -19,36 +19,23 @@ case ${MODE} in
 	echo 'proofalyzing...'
 	sleep 240
     done
-    opam pin remove verdi-raft --yes --verbose
     ;;
   checkproofs)
     opam pin add verdi-raft-checkproofs . --yes --verbose
-    opam remove verdi-raft-checkproofs --yes --verbose
-    opam pin remove verdi-raft-checkproofs --yes --verbose
     ;;
   vard)
     opam pin add vard . --yes --verbose
-    opam remove vard --yes --verbose
-    opam pin remove vard --yes --verbose
     ;;
   vard-serialized)
     opam pin add vard-serialized . --yes --verbose
-    opam remove vard-serialized --yes --verbose
-    opam pin remove vard-serialized --yes --verbose
     ;;
   vard-log)
     opam pin add vard-log . --yes --verbose
-    opam remove vard-log --yes --verbose
-    opam pin remove vard-log --yes --verbose
     ;;
   vard-serialized-log)
     opam pin add vard-serialized-log . --yes --verbose
-    opam remove vard-serialized-log --yes --verbose
-    opam pin remove vard-serialized-log --yes --verbose
     ;;
   *)
     opam pin add verdi-raft . --yes --verbose
-    opam remove verdi-raft --yes --verbose
-    opam pin remove verdi-raft --yes --verbose
     ;;
 esac
