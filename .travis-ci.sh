@@ -1,25 +1,13 @@
+#!/usr/bin/env bash
+
 set -ev
 
-if [ -e "/home/travis/.opam/config" ]; then
-    eval $(opam config env)
-else
-    opam init --compiler=${COMPILER} --yes --no-setup
-    eval $(opam config env)
-    opam repo add coq-released https://coq.inria.fr/opam/released
-    opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-fi
+export MODE=$1
+export OPAMBUILDTEST=$2
 
-opam update --yes --verbose
+eval $(opam config env)
 
-opam pin add coq ${COQ_VERSION} --yes
-
-# upgrade but avoid full verboseness
-opam upgrade --yes &
-export PID=$!
-while [[ `ps -p $PID | tail -n +2` ]]; do
-    echo 'upgrading...'
-    sleep 10
-done
+opam update
 
 case ${MODE} in
   proofalytics)
@@ -33,36 +21,23 @@ case ${MODE} in
 	echo 'proofalyzing...'
 	sleep 240
     done
-    opam pin remove verdi-raft --yes --verbose
     ;;
   checkproofs)
     opam pin add verdi-raft-checkproofs . --yes --verbose
-    opam remove verdi-raft-checkproofs --yes --verbose
-    opam pin remove verdi-raft-checkproofs --yes --verbose
     ;;
   vard)
     opam pin add vard . --yes --verbose
-    opam remove vard --yes --verbose
-    opam pin remove vard --yes --verbose
     ;;
   vard-serialized)
     opam pin add vard-serialized . --yes --verbose
-    opam remove vard-serialized --yes --verbose
-    opam pin remove vard-serialized --yes --verbose
     ;;
   vard-log)
     opam pin add vard-log . --yes --verbose
-    opam remove vard-log --yes --verbose
-    opam pin remove vard-log --yes --verbose
     ;;
   vard-serialized-log)
     opam pin add vard-serialized-log . --yes --verbose
-    opam remove vard-serialized-log --yes --verbose
-    opam pin remove vard-serialized-log --yes --verbose
     ;;
   *)
     opam pin add verdi-raft . --yes --verbose
-    opam remove verdi-raft --yes --verbose
-    opam pin remove verdi-raft --yes --verbose
     ;;
 esac
