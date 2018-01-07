@@ -34,6 +34,7 @@ script:
   - echo "TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}"
   - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
   - echo "TRAVIS_COMMIT=${TRAVIS_COMMIT}"
+  - echo "TRAVIS_PULL_REQUEST_SHA=${TRAVIS_PULL_REQUEST_SHA}"
   - echo "TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}"
   - >-
     docker run mdernst/xenial-for-verdi-$COQ_VERSION /bin/bash -c "true &&
