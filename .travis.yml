@@ -8,7 +8,7 @@ env:
   global:
     - THIS_REPO=verdi-raft
   matrix:
-    - MODE=build COQ_VERSION=coq8.6
+    - MODE=build COQ_VERSION=coq8.6-32bit
     - MODE=build COQ_VERSION=coq8.7-32bit
     - MODE=vard OPAMBUILDTEST=1 COQ_VERSION=coq8.7
     - MODE=vard-serialized OPAMBUILDTEST=1 COQ_VERSION=coq8.7
