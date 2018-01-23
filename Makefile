@@ -72,7 +72,7 @@ raft/RaftState.v: raft/RaftState.v.rec
 clean:
 	if [ -f Makefile.coq ]; then \
 	  $(MAKE) -f Makefile.coq cleanall; fi
-	rm -f Makefile.coq script/.assumptions.vo.aux
+	rm -f Makefile.coq script/.assumptions.vo.aux script/.assumptions.aux
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
