@@ -97,12 +97,12 @@ EOF
     t=$(echo $rep \
         | sed 's|^..........\([0-9][0-9]\)\([0-9][0-9]\)\([0-9][0-9]\).*$|\1:\2:\3|')
     h=$(echo $rep \
-        | awk -W lint=fatal -F "-" \
+        | gawk --lint=fatal -F "-" \
             '{printf("%s", $4); \
               for(i=5; i<NF-1; i++) { \
                 printf("-%s", $i)}}')
     b=$(echo $rep \
-        | awk -W lint=fatal -F "-" '{print $NF}')
+        | gawk --lint=fatal -F "-" '{print $NF}')
     printf "<a class='pa-link' href='%s'>%s \
               &nbsp;at&nbsp; %s \
               &nbsp;on&nbsp; %s \
@@ -112,18 +112,18 @@ EOF
     echo "<br> &nbsp;"
     echo "<span class='it'>max ltac:</span> &nbsp;"
     cat "${rep}/proof-times.csv" \
-      | awk -W lint=fatal -v key=2 -f "${PADIR}/csv-sort.awk" \
-      | awk -W lint=fatal -F "," 'NR == 2 {print $1 " (" $2 " ms)"}'
+      | gawk --lint=fatal -v key=2 -f "${PADIR}/csv-sort.awk" \
+      | gawk --lint=fatal -F "," 'NR == 2 {print $1 " (" $2 " ms)"}'
 
     echo "<br> &nbsp;"
     echo "<span class='it'>max qed:</span> &nbsp;"
     cat "${rep}/proof-times.csv" \
-      | awk -W lint=fatal -v key=3 -f "${PADIR}/csv-sort.awk" \
-      | awk -W lint=fatal -F "," 'NR == 2 {print $1 " (" $2 " ms)"}'
+      | gawk --lint=fatal -v key=3 -f "${PADIR}/csv-sort.awk" \
+      | gawk --lint=fatal -F "," 'NR == 2 {print $1 " (" $2 " ms)"}'
 
     echo "<br> &nbsp;"
     echo "<span class='it'>build time:</span> &nbsp;"
-    awk -W lint=fatal \
+    gawk --lint=fatal \
         'BEGIN { FS = ","; tot = 0 }  \
          { tot += $2 }      \
          END { print tot " s"}' \

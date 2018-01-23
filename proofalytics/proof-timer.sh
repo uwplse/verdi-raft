@@ -18,7 +18,7 @@ pushd "$SANDBOX" > /dev/null
   # annotate proofs
   for v in $(find . -name '*.v'); do
     scratch="$(mktemp "proot-time-annot-tmp-XXXXX")"
-    awk -W lint=fatal -f "${PADIR}/proof-time-annot.awk" "$v" > "$scratch"
+    gawk --lint=fatal -f "${PADIR}/proof-time-annot.awk" "$v" > "$scratch"
     mv "$scratch" "$v"
   done
 
@@ -31,15 +31,15 @@ pushd "$SANDBOX" > /dev/null
 
   # build times csv
   echo "file,time" \
-    | awk -W lint=fatal -v key=2 -f "${PADIR}/csv-sort.awk" \
+    | gawk --lint=fatal -v key=2 -f "${PADIR}/csv-sort.awk" \
       - $(find . -name '*.buildtime') \
     > "$BUILD_TIMES"
 
   # proof times csv
   grep "$SEP" "$PROOF_TICKS" \
     | sed "s/ /$SEP/" \
-    | awk -W lint=fatal -f "${PADIR}/proof-times-csv.awk" \
-    | awk -W lint=fatal -v key=2 -f "${PADIR}/csv-sort.awk" \
+    | gawk --lint=fatal -f "${PADIR}/proof-times-csv.awk" \
+    | gawk --lint=fatal -v key=2 -f "${PADIR}/csv-sort.awk" \
     > "$PROOF_TIMES"
 popd > /dev/null
 

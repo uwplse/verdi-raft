@@ -3,7 +3,7 @@ BEGIN {
   if(commit == "") {
     commit = "master"
   }
-  gh = "https://github.com/uwplse/verdi/blob/" commit
+  gh = "https://github.com/uwplse/verdi-raft/blob/" commit
 }
 
 {
