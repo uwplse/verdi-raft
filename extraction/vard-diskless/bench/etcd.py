@@ -1,5 +1,5 @@
-import httplib
-import urllib
+import httplib2
+import urllib3
 
 class Client(object):
     class NoLeader(Exception):
@@ -17,13 +17,14 @@ class Client(object):
     
 
     def __init__(self, host, port):
-        self.conn = httplib.HTTPConnection(host, port)
+        self.base_url = 'http://' + host + ':' + port
+        self.http = urllib3.PoolManager()
 
     def get(self, key):
-        self.conn.request('GET', '/v2/keys/' + str(key) + '?quorum=true')
-        self.conn.getresponse().read()
+        r = self.http.request('GET', self.base_url + '/v2/keys/' + str(key) + '?quorum=true')
+        return r.data
 
     def put(self, key, value):
-        self.conn.request('PUT', '/v2/keys/' + str(key), urllib.urlencode({'value': str(value)}),
-                          {"Content-type": "application/x-www-form-urlencoded"})
-        self.conn.getresponse().read()
+        r = self.http.request('PUT', self.base_url + '/v2/keys/' + str(key),
+                              fields={'value': str(value)})
+        return r.data
