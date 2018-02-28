@@ -9,7 +9,7 @@ class Client(object):
         # cluster should be a list of [(host, port)] pairs
         for (host, port) in cluster:
             c = cls(host, port)
-            data = c.http.request('GET', '/v2/stats/self')
+            data = c.http.request('GET', c.base_url + '/v2/stats/self')
             if '"state":"StateLeader"' in data:
                 return (host, port)
         raise cls.NoLeader
