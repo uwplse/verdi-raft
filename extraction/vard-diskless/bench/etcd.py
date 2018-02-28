@@ -16,7 +16,7 @@ class Client(object):
     
 
     def __init__(self, host, port):
-        self.base_url = 'http://' + host + ':' + port
+        self.base_url = 'http://' + host + ':' + str(port)
         self.http = urllib3.PoolManager()
 
     def get(self, key):
