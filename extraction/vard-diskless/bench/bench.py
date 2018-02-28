@@ -78,7 +78,7 @@ def main():
     for (tid, ts, latency) in reqs:
         print 'REQUEST: THREAD %s TIME %s LATENCY %s' % (tid, ts, latency)
     print 'Total time: %f' % (end - start)
-    print 'Throughput: %f' % (sum(gets) + sum(puts) / (end - start))
+    print 'Throughput: %f reqs/s' % (sum(gets) + sum(puts) / (end - start))
     print '%f gets, avg = %f' % (len(gets), sum(gets)/len(gets))
     print '%f puts, avg = %f' % (len(puts), sum(puts)/len(puts))
         
