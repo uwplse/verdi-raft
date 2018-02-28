@@ -40,6 +40,7 @@ class Client(object):
         self.client_id = random.randint(0, 2**31 - 1)
         if not sock:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
             self.sock.connect((host, port))
         else:
             self.sock = sock
