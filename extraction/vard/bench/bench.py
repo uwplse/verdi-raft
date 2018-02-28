@@ -13,7 +13,6 @@ reqs = []
 DEBUG = False
 
 def benchmark(client, requests, keys, put_percentage, n):
-    random.seed(n)
     put_prob = put_percentage / 100.0
     i = 0
     while True:
