@@ -1,4 +1,3 @@
-import httplib2
 import urllib3
 
 class Client(object):
