@@ -6,6 +6,7 @@ _CoqProject
 Makefile.coq
 Makefile.coq.bak
 Makefile.coq.conf
+.coqdeps.d
 log
 *~
 .coq-native/

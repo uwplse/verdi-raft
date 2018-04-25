@@ -27,7 +27,7 @@ namespace :vard do
   end
 
   def vard_pidfile_path
-    "#{current_path}/extraction/vard/tmp/vard.pid"
+    "#{shared_path}/extraction/vard/tmp/vard.pid"
   end
 
   desc 'start vard'
@@ -42,7 +42,7 @@ namespace :vard do
         '--background',
         "--chdir #{current_path}/extraction/vard",
         '--startas /bin/bash',
-        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:vard_client_port)} -dbpath #{current_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
+        "-- -c 'exec ./vard.native -me #{node.properties.name} -port #{fetch(:vard_client_port)} -dbpath #{shared_path}/extraction/vard/tmp #{vard_cluster} > log/vard.log 2>&1'"
     end
   end
 

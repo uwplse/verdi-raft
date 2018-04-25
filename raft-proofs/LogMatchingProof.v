@@ -267,7 +267,7 @@ Section LogMatchingProof.
           | [ H : forall _ _, 1 <= _ <= _ -> _ |- context [eIndex _ = ?x] ] =>
             remember (x) as index; specialize (H leaderId index); forward H
         end.
-        * intuition; [destruct index; intuition; omega|].
+        * intuition; try (destruct index; intuition; omega).
           match goal with
             | _ : eIndex ?e > index, _ : In ?e ?l |- _ =>
               pose proof maxIndex_is_max l e

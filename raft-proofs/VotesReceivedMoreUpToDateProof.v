@@ -54,7 +54,7 @@ Section VotesReceivedMoreUpToDate.
     destruct_update; simpl in *; eauto;
     intuition; try congruence; repeat find_rewrite; eauto;
     copy_eapply_prop_hyp In In; eauto;
-    rewrite <- plus_n_O in *;
+    try rewrite <- plus_n_O in *;
     break_exists_exists; intuition;
     eauto using update_elections_data_request_vote_votesWithLog_old.
   Qed.
@@ -102,7 +102,7 @@ Section VotesReceivedMoreUpToDate.
     - eapply_prop_hyp Candidate Candidate; eauto.
       break_exists_exists. intuition.
       apply update_elections_data_timeout_votesWithLog_old.
-      rewrite <- plus_n_O in *. auto.
+      try rewrite <- plus_n_O in *. auto.
   Qed.
 
   Lemma votesReceived_moreUpToDate_client_request :
