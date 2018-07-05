@@ -45,6 +45,7 @@ namespace :vard_serialized_log do
         "--pidfile #{vard_serialized_log_pidfile_path}",
         '--background',
         "--chdir #{current_path}/extraction/vard-serialized-log",
+
         '--startas /bin/bash',
         "-- -c 'exec ./vardserlog.native -me #{node.properties.name} -port #{fetch(:vard_serialized_log_client_port)} -dbpath #{current_path}/extraction/vard-serialized-log/tmp #{vard_serialized_log_cluster} > log/vard-serialized-log.log 2>&1'"
     end
@@ -159,4 +160,30 @@ namespace :vard_serialized_log do
     end
   end
 
+  desc 'experiment 1'
+  task :experiment_1 do
+    names = roles(:node).collect { |node| node.properties.name }
+
+    # 0. truncate logs
+    Rake::Task['vard_serialized_log:truncate_log'].execute
+
+    # 1. start up whole ring
+    Rake::Task['vard_serialized_log:start'].execute
+
+    # 2. pause 20 seconds
+    sleep(5)
+
+    # 3. send queries
+    f = File.open('words50.txt')
+    words = f.readlines
+    for i in (1..50)
+      ENV['KEY'] = words.sample.strip
+      ENV['VALUE'] = words.sample.strip
+      Rake::Task['vard_serialized_log:put_remote'].execute
+    end
+    
+    # 4. stop ring
+    Rake::Task['vard_serialized_log:stop'].execute
+  end
 end
+

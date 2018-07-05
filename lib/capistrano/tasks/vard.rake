@@ -146,5 +146,29 @@ namespace :vard do
         ENV['KEY']
     end
   end
+  desc 'experiment 1'
+  task :experiment_1 do
+    names = roles(:node).collect { |node| node.properties.name }
 
+    # 0. truncate logs
+    Rake::Task['vard:truncate_log'].execute
+
+    # 1. start up whole ring
+    Rake::Task['vard:start'].execute
+
+    # 2. pause 20 seconds
+    sleep(5)
+
+    # 3. send queries
+    f = File.open('words50.txt')
+    words = f.readlines
+    for i in (1..50)
+      ENV['KEY'] = words.sample.strip
+      ENV['VALUE'] = words.sample.strip
+      Rake::Task['vard:put'].execute
+    end
+    
+    # 4. stop ring
+    Rake::Task['vard:stop'].execute
+  end
 end
