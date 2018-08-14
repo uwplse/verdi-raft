@@ -47,6 +47,7 @@ VARDML = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
 VARDSERML = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
 VARDLOGML = extraction/vard-log/ml/VarDRaftLog.ml extraction/vard-log/ml/VarDRaftLog.mli
 VARDSERLOGML = extraction/vard-serialized-log/ml/VarDRaftSerializedLog.ml extraction/vard-serialized-log/ml/VarDRaftSerializedLog.mli
+VARDDEBUGML = extraction/vard-debug/ml/VarDRaftDebug.ml extraction/vard-debug/ml/VarDRaftDebug.mli
 
 Makefile.coq: _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq \
@@ -64,7 +65,10 @@ Makefile.coq: _CoqProject
 	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v' \
           -extra '$(VARDSERLOGML)' \
 	    'extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v systems/VarDRaftSerializedLog.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v'
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v' \
+          -extra '$(VARDDEBUGML)' \
+	    'extraction/vard-debug/coq/ExtractVarDRaftDebug.v systems/VarDRaft.vo' \
+	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-debug/coq/ExtractVarDRaftDebug.v'
 
 raft/RaftState.v: raft/RaftState.v.rec
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
@@ -79,8 +83,9 @@ clean:
 	$(MAKE) -C extraction/vard-serialized clean
 	$(MAKE) -C extraction/vard-log clean
 	$(MAKE) -C extraction/vard-serialized-log clean
+	$(MAKE) -C extraction/vard-debug clean
 
-$(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML): Makefile.coq
+$(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDEBUGML): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 
 vard:
@@ -107,6 +112,12 @@ vard-serialized-log:
 vard-serialized-log-test:
 	+$(MAKE) -C extraction/vard-serialized-log test
 
+vard-debug:
+	+$(MAKE) -C extraction/vard-debug
+
+vard-debug-test:
+	+$(MAKE) -C extraction/vard-debug test
+
 lint:
 	@echo "Possible use of hypothesis names:"
 	find . -name '*.v' -exec grep -Hn 'H[0-9][0-9]*' {} \;
@@ -115,10 +126,11 @@ distclean: clean
 	rm -f _CoqProject
 
 .PHONY: default quick install clean lint proofalytics distclean checkproofs
-.PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test vard-serialized-log vard-serialized-log-test
-.PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML)
+.PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test vard-serialized-log vard-serialized-log-test vard-debug vard-debug-test
+.PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDEBUGML)
 
 .NOTPARALLEL: $(VARDML)
 .NOTPARALLEL: $(VARDSERML)
 .NOTPARALLEL: $(VARDLOGML)
 .NOTPARALLEL: $(VARDSERLOGML)
+.NOTPARALLEL: $(VARDDEBUGML)

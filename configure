@@ -12,6 +12,7 @@ NAMESPACE_extraction_vard_coq="VerdiRaft"
 NAMESPACE_extraction_vard_serialized_coq="VerdiRaft"
 NAMESPACE_extraction_vard_log_coq="VerdiRaft"
 NAMESPACE_extraction_vard_serialized_log_coq="VerdiRaft"
+NAMESPACE_extraction_vard_debug="VerdiRaft"
 CANARIES=("StructTact.StructTactics" "Build StructTact before building Verdi Raft" "Verdi.Verdi" "Build Verdi before building Verdi Raft" "Cheerios.Cheerios" "Build Cheerios before building Verdi Raft")
 Verdi_DIRS=(core lib systems extraction)
 Cheerios_DIRS=(core extraction)
