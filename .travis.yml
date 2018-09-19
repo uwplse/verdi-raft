@@ -10,11 +10,10 @@ env:
   matrix:
     - MODE=build COQ_VERSION=coq8.7-32bit
     - MODE=build COQ_VERSION=coq8.8-32bit
-    - MODE=vard OPAMBUILDTEST=1 COQ_VERSION=coq8.7
-    - MODE=vard-serialized OPAMBUILDTEST=1 COQ_VERSION=coq8.7
-    - MODE=vard-log OPAMBUILDTEST=1 COQ_VERSION=coq8.7
-    - MODE=vard-serialized-log OPAMBUILDTEST=1 COQ_VERSION=coq8.7
-    - MODE=proofalytics COQ_VERSION=coq8.7
+    - MODE=vard OPAMBUILDTEST=1 COQ_VERSION=coq8.8
+    - MODE=vard-serialized OPAMBUILDTEST=1 COQ_VERSION=coq8.8
+    - MODE=vard-log OPAMBUILDTEST=1 COQ_VERSION=coq8.8
+    - MODE=vard-serialized-log OPAMBUILDTEST=1 COQ_VERSION=coq8.8
 
 # The "docker run" command will pull if needed.
 # Running this first gives two tries in case of network lossage.
