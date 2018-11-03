@@ -54,7 +54,7 @@ Section OutputCorrect.
       rewrite <- surjective_pairing.
       auto.
     - right. intro. break_exists. break_and.
-      find_eapply_lem_hyp find_none; eauto.
+      eapply find_none in Heqo; eauto.
       simpl in *. break_match; try discriminate.
       unfold in_output_list in *. break_exists.
       find_eapply_lem_hyp find_none; eauto.

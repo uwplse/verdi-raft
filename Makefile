@@ -3,7 +3,10 @@ PYTHON=python2.7
 # sets COQVERSION
 include Makefile.detect-coq-version
 
-ifeq (,$(filter $(COQVERSION),8.6 8.7 8.8 trunk))
+# sets VARDML, etc.
+include Makefile.ocaml-files
+
+ifeq (,$(filter $(COQVERSION),8.6 8.7 8.8 8.9 trunk))
 $(error "Verdi Raft is only compatible with Coq version 8.6.1 or later")
 endif
 
@@ -43,40 +46,14 @@ BUILDTIMER=$(PWD)/proofalytics/build-timer.sh $(STDBUF) -i0 -o0
 proofalytics-aux: Makefile.coq
 	$(MAKE) -f Makefile.coq TIMECMD="$(BUILDTIMER)"
 
-VARDML = extraction/vard/ml/VarDRaft.ml extraction/vard/ml/VarDRaft.mli
-VARDSERML = extraction/vard-serialized/ml/VarDRaftSerialized.ml extraction/vard-serialized/ml/VarDRaftSerialized.mli
-VARDLOGML = extraction/vard-log/ml/VarDRaftLog.ml extraction/vard-log/ml/VarDRaftLog.mli
-VARDSERLOGML = extraction/vard-serialized-log/ml/VarDRaftSerializedLog.ml extraction/vard-serialized-log/ml/VarDRaftSerializedLog.mli
-VARDDEBUGML = extraction/vard-debug/ml/VarDRaftDebug.ml extraction/vard-debug/ml/VarDRaftDebug.mli
-
 Makefile.coq: _CoqProject
-	coq_makefile -f _CoqProject -o Makefile.coq \
-	  -extra 'script/assumptions.vo script/assumptions.glob script/assumptions.v.d' \
-	    'script/assumptions.v raft-proofs/EndToEndLinearizability.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) script/assumptions.v' \
-          -extra '$(VARDML)' \
-	    'extraction/vard/coq/ExtractVarDRaft.v systems/VarDRaft.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v' \
-          -extra '$(VARDSERML)' \
-	    'extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v systems/VarDRaftSerialized.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v' \
-          -extra '$(VARDLOGML)' \
-	    'extraction/vard-log/coq/ExtractVarDRaftLog.v systems/VarDRaftLog.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v' \
-          -extra '$(VARDSERLOGML)' \
-	    'extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v systems/VarDRaftSerializedLog.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v' \
-          -extra '$(VARDDEBUGML)' \
-	    'extraction/vard-debug/coq/ExtractVarDRaftDebug.v systems/VarDRaft.vo' \
-	    '$$(COQC) $$(COQDEBUG) $$(COQFLAGS) extraction/vard-debug/coq/ExtractVarDRaftDebug.v'
+	coq_makefile -f _CoqProject -o Makefile.coq
 
 raft/RaftState.v: raft/RaftState.v.rec
 	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
 
-clean:
-	if [ -f Makefile.coq ]; then \
-	  $(MAKE) -f Makefile.coq cleanall; fi
-	rm -f Makefile.coq script/.assumptions.vo.aux script/.assumptions.aux
+clean: Makefile.coq
+	$(MAKE) -f Makefile.coq cleanall
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
@@ -84,6 +61,9 @@ clean:
 	$(MAKE) -C extraction/vard-log clean
 	$(MAKE) -C extraction/vard-serialized-log clean
 	$(MAKE) -C extraction/vard-debug clean
+
+assumptions: Makefile.coq
+	$(MAKE) -f Makefile.coq script/assumptions.vo
 
 $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDEBUGML): Makefile.coq
 	$(MAKE) -f Makefile.coq $@
@@ -125,7 +105,7 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick install clean lint proofalytics distclean checkproofs
+.PHONY: default quick install clean lint proofalytics distclean checkproofs assumptions
 .PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test vard-serialized-log vard-serialized-log-test vard-debug vard-debug-test
 .PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDEBUGML)
 
