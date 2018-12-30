@@ -180,15 +180,6 @@ Section OutputGreatestId.
           }
   Qed.
 
-  Lemma before_func_prepend :
-    forall A f g (l : list A) l',
-      before_func f g l ->
-      (forall x, In x l' -> g x = false) ->
-      before_func f g (l' ++ l).
-  Proof using. 
-    induction l'; intros; simpl in *; intuition.
-  Qed.
-
   Lemma entries_contiguous :
     forall net,
       raft_intermediate_reachable net ->
@@ -199,18 +190,6 @@ Section OutputGreatestId.
     intuition.
     unfold contiguous_range_exact_lo. intuition; eauto.
     find_apply_hyp_hyp. omega.
-  Qed.
-
-  Lemma before_func_prefix :
-    forall A f g (l : list A) l',
-      Prefix l l' ->
-      before_func f g l ->
-      before_func f g l'.
-  Proof using. 
-    intros.
-    find_apply_lem_hyp Prefix_exists_rest.
-    break_exists; subst.
-    eauto using before_func_app.
   Qed.
   
   Lemma doGenericServer_key_in_output_list :

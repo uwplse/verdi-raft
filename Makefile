@@ -54,6 +54,7 @@ raft/RaftState.v: raft/RaftState.v.rec
 
 clean: Makefile.coq
 	$(MAKE) -f Makefile.coq cleanall
+	rm -f Makefile.coq Makefile.coq.conf
 	find . -name '*.buildtime' -delete
 	$(MAKE) -C proofalytics clean
 	$(MAKE) -C extraction/vard clean
