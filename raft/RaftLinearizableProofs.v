@@ -626,19 +626,6 @@ Section RaftLinearizableProofs.
     - left. break_if; congruence.
   Qed.
 
-  Lemma before_func_antisymmetric :
-    forall A f g l,
-      (forall x, f x = true -> g x = true -> False) ->
-      before_func(A:=A) f g l ->
-      before_func g f l ->
-      False.
-  Proof using. 
-    induction l; simpl; intuition.
-    - eauto.
-    - congruence.
-    - congruence.
-  Qed.
-
   Lemma has_key_true_same_client :
     forall c i e,
       has_key c i e = true ->
@@ -1038,26 +1025,6 @@ Section RaftLinearizableProofs.
     repeat eexists; eauto; in_crush.
   Qed.
 
-  Lemma NoDup_map_partition :
-    forall A B (f : A -> B) xs l y zs xs' y' zs',
-      NoDup (map f l) ->
-      l = xs ++ y :: zs ->
-      l = xs' ++ y' :: zs' ->
-      f y = f y' ->
-      xs = xs'.
-  Proof using. 
-    induction xs; simpl; intros; destruct xs'.
-    - auto.
-    - subst. simpl in *. find_inversion.
-      invc H. exfalso. rewrite map_app in *. simpl in *.
-      repeat find_rewrite. intuition.
-    - subst. simpl in *. find_inversion.
-      invc H. exfalso. rewrite map_app in *. simpl in *.
-      repeat find_rewrite. intuition.
-    - subst. simpl in *. find_injection. intros. subst.
-      f_equal. eapply IHxs; eauto. solve_by_inversion.
-  Qed.
-
   Lemma deduplicate_partition :
     forall l xs e ys xs' e' ys',
       deduplicate_log l = xs ++ e :: ys ->
@@ -1088,21 +1055,6 @@ Section RaftLinearizableProofs.
         find_apply_lem_hyp removeAfterIndex_in.
         eauto.
       + simpl in *. intuition.
-  Qed.
-
-  Lemma before_func_before :
-    forall A f g l,
-      before_func f g l ->
-      forall y,
-        g y = true ->
-        exists x : A,
-          f x = true /\
-          before x y l.
-  Proof using. 
-    induction l; intros; simpl in *; intuition.
-    - eauto.
-    - find_copy_apply_hyp_hyp. break_exists_exists. intuition.
-      right. intuition. congruence.
   Qed.
 
   Theorem raft_linearizable' :

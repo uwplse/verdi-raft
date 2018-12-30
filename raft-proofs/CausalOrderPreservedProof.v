@@ -25,17 +25,6 @@ Section CausalOrderPreserved.
   Variable client' : clientId.
   Variable id' : nat.
 
-  (* FIXME: move to StructTact *)
-  Lemma before_func_app_necessary :
-    forall A f g (l : list A) l',
-      ~ before_func f g l ->
-      before_func f g (l ++ l') ->
-      (forall x, In x l -> g x = false) /\
-      before_func f g l'.
-  Proof using. 
-    intros. induction l; simpl in *; intuition; subst; auto.
-  Qed.
-
   Lemma output_before_input_not_key_in_input_trace :
     forall tr tr' s s',
       ~ output_before_input client id client' id' tr ->

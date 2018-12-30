@@ -1772,14 +1772,6 @@ Section CommonTheorems.
     - do_bool. specialize (H a); intuition; omega.
   Qed.
   
-  Lemma Prefix_refl :
-    forall A (l : list A),
-      Prefix l l.
-  Proof using. 
-    intros. induction l; simpl in *; auto.
-  Qed.
-
-  
   Lemma findGtIndex_app_in_1 :
     forall l1 l2 e,
       sorted (l1 ++ l2) ->
@@ -2054,14 +2046,6 @@ Section CommonTheorems.
     omega.
   Qed.
 
-  Lemma Prefix_nil :
-    forall A l,
-      Prefix (A := A) l [] ->
-      l = [].
-  Proof using. 
-    intros. destruct l; simpl in *; intuition.
-  Qed.
-
   Lemma sorted_app_1 :
     forall l1 l2,
       sorted (l1 ++ l2) ->
@@ -2123,16 +2107,6 @@ Section CommonTheorems.
     - match goal with H : _ \/ _ |- _ => clear H end.
       simpl in *. break_match; intuition. subst. simpl.
       eauto using contiguous_partition.
-  Qed.
-
-  Lemma Prefix_In :
-    forall A (l : list A) l' x,
-      Prefix l l' ->
-      In x l ->
-      In x l'.
-  Proof using. 
-    induction l; intros; simpl in *; intuition;
-    subst; break_match; intuition; subst; intuition.
   Qed.
 
   Lemma sorted_term_index_lt :
@@ -2319,18 +2293,6 @@ Section CommonTheorems.
       intuition. repeat find_reverse_rewrite. simpl. intuition.
       + eapply uniqueIndices_elim_eq; eauto using sorted_uniqueIndices.
       + eapply IHl1; eauto using sorted_app_1, sorted_app_In_reduce.
-  Qed.
-
-  Lemma Prefix_exists_rest :
-    forall A l1 l2,
-      Prefix (A := A) l1 l2 ->
-      exists rest,
-        l2 = l1 ++ rest.
-  Proof using. 
-    induction l1; intros; simpl in *; eauto.
-    break_match; intuition. subst.
-    find_apply_hyp_hyp.
-    break_exists_exists. subst. auto.
   Qed.
 
   Lemma not_empty_false :
