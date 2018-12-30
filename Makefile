@@ -4,7 +4,7 @@ PYTHON=python2.7
 include Makefile.detect-coq-version
 
 # sets VARDML, etc.
-include Makefile.ocaml-files
+include Makefile.ml-files
 
 ifeq (,$(filter $(COQVERSION),8.6 8.7 8.8 8.9 trunk))
 $(error "Verdi Raft is only compatible with Coq version 8.6.1 or later")

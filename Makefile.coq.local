@@ -1,22 +1,22 @@
-include Makefile.ocaml-files
+include Makefile.ml-files
 
 script/assumptions.vo script/assumptions.glob script/assumptions.v.d: script/assumptions.v raft-proofs/EndToEndLinearizability.vo
-	$(COQC) $(COQDEBUG) $(COQFLAGS) script/assumptions.v
+	$(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) script/assumptions.v
 
 $(VARDML): extraction/vard/coq/ExtractVarDRaft.v systems/VarDRaft.vo
-	$(COQC) $(COQDEBUG) $(COQFLAGS) extraction/vard/coq/ExtractVarDRaft.v
+	$(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) extraction/vard/coq/ExtractVarDRaft.v
 
 $(VARDSERML): extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v systems/VarDRaftSerialized.vo
-	$(COQC) $(COQDEBUG) $(COQFLAGS) extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v
+	$(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v
 
 $(VARDLOGML): extraction/vard-log/coq/ExtractVarDRaftLog.v systems/VarDRaftLog.vo
-	$(COQC) $(COQDEBUG) $(COQFLAGS) extraction/vard-log/coq/ExtractVarDRaftLog.v
+	$(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) extraction/vard-log/coq/ExtractVarDRaftLog.v
 
 $(VARDSERLOGML): extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v systems/VarDRaftSerializedLog.vo
-	$(COQC) $(COQDEBUG) $(COQFLAGS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v
+	$(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v
 
 $(VARDDEBUGML): extraction/vard-debug/coq/ExtractVarDRaftDebug.v systems/VarDRaft.vo
-	$(COQC) $(COQDEBUG) $(COQFLAGS) extraction/vard-debug/coq/ExtractVarDRaftDebug.v
+	$(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) extraction/vard-debug/coq/ExtractVarDRaftDebug.v
 
 clean::
 	rm -f script/assumptions.vo script/assumptions.glob script/assumptions.v.d \
