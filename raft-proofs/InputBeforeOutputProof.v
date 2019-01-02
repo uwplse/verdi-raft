@@ -635,38 +635,40 @@ Section InputBeforeOutput.
         eauto.
   Qed.
 
-  Instance TR : InverseTraceRelation step_failure :=
+  Program Instance TR : InverseTraceRelation step_failure :=
     {
       init := step_failure_init;
       T := input_before_output client id;
       R := fun s => in_applied_entries client id (snd s) 
     }.
-  Proof.
-    - intros.
-      destruct (client_id_in (applied_entries (nwState (snd s)))) eqn:?;
-      eauto using client_id_in_true_in_applied_entries, client_id_in_false_not_in_applied_entries.
-    - intros.
-      unfold input_before_output in *.
-      eauto using before_func_app.
-    - intuition. simpl in *.
-      unfold in_applied_entries, applied_entries in *. simpl in *.
-      break_match; simpl in *; break_exists; intuition.
-    - intros.
-      destruct s as (failed, net).
-      destruct s' as (failed', net'). simpl in *.
-      find_eapply_lem_hyp in_applied_entries_step_applied_implies_input_state; eauto.
-      break_or_hyp.
-      + break_exists. intuition.
-        find_eapply_lem_hyp applied_implies_input; eauto.
-        apply before_func_app.
-        destruct (key_in_output_trace_dec client id tr);
-          [find_eapply_lem_hyp output_implies_applied; eauto; intuition|].
-        fold (input_before_output client id tr).
-        subst. eauto using in_input_not_in_output_input_before_output.
-      + destruct (key_in_output_trace_dec client id tr);
+  Next Obligation.
+    destruct (client_id_in (applied_entries (nwState n))) eqn:?;
+    eauto using client_id_in_true_in_applied_entries, client_id_in_false_not_in_applied_entries.
+  Defined.
+  Next Obligation.
+    unfold input_before_output in *.
+    eauto using before_func_app.
+  Defined.
+  Next Obligation.
+    intuition. simpl in *.
+    unfold in_applied_entries, applied_entries in *. simpl in *.
+    break_match; simpl in *; break_exists; intuition.
+  Defined.
+  Next Obligation.
+    simpl in *.
+    find_eapply_lem_hyp in_applied_entries_step_applied_implies_input_state; eauto.
+    break_or_hyp.
+    - break_exists. intuition.
+      find_eapply_lem_hyp applied_implies_input; eauto.
+      apply before_func_app.
+      destruct (key_in_output_trace_dec client id tr);
         [find_eapply_lem_hyp output_implies_applied; eauto; intuition|].
-        break_exists. subst.
-        eauto using input_before_output_not_key_in_output_trace_snoc_key.
+      fold (input_before_output client id tr).
+      subst. eauto using in_input_not_in_output_input_before_output.
+    - destruct (key_in_output_trace_dec client id tr);
+      [find_eapply_lem_hyp output_implies_applied; eauto; intuition|].
+      break_exists. subst.
+      eauto using input_before_output_not_key_in_output_trace_snoc_key.
   Defined.
 
   Theorem output_implies_input_before_output :

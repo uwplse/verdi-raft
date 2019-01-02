@@ -860,7 +860,7 @@ Section OutputCorrect.
     - exfalso. eauto using in_output_trace_not_nil.
   Qed.
 
-  Instance TR : TraceRelation step_failure :=
+  Program Instance TR : TraceRelation step_failure :=
     {
       init := step_failure_init;
       T := in_output_trace client id out ;
@@ -868,25 +868,26 @@ Section OutputCorrect.
       R := fun s => let (_, net) := s in
                     output_correct client id out (applied_entries (nwState net))
     }.
-  Proof.
-    - intros. repeat break_let. subst.
-      find_eapply_lem_hyp applied_entries_monotonic';
-        eauto using step_failure_star_raft_intermediate_reachable.
-      unfold output_correct in *.
-      break_exists.
-      repeat find_rewrite.
-      match goal with
-          | [ |- context [ deduplicate_log (?l ++ ?l') ] ] =>
-            pose proof deduplicate_log_app l l'; break_exists; find_rewrite
-      end.
-      repeat eexists; intuition eauto; repeat find_rewrite; auto.
-      rewrite app_ass. simpl. repeat f_equal.
-  - unfold in_output_trace in *. intuition.
+  Next Obligation.
+    repeat break_let. subst.
+    find_eapply_lem_hyp applied_entries_monotonic';
+      eauto using step_failure_star_raft_intermediate_reachable.
+    unfold output_correct in *.
+    break_exists.
+    repeat find_rewrite.
+    match goal with
+    | [ |- context [ deduplicate_log (?l ++ ?l') ] ] =>
+      pose proof deduplicate_log_app l l'; break_exists; find_rewrite
+    end.
+    repeat eexists; intuition eauto; repeat find_rewrite; auto.
+    rewrite app_ass. simpl. repeat f_equal.
+  Defined.
+  Next Obligation.
+    unfold in_output_trace in *. intuition.
     break_exists; intuition.
-  - intros.
-    break_let. subst.
+  Defined.
+  Next Obligation.
     find_apply_lem_hyp in_output_changed; auto.
-    destruct s.
     eauto using in_output_trace_step_output_correct, step_failure_star_raft_intermediate_reachable.
   Defined.
 
@@ -903,7 +904,7 @@ Section OutputCorrect.
   End inner.
 
   Instance oci : output_correct_interface.
-  Proof.
+  Proof using smci si lmi lacimi aemi.
     split.
     exact output_correct.
   Qed.

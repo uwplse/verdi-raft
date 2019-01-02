@@ -395,20 +395,27 @@ Section AppliedImpliesInputProof.
           right. intro. repeat (break_exists; intuition); eauto 10.
     Defined.
 
-    Instance ITR : InverseTraceRelation step_failure :=
-      { init := step_failure_init;
+    Program Instance ITR : InverseTraceRelation step_failure :=
+      {
+        init := step_failure_init;
         R := fun s => applied_implies_input_state client id i (snd s);
         T := in_input_trace client id i
       }.
-    - intros. apply applied_implies_input_state_dec.
-    - intros.
+    Next Obligation.
+      apply applied_implies_input_state_dec.
+    Defined.
+    Next Obligation.
       unfold in_input_trace in *. break_exists_exists.
       intuition.
-    - unfold applied_implies_input_state. intro. break_exists. break_and.
+    Defined.
+    Next Obligation.
+      unfold applied_implies_input_state. intro. break_exists. break_and.
       intuition; break_exists; intuition.
-    - intros. simpl in *.
+    Defined.
+    Next Obligation.
+      simpl in *.
       apply in_input_trace_or_app. right.
-      destruct s, s'. simpl in *.
+      simpl in *.
       eapply applied_implies_input_in_input_trace; eauto.
       eapply step_failure_star_raft_intermediate_reachable; eauto.
     Defined.
@@ -429,7 +436,7 @@ Section AppliedImpliesInputProof.
   Qed.
 
   Instance aiii : applied_implies_input_interface.
-  Proof.
+  Proof using.
     split.
     exact applied_implies_input.
   Qed.

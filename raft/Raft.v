@@ -501,14 +501,12 @@ Section Raft.
       msg_eq_dec := msg_eq_dec ;
       name_eq_dec := name_eq_dec ;
       nodes := nodes ;
-      init_handlers := init_handlers;
+      all_names_nodes := all_fin_all N ;
+      no_dup_nodes := all_fin_NoDup N ;
+      init_handlers := init_handlers ;
       net_handlers := RaftNetHandler ;
       input_handlers := RaftInputHandler
     }.
-  Proof.
-    - eauto using all_fin_all.
-    - eauto using all_fin_NoDup.
-  Defined.
 
   Instance failure_params : FailureParams _ :=
     {
