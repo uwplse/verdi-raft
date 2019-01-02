@@ -232,24 +232,25 @@ Section OutputImpliesApplied.
       simpl in *. rewrite_update; eauto.
   Qed.
 
-  Instance TR : TraceRelation step_failure :=
+  Program Instance TR : TraceRelation step_failure :=
     {
       init := step_failure_init;
       T := key_in_output_trace client id ;
       T_dec := key_in_output_trace_dec client id ;
       R := fun s => in_applied_entries client id (snd s)
     }.
-  Proof.
-  - intros.
+  Next Obligation.
     unfold in_applied_entries in *.
     break_exists; eexists; intuition eauto.
-    destruct s; destruct s'; eapply applied_entries_monotonic; eauto.
+    eapply applied_entries_monotonic; eauto.
     eauto using refl_trans_1n_n1_trace, step_failure_star_raft_intermediate_reachable.
-  - unfold key_in_output_trace in *. intuition.
+  Defined.
+  Next Obligation.
+    unfold key_in_output_trace in *. intuition.
     break_exists; intuition.
-  - intros.
-    destruct s as [failed net].
-    destruct s' as [failed' net']. simpl in *.
+  Defined.
+  Next Obligation.
+    simpl in *.
     find_apply_lem_hyp step_failure_star_raft_intermediate_reachable.
     find_apply_lem_hyp in_output_changed; auto.
     eauto using output_implies_in_applied_entries.

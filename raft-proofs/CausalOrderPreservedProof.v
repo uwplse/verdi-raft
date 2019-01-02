@@ -98,39 +98,37 @@ Section CausalOrderPreserved.
       + simpl in *. intuition.
   Qed.
   
-  Instance TR : TraceRelation step_failure :=
+  Program Instance TR : TraceRelation step_failure :=
     {
       init := step_failure_init;
       T := output_before_input client id client' id';
       R := fun s => entries_ordered client id client' id' (snd s)
     }.
-  Proof.
-    - intros.
-      unfold output_before_input.
-      eapply before_func_dec.
-    - intros.
-      destruct s as (failed, net).
-      destruct s' as (failed', net'). simpl in *.
-      unfold entries_ordered in *.
-      find_apply_lem_hyp step_failure_star_raft_intermediate_reachable.
-      find_eapply_lem_hyp applied_entries_monotonic'; eauto.
-      break_exists; repeat find_rewrite.
-      eauto using before_func_app.
-    - intuition.
-    - intros.
-      destruct s as (failed, net).
-      destruct s' as (failed', net'). simpl in *.
-      find_copy_eapply_lem_hyp output_before_input_not_key_in_input_trace; eauto.
-      find_copy_apply_lem_hyp output_before_input_key_in_output_trace.
-      find_eapply_lem_hyp output_implies_applied;
-        [|eapply refl_trans_n1_1n_trace; econstructor; eauto using refl_trans_1n_n1_trace].
-      eapply in_applied_entries_entries_ordered; auto.
-      intuition.
-      find_false.
-      find_apply_lem_hyp in_applied_entries_applied_implies_input_state.
-      break_exists. intuition.
-      eexists. eapply applied_implies_input; eauto.
-      eapply refl_trans_n1_1n_trace; econstructor; eauto using refl_trans_1n_n1_trace.
+  Next Obligation.
+    unfold output_before_input.
+    eapply before_func_dec.
+  Defined.
+  Next Obligation.
+    simpl in *.
+    unfold entries_ordered in *.
+    find_apply_lem_hyp step_failure_star_raft_intermediate_reachable.
+    find_eapply_lem_hyp applied_entries_monotonic'; eauto.
+    break_exists; repeat find_rewrite.
+    eauto using before_func_app.
+  Defined.
+  Next Obligation.
+    simpl in *.
+    find_copy_eapply_lem_hyp output_before_input_not_key_in_input_trace; eauto.
+    find_copy_apply_lem_hyp output_before_input_key_in_output_trace.
+    find_eapply_lem_hyp output_implies_applied;
+      [|eapply refl_trans_n1_1n_trace; econstructor; eauto using refl_trans_1n_n1_trace].
+    eapply in_applied_entries_entries_ordered; auto.
+    intuition.
+    find_false.
+    find_apply_lem_hyp in_applied_entries_applied_implies_input_state.
+    break_exists. intuition.
+    eexists. eapply applied_implies_input; eauto.
+    eapply refl_trans_n1_1n_trace; econstructor; eauto using refl_trans_1n_n1_trace.
   Defined.
 
   Theorem causal_order_preserved :
