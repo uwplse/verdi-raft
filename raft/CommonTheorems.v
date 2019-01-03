@@ -823,8 +823,8 @@ Section CommonTheorems.
     repeat (break_match; repeat (find_inversion; simpl in *)); auto using advanceCurrentTerm_same_lastApplied.
   Qed.
 
-  Definition term_of msg :=
-    match msg with
+  Definition term_of (m : msg) :=
+    match m with
       | RequestVote t _ _ _ => Some t
       | RequestVoteReply t _ => Some t
       | AppendEntries t _ _ _ _ _ => Some t
