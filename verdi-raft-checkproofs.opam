@@ -13,7 +13,7 @@ build: [
   [ make "checkproofs" "J=%{jobs}%" ]
 ]
 depends: [
-  "coq" {>= "8.6.1" & < "8.10~"}
+  "coq" {>= "8.7" & < "8.10~"}
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
   "cheerios" {= "dev"}

@@ -5,7 +5,7 @@ maintainer: "palmskog@gmail.com"
 homepage: "https://github.com/uwplse/verdi-raft"
 dev-repo: "https://github.com/uwplse/verdi-raft.git"
 bug-reports: "https://github.com/uwplse/verdi-raft/issues"
-license: "BSD"
+license: "BSD-2-Clause"
 
 build: [
   [ "./configure" ]
@@ -14,7 +14,7 @@ build: [
 install: [ make "install" ]
 remove: [ "sh" "-c" "rm -rf '%{lib}%/coq/user-contrib/VerdiRaft'" ]
 depends: [
-  "coq" {>= "8.6.1" & < "8.10~"}
+  "coq" {>= "8.7" & < "8.10~"}
   "verdi" {= "dev"}
   "StructTact" {= "dev"}
   "cheerios" {= "dev"}
