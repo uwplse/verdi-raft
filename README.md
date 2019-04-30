@@ -10,7 +10,7 @@ Requirements
 
 Definitions and proofs:
 
-- [`Coq`](https://coq.inria.fr) (8.7, 8.8, or 8.9)
+- [`Coq`](https://coq.inria.fr) (8.7 or later)
 - [`Verdi`](https://github.com/uwplse/verdi)
 - [`StructTact`](https://github.com/uwplse/StructTact)
 - [`Cheerios`](https://github.com/uwplse/cheerios)
@@ -39,11 +39,9 @@ Building
 
 We recommend installing the dependencies of Verdi Raft via
 [OPAM](http://opam.ocaml.org/doc/Install.html):
-
 ```
-opam repo add coq-released https://coq.inria.fr/opam/released
-opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-opam install verdi StructTact verdi-runtime ocamlbuild cheerios cheerios-runtime
+opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
+opam install coq-struct-tact coq-cheerios coq-verdi
 ```
 
 Then, run `./configure` in the Verdi Raft root directory.  This will check
@@ -59,7 +57,13 @@ To speed up proof checking on multi-core machines, use `make -jX`,
 where `X` is at least the number of cores.
 
 To build the `vard` key-value store program in `extraction/vard`,
-run `make vard` in the root directory. If the implementation has
+you need to additional dependencies:
+```
+opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
+opam install verdi-runtime ocamlbuild
+```
+
+Then, run `make vard` in the root directory. If the Coq implementation has
 been compiled as above, this simply compiles the extracted OCaml
 code to a native program; otherwise, the implementation
 is extracted to OCaml and compiled without checking any proofs.
