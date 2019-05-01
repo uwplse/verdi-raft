@@ -57,7 +57,7 @@ To speed up proof checking on multi-core machines, use `make -jX`,
 where `X` is at least the number of cores.
 
 To build the `vard` key-value store program in `extraction/vard`,
-you need to additional dependencies:
+you need to install additional dependencies:
 ```
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
 opam install verdi-runtime ocamlbuild
@@ -65,7 +65,7 @@ opam install verdi-runtime ocamlbuild
 
 Then, run `make vard` in the root directory. If the Coq implementation has
 been compiled as above, this simply compiles the extracted OCaml
-code to a native program; otherwise, the implementation
+code to a native executable; otherwise, the implementation
 is extracted to OCaml and compiled without checking any proofs.
 
 Files
