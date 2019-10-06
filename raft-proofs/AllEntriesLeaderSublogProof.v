@@ -74,7 +74,7 @@ Section AllEntriesLeaderSublog.
     eexists; intuition; eauto; reflexivity.
   Qed.
 
-  Hint Resolve map_snd.
+  Hint Resolve map_snd : core.
   
   Lemma allEntries_leader_sublog_client_request :
     refined_raft_net_invariant_client_request allEntries_leader_sublog.

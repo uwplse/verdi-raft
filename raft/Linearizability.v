@@ -76,7 +76,7 @@ Section Linearizability.
                    end
     end.
 
-  Hint Constructors acknowledge_all_ops.
+  Hint Constructors acknowledge_all_ops : core.
 
   Lemma acknowledge_all_ops_func_defn :
     forall x l target,
@@ -129,7 +129,7 @@ Section Linearizability.
                     IR_equivalent l1 l2 ->
                     IR_equivalent l2 l3 ->
                     IR_equivalent l1 l3.
-  Hint Constructors IR_equivalent.
+  Hint Constructors IR_equivalent : core.
 
   Lemma IR_equivalent_refl :
     forall l,
@@ -156,7 +156,7 @@ Section Linearizability.
     induction 1; intros; simpl in *; intuition.
   Qed.
 
-  Hint Constructors Permutation.
+  Hint Constructors Permutation : core.
   Lemma IR_equiv_Permutation :
     forall ir1 ir2,
       IR_equivalent ir1 ir2 ->
@@ -524,9 +524,9 @@ Section Linearizability.
     red. intuition congruence.
   Qed.
 
-  Hint Resolve IR_equivalent_refl.
-  Hint Resolve good_move_II.
-  Hint Resolve good_move_U_l.
+  Hint Resolve IR_equivalent_refl : core.
+  Hint Resolve good_move_II : core.
+  Hint Resolve good_move_U_l : core.
 
   Lemma not_good_op_move_IO :
     forall k,
@@ -585,7 +585,7 @@ Section Linearizability.
     simpl. intuition congruence.
   Qed.
 
-  Hint Constructors op_equivalent.
+  Hint Constructors op_equivalent : core.
 
   Lemma IR_equiv_AAOF_I :
     forall k xs ys target,

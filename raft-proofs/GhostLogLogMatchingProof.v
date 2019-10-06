@@ -229,8 +229,8 @@ Section GhostLogLogMatching.
       try solve [eapply lifted_entries_contiguous_nw_invariant; eauto].
   Qed.
 
-  Hint Resolve entries_match_refl.
-  Hint Resolve entries_match_sym.
+  Hint Resolve entries_match_refl : core.
+  Hint Resolve entries_match_sym : core.
     
   Lemma ghost_log_entries_match_append_entries :
     msg_refined_raft_net_invariant_append_entries' ghost_log_entries_match.

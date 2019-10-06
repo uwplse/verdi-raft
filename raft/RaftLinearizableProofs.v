@@ -910,7 +910,7 @@ Section RaftLinearizableProofs.
     eauto using NoDup_deduplicate_log.
   Qed.
 
-  Hint Constructors exported.
+  Hint Constructors exported : core.
 
   Lemma exported_snoc_IO :
     forall env_i env_o ir tr i o k,

@@ -18,7 +18,7 @@ Section EveryEntryWasCreated.
   Context {rri : raft_refinement_interface}.
   Context {lhlli : leaders_have_leaderLogs_interface}.
 
-  Hint Constructors in_any_log.
+  Hint Constructors in_any_log : core.
   (* proof sketch: prove for in_any_log. the only time new entries
   come into the system is on a leader, and leaders have leaderLogs in
   their term.  *)

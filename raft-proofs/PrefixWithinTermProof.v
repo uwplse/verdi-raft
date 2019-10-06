@@ -226,7 +226,10 @@ Section PrefixWithinTerm.
       repeat find_rewrite. do_in_app. intuition.
       + find_apply_hyp_hyp.
         eapply entries_match_nw_1_invariant.
-        Focus 10. eauto. Focus 5. eauto. Focus 4. eauto. all:eauto; try omega. repeat find_rewrite; auto.
+        10: { eauto. }
+        5: { eauto. }
+        4: { eauto. }
+        all:eauto; try omega. repeat find_rewrite; auto.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         omega.
@@ -250,7 +253,10 @@ Section PrefixWithinTerm.
       repeat find_rewrite. do_in_app. intuition.
       + find_apply_hyp_hyp.
         eapply entries_match_nw_1_invariant.
-        Focus 10. eauto. Focus 5. eauto. Focus 4. eauto. all:eauto; try omega. repeat find_rewrite; auto.
+        10: { eauto. }
+        5: { eauto. }
+        4: { eauto. }       
+        all:eauto; try omega. repeat find_rewrite; auto.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         omega.
@@ -276,7 +282,10 @@ Section PrefixWithinTerm.
       repeat find_rewrite. do_in_app. intuition.
       + find_apply_hyp_hyp.
         eapply entries_match_nw_1_invariant.
-        Focus 10. eauto. Focus 5. eauto. Focus 4. eauto. all:eauto; try omega. repeat find_rewrite; auto.
+        10: { eauto. }
+        5: { eauto. }
+        4: { eauto. }
+        all:eauto; try omega. repeat find_rewrite; auto.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         omega.
@@ -297,7 +306,10 @@ Section PrefixWithinTerm.
       repeat find_rewrite. do_in_app. intuition.
       + find_apply_hyp_hyp.
         eapply entries_match_nw_1_invariant.
-        Focus 10. eauto. Focus 5. eauto. Focus 4. eauto. all:eauto; try omega. repeat find_rewrite; auto.
+        10: { eauto. }
+        5: { eauto. }
+        4: { eauto. }       
+        all:eauto; try omega. repeat find_rewrite; auto.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         omega.
@@ -511,7 +523,9 @@ Section PrefixWithinTerm.
         match goal with
           | H : entries_match_nw_1 _ |- _ =>
             eapply H with (es := es) (p := p) (p' := p')
-        end. Focus 7. eauto. all:repeat find_rewrite. all:eauto. intuition.
+        end.
+        7: { eauto. }
+        all:repeat find_rewrite. all:eauto. intuition.
         eapply entries_gt_0_nw_invariant; eauto.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; [|idtac|eauto]; eauto.
@@ -583,7 +597,9 @@ Section PrefixWithinTerm.
         match goal with
           | H : entries_match_nw_1 _ |- _ =>
             eapply H with (es := es) (p := p) (p' := p')
-        end. Focus 7. eauto. all:repeat find_rewrite. all:eauto. intuition.
+        end.
+        7: { eauto. }
+        all:repeat find_rewrite. all:eauto. intuition.
         eapply entries_contiguous_nw_invariant; eauto.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; [|idtac|eauto]; eauto.
@@ -718,7 +734,9 @@ Section PrefixWithinTerm.
         match goal with
           | H : entries_match_nw_1 _ |- _ =>
             eapply H with (es := es) (p := p) (p' := p')
-        end. Focus 7. eauto. all:repeat find_rewrite. all:eauto. intuition.
+        end.
+        7: { eauto. }
+        all:repeat find_rewrite. all:eauto. intuition.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; [|idtac|eauto]; eauto.
         find_eapply_lem_hyp contiguous_0_app; eauto. omega.
@@ -1026,7 +1044,7 @@ Section PrefixWithinTerm.
           find_eapply_lem_hyp append_entries_append_entries_prefix_within_term_invariant.
           conclude_using eauto. find_rewrite.
           eapply H0.
-          Focus 5. eauto.
+          5: { eauto. }
           all:eauto.
           find_apply_hyp_hyp. intuition; [find_rewrite; in_crush|].
           repeat (subst; simpl in *).
@@ -1095,8 +1113,10 @@ Section PrefixWithinTerm.
               subst.
               apply in_app_iff. right.
               apply removeAfterIndex_le_In; auto.
-              eapply entries_match_nw_host_invariant. Focus 8. eauto.
-              Focus 3. eauto. all:eauto.
+              eapply entries_match_nw_host_invariant.
+              8: { eauto. }
+              3: { eauto. }
+              all:eauto.
             + (* contra terms_ge_prevTerm *)
               find_eapply_lem_hyp append_entries_request_term_sanity_invariant; eauto.
               repeat find_rewrite.
@@ -1108,14 +1128,20 @@ Section PrefixWithinTerm.
               subst.
               apply in_app_iff. right.
               apply removeAfterIndex_le_In; auto; [omega|].
-              eapply_prop append_entries_log_prefix_within_term. Focus 6. eauto.
-            Focus 5. eauto. Focus 2. eauto. all:eauto; repeat find_rewrite; intuition.
+              eapply_prop append_entries_log_prefix_within_term.
+              6: { eauto. }
+              5: { eauto. }
+              2: { eauto. }
+              all:eauto; repeat find_rewrite; intuition.
           - apply in_app_iff. right.
             find_copy_apply_lem_hyp removeAfterIndex_in.
             find_apply_lem_hyp removeAfterIndex_In_le; [|eapply entries_sorted_invariant; eauto].
             eapply removeAfterIndex_le_In; [omega|].
-            eapply_prop append_entries_log_prefix_within_term. Focus 6. eauto.
-            Focus 5. eauto. Focus 2. eauto. all:eauto.
+            eapply_prop append_entries_log_prefix_within_term.
+            6: { eauto. }
+            5: { eauto. }
+            2: { eauto. }
+            all:eauto.
         }
   Qed.
 
