@@ -17,7 +17,7 @@ Definitions and proofs:
 
 Executable `vard` key-value store:
 
-- [`OCaml 4.02.3`](https://ocaml.org/docs/install.html) (or later)
+- [`OCaml`](https://ocaml.org/docs/install.html) (4.02.3 or later)
 - [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 - [`cheerios-runtime`](https://github.com/uwplse/cheerios)
@@ -32,7 +32,7 @@ Integration testing of `vard`:
 
 Unit testing of unverified `vard` code:
 
-- [`OUnit 2.0.0`](http://ounit.forge.ocamlcore.org) (or later)
+- [`OUnit`](http://ounit.forge.ocamlcore.org) (2.0.0 or later)
 
 Building
 --------
@@ -60,7 +60,7 @@ To build the `vard` key-value store program in `extraction/vard`,
 you need to install additional dependencies:
 ```
 opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-opam install verdi-runtime ocamlbuild
+opam install verdi-runtime cheerios-runtime ocamlbuild
 ```
 
 Then, run `make vard` in the root directory. If the Coq implementation has

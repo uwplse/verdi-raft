@@ -9,12 +9,12 @@ license: "BSD-2-Clause"
 synopsis: "Fault-tolerant distributed key-value store using a verified implementation of Raft consensus"
 
 build: [
-  [ "./configure" ]
-  [ make "-j%{jobs}%" "vard-serialized-log" ]
+  ["./configure"]
+  [make "-j%{jobs}%" "vard-serialized-log"]
 ]
 depends: [
   "ocaml" {>= "4.02.3"}
-  "coq" {>= "8.7" & < "8.10~"}
+  "coq" {>= "8.7" & < "8.11~"}
   "coq-verdi" {= "dev"}
   "coq-struct-tact" {= "dev"}
   "coq-cheerios" {= "dev"}
@@ -25,12 +25,12 @@ depends: [
 ]
 
 authors: [
-  "James R. Wilcox"
-  "Doug Woos"
+  "Justin Adsuara"
+  "Steve Anton"
+  "Ryan Doenges"
+  "Karl Palmskog"
   "Pavel Panchekha"
   "Zachary Tatlock"
-  "Steve Anton"
-  "Karl Palmskog"
-  "Ryan Doenges"
-  "Justin Adsuara"
+  "James R. Wilcox"
+  "Doug Woos"
 ]
