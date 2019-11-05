@@ -364,7 +364,7 @@ Section StateMachineCorrect.
   Proof using. 
     induction l; simpl; intros.
     - auto.
-    - break_if; repeat rewrite IHl; auto with *.
+    - break_if; repeat rewrite IHl. 2: reflexivity.
       zify. omega.
   Qed.
 
