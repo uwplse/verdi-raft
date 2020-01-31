@@ -233,8 +233,8 @@ Section AllEntriesLogMatching.
     enough (In e' entries) by
         (eapply uniqueIndices_elim_eq; eauto; apply sorted_uniqueIndices; eapply entries_sorted_nw_invariant; [| | eauto]; eauto).
     eapply entries_match_nw_1_invariant.
-    Focus 5. eauto. Focus 9. eauto.
-    Focus 4. eauto. all:eauto.
+    5: { eauto. } 9: { eauto. }
+    4: { eauto. } all:eauto.
     intuition. repeat find_reverse_rewrite.
     eapply entries_contiguous_nw_invariant; eauto.
   Qed.

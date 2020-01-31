@@ -366,7 +366,7 @@ Ltac all f ls :=
                [eapply entries_contiguous_invariant; eauto|
                 eapply entries_contiguous_nw_invariant; eauto]).
           break_exists. intuition.
-          find_copy_eapply_lem_hyp sorted_app_sorted_app_in1_in2. Focus 5. eauto. Focus 4. eauto.
+          find_copy_eapply_lem_hyp sorted_app_sorted_app_in1_in2. 5: { eauto. } 4: { eauto. }
           all:(try solve [eapply entries_sorted_nw_invariant; eauto]).
           all:(try solve [repeat find_reverse_rewrite; eauto using removeAfterIndex_sorted]).
           find_apply_hyp_hyp.
@@ -447,7 +447,7 @@ Ltac all f ls :=
                   (eapply entries_contiguous_nw_invariant; eauto; intuition;
                    eapply entries_gt_0_invariant; eauto).
               break_exists. intuition.
-              find_copy_eapply_lem_hyp sorted_app_sorted_app_in1_in2. Focus 5. eauto. Focus 4. eauto.
+              find_copy_eapply_lem_hyp sorted_app_sorted_app_in1_in2. 5: { eauto. } 4: { eauto. }
               all:(try solve [eapply entries_sorted_nw_invariant; eauto]).
               all:(try solve [repeat find_reverse_rewrite; eauto using removeAfterIndex_sorted]).
               find_apply_hyp_hyp.
@@ -468,13 +468,13 @@ Ltac all f ls :=
               end.
               repeat find_rewrite.
               do_in_app. intuition.
-              + find_copy_eapply_lem_hyp sorted_app_sorted_app_in1_in2. Focus 4. eauto.
+              + find_copy_eapply_lem_hyp sorted_app_sorted_app_in1_in2. 4: { eauto. }
                 all:eauto.
                 all:(try solve [eapply entries_sorted_nw_invariant; eauto]).
                 all:(try solve [repeat find_reverse_rewrite; eauto using removeAfterIndex_sorted]).
                 repeat find_apply_hyp_hyp. repeat find_rewrite. intuition.
               + find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
-                find_copy_eapply_lem_hyp sorted_app_in2_in2. Focus 3. eauto.
+                find_copy_eapply_lem_hyp sorted_app_in2_in2. 3: { eauto. }
                 all:eauto.
                 all:(try solve [eapply entries_sorted_nw_invariant; eauto]).
                 match goal with
@@ -637,7 +637,7 @@ Ltac all f ls :=
                 * find_copy_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
                   unfold Prefix_sane in *.
                   intuition; [|find_eapply_lem_hyp maxIndex_is_max; eauto; omega].
-                  find_eapply_lem_hyp prefix_contiguous. Focus 2. eauto.
+                  find_eapply_lem_hyp prefix_contiguous. 2: { eauto. }
                   all:eauto.
                   all:try solve [eapply contiguous_app; [|eapply entries_contiguous_nw_invariant; eauto];
                                  eapply entries_sorted_nw_invariant; eauto].
@@ -794,7 +794,7 @@ Ltac all f ls :=
               end. conclude_using auto.
               repeat find_rewrite.
               find_apply_lem_hyp findAtIndex_elim. break_and.
-              find_eapply_lem_hyp term_ne_in_l2. Focus 7. eauto. all:eauto.
+              find_eapply_lem_hyp term_ne_in_l2. 7: { eauto. } all:eauto.
               all:try solve [eapply entries_sorted_invariant; eauto].
               all:try solve [intros; find_eapply_lem_hyp no_entries_past_current_term_host_lifted_invariant; unfold ghost_data, raft_data in *; simpl in *;
                              unfold ghost_data, raft_data in *; simpl in *;
