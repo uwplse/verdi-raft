@@ -6,10 +6,14 @@ _CoqProject
 Makefile.coq
 Makefile.coq.bak
 Makefile.coq.conf
+.Makefile.coq.d
+.lia.cache
 .coqdeps.d
 log
 *~
 .coq-native/
 *.aux
 *.vio
+*.vos
+*.vok
 *.pyc

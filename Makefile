@@ -22,6 +22,9 @@ default: Makefile.coq
 quick: Makefile.coq
 	$(MAKE) -f Makefile.coq quick
 
+vos: Makefile.coq
+	$(MAKE) -f Makefile.coq vos
+
 checkproofs: quick
 	$(MAKE) -f Makefile.coq checkproofs
 
@@ -99,7 +102,7 @@ lint:
 distclean: clean
 	rm -f _CoqProject
 
-.PHONY: default quick install clean lint proofalytics distclean checkproofs assumptions
+.PHONY: default quick install clean lint proofalytics distclean checkproofs assumptions vos
 .PHONY: vard vard-test vard-serialized vard-serialized-test vard-log vard-log-test vard-serialized-log vard-serialized-log-test vard-debug vard-debug-test
 .PHONY: $(VARDML) $(VARDSERML) $(VARDLOGML) $(VARDSERLOGML) $(VARDDEBUGML)
 

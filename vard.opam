@@ -13,8 +13,8 @@ build: [
   [make "-j%{jobs}%" "vard"]
 ]
 depends: [
-  "ocaml" {>= "4.02.3"}
-  "coq" {>= "8.7" & < "8.11~"}
+  "ocaml" {>= "4.05.0"}
+  "coq" {>= "8.7" & < "8.12~"}
   "coq-verdi" {= "dev"}
   "coq-struct-tact" {= "dev"}
   "coq-cheerios" {= "dev"}
