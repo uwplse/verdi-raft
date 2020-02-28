@@ -489,7 +489,7 @@ Section CommonTheorems.
           intuition.
     - unfold contiguous_range_exact_lo in *.
       do_in_app. intuition.
-      + firstorder.
+      + firstorder auto with zarith.
       + firstorder using removeAfterIndex_in.
   Qed.
 
