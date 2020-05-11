@@ -29,7 +29,7 @@ Section SpecLemmas.
   Proof using. 
     unfold handleRequestVote.
     intros.
-    repeat break_match; repeat find_inversion; intuition.
+    repeat break_match; repeat find_inversion; intuition idtac.
     - simpl in *. discriminate.
     - unfold advanceCurrentTerm in *.
       break_if; simpl in *; do_bool; intuition.
