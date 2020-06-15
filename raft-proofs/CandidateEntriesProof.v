@@ -72,7 +72,7 @@ Section CandidateEntriesProof.
           unfold candidateEntries. exists h.
           intuition; rewrite_update; simpl in *; try congruence.
           repeat find_rewrite. simpl in *.
-          repeat break_match; simpl; eauto using won_election_cronies.
+          repeat break_match; simpl; pose won_election_cronies; eauto.
       + rewrite_update.
         find_apply_lem_hyp handleClientRequest_spec.
         eapply candidateEntries_same; eauto; intuition;
@@ -589,14 +589,14 @@ Section CandidateEntriesProof.
         | [ H : nwState ?net ?h = (_, ?d), H' : context [ log ?d ] |- _ ] =>
           replace (log d) with (log (snd (nwState net h))) in H' by (repeat find_rewrite; auto)
         end.
-        eauto using doLeader_preserves_candidateEntries.
-      + eauto using doLeader_preserves_candidateEntries.
+        pose doLeader_preserves_candidateEntries; eauto.
+      + pose doLeader_preserves_candidateEntries; eauto.
     - unfold candidateEntries_nw_invariant in *.
       intros. simpl in *.
       eapply candidateEntries_ext; eauto.
       find_apply_hyp_hyp.
       intuition.
-      + eauto using doLeader_preserves_candidateEntries.
+      + pose doLeader_preserves_candidateEntries; eauto.
       + do_in_map. subst. simpl in *.
         eapply doLeader_preserves_candidateEntries; eauto.
         eapply_prop candidateEntries_host_invariant.

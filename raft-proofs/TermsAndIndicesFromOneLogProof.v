@@ -51,7 +51,7 @@ Section TermsAndIndicesFromOneLog.
         * intuition. find_apply_lem_hyp current_term_gt_zero_invariant. find_rewrite.
           eapply_prop current_term_gt_zero. congruence.
         * eauto.
-    - eapply taifol_no_append_entries; eauto using handleClientRequest_no_append_entries.
+    - eapply taifol_no_append_entries; pose handleClientRequest_no_append_entries; eauto.
   Qed.
 
   Lemma terms_and_indices_from_one_log_ind_timeout :
@@ -60,7 +60,7 @@ Section TermsAndIndicesFromOneLog.
     red. unfold terms_and_indices_from_one_log_ind. split; red; simpl in *; intuition.
     - find_higher_order_rewrite. update_destruct; subst; rewrite_update; auto.
       find_apply_lem_hyp handleTimeout_log_same. find_rewrite. auto.
-    - eapply taifol_no_append_entries; eauto using handleTimeout_packets.
+    - eapply taifol_no_append_entries; pose handleTimeout_packets; eauto.
   Qed.
 
   Lemma terms_and_indices_from_one_app :

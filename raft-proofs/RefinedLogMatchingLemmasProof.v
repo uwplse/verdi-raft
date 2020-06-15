@@ -195,7 +195,7 @@ Section RefinedLogMatchingLemmas.
     forward_nw_invariant. break_and.
     match goal with
     | [  |- context [ snd (nwState ?net ?h) ] ] =>
-      replace (snd (nwState net h)) with (nwState (deghost net) h) in * by auto using deghost_spec
+      replace (snd (nwState net h)) with (nwState (deghost net) h) in * by (pose deghost_spec; auto)
     end.
     match goal with
     | [ H : forall _ _ _, In _ ?es -> _,
