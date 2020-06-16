@@ -325,7 +325,7 @@ Section AppliedImpliesInputProof.
       - find_apply_lem_hyp find_some. intuition. break_if; try discriminate.
         eauto.
       - right. intro. break_exists.
-        eapply find_none with (x := x) in Heqo; auto using all_names_nodes.
+        eapply find_none with (x := x) in Heqo; pose all_names_nodes; auto.
         break_if; congruence.
     Defined.
 

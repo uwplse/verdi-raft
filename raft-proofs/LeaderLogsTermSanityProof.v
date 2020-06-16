@@ -46,7 +46,7 @@ Section LeaderLogsTermSanity.
 
   Ltac term_sanity_unchanged' lem :=
     red; intros; eapply leaderLogs_term_sanity_unchanged; subst;
-      eauto using lem.
+      pose lem; eauto.
 
   Tactic Notation "term_sanity_unchanged" constr(lem) := term_sanity_unchanged' lem.
   Tactic Notation "term_sanity_unchanged" := term_sanity_unchanged' eq_refl (* bogus *).
