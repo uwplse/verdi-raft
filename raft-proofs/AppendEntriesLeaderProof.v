@@ -140,7 +140,8 @@ Section AppendEntriesLeader.
     intuition.
     - repeat find_higher_order_rewrite.
       update_destruct_simplify.
-      + eapply appendEntries_leader_predicate_TTLM_preserved; eauto using handleAppendEntries_TTLM.
+      + eapply appendEntries_leader_predicate_TTLM_preserved.
+        2-9:eauto using handleAppendEntries_TTLM.
         eauto.
       + eauto.
     - find_apply_lem_hyp handleAppendEntries_not_append_entries.
@@ -167,7 +168,8 @@ Section AppendEntriesLeader.
     intuition.
     - repeat find_higher_order_rewrite.
       update_destruct_simplify.
-      + eapply appendEntries_leader_predicate_TTLM_preserved; eauto using handleAppendEntriesReply_TTLM.
+      + eapply appendEntries_leader_predicate_TTLM_preserved.
+        2-9: eauto using handleAppendEntriesReply_TTLM.
         eauto.
       + eauto.
     - find_apply_lem_hyp handleAppendEntriesReply_packets.
@@ -194,7 +196,8 @@ Section AppendEntriesLeader.
     intuition.
     - repeat find_higher_order_rewrite.
       update_destruct_simplify.
-      + eapply appendEntries_leader_predicate_TTLM_preserved; eauto using handleRequestVote_TTLM.
+      + eapply appendEntries_leader_predicate_TTLM_preserved.
+        2-9:eauto using handleRequestVote_TTLM.
         eauto.
       + eauto.
     - find_apply_lem_hyp handleRequestVote_no_append_entries.
@@ -341,7 +344,8 @@ Section AppendEntriesLeader.
     intuition.
     - repeat find_higher_order_rewrite.
       update_destruct_simplify.
-      + eapply appendEntries_leader_predicate_TTLM_preserved; eauto using doLeader_TTLM.
+      + eapply appendEntries_leader_predicate_TTLM_preserved.
+        2-9: eauto using doLeader_TTLM.
         match goal with
         | [ H : nwState ?net ?h = (?gd, ?d) |- _ ] =>
           replace d with (snd (nwState net h)) in * by (rewrite H; auto)
@@ -381,7 +385,8 @@ Section AppendEntriesLeader.
     intuition.
     - repeat find_higher_order_rewrite.
       update_destruct_simplify.
-      + eapply appendEntries_leader_predicate_TTLM_preserved; eauto using doGenericServer_TTLM.
+      + eapply appendEntries_leader_predicate_TTLM_preserved.
+        2-9: eauto using doGenericServer_TTLM.
         match goal with
         | [ H : nwState ?net ?h = (?gd, ?d) |- _ ] =>
           replace d with (snd (nwState net h)) in * by (rewrite H; auto)
