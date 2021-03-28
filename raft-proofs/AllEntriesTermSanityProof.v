@@ -25,7 +25,7 @@ Section AllEntriesTermSanity.
   Proof using. 
     intros.
     unfold handleAppendEntries in *.
-    repeat break_match; simpl in *; do_bool; repeat find_inversion; auto; try omega;
+    repeat break_match; simpl in *; do_bool; repeat find_inversion; auto; try lia;
     simpl in *;
     unfold advanceCurrentTerm in *; repeat break_match; do_bool; auto.
   Qed.
@@ -39,7 +39,7 @@ Section AllEntriesTermSanity.
     find_copy_eapply_lem_hyp update_elections_data_appendEntries_allEntries_term'; eauto.
     intuition.
     find_apply_lem_hyp handleAppendEntries_currentTerm_monotonic;
-      find_apply_hyp_hyp; omega.
+      find_apply_hyp_hyp; lia.
   Qed.
 
   Lemma allEntries_term_sanity_append_entries_reply :
@@ -49,7 +49,7 @@ Section AllEntriesTermSanity.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
     find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition; repeat find_rewrite; eauto.
-    find_apply_hyp_hyp. omega.
+    find_apply_hyp_hyp. lia.
   Qed.
 
   Lemma allEntries_term_sanity_request_vote :
@@ -60,7 +60,7 @@ Section AllEntriesTermSanity.
     destruct_update; simpl in *; eauto.
     find_rewrite_lem update_elections_data_requestVote_allEntries.
     find_apply_lem_hyp handleRequestVote_type_term. intuition; repeat find_rewrite; eauto.
-    find_apply_hyp_hyp. omega.
+    find_apply_hyp_hyp. lia.
   Qed.
 
   Lemma allEntries_term_sanity_request_vote_reply :
@@ -73,7 +73,7 @@ Section AllEntriesTermSanity.
     find_apply_hyp_hyp.
     unfold handleRequestVoteReply, advanceCurrentTerm.
     repeat break_match; simpl in *; repeat find_inversion; do_bool; simpl in *; auto.
-    omega.
+    lia.
   Qed.
 
   Lemma allEntries_term_sanity_client_request :

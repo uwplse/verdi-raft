@@ -168,7 +168,7 @@ Section GhostLogCorrectProof.
         find_apply_lem_hyp findAtIndex_elim.
         intuition.
         find_erewrite_lem doLeader_log; eauto.
-        enough (0 < eIndex e) by omega.
+        enough (0 < eIndex e) by lia.
         eapply lifted_entries_contiguous_invariant; eauto.
       + erewrite doLeader_log; eauto.
         apply sorted_findGtIndex_0; [|eapply lifted_entries_sorted_invariant; eauto].

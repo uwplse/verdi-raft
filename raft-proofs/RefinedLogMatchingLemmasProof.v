@@ -70,7 +70,7 @@ Section RefinedLogMatchingLemmas.
     unfold log_matching, log_matching_nw, entries_gt_0_nw in *. intuition.
     find_apply_lem_hyp ghost_packet.
     forward_nw_invariant. break_and.
-    find_apply_hyp_hyp. omega.
+    find_apply_hyp_hyp. lia.
   Qed.
 
   Lemma entries_sorted_nw_invariant :

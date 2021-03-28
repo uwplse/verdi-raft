@@ -128,7 +128,7 @@ Section StateMachineSafetyProof.
     - auto.
     - simpl in *. break_and.
       destruct (log st); simpl in *.
-      + omega.
+      + lia.
       + find_insterU. conclude_using eauto. intuition.
   Qed.
 
@@ -525,7 +525,7 @@ Section StateMachineSafetyProof.
               eapply contiguous_range_exact_lo_elim_lt.
               * eapply lifted_entries_contiguous_nw_invariant; eauto.
               * auto.
-            + eapply le_trans; [|eauto]. simpl in *. omega.
+            + eapply le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. break_and.
         eapply findAtIndex_None; [|eauto| |]; eauto.
@@ -543,10 +543,10 @@ Section StateMachineSafetyProof.
         intuition.
         * subst.
           assert (0 < eIndex x) by (eapply lifted_entries_contiguous_invariant; eauto).
-          omega.
+          lia.
         * destruct (log d); intuition. simpl in *.
           intuition; subst; auto.
-          find_apply_hyp_hyp. omega.
+          find_apply_hyp_hyp. lia.
       + destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p)))) pli); intuition;
         [eapply le_trans; [| apply sorted_maxIndex_app]; auto;
          break_exists; break_and;
@@ -569,12 +569,12 @@ Section StateMachineSafetyProof.
               * simpl in *. intuition.
               * simpl.  subst.
                 { eapply le_lt_trans with (m := eIndex x).
-                  - omega.
+                  - lia.
                   - eapply contiguous_range_exact_lo_elim_lt.
                     + eapply lifted_entries_contiguous_nw_invariant; eauto.
                     + intuition.
                 }
-            + eapply le_trans; [|eauto]. simpl in *. omega.
+            + eapply le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. intuition.
         match goal with
@@ -643,7 +643,7 @@ Section StateMachineSafetyProof.
               eapply contiguous_range_exact_lo_elim_lt.
               * eapply lifted_entries_contiguous_nw_invariant; eauto.
               * auto.
-            + eapply le_trans; [|eauto]. simpl in *. omega.
+            + eapply le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. intuition.
         find_eapply_lem_hyp findAtIndex_None; eauto.
@@ -661,10 +661,10 @@ Section StateMachineSafetyProof.
         intuition.
         * subst.
           assert (0 < eIndex x) by (eapply lifted_entries_contiguous_invariant; eauto).
-          omega.
+          lia.
         * destruct (log d); intuition. simpl in *.
           intuition; subst; auto.
-          find_apply_hyp_hyp. omega.
+          find_apply_hyp_hyp. lia.
       + destruct (le_lt_dec (commitIndex (snd (nwState net (pDst p)))) pli); intuition;
         [eapply le_trans; [| apply sorted_maxIndex_app]; auto;
          break_exists; intuition;
@@ -685,12 +685,12 @@ Section StateMachineSafetyProof.
               * simpl in *. intuition.
               * simpl.  subst.
                 { eapply le_lt_trans with (m := eIndex x).
-                  - omega.
+                  - lia.
                   - eapply contiguous_range_exact_lo_elim_lt.
                     + eapply lifted_entries_contiguous_nw_invariant; eauto.
                     + intuition.
                 }
-            + eapply le_trans; [|eauto]. simpl in *. omega.
+            + eapply le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. intuition.
         match goal with
@@ -793,7 +793,7 @@ Section StateMachineSafetyProof.
   Proof using. 
     induction l; intros.
     - auto.
-    - simpl. apply IHl. apply Max.max_case_strong; omega.
+    - simpl. apply IHl. apply Max.max_case_strong; lia.
   Qed.
 
   Lemma fold_left_maximum_le :
@@ -815,14 +815,14 @@ Section StateMachineSafetyProof.
     - simpl in *. revert H.
       repeat (apply Max.max_case_strong; intros).
       + eauto.
-      + assert (a = y) by omega. subst_max. eauto.
+      + assert (a = y) by lia. subst_max. eauto.
       + subst x. pose proof (fold_left_maximum_le l a).
-        assert (fold_left max l a = a) by omega.
+        assert (fold_left max l a = a) by lia.
         eauto.
       + subst x.
         pose proof (fold_left_maximum_le l a).
-        assert (fold_left max l a = a) by omega.
-        assert (a = y) by omega.
+        assert (fold_left max l a = a) by lia.
+        assert (a = y) by lia.
         subst. auto.
   Qed.
 
@@ -1155,7 +1155,7 @@ Section StateMachineSafetyProof.
     simpl.
     find_copy_apply_lem_hyp handleClientRequest_log.
     intuition.
-    - repeat find_rewrite. do_bool. omega.
+    - repeat find_rewrite. do_bool. lia.
     - right.  break_exists_exists. intuition.
       congruence.
   Qed.
@@ -1390,7 +1390,7 @@ Section StateMachineSafetyProof.
               | [ H : _ \/ In _ _ |- _ ] => invc H
             end.
             * find_eapply_lem_hyp (lift_max_index_sanity net h0); auto.
-              break_and. simpl in *. omega.
+              break_and. simpl in *. lia.
             * { eapply lifted_committed_log_allEntries_preserved; eauto.
                 - simpl. intros. find_higher_order_rewrite.
                   update_destruct_simplify; repeat find_rewrite; auto.
@@ -1624,7 +1624,7 @@ Section StateMachineSafetyProof.
       + (* pli = 0, no entry at maxIndex es *)
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex e > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; try omega.
+        intuition; try lia.
         find_copy_eapply_lem_hyp msg_lifted_sorted_host.
         exfalso.
 	enough (exists e, eIndex e = (maxIndex es) /\ In e (log (snd (nwState net host)))) by
@@ -1635,14 +1635,14 @@ Section StateMachineSafetyProof.
         intuition.
         * find_apply_lem_hyp maxIndex_non_empty.
           break_exists; intuition; repeat find_rewrite.
-          enough (eIndex x > 0) by omega.
+          enough (eIndex x > 0) by lia.
           eapply lifted_entries_contiguous_nw_invariant; eauto.
-        * enough (eIndex e <= maxIndex (log (snd (nwState net host)))) by omega.
+        * enough (eIndex e <= maxIndex (log (snd (nwState net host)))) by lia.
           apply maxIndex_is_max; auto.
       + (* pli = 0, bad entry at maxIndex es *)
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex e > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; try omega.
+        intuition; try lia.
         break_exists. intuition.
         find_apply_lem_hyp maxIndex_non_empty.
         break_exists_name maxEntry; intuition.
@@ -1662,11 +1662,11 @@ Section StateMachineSafetyProof.
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex x > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; omega.
+        intuition; lia.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         intuition;
           try solve
-              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; omega];
+              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
         find_copy_eapply_lem_hyp msg_lifted_sorted_host.
         exfalso.
@@ -1678,15 +1678,15 @@ Section StateMachineSafetyProof.
         intuition.
         * find_apply_lem_hyp maxIndex_non_empty.
           break_exists; intuition; repeat find_rewrite.
-          enough (eIndex x0 > 0) by omega.
-          enough (eIndex x0 > pli) by omega.
+          enough (eIndex x0 > 0) by lia.
+          enough (eIndex x0 > pli) by lia.
           eapply lifted_entries_contiguous_nw_invariant; eauto.
-        * enough (eIndex e <= maxIndex (log (snd (nwState net host)))) by omega.
+        * enough (eIndex e <= maxIndex (log (snd (nwState net host)))) by lia.
           apply maxIndex_is_max; auto.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         intuition;
           try solve
-              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; omega];
+              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
         break_exists. intuition.
         find_apply_lem_hyp maxIndex_non_empty.
@@ -1706,8 +1706,8 @@ Section StateMachineSafetyProof.
                  eapply lifted_no_entries_past_current_term_host_invariant; eauto)
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
-        intuition; try omega;
-        enough (pli < eIndex maxEntry) by omega;
+        intuition; try lia;
+        enough (pli < eIndex maxEntry) by lia;
         eapply lifted_entries_contiguous_nw_invariant; eauto.
     - find_higher_order_rewrite.
       update_destruct_simplify; simpl in *; eauto.
@@ -1719,7 +1719,7 @@ Section StateMachineSafetyProof.
       + (* pli = 0, no entry at maxIndex es *)
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex e' > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; try omega.
+        intuition; try lia.
         find_copy_eapply_lem_hyp msg_lifted_sorted_host.
         exfalso.
 	enough (exists e, eIndex e = (maxIndex es) /\ In e (log (snd (nwState net host)))) by
@@ -1730,14 +1730,14 @@ Section StateMachineSafetyProof.
         intuition.
         * find_apply_lem_hyp maxIndex_non_empty.
           break_exists; intuition; repeat find_rewrite.
-          enough (eIndex x > 0) by omega.
+          enough (eIndex x > 0) by lia.
           eapply lifted_entries_contiguous_nw_invariant; eauto.
-        * enough (eIndex e' <= maxIndex (log (snd (nwState net host)))) by omega.
+        * enough (eIndex e' <= maxIndex (log (snd (nwState net host)))) by lia.
           apply maxIndex_is_max; auto.
       + (* pli = 0, bad entry at maxIndex es *)
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex e' > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; try omega.
+        intuition; try lia.
         break_exists. intuition.
         find_apply_lem_hyp maxIndex_non_empty.
         break_exists_name maxEntry; intuition.
@@ -1757,11 +1757,11 @@ Section StateMachineSafetyProof.
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex x > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; omega.
+        intuition; lia.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         intuition;
           try solve
-              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; omega];
+              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
         find_copy_eapply_lem_hyp msg_lifted_sorted_host.
         exfalso.
@@ -1773,15 +1773,15 @@ Section StateMachineSafetyProof.
         intuition.
         * find_apply_lem_hyp maxIndex_non_empty.
           break_exists; intuition; repeat find_rewrite.
-          enough (eIndex x0 > 0) by omega.
-          enough (eIndex x0 > pli) by omega.
+          enough (eIndex x0 > 0) by lia.
+          enough (eIndex x0 > pli) by lia.
           eapply lifted_entries_contiguous_nw_invariant; eauto.
-        * enough (eIndex e' <= maxIndex (log (snd (nwState net host)))) by omega.
+        * enough (eIndex e' <= maxIndex (log (snd (nwState net host)))) by lia.
           apply maxIndex_is_max; auto.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         intuition;
           try solve
-              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; omega];
+              [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
         break_exists. intuition.
         find_apply_lem_hyp maxIndex_non_empty.
@@ -1801,8 +1801,8 @@ Section StateMachineSafetyProof.
                  eapply lifted_no_entries_past_current_term_host_invariant; eauto)
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
-        intuition; try omega;
-        enough (pli < eIndex maxEntry) by omega;
+        intuition; try lia;
+        enough (pli < eIndex maxEntry) by lia;
         eapply lifted_entries_contiguous_nw_invariant; eauto.
   Qed.
 
@@ -1976,12 +1976,12 @@ Section StateMachineSafetyProof.
                  concludes.
                  assert (sorted (log d)) by (eauto using lifted_handleAppendEntries_logs_sorted).
                  intuition.
-                 * omega.
-                 * omega.
+                 * lia.
+                 * lia.
                  * match goal with
                    | [ H : _ |- _ ] => eapply maxIndex_is_max in H; eauto; [idtac]
                    end.
-                   omega.
+                   lia.
                  * assert (e = e') by (eapply uniqueIndices_elim_eq; eauto using sorted_uniqueIndices).
                    subst.
                    eapply lifted_committed_monotonic; [
@@ -2009,7 +2009,7 @@ Section StateMachineSafetyProof.
                        conclude_using ltac:(intros; eapply lifted_entries_gt_0_invariant; eauto).
                        conclude_using eauto. simpl in *.
                        find_apply_hyp_hyp.
-                       omega.
+                       lia.
                    }
              - (* middle of time case *)
                break_exists_name ple. break_and.
@@ -2046,12 +2046,12 @@ Section StateMachineSafetyProof.
                          (eapply lifted_entries_contiguous_nw_invariant; eauto).
                      find_eapply_lem_hyp contiguous_range_exact_lo_elim_lt; eauto.
                      intuition.
-                     * omega.
-                     * omega.
+                     * lia.
+                     * lia.
                      * match goal with
                        | [ H : _ |- _ ] => eapply maxIndex_is_max in H; eauto with *; [idtac]
                        end.
-                       omega.
+                       lia.
                      * assert (e = e') by (eapply uniqueIndices_elim_eq; eauto using sorted_uniqueIndices).
                        subst.
                        eapply lifted_committed_monotonic; [
@@ -2116,14 +2116,14 @@ Section StateMachineSafetyProof.
                    { intuition.
                      - subst. find_apply_lem_hyp removeAfterIndex_in.
                        pose proof lifted_entries_gt_0_invariant _ ltac:(eauto) _ _ ltac:(eauto).
-                       omega.
+                       lia.
                      - break_exists_name gple. break_and.
                        assert (exists e', eIndex e' = eIndex e /\ In e' (fst (pBody p))).
                        {
                          eapply contiguous_range_exact_lo_elim_exists; eauto.
                          split.
                          + eapply lifted_entries_gt_0_invariant; eauto using removeAfterIndex_in.
-                         + eapply le_trans with (m := eIndex gple); try omega.
+                         + eapply le_trans with (m := eIndex gple); try lia.
                            apply maxIndex_is_max; auto.
                            pose proof log_properties_hold_on_ghost_logs_invariant _ ltac:(eauto) as Hsort.
                            unfold log_properties_hold_on_ghost_logs in *.
@@ -2141,7 +2141,7 @@ Section StateMachineSafetyProof.
                            as Hem.
                          specialize (Hem ple gple e').
                          repeat concludes.
-                         assert (eIndex e' <= eIndex ple) by omega.
+                         assert (eIndex e' <= eIndex ple) by lia.
                          intuition.
                        }
                        subst.

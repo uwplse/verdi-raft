@@ -16,7 +16,7 @@ Section SpecLemmas.
   Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; tuple_inversion; simpl in *; intuition; try discriminate;
-    try solve [exfalso; do_bool; omega].
+    try solve [exfalso; do_bool; lia].
   Qed.
 
   Lemma handleRequestVote_cases :
@@ -57,7 +57,7 @@ Section SpecLemmas.
     unfold handleAppendEntries, advanceCurrentTerm.
     intros.
     repeat break_match; repeat tuple_inversion; simpl in *;
-      do_bool; auto; try omega.
+      do_bool; auto; try lia.
   Qed.
 
   Lemma handleAppendEntriesReply_same_term_votedFor_preserved :
@@ -97,7 +97,7 @@ Section SpecLemmas.
       currentTerm st <= currentTerm st'.
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; tuple_inversion; do_bool; simpl; auto; omega.
+    repeat break_match; tuple_inversion; do_bool; simpl; auto; lia.
   Qed.
 
   Lemma handleAppendEntries_currentTerm :
@@ -298,7 +298,7 @@ Section SpecLemmas.
       currentTerm st <= currentTerm (advanceCurrentTerm st t).
   Proof using. 
     intros. unfold advanceCurrentTerm in *.
-    break_if; simpl in *; do_bool; omega.
+    break_if; simpl in *; do_bool; lia.
   Qed.
 
   Lemma handleRequestVote_currentTerm_monotonic :
@@ -1310,8 +1310,8 @@ Section SpecLemmas.
       x <= currentTerm (handleRequestVoteReply h st h' t r).
   Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm.
-    repeat break_match; subst; simpl in *; auto; try omega.
-    do_bool. omega.
+    repeat break_match; subst; simpl in *; auto; try lia.
+    do_bool. lia.
   Qed.
 
   Lemma handleRequestVote_reply_true':
@@ -1325,7 +1325,7 @@ Section SpecLemmas.
     unfold handleRequestVote, advanceCurrentTerm in *.
     intros.
     repeat break_match; find_inversion; simpl in *; auto; try congruence;
-    do_bool; try omega; eauto using le_antisym.
+    do_bool; try lia; eauto using le_antisym.
   Qed.
   
 End SpecLemmas.

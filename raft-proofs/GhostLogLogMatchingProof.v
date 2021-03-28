@@ -372,7 +372,7 @@ Section GhostLogLogMatching.
     unfold entries_match in *.
     split; simpl in *; intuition; subst_max; auto;
     try solve [find_false; eauto].
-    - find_apply_hyp_hyp. omega.
+    - find_apply_hyp_hyp. lia.
     - eapply H0; eauto.
     - right. eapply H0; eauto.
   Qed.
@@ -393,7 +393,7 @@ Section GhostLogLogMatching.
       intuition; repeat find_rewrite; simpl in *. subst.
       eapply sorted_entries_match_cons; eauto.
       + simpl. intuition; try solve [eapply lifted_entries_sorted_invariant; eauto].
-        * find_eapply_lem_hyp maxIndex_is_max; eauto; try omega.
+        * find_eapply_lem_hyp maxIndex_is_max; eauto; try lia.
           eapply lifted_entries_sorted_invariant; eauto.
         * repeat find_rewrite.
           find_eapply_lem_hyp lifted_no_entries_past_current_term_host_invariant; eauto.
@@ -405,7 +405,7 @@ Section GhostLogLogMatching.
           find_eapply_lem_hyp maxIndex_is_max; eauto;
           unfold raft_data in *; simpl in *;
           unfold raft_data in *; simpl in *;
-          [omega|]. eapply lifted_entries_sorted_invariant; eauto.
+          [lia|]. eapply lifted_entries_sorted_invariant; eauto.
         * find_eapply_lem_hyp ghost_log_allEntries_invariant; eauto.
           break_exists.
           repeat find_rewrite.

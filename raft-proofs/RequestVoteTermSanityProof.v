@@ -27,7 +27,7 @@ Section RequestVoteTermSanity.
     destruct_update; simpl in *; eauto.
     find_copy_apply_lem_hyp handleAppendEntries_currentTerm_leaderId.
     intuition; repeat find_rewrite; eauto;
-    eapply_prop_hyp pBody pBody; eauto; omega.
+    eapply_prop_hyp pBody pBody; eauto; lia.
   Qed.
 
   Lemma requestVote_term_sanity_append_entries_reply :
@@ -44,7 +44,7 @@ Section RequestVoteTermSanity.
     repeat find_rewrite.
     find_copy_apply_lem_hyp handleAppendEntriesReply_type_term;
       intuition; eauto;
-      eapply_prop_hyp pBody pBody; eauto; omega.
+      eapply_prop_hyp pBody pBody; eauto; lia.
   Qed.
   
   Lemma requestVote_term_sanity_request_vote :
@@ -60,7 +60,7 @@ Section RequestVoteTermSanity.
     destruct_update; simpl in *; eauto.
     find_copy_apply_lem_hyp handleRequestVote_currentTerm_leaderId.
     intuition; repeat find_rewrite; eauto;
-    eapply_prop_hyp pBody pBody; eauto; omega.
+    eapply_prop_hyp pBody pBody; eauto; lia.
   Qed.
   
   Lemma requestVote_term_sanity_request_vote_reply :

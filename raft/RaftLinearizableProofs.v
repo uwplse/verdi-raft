@@ -192,13 +192,13 @@ Section RaftLinearizableProofs.
           { intuition auto using has_key_different_client_false with *. }
           concludes.
           break_exists_exists. intuition.
-      + do_bool. assert (n < eId e) by auto. omega.
+      + do_bool. assert (n < eId e) by auto. lia.
       + do_bool. apply IHl; auto.
         intros.
         destruct (clientId_eq_dec (eClient e) (eClient a)).
         * assert (eId e <> eId a).
           { intro. repeat find_rewrite.
-            assert (n < eId a) by auto. omega.
+            assert (n < eId a) by auto. lia.
           }
           intuition auto using has_key_different_id_false with *.
         * intuition auto using has_key_different_client_false with *.
@@ -679,7 +679,7 @@ Section RaftLinearizableProofs.
       + repeat break_match; simpl; auto.
         do_bool.
         find_apply_lem_hyp has_key_true_elim. break_and. repeat find_rewrite.
-        assert (n < snd k) by auto. omega.
+        assert (n < snd k) by auto. lia.
       + repeat break_match; simpl.
         * { destruct (has_key (fst k) (snd k) a) eqn:?; auto.
             right. intuition. apply IHl; auto.
@@ -693,13 +693,13 @@ Section RaftLinearizableProofs.
               intuition; try congruence.
               assert (has_key (fst k) (eId a) a = true) by eauto using has_key_intro'.
               assert (eId a <= snd k) by auto.
-              omega.
+              lia.
             - rewrite get_set_diff in * by auto. auto.
           }
         * do_bool. apply IHl; auto. intros.
           { destruct (has_key (fst k) (snd k) a) eqn:?; auto.
             find_apply_lem_hyp has_key_true_elim. break_and.
-            repeat find_rewrite. assert (n < snd k) by auto. omega.
+            repeat find_rewrite. assert (n < snd k) by auto. lia.
           }
         * { destruct (has_key (fst k) (snd k) a) eqn:?; auto.
             right. intuition. apply IHl; auto.
@@ -713,7 +713,7 @@ Section RaftLinearizableProofs.
               intuition; try congruence.
               assert (has_key (fst k) (eId a) a = true) by eauto using has_key_intro'.
               assert (eId a <= snd k) by auto.
-              omega.
+              lia.
             - rewrite get_set_diff in * by auto. auto.
           }
   Qed.
@@ -772,7 +772,7 @@ Section RaftLinearizableProofs.
         exfalso. eapply before_func_antisymmetric; try eassumption.
         unfold has_key.
         intros. destruct x.
-        do_bool. intuition. do_bool. subst. omega.
+        do_bool. intuition. do_bool. subst. lia.
       - red. find_apply_lem_hyp in_import_in_trace_O.
         break_exists_exists. intuition.
     }
@@ -855,14 +855,14 @@ Section RaftLinearizableProofs.
     repeat find_rewrite; repeat find_inversion; intuition.
     - destruct (clientId_eq_dec (eClient e) (eClient a)); repeat find_rewrite.
       * find_injection.
-        eapply IHl with (id := eId a) in H1; try omega.
+        eapply IHl with (id := eId a) in H1; try lia.
         repeat find_rewrite. eauto using get_set_same.
-      * eapply IHl with (id := id) in H1; try omega.
+      * eapply IHl with (id := id) in H1; try lia.
         rewrite get_set_diff; auto.
     - congruence.
     - destruct (clientId_eq_dec (eClient e) (eClient a)); repeat find_rewrite.
       * congruence.
-      * eapply IHl with (id := id) in H1; try omega.
+      * eapply IHl with (id := id) in H1; try lia.
         rewrite get_set_diff; auto.
   Qed.
 
@@ -875,12 +875,12 @@ Section RaftLinearizableProofs.
     - simpl in *. repeat break_match; eauto.
       + simpl in *. constructor; eauto.
         intuition. do_in_map. find_inversion.
-        eapply deduplicate_log'_ks with (id := eId a) in H0; try omega.
+        eapply deduplicate_log'_ks with (id := eId a) in H0; try lia.
         repeat find_rewrite.
         rewrite get_set_same. auto.
       + simpl in *. constructor; eauto.
         intuition. do_in_map. find_inversion.
-        eapply deduplicate_log'_ks with (id := eId a) in H0; try omega.
+        eapply deduplicate_log'_ks with (id := eId a) in H0; try lia.
         repeat find_rewrite.
         rewrite get_set_same. auto.
   Qed.
@@ -1091,7 +1091,7 @@ Section RaftLinearizableProofs.
               exfalso. eapply before_func_antisymmetric; try eassumption.
               unfold has_key.
               intros. destruct x0.
-              do_bool. intuition. do_bool. subst. omega.
+              do_bool. intuition. do_bool. subst. lia.
             - red. find_apply_lem_hyp in_import_in_trace_O.
               break_exists_exists. intuition. red.
               simpl in *. subst. auto.

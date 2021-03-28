@@ -33,9 +33,9 @@ Section LastAppliedCommitIndexMatching.
           specialize (H h (eIndex e)); forward H;
           intuition
       end.
-      + find_apply_hyp_hyp; omega.
+      + find_apply_hyp_hyp; lia.
       + eapply le_trans; [|eapply_prop maxIndex_commitIndex].
-        simpl. omega.
+        simpl. lia.
       + break_exists. intuition.
         match goal with
           | _ : eIndex ?e = eIndex ?e' |- _ =>
@@ -49,9 +49,9 @@ Section LastAppliedCommitIndexMatching.
           specialize (H h (eIndex e)); forward H;
           intuition
       end.
-      + find_apply_hyp_hyp; omega.
+      + find_apply_hyp_hyp; lia.
       + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
-        simpl. omega.
+        simpl. lia.
       + break_exists. intuition.
         match goal with
           | _ : eIndex ?e = eIndex ?e' |- _ =>
@@ -78,9 +78,9 @@ Section LastAppliedCommitIndexMatching.
           specialize (H h (eIndex e)); forward H;
           intuition
       end.
-      + find_apply_hyp_hyp; omega.
+      + find_apply_hyp_hyp; lia.
       + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
-        simpl. omega.
+        simpl. lia.
       + break_exists. intuition.
         match goal with
           | _ : eIndex ?e = eIndex ?e' |- _ =>
@@ -94,9 +94,9 @@ Section LastAppliedCommitIndexMatching.
           specialize (H h (eIndex e)); forward H;
           intuition
       end.
-      + find_apply_hyp_hyp; omega.
+      + find_apply_hyp_hyp; lia.
       + eapply le_trans; [|eapply_prop maxIndex_commitIndex].
-        simpl. omega.
+        simpl. lia.
       + break_exists. intuition.
         match goal with
           | _ : eIndex ?e = eIndex ?e' |- _ =>
@@ -123,9 +123,9 @@ Section LastAppliedCommitIndexMatching.
           specialize (H h (eIndex e)); forward H;
           intuition
       end.
-      + find_apply_hyp_hyp; omega.
+      + find_apply_hyp_hyp; lia.
       + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
-        simpl. omega.
+        simpl. lia.
       + break_exists. intuition.
         match goal with
           | _ : eIndex ?e = eIndex ?e' |- _ =>
@@ -139,9 +139,9 @@ Section LastAppliedCommitIndexMatching.
           specialize (H h (eIndex e)); forward H;
           intuition
       end.
-      + find_apply_hyp_hyp; omega.
+      + find_apply_hyp_hyp; lia.
       + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
-        simpl. omega.
+        simpl. lia.
       + break_exists. intuition.
         match goal with
           | _ : eIndex ?e = eIndex ?e' |- _ =>

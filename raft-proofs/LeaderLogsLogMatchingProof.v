@@ -79,8 +79,8 @@ Section LeaderLogsLogMatching.
     unfold entries_match.
     intuition; simpl in *; intuition; subst; subst;
     try match goal with
-        | [ H : In _ _ |- _ ] => apply maxTerm_is_max in H; [| solve[auto]]; omega
-        | [ H : In _ _ |- _ ] => apply maxIndex_is_max in H; [| solve[auto]]; omega
+        | [ H : In _ _ |- _ ] => apply maxTerm_is_max in H; [| solve[auto]]; lia
+        | [ H : In _ _ |- _ ] => apply maxIndex_is_max in H; [| solve[auto]]; lia
       end.
     - match goal with
         | [ H : _ |- _ ] => solve [eapply H; eauto]
@@ -104,7 +104,7 @@ Section LeaderLogsLogMatching.
     try solve [
          exfalso; try find_apply_hyp_hyp;
           match goal with
-            | [ H : In _ _ |- _ ] => apply maxIndex_is_max in H; [| solve[auto]]; omega
+            | [ H : In _ _ |- _ ] => apply maxIndex_is_max in H; [| solve[auto]]; lia
           end].
     - match goal with
         | [ H : _ |- _ ] => solve [eapply H; eauto]
@@ -215,19 +215,19 @@ Section LeaderLogsLogMatching.
             * { apply entries_match_cons_gt_maxTerm; eauto.
                 - eauto using lifted_logs_sorted_host.
                 - eapply leaderLogs_sorted_invariant; eauto.
-                - omega.
+                - lia.
                 - find_copy_apply_lem_hyp leaderLogs_currentTerm_invariant; auto.
                   find_copy_apply_lem_hyp leaderLogs_term_sanity_invariant.
                   unfold leaderLogs_term_sanity in *.
                   eapply_prop_hyp In In; simpl; eauto. repeat find_rewrite.
-                  simpl in *. omega.
+                  simpl in *. lia.
               }
         - destruct (log d) using (handleClientRequest_log_ind ltac:(eauto)).
           + eauto.
           + apply entries_match_cons_sublog; eauto.
             * eauto using lifted_logs_sorted_host.
             * eapply leaderLogs_sorted_invariant; eauto.
-            * omega.
+            * lia.
             * intros.
               eapply leaderLogs_sublog_invariant; eauto.
               simpl in *. congruence.
@@ -575,7 +575,7 @@ Section LeaderLogsLogMatching.
                   repeat find_rewrite. simpl in *.
                   auto.
                 * find_apply_lem_hyp findGtIndex_necessary. break_and.
-                  omega.
+                  lia.
           }
   Qed.
 

@@ -36,7 +36,7 @@ Section VotesWithLogTermSanity.
     unfold votesWithLog_term_sanity. intros.
     find_higher_order_rewrite. update_destruct; subst; rewrite_update; [|eauto].
     simpl in *. find_apply_hyp_hyp. break_or_hyp.
-    - find_apply_hyp_hyp. omega.
+    - find_apply_hyp_hyp. lia.
     - break_and. subst. auto.
   Qed.
 

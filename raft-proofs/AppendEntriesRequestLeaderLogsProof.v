@@ -357,7 +357,7 @@ Section AppendEntriesRequestLeaderLogs.
     intros.
     find_copy_apply_lem_hyp lift_log_matching.
     find_copy_apply_lem_hyp lift_nextIndex_safety.
-    assert (pred (getNextIndex (snd (nwState net h)) h') > 0) by omega.
+    assert (pred (getNextIndex (snd (nwState net h)) h') > 0) by lia.
     unfold log_matching, log_matching_hosts in *.
     unfold nextIndex_safety in *.
     match goal with
@@ -383,7 +383,7 @@ Section AppendEntriesRequestLeaderLogs.
     induction l; intros; simpl in *; intuition.
     break_if; intuition.
     - f_equal. auto.
-    - do_bool. specialize (H a); intuition; omega.
+    - do_bool. specialize (H a); intuition; lia.
   Qed.
 
   Lemma entries_gt_0 :
@@ -419,10 +419,10 @@ Section AppendEntriesRequestLeaderLogs.
           In x l' -> In x l1.
   Proof using. 
     induction l1; intros; simpl in *; intuition.
-    - subst. break_if; do_bool; try omega.
+    - subst. break_if; do_bool; try lia.
       eexists; repeat (simpl in *; intuition).
     - specialize (H1 e); intuition. conclude H1 ltac:(apply in_app_iff; intuition).
-      break_if; do_bool; try omega. eexists; intuition; eauto.
+      break_if; do_bool; try lia. eexists; intuition; eauto.
       simpl in *. intuition.
       eapply_prop_hyp sorted sorted; eauto. break_exists; intuition.
       find_rewrite. eauto.
@@ -462,7 +462,7 @@ Section AppendEntriesRequestLeaderLogs.
       + eapply_prop_hyp sorted sorted; eauto.
         break_exists; intuition; find_rewrite; eauto.
       + do_bool. specialize (H1 e); conclude H1 ltac:(apply in_app_iff; intuition).
-        omega.
+        lia.
   Qed.
 
   Lemma findGtIndex_app_eq :
@@ -475,7 +475,7 @@ Section AppendEntriesRequestLeaderLogs.
     induction l1; intros; simpl in *.
     - destruct l2; simpl in *; intuition; subst; auto.
       break_if; try congruence. do_bool.
-      find_apply_hyp_hyp. intuition. omega.
+      find_apply_hyp_hyp. intuition. lia.
     - simpl in *. break_if; try congruence.
       do_bool. find_inversion. intuition.
   Qed.

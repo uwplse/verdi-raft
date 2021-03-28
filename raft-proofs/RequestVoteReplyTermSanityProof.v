@@ -29,7 +29,7 @@ Section RequestVoteReplyTermSanity.
     destruct_update; simpl in *; eauto.
     find_copy_apply_lem_hyp handleAppendEntries_currentTerm_leaderId.
     intuition; repeat find_rewrite; eauto;
-    eapply_prop_hyp pBody pBody; eauto; omega.
+    eapply_prop_hyp pBody pBody; eauto; lia.
   Qed.
 
   Lemma requestVoteReply_term_sanity_append_entries_reply :
@@ -46,7 +46,7 @@ Section RequestVoteReplyTermSanity.
     repeat find_rewrite.
     find_copy_apply_lem_hyp handleAppendEntriesReply_type_term;
       intuition; eauto;
-      eapply_prop_hyp pBody pBody; eauto; omega.
+      eapply_prop_hyp pBody pBody; eauto; lia.
   Qed.
   
   Lemma requestVoteReply_term_sanity_request_vote :
@@ -61,7 +61,7 @@ Section RequestVoteReplyTermSanity.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).
         find_copy_apply_lem_hyp handleRequestVote_currentTerm_leaderId.
         intuition; repeat find_rewrite; eauto;
-        eapply_prop_hyp pBody pBody; eauto; omega.
+        eapply_prop_hyp pBody pBody; eauto; lia.
       + remember (pDst p0). subst p0. simpl in *.
         subst.
         find_copy_apply_lem_hyp handleRequestVote_reply_true'.
@@ -70,7 +70,7 @@ Section RequestVoteReplyTermSanity.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).
         find_copy_apply_lem_hyp handleRequestVote_currentTerm_leaderId.
         intuition; repeat find_rewrite; eauto;
-        eapply_prop_hyp pBody pBody; eauto; omega.
+        eapply_prop_hyp pBody pBody; eauto; lia.
       + remember (pDst p0). subst p0. simpl in *.
         subst.
         find_copy_apply_lem_hyp handleRequestVote_reply_true'.

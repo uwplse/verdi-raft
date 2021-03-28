@@ -109,7 +109,7 @@ Section PrevLogCandidateEntriesTerm.
       find_apply_lem_hyp in_dedup_was_in.
       find_copy_apply_lem_hyp cronies_term_invariant; auto.
       simpl in *.
-      omega.
+      lia.
     - update_destruct_simplify; auto.
       find_copy_apply_lem_hyp handleTimeout_type_strong.
       find_apply_lem_hyp wonElection_exists_voter.
@@ -117,7 +117,7 @@ Section PrevLogCandidateEntriesTerm.
       find_apply_lem_hyp in_dedup_was_in.
       find_copy_apply_lem_hyp cronies_term_invariant; auto.
       intuition; subst; repeat find_rewrite; auto;
-      simpl in *; omega.
+      simpl in *; lia.
   Qed.
 
   Lemma prevLog_candidateEntriesTerm_timeout :
@@ -383,7 +383,7 @@ Section PrevLogCandidateEntriesTerm.
       subst. simpl in *.
       find_copy_eapply_lem_hyp doLeader_messages; eauto.
       break_and. intuition.
-      + omega.
+      + lia.
       + break_exists. break_and.
         red.
         find_apply_lem_hyp candidate_entries_invariant.

@@ -119,7 +119,7 @@ Section OneLeaderLogPerTerm.
       wonElection votes = true ->
       length votes > div2 (length nodes).
   Proof using. 
-    unfold wonElection. intros. find_apply_lem_hyp leb_true_le. omega.
+    unfold wonElection. intros. find_apply_lem_hyp leb_true_le. lia.
   Qed.
 
   Lemma pigeon_nodes :

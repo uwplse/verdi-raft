@@ -117,14 +117,14 @@ Section VotedForMoreUpToDate.
       simpl. eauto using moreUpToDate_refl.
     - find_copy_eapply_lem_hyp update_elections_data_timeout_votedFor; eauto.
       intuition; [repeat find_rewrite; eauto|].
-      subst. omega.
+      subst. lia.
     - find_copy_apply_lem_hyp handleTimeout_log_same.
       find_apply_lem_hyp update_elections_data_timeout_votesWithLog_votesReceived.
       intuition; try congruence.
       find_copy_apply_lem_hyp votedFor_term_sanity_invariant.
       eapply_prop_hyp votedFor_term_sanity RaftState.votedFor; eauto.
       unfold raft_data in *; simpl in *; unfold raft_data in *; simpl in *.
-      omega.
+      lia.
   Qed.
 
   Lemma votedFor_moreUpToDate_client_request :

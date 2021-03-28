@@ -56,8 +56,8 @@ Section VotesCorrect.
       find_eapply_lem_hyp votes_update_elections_data_timeout_votedFor; eauto.
       intuition.
       + eauto.
-      + find_apply_lem_hyp votes_le_current_term_invariant; auto; simpl in *; omega.
-      + find_apply_lem_hyp votes_le_current_term_invariant; auto; simpl in *; omega.
+      + find_apply_lem_hyp votes_le_current_term_invariant; auto; simpl in *; lia.
+      + find_apply_lem_hyp votes_le_current_term_invariant; auto; simpl in *; lia.
       + congruence.
     - find_eapply_lem_hyp votes_update_elections_data_timeout_votedFor; eauto.
       intuition. subst.
@@ -127,7 +127,7 @@ Section VotesCorrect.
       do_le_antisym.
       find_apply_hyp_hyp.
       find_copy_apply_lem_hyp handleRequestVote_currentTerm_votedFor.
-      intuition; try omega; try congruence.
+      intuition; try lia; try congruence.
     - subst.
       find_copy_apply_lem_hyp handleRequestVote_currentTerm_votedFor.
       repeat find_rewrite.
@@ -153,7 +153,7 @@ Section VotesCorrect.
         apply eq_sym in Hst''
       end.
       find_copy_apply_lem_hyp handleRequestVoteReply_term_votedFor_cases.
-      intuition; try omega.
+      intuition; try lia.
       repeat find_rewrite. eauto.
     - erewrite @votes_update_elections_data_request_vote_reply_eq in * by auto.
       find_copy_eapply_lem_hyp handleRequestVoteReply_term_votedFor; eauto.

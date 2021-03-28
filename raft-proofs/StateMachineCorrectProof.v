@@ -11,6 +11,7 @@ Require Import VerdiRaft.MaxIndexSanityInterface.
 Require Import VerdiRaft.StateMachineSafetyInterface.
 Require Import VerdiRaft.LogMatchingInterface.
 Require Import VerdiRaft.StateMachineCorrectInterface.
+Require Import ZArith.
 
 Section StateMachineCorrect.
   Context {orig_base_params : BaseParams}.
@@ -109,7 +110,7 @@ Section StateMachineCorrect.
   Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
-    repeat break_match; subst; repeat find_inversion; do_bool; try omega;
+    repeat break_match; subst; repeat find_inversion; do_bool; try lia;
     simpl in *; auto.
   Qed.
 
@@ -124,7 +125,7 @@ Section StateMachineCorrect.
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
-    simpl in *; auto; omega.
+    simpl in *; auto; lia.
   Qed.
 
   Lemma cacheApplyEntry_stateMachine_apply_none :
@@ -136,7 +137,7 @@ Section StateMachineCorrect.
   Proof using. 
     intros.
     unfold cacheApplyEntry, applyEntry in *.
-    repeat break_match; subst; repeat find_inversion; do_bool; try omega;
+    repeat break_match; subst; repeat find_inversion; do_bool; try lia;
     simpl in *; auto; congruence.
   Qed.
 
@@ -163,7 +164,7 @@ Section StateMachineCorrect.
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
-    simpl in *; auto; try omega; congruence.
+    simpl in *; auto; try lia; congruence.
   Qed.
 
   Lemma cacheApplyEntry_cache_no_apply :
@@ -176,7 +177,7 @@ Section StateMachineCorrect.
     intros.
     unfold cacheApplyEntry, applyEntry in *.
     repeat break_match; subst; repeat find_inversion; do_bool;
-    simpl in *; auto; try omega; congruence.
+    simpl in *; auto; try lia; congruence.
   Qed.
   
   Lemma clientCache_to_ks_assoc_set :
@@ -275,10 +276,10 @@ Section StateMachineCorrect.
       filter (fun x => eIndex x <=? i) (findGtIndex l i') ++ removeAfterIndex l i'.
   Proof using. 
     intros. induction l; simpl in *; auto.
-    repeat (break_match; simpl in *); do_bool; intuition; try omega; try congruence.
+    repeat (break_match; simpl in *); do_bool; intuition; try lia; try congruence.
     f_equal. repeat find_reverse_rewrite.
     rewrite removeAfterIndex_eq; auto.
-    intros. find_apply_hyp_hyp. omega.
+    intros. find_apply_hyp_hyp. lia.
   Qed.
 
   Fixpoint log_to_ks' (l : list entry) (ks : list (clientId * nat)) : list (clientId * nat) :=
@@ -340,7 +341,7 @@ Section StateMachineCorrect.
       + rewrite get_set_same_default.
         now rewrite max_r by auto.
       + now rewrite get_set_diff_default by auto.
-      + now rewrite max_l by omega.
+      + now rewrite max_l by lia.
   Qed.
 
   Lemma max_id_for_client_default_le :
@@ -365,7 +366,7 @@ Section StateMachineCorrect.
     induction l; simpl; intros.
     - auto.
     - break_if; repeat rewrite IHl. 2: reflexivity.
-      zify. omega.
+      zify. lia.
   Qed.
 
   Lemma max_id_for_client_default_or_entry :
@@ -380,7 +381,7 @@ Section StateMachineCorrect.
       + destruct (le_lt_dec x (eId a)).
         * rewrite max_r in * by auto.
           right. eauto.
-        * rewrite max_l in * by omega. auto.
+        * rewrite max_l in * by lia. auto.
       + right.
         break_exists. break_and.
         rewrite max_id_for_client_default_on_max in *.
@@ -516,7 +517,7 @@ Section StateMachineCorrect.
         eapply le_trans; [|eauto];
         eauto using log_to_ks'_assoc_default_ks.
         eapply le_trans; [|eauto using log_to_ks'_assoc_default_assoc_default_le].
-        omega.
+        lia.
       + match goal with
           | [ |- context [ assoc_set ?e ?ks ?c' ?i ] ] =>
             assert (assoc_default e ks c 0 = assoc_default e (assoc_set e ks c' i) c 0)
@@ -541,10 +542,10 @@ Section StateMachineCorrect.
                                      apply assoc_set_assoc_set_diff]; eauto.
       + do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
         * rewrite assoc_set_assoc_set_same. auto.
-        * rewrite assoc_default_assoc_set_diff in *; auto; omega.
+        * rewrite assoc_default_assoc_set_diff in *; auto; lia.
       + do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
         * erewrite <- assoc_set_assoc_set_same; eauto.
-        * rewrite assoc_default_assoc_set_diff in *; auto; omega.
+        * rewrite assoc_default_assoc_set_diff in *; auto; lia.
   Qed.
 
   Lemma log_to_ks'_assoc_default_set_diff :
@@ -563,10 +564,10 @@ Section StateMachineCorrect.
                                            apply assoc_set_assoc_set_diff]; eauto.
     - do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
       + rewrite assoc_set_assoc_set_same. auto.
-      + rewrite assoc_default_assoc_set_diff in *; auto; omega.
+      + rewrite assoc_default_assoc_set_diff in *; auto; lia.
     - do_bool. destruct (clientId_eq_dec (eClient a) k); subst; simpl in *.
       + erewrite <- assoc_set_assoc_set_same; eauto.
-      + rewrite assoc_default_assoc_set_diff in *; auto; omega.
+      + rewrite assoc_default_assoc_set_diff in *; auto; lia.
   Qed.
 
   Lemma assoc_set_log_to_ks'_le:
@@ -600,7 +601,7 @@ Section StateMachineCorrect.
         find_rewrite_lem assoc_set_assoc_set_same.
         auto.
       + rewrite assoc_default_assoc_set_diff in *; auto.
-        omega.
+        lia.
     - do_bool.
       destruct (clientId_eq_dec (eClient a) c); subst.
       + find_rewrite_lem assoc_default_assoc_set.
@@ -609,8 +610,8 @@ Section StateMachineCorrect.
         eapply le_antisym; eauto.
         eapply le_trans; [|eauto].
         eapply le_trans; [|eapply log_to_ks'_assoc_default_assoc_default_le].
-        omega.
-      + rewrite assoc_default_assoc_set_diff in *; auto. omega.
+        lia.
+      + rewrite assoc_default_assoc_set_diff in *; auto. lia.
   Qed.
 
   Lemma in_ks_log_to_ks'_le :
@@ -641,9 +642,9 @@ Section StateMachineCorrect.
     - subst. break_if; do_bool.
       + apply in_ks_log_to_ks'_le.  rewrite get_set_same. auto.
       + unfold assoc_default in *.
-        break_match; try omega.
+        break_match; try lia.
         find_eapply_lem_hyp in_ks_log_to_ks'_le.
-        break_exists_exists. intuition eauto. omega.
+        break_exists_exists. intuition eauto. lia.
     - break_if; do_bool; auto.
   Qed.
 
@@ -693,10 +694,10 @@ Section StateMachineCorrect.
       unfold log_matching, log_matching_hosts in *. intuition.
       copy_eapply_prop_hyp In In.
       copy_eapply_prop_hyp pBody pBody; eauto.
-      intuition; try omega.
+      intuition; try lia.
       subst.
       find_copy_apply_lem_hyp handleAppendEntries_same_lastApplied.
-      repeat find_rewrite. omega.
+      repeat find_rewrite. lia.
     - match goal with
         | _ : eIndex ?e <= lastApplied (nwState ?net ?h) |- _ =>
           assert (commit_recorded net h e) by (unfold commit_recorded; eauto)
@@ -707,16 +708,16 @@ Section StateMachineCorrect.
       copy_eapply_prop_hyp pBody pBody; eauto.
       intuition.
       + apply in_app_iff. right.
-        apply removeAfterIndex_le_In; eauto; omega.
+        apply removeAfterIndex_le_In; eauto; lia.
       + apply in_app_iff. right.
-        apply removeAfterIndex_le_In; eauto; omega.
+        apply removeAfterIndex_le_In; eauto; lia.
       + match goal with
           | _ : context [maxIndex (?a ++ ?b)] |- _ =>
             pose proof maxIndex_app a b
         end. intuition.
         repeat find_rewrite.
         find_copy_apply_lem_hyp handleAppendEntries_same_lastApplied.
-        repeat find_rewrite. omega.
+        repeat find_rewrite. lia.
   Qed.
     
   Lemma handleAppendEntries_preserves_lastApplied_entries:
@@ -787,7 +788,7 @@ Section StateMachineCorrect.
       removeAfterIndex (x :: l) i = removeAfterIndex l i.
   Proof using. 
     intros.
-    simpl in *; break_if; do_bool; auto; omega.
+    simpl in *; break_if; do_bool; auto; lia.
   Qed.
   
   Lemma handleClientRequest_preserves_lastApplied_entries:
@@ -809,7 +810,7 @@ Section StateMachineCorrect.
     match goal with
       | H : forall _, lastApplied _ <= maxIndex _ |- _ =>
         specialize (H h)
-    end. omega.
+    end. lia.
   Qed.
 
   Lemma client_cache_keys_correct_clientCache_complete :
@@ -839,13 +840,13 @@ Section StateMachineCorrect.
     induction l1; intros; simpl in *; auto.
     repeat break_match; simpl in *; eauto; try solve [f_equal; eauto].
     - exfalso. do_bool.
-      find_erewrite_lem assoc_assoc_default. omega.
+      find_erewrite_lem assoc_assoc_default. lia.
     - do_bool.
       find_erewrite_lem assoc_assoc_default.
       rewrite assoc_set_same; eauto.
       find_eapply_lem_hyp le_antisym; eauto. subst. auto.
     - exfalso. do_bool.
-      find_erewrite_lem assoc_assoc_default_missing. omega.
+      find_erewrite_lem assoc_assoc_default_missing. lia.
   Qed.
 
   Lemma deduplicate_log'_a_equiv :
@@ -859,7 +860,7 @@ Section StateMachineCorrect.
     match goal with
       | _ : assoc ?dec ?ks ?c = _, _ : assoc ?dec ?ks' ?c = _ |- _ =>
         assert (assoc dec ks c = assoc dec ks' c) by (eauto using assoc_a_equiv)
-    end; repeat find_rewrite; try find_inversion; try congruence; omega.
+    end; repeat find_rewrite; try find_inversion; try congruence; lia.
   Qed.
 
   Lemma cacheApplyEntry_getLastId :
@@ -888,7 +889,7 @@ Section StateMachineCorrect.
       subst. rewrite get_set_same in *.
       find_inversion. repeat find_rewrite.
       right. intuition. find_inversion.
-      omega.
+      lia.
     - unfold applyEntry in *.
       break_let. find_inversion.
       simpl in *.
@@ -942,7 +943,7 @@ Section StateMachineCorrect.
   Proof using. 
     intros.
     unfold assoc_default in *.
-    break_match; intuition; eauto; omega.
+    break_match; intuition; eauto; lia.
   Qed.
 
   Lemma applyEntries_log_to_ks' :
@@ -960,7 +961,7 @@ Section StateMachineCorrect.
         unfold cacheApplyEntry in *.
         repeat break_match; repeat find_inversion; do_bool.
         * find_apply_lem_hyp getLastId_clientCache_to_ks_assoc.
-          find_erewrite_lem assoc_assoc_default. omega.
+          find_erewrite_lem assoc_assoc_default. lia.
         * find_apply_hyp_hyp.
           subst.
           rewrite assoc_set_same; eauto using a_equiv_refl.
@@ -984,7 +985,7 @@ Section StateMachineCorrect.
         find_apply_lem_hyp clientCache_to_ks_assoc_getLastId.
         break_exists.
         unfold cacheApplyEntry in *.
-        repeat find_rewrite. break_if; do_bool; try omega.
+        repeat find_rewrite. break_if; do_bool; try lia.
         find_inversion. eauto.
   Qed.
     
@@ -1069,7 +1070,7 @@ Section StateMachineCorrect.
           find_erewrite_lem assoc_a_equiv; eauto.
           find_apply_lem_hyp clientCache_to_ks_assoc_getLastId.
           break_exists. repeat find_rewrite. find_inversion.
-          omega.
+          lia.
         * rewrite execute_log'_app. break_let.
           simpl in *. break_let. simpl.
           rewrite rev_app_distr. simpl. unfold value. repeat f_equal.
@@ -1200,7 +1201,7 @@ Section StateMachineCorrect.
       apply Bool.not_true_is_false.
       intuition.
       do_bool. intuition. do_bool.
-      use_applyEntries_spec. subst. simpl in *. omega.
+      use_applyEntries_spec. subst. simpl in *. lia.
   Qed.      
 
   Lemma deduplicate_log_app :
@@ -1424,7 +1425,7 @@ Section StateMachineCorrect.
              | |- context [?x <? ?y] =>
                destruct (x <? y) eqn:?; auto
            end; do_bool;
-           find_eapply_lem_hyp findGtIndex_necessary; omega).
+           find_eapply_lem_hyp findGtIndex_necessary; lia).
       get_invariant_pre logs_sorted_invariant; unfold logs_sorted in *; intuition.
       match goal with
         | |- context [commitIndex ?st] =>

@@ -107,7 +107,7 @@ Section AllEntriesCandidateEntries.
         intro_refined_invariant cronies_term_invariant.
         eapply_prop_hyp cronies_term In.
         simpl in *.
-        omega.
+        lia.
     - find_apply_lem_hyp handleTimeout_type_strong.
       break_or_hyp; break_and.
       + repeat find_rewrite. auto.
@@ -119,7 +119,7 @@ Section AllEntriesCandidateEntries.
         intro_refined_invariant cronies_term_invariant.
         eapply_prop_hyp cronies_term In.
         simpl in *.
-        omega.
+        lia.
   Qed.
 
   Lemma allEntries_candidateEntries_append_entries :

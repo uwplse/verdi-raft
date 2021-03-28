@@ -113,13 +113,13 @@ Section LeaderLogsContiguous.
       match goal with
         | H : forall _ _, _ <= _ <= _ -> _ |- _ =>
           specialize (H h i);
-            conclude H ltac:(simpl; repeat break_match; simpl in *; repeat find_rewrite; simpl in *;omega)
+            conclude H ltac:(simpl; repeat break_match; simpl in *; repeat find_rewrite; simpl in *;lia)
       end.
       break_exists_exists; intuition.
       simpl in *.
       repeat break_match; simpl in *; repeat find_rewrite; simpl in *; auto.
     - intros.
-      cut (eIndex e > 0); intros; try omega.
+      cut (eIndex e > 0); intros; try lia.
       cut (In e (log (nwState (deghost net) h))); intros; eauto.
       simpl in *. repeat break_match. simpl in *. repeat find_rewrite. simpl in *. auto.
   Qed.

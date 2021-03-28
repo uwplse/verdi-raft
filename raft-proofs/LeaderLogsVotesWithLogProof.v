@@ -122,7 +122,7 @@ Section LeaderLogsVotesWithLog.
     intros.
     exists (dedup name_eq_dec l). intuition; eauto using NoDup_dedup, in_dedup_was_in.
     unfold wonElection in *.
-    do_bool. omega.
+    do_bool. lia.
   Qed.
         
   Lemma leaderLogs_votesWithLog_request_vote_reply :

@@ -47,7 +47,7 @@ Section AllEntriesVotesWithLog.
     - find_eapply_lem_hyp votesWithLog_update_elections_data_append_entries; eauto.
       find_copy_apply_lem_hyp votesWithLog_term_sanity_invariant; eauto.
       find_eapply_lem_hyp update_elections_data_appendEntries_allEntries'; eauto.
-      intuition; do 2 (unfold raft_data, ghost_data in *; simpl in *); try omega.
+      intuition; do 2 (unfold raft_data, ghost_data in *; simpl in *); try lia.
       eapply_prop_hyp votesWithLog votesWithLog; eauto. intuition.
       right. break_exists_exists. intuition.
       find_higher_order_rewrite. destruct_update; simpl in *; auto.
@@ -220,7 +220,7 @@ Section AllEntriesVotesWithLog.
       + subst.
         find_eapply_lem_hyp votesWithLog_update_elections_data_client_request; eauto.
         find_eapply_lem_hyp votesWithLog_term_sanity_invariant; eauto.
-        repeat (unfold raft_data, ghost_data in *; simpl in *). omega.
+        repeat (unfold raft_data, ghost_data in *; simpl in *). lia.
     - eapply_prop_hyp votesWithLog votesWithLog; eauto; intuition;
         right; break_exists_exists; intuition;
         find_higher_order_rewrite; destruct_update; simpl in *; auto.

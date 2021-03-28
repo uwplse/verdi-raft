@@ -59,7 +59,7 @@ Section LogsLeaderLogs.
     intros. unfold logs_leaderLogs_nw, logs_leaderLogs_nw_weak, weak_sanity in *.
     intros.
     eapply_prop_hyp In In; eauto.
-    break_exists_exists; intuition; subst; try omega.
+    break_exists_exists; intuition; subst; try lia.
     break_exists; intuition; eauto.
   Qed.
     
@@ -109,7 +109,7 @@ Section LogsLeaderLogs.
     intros.
     find_copy_apply_lem_hyp entries_contiguous_invariant.
     find_copy_apply_lem_hyp lift_nextIndex_safety.
-    assert (pred (getNextIndex (snd (nwState net h)) h') > 0) by omega.
+    assert (pred (getNextIndex (snd (nwState net h)) h') > 0) by lia.
     unfold nextIndex_safety in *.
     match goal with
       | H : forall _ _, type _ = _ -> _ |- _ => specialize (H h h')
@@ -240,7 +240,7 @@ Section LogsLeaderLogs.
                 intuition; subst; simpl in *; intuition.
                 break_exists. intuition.
                 find_eapply_lem_hyp leaderLogs_contiguous_invariant; eauto.
-                omega.
+                lia.
               + eapply leaderLogs_contiguous_invariant; eauto.
               + assert (sorted (log d)) by (eapply entries_sorted_nw_invariant; eauto).
                 eapply contiguous_app with (l1 := x1).
@@ -277,7 +277,7 @@ Section LogsLeaderLogs.
                           (apply removeAfterIndex_in with (i := index);
                            repeat find_rewrite; intuition)
                   end.
-                  eapply_prop_hyp In In. omega.
+                  eapply_prop_hyp In In. lia.
                 } subst. rewrite app_nil_r in *.
                 match goal with
                   | H : forall _ _, In _ _ -> _ |- _ =>
@@ -360,7 +360,7 @@ Section LogsLeaderLogs.
                              repeat find_rewrite; intuition)
                     end.
                     clear H0 H7.
-                    eapply_prop_hyp In In. omega.
+                    eapply_prop_hyp In In. lia.
                   } subst. simpl.
                   find_copy_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
                   match goal with
@@ -374,7 +374,7 @@ Section LogsLeaderLogs.
                           _ : In ?e (log _),
                               _ : eIndex ?e' = maxIndex _ |- In ?e'' _ =>
                       assert (eIndex e = eIndex e') as Heq by (repeat find_rewrite; auto);
-                        assert (eIndex e'' <= eIndex e) by omega;
+                        assert (eIndex e'' <= eIndex e) by lia;
                         eapply leaderLogs_entries_match_invariant in Heq; eauto;
                         repeat conclude Heq ltac:(eauto; intuition)
                   end; intuition.
@@ -503,13 +503,13 @@ Section LogsLeaderLogs.
              end; intuition.
              + find_higher_order_rewrite; update_destruct; subst; rewrite_update; eauto;
                simpl in *; rewrite update_elections_data_client_request_leaderLogs; eauto.
-             + break_if; eauto using app_ass; do_bool; omega.
+             + break_if; eauto using app_ass; do_bool; lia.
              + simpl in *. intuition; subst; eauto.
            - find_copy_apply_lem_hyp maxIndex_is_max; eauto using lift_logs_sorted.
              find_apply_hyp_hyp. break_exists_exists; intuition;
              [find_higher_order_rewrite ; update_destruct; subst; rewrite_update; eauto;
               simpl in *; rewrite update_elections_data_client_request_leaderLogs; eauto|].
-             break_if; do_bool; intuition; omega.
+             break_if; do_bool; intuition; lia.
           }
       + find_apply_hyp_hyp; break_exists_exists; intuition;
         find_higher_order_rewrite; update_destruct; subst; rewrite_update; eauto;
@@ -670,7 +670,7 @@ Section LogsLeaderLogs.
                 rewrite findGtIndex_removeAfterIndex_commute; eauto using lift_logs_sorted.
                 unfold ghost_data in *. simpl in *.
                 find_rewrite.
-                eapply findGtIndex_app_1; omega.
+                eapply findGtIndex_app_1; lia.
               * eauto using findGtIndex_in.
               * left. intuition.
                 match goal with
@@ -682,13 +682,13 @@ Section LogsLeaderLogs.
                 match goal with
                   | _ : In ?x ?l, _ : eIndex ?e > eIndex ?x |- _ =>
                     assert (In x (removeAfterIndex l (eIndex e))) by
-                        (apply removeAfterIndex_le_In; eauto; omega)
+                        (apply removeAfterIndex_le_In; eauto; lia)
                 end.
                 unfold ghost_data in *. simpl in *.
                 find_rewrite.
                 do_in_app; intuition.
                 find_copy_apply_lem_hyp leaderLogs_sorted_invariant; eauto.
-                find_apply_lem_hyp maxIndex_is_max; eauto; omega.
+                find_apply_lem_hyp maxIndex_is_max; eauto; lia.
             + exists leader, ll, (findGtIndex es pli), []. intuition.
               * find_higher_order_rewrite; update_destruct; subst; rewrite_update; eauto.
               * simpl; auto.
@@ -696,21 +696,21 @@ Section LogsLeaderLogs.
                 rewrite findGtIndex_removeAfterIndex_commute; eauto using lift_logs_sorted.
                 unfold ghost_data in *. simpl in *.
                 find_rewrite.
-                apply findGtIndex_app_1. omega.
+                apply findGtIndex_app_1. lia.
               * eauto using findGtIndex_in.
               * right. find_apply_lem_hyp findAtIndex_elim.
                 left. exists x0. intuition. subst.
                 match goal with
                   | _ : In ?x ?l, _ : eIndex ?e > _ |- _ =>
                     assert (In x (removeAfterIndex l (eIndex e))) by
-                        (apply removeAfterIndex_le_In; eauto; omega)
+                        (apply removeAfterIndex_le_In; eauto; lia)
                 end.
                 unfold ghost_data in *. simpl in *.
                 find_rewrite.
                 assert (sorted (es ++ ll)) by (repeat find_reverse_rewrite;
                                                apply removeAfterIndex_sorted;
                                                repeat find_rewrite; eauto using lift_logs_sorted).
-                eapply thing3; eauto; try omega. intros.
+                eapply thing3; eauto; try lia. intros.
                 match goal with
                   | |- eIndex ?e > _ =>
                     assert (In e (log (snd (nwState net h)))) by
@@ -736,12 +736,12 @@ Section LogsLeaderLogs.
                     match goal with
                       | H : removeAfterIndex _ _ = _ |- _ =>
                         find_eapply_lem_hyp removeAfterIndex_le_In;
-                          [unfold ghost_data in *; simpl in *; find_rewrite_lem H|omega]
+                          [unfold ghost_data in *; simpl in *; find_rewrite_lem H|lia]
                     end.
                     assert (sorted (es ++ ll)) by (repeat find_reverse_rewrite;
                                                    apply removeAfterIndex_sorted;
                                                    repeat find_rewrite; eauto using lift_logs_sorted).
-                    eapply thing3; eauto; try omega. intros.
+                    eapply thing3; eauto; try lia. intros.
                      match goal with
                        | |- eIndex ?e > _ =>
                          assert (In e (log (snd (nwState net h)))) by

@@ -267,14 +267,14 @@ Section LogMatchingProof.
           | [ H : forall _ _, 1 <= _ <= _ -> _ |- context [eIndex _ = ?x] ] =>
             remember (x) as index; specialize (H leaderId index); forward H
         end.
-        * intuition; try (destruct index; intuition; omega).
+        * intuition; try (destruct index; intuition; lia).
           match goal with
             | _ : eIndex ?e > index, _ : In ?e ?l |- _ =>
               pose proof maxIndex_is_max l e
           end. unfold logs_sorted in *. intuition.
           match goal with
             | H : logs_sorted_host _ |- _ => specialize (H leaderId)
-          end. repeat concludes. omega.
+          end. repeat concludes. lia.
         * { concludes. break_exists. intuition. eexists; intuition eauto.
             - break_match.
               + f_equal. eapply findAtIndex_uniq_equal; eauto. repeat find_rewrite; auto.
@@ -290,7 +290,7 @@ Section LogMatchingProof.
                      In ?x (log (_ _ ?h)) ] =>
                    specialize (Hentries leader h e1 e2 x)
               end.
-              assert (eIndex x <= eIndex e1) by omega.
+              assert (eIndex x <= eIndex e1) by lia.
               repeat conclude. intuition.
           }
     - use_packet_subset_clear; unfold log_matching in *; intuition.
@@ -305,7 +305,7 @@ Section LogMatchingProof.
               | context [ nwState _ ?h ] =>
                 specialize (H h i)
             end;
-              conclude H ltac:(split; try omega; eapply le_trans; eauto using findGtIndex_max)
+              conclude H ltac:(split; try lia; eapply le_trans; eauto using findGtIndex_max)
         end.
         break_exists;
         eexists;
@@ -348,7 +348,7 @@ Section LogMatchingProof.
         end.
         match goal with
           | H : forall _, eIndex _ <= eIndex _ -> _ |- _ =>
-            apply H; eauto; omega
+            apply H; eauto; lia
         end.
       + shouldSend_true.
         unfold log_matching, log_matching_nw in *. intuition.
@@ -390,7 +390,7 @@ Section LogMatchingProof.
           use_log_matching_nw_host. intuition.
           match goal with
             | H : forall _, _ -> In _ ?es -> In _ ?es' |- eTerm ?e = eTerm ?e' =>
-              assert (In e es') by (apply H; auto; omega)
+              assert (In e es') by (apply H; auto; lia)
           end.
           match goal with
             | _ : eIndex ?x = eIndex ?y |- context [ ?y ] =>
@@ -409,11 +409,11 @@ Section LogMatchingProof.
             [match goal with
                | H : forall _, In _ _ -> _ < _ |- context [ (?e : entry) ] =>
                  specialize (H e)
-             end; concludes; omega|].
+             end; concludes; lia|].
           concludes.
           unfold logs_sorted in *.
           forwards;
-            [find_apply_lem_hyp maxIndex_is_max; intuition; omega|].
+            [find_apply_lem_hyp maxIndex_is_max; intuition; lia|].
           concludes. break_exists. intuition.
           eapply findAtIndex_None; intuition eauto.
       + shouldSend_true. simpl in *. clean.
@@ -719,7 +719,7 @@ Ltac assert_do_leader :=
     match goal with
       | [ _ : S (maxIndex ?l) <= eIndex ?e,
               He : In ?e ?l |- _ ] =>
-        exfalso; apply maxIndex_is_max in He; intuition; omega
+        exfalso; apply maxIndex_is_max in He; intuition; lia
     end.
 
   Lemma handleClientRequest_log_matching_hosts_entries_match :
@@ -826,7 +826,7 @@ Ltac assert_do_leader :=
         * find_apply_lem_hyp le_lt_eq_dec.
           intuition; [|eexists; intuition eauto]; simpl; auto.
           unfold log_matching_hosts in *. intuition.
-          assert (i <= maxIndex (log (nwState net h))) by omega.
+          assert (i <= maxIndex (log (nwState net h))) by lia.
           cut (exists e : entry,
                  eIndex e = i /\ In e (log (nwState net h)));
             [intros; break_exists; eexists; intuition eauto|].
@@ -962,7 +962,7 @@ Ltac assert_do_leader :=
     log_matching_hosts,
     log_matching_nw.
     simpl; intuition eauto using entries_match_refl;
-    omega.
+    lia.
   Qed.
 
   Lemma log_matching_reboot :
@@ -1198,7 +1198,7 @@ Ltac assert_do_leader :=
                 | [ H : forall _, In _ ?es -> _ < eIndex _,
                       _ : In ?e ?es
                       |- 0 < eIndex ?e ] =>
-                  eapply le_lt_trans; [omega|eapply H; eauto]
+                  eapply le_lt_trans; [lia|eapply H; eauto]
               end.
               congruence.
             + use_nw_invariant; try solve [in_crush].
@@ -1222,7 +1222,7 @@ Ltac assert_do_leader :=
                   specialize (H x); forward H
               end.
 
-              * split; [destruct prevLogIndex; [congruence|omega]|].
+              * split; [destruct prevLogIndex; [congruence|lia]|].
                 apply lt_le_weak. eapply lt_le_trans.
                 eauto.
                 repeat find_rewrite.
@@ -1263,7 +1263,7 @@ Ltac assert_do_leader :=
             + unfold log_matching_hosts in *. intuition.
           - simpl in *. repeat find_higher_order_rewrite.
             break_if; subst.
-            + apply contiguous_range_exact_lo_weaken_exists with (lo := 0); [|omega].
+            + apply contiguous_range_exact_lo_weaken_exists with (lo := 0); [|lia].
               break_exists. intuition. do_elim.
               repeat find_rewrite. eapply removeIncorrect_new_contiguous; eauto.
               * intros.
@@ -1344,7 +1344,7 @@ Ltac assert_do_leader :=
                     break_exists; intuition.
                     apply in_or_app. right.
                     { eapply removeAfterIndex_le_In.
-                      - omega.
+                      - lia.
                       - do_elim. subst.
                         match goal with
                           | [ H : forall _ _ _, In _ ?entries -> _,
@@ -1366,7 +1366,7 @@ Ltac assert_do_leader :=
               use_nw_invariant.
               find_copy_apply_lem_hyp removeAfterIndex_In_le.
               find_apply_lem_hyp removeAfterIndex_in.
-              apply removeAfterIndex_le_In; [omega|].
+              apply removeAfterIndex_le_In; [lia|].
               use_log_matching_nw_host.
               intuition. eapply_prop logs_sorted_host.
           + unfold log_matching_nw in *.

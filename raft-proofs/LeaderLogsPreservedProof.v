@@ -114,7 +114,7 @@ Section LeaderLogsPreserved.
       find_eapply_lem_hyp leaderLogs_currentTerm_invariant; eauto.
       repeat find_rewrite. 
       repeat (unfold raft_data in *; simpl in *).
-      omega.
+      lia.
     - find_apply_lem_hyp logs_leaderLogs_invariant; auto.
       break_exists. intuition.
       find_eapply_lem_hyp one_leaderLog_per_term_log_invariant; eauto;
