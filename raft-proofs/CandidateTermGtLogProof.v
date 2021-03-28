@@ -40,7 +40,7 @@ Section CandidateTermGtLog.
     + find_apply_lem_hyp no_entries_past_current_term_invariant.
       unfold no_entries_past_current_term in *. intuition.
       unfold no_entries_past_current_term_host in *. repeat find_rewrite.
-      find_apply_hyp_hyp. omega.
+      find_apply_hyp_hyp. lia.
   Qed.
 
   Lemma candidate_term_gt_log_append_entries :

@@ -52,7 +52,7 @@ Section LogAllEntries.
   Proof using. 
     intros.
     unfold handleAppendEntries in *.
-    repeat break_match; simpl in *; do_bool; repeat find_inversion; auto; try omega;
+    repeat break_match; simpl in *; do_bool; repeat find_inversion; auto; try lia;
     simpl in *;
     unfold advanceCurrentTerm in *; repeat break_match; do_bool; auto.
   Qed.
@@ -142,7 +142,7 @@ Section LogAllEntries.
     repeat find_rewrite.
     unfold raft_data in *. simpl in *. 
     unfold raft_data in *. simpl in *.
-    omega.
+    lia.
   Qed.
 
   Lemma log_all_entries_do_leader :
@@ -214,7 +214,7 @@ Section LogAllEntries.
     repeat find_rewrite.
     unfold raft_data in *. simpl in *. 
     unfold raft_data in *. simpl in *.
-    omega.
+    lia.
   Qed.
 
   Lemma log_all_entries_reboot :

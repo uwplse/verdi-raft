@@ -74,9 +74,9 @@ Section SortedProof.
       break_exists; intuition; repeat find_rewrite.
       simpl. intuition eauto.
       * find_eapply_lem_hyp maxIndex_is_max; eauto.
-        omega.
+        lia.
       * unfold no_entries_past_current_term, no_entries_past_current_term_host in *.
-        intuition. simpl in *. find_apply_hyp_hyp. omega.
+        intuition. simpl in *. find_apply_hyp_hyp. lia.
   Qed.
 
   Theorem logs_sorted_client_request :
@@ -306,7 +306,7 @@ Section SortedProof.
           | H : eIndex ?x <= eIndex ?x', _ : In ?x ?ll |- _ =>
             apply sorted_index_term with (l := ll) (e := x) (e' := x') in H
         end; eauto.
-        match goal with |- ?a >= ?b => cut (b <= a); [omega|] end.
+        match goal with |- ?a >= ?b => cut (b <= a); [lia|] end.
         eapply le_trans; eauto.
         unfold packets_ge_prevTerm in *.
         find_eapply_hyp_goal; [in_crush|eauto|eauto];
@@ -464,7 +464,7 @@ Section SortedProof.
       find_apply_lem_hyp findAtIndex_elim. simpl in *.
       intuition. repeat find_rewrite.
       eapply sorted_index_term; eauto.
-      omega.
+      lia.
   Qed.
 
   Theorem logs_sorted_do_leader :

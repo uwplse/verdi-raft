@@ -161,11 +161,11 @@ Section MatchIndexAllEntries.
                   find_copy_apply_lem_hyp maxIndex_is_max; [|solve[apply entries_sorted_invariant; auto]].
                   rewrite <- lifted_match_index_leader in * by auto.
                   eapply_prop_hyp In In; eauto. repeat find_rewrite. auto.
-              + do_bool. find_rewrite. simpl length in *. omega.
+              + do_bool. find_rewrite. simpl length in *. lia.
             - find_erewrite_lem get_set_diff_default.
               pose proof lifted_match_index_sanity _ leader h0 ltac:(eauto) ltac:(auto).
               break_or_hyp.
-              + simpl in *. omega.
+              + simpl in *. lia.
               + find_apply_hyp_hyp. repeat find_rewrite. auto.
           }
       + find_apply_hyp_hyp. update_destruct_simplify_hyp.
@@ -191,7 +191,7 @@ Section MatchIndexAllEntries.
                 apply maxIndex_gt_0_nonempty.
                 eapply lt_le_trans; [|eauto].
                 simpl in *. break_or_hyp.
-                - repeat find_rewrite. omega.
+                - repeat find_rewrite. lia.
                 - eapply entries_gt_0_invariant; eauto.
               }
               pose proof maxIndex_non_empty es. concludes.
@@ -199,7 +199,7 @@ Section MatchIndexAllEntries.
               find_eapply_lem_hyp lifted_append_entries_reply_sublog; repeat find_rewrite; eauto.
               simpl In in *. break_or_hyp.
               + find_apply_lem_hyp maxIndex_is_max; [|solve[apply entries_sorted_invariant; auto]].
-                omega.
+                lia.
               + eapply_prop_hyp In In; eauto; [|solve[repeat find_rewrite; auto]].
                 update_destruct_simplify_hyp.
                 * apply update_elections_data_clientRequest_allEntries_old'.
@@ -587,7 +587,7 @@ Section MatchIndexAllEntries.
                 | [ H : entries_match _ _ |- _ ] =>
                   specialize (H x x e)
                 end.
-                assert (eIndex e <= eIndex x) by omega.
+                assert (eIndex e <= eIndex x) by lia.
                 repeat concludes. intuition.
               }
 
@@ -601,7 +601,7 @@ Section MatchIndexAllEntries.
               end.
               auto.
             - find_apply_lem_hyp lifted_terms_and_indices_from_one_log; auto. break_and.
-              apply maxIndex_gt_0_nonempty. omega.
+              apply maxIndex_gt_0_nonempty. lia.
             - intros.
               match goal with
               | [ H : refined_raft_intermediate_reachable (mkNetwork _ _) |- _ ] => clear H
@@ -857,7 +857,7 @@ Section MatchIndexAllEntries.
               end.
               eapply log_all_entries_invariant; auto.
             - find_apply_lem_hyp lifted_terms_and_indices_from_one_log; auto.
-              intuition. omega.
+              intuition. lia.
           }
       + update_destruct_simplify_hyp.
         * rewrite update_elections_data_requestVoteReply_allEntries.

@@ -187,7 +187,7 @@ Section CandidateEntriesProof.
           find_copy_apply_lem_hyp cronies_term_invariant; auto.
           find_copy_apply_lem_hyp handleTimeout_not_leader_inc_term; auto.
           simpl in *.
-          omega.
+          lia.
         * intros.
           find_apply_lem_hyp wonElection_exists_voter.
           break_exists.
@@ -195,7 +195,7 @@ Section CandidateEntriesProof.
           find_copy_apply_lem_hyp cronies_term_invariant; auto.
           find_copy_apply_lem_hyp handleTimeout_not_leader_inc_term; auto.
           simpl in *.
-          omega.
+          lia.
   Qed.
 
   Lemma candidate_entries_timeout :

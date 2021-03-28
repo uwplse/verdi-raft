@@ -38,7 +38,7 @@ Section AllEntriesIndicesGt0.
     - find_rewrite. eauto.
     - break_exists. break_and. find_rewrite. simpl in *.
       intuition eauto.
-      subst. omega.
+      subst. lia.
   Qed.
 
   Lemma allEntries_indices_gt_0_timeout :

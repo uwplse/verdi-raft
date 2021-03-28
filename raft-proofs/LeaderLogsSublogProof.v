@@ -215,7 +215,7 @@ Section LeaderLogsSublog.
     intros.
     find_copy_eapply_lem_hyp leaderLogs_term_sanity_invariant; eauto.
     find_eapply_lem_hyp leaderLogs_currentTerm_invariant; eauto.
-    omega.
+    lia.
   Qed.
 
   Arguments dedup : simpl never.

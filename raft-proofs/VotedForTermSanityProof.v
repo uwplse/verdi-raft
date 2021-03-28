@@ -27,7 +27,7 @@ Section VotedForTermSanity.
     - find_copy_apply_lem_hyp handleAppendEntries_currentTerm_leaderId.
       intuition; eauto;
       eapply_prop_hyp RaftState.votedFor RaftState.votedFor; eauto;
-      try rewrite <- plus_n_O in *; omega.
+      try rewrite <- plus_n_O in *; lia.
   Qed.
 
 
@@ -42,7 +42,7 @@ Section VotedForTermSanity.
     - find_copy_apply_lem_hyp handleAppendEntriesReply_type_term;
       intuition; eauto;
       eapply_prop_hyp RaftState.votedFor RaftState.votedFor; eauto;
-      try rewrite <- plus_n_O in *; omega.
+      try rewrite <- plus_n_O in *; lia.
   Qed.
 
   Lemma votedFor_term_sanity_request_vote_reply :
@@ -68,7 +68,7 @@ Section VotedForTermSanity.
     - find_copy_apply_lem_hyp handleRequestVote_currentTerm_leaderId.
       intuition; repeat find_rewrite; eauto;
       eapply_prop_hyp RaftState.votedFor RaftState.votedFor; eauto;
-      try rewrite <- plus_n_O in *; omega.
+      try rewrite <- plus_n_O in *; lia.
   Qed.
 
   Lemma votedFor_term_sanity_timeout :

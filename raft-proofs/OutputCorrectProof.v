@@ -230,7 +230,7 @@ Section OutputCorrect.
       deduplicate_log' (es ++ [e]) ks = deduplicate_log' es ks.
   Proof using. 
     induction es; simpl; intuition; repeat break_match; repeat find_inversion; do_bool.
-    - omega.
+    - lia.
     - auto.
     - discriminate.
     - f_equal. destruct (clientId_eq_dec (eClient a) (eClient e)).
@@ -283,7 +283,7 @@ Section OutputCorrect.
     - break_match; simpl in *; auto.
       break_if; simpl in *; auto.
       do_bool.
-      find_insterU. conclude_using eauto. omega.
+      find_insterU. conclude_using eauto. lia.
     - repeat break_match; simpl in *; auto.
       + f_equal. eapply IHes; eauto.
         intros. do_bool.
@@ -450,7 +450,7 @@ Section OutputCorrect.
     - do_bool. subst. eauto using output_correct_monotonic, getLastId_Some_In.
     - eapply applyEntry_output_correct; eauto.
       do_bool. assert (n < eId e) by auto with *.
-      intros. assert (eId e' <= n) by eauto. omega.
+      intros. assert (eId e' <= n) by eauto. lia.
     - eapply applyEntry_output_correct; eauto.
       intros.
       find_apply_hyp_hyp.
@@ -485,14 +485,14 @@ Section OutputCorrect.
     repeat break_match; repeat find_inversion.
     - find_apply_hyp_hyp. break_exists. break_and.
       erewrite deduplicate_log_snoc_drop; eauto.
-      do_bool. omega.
+      do_bool. lia.
     - find_apply_hyp_hyp. break_exists. break_and.
       erewrite deduplicate_log_snoc_drop; eauto.
-      do_bool. omega.
+      do_bool. lia.
     - find_copy_apply_hyp_hyp. break_exists. break_and.
       pose proof (deduplicate_log_cases es e).
       intuition; break_exists; intuition; repeat find_rewrite.
-      + do_bool. assert (eId x0 <= n) by eauto. omega.
+      + do_bool. assert (eId x0 <= n) by eauto. lia.
       + eapply applyEntry_stateMachine_correct; eauto.
     - pose proof (deduplicate_log_cases es e).
       intuition; break_exists; intuition; repeat find_rewrite.
@@ -538,7 +538,7 @@ Section OutputCorrect.
     intros.
     repeat break_match_hyp; repeat find_inversion; do_bool; intuition eauto with *;
     right; (split; [solve [apply applyEntry_clientCache; auto]|]); auto.
-    right. do_bool. eexists. eexists. intuition eauto. omega.
+    right. do_bool. eexists. eexists. intuition eauto. lia.
   Qed.
 
   Lemma getLastId_ext :
@@ -723,7 +723,7 @@ Section OutputCorrect.
     unfold log_matching, log_matching_hosts in *.
     intuition.
     unfold contiguous_range_exact_lo. intuition; eauto.
-    find_apply_hyp_hyp. omega.
+    find_apply_hyp_hyp. lia.
   Qed.
 
   Lemma doGenericServer_output_correct :
@@ -766,12 +766,12 @@ Section OutputCorrect.
         intros.
         find_copy_apply_lem_hyp removeAfterIndex_In_le; eauto.
         find_apply_lem_hyp removeAfterIndex_in.
-        apply removeAfterIndex_le_In; eauto; try omega.
+        apply removeAfterIndex_le_In; eauto; try lia.
         find_copy_apply_lem_hyp commitIndex_lastApplied_match_invariant.
         unfold commitIndex_lastApplied_match in *. simpl in *.
         match goal with
           | _ : ?x >= ?y |- _ =>
-            assert (y <= x) by omega
+            assert (y <= x) by lia
         end.
         eapply_prop_hyp le le; eauto. intuition.
       + do_bool.
@@ -788,12 +788,12 @@ Section OutputCorrect.
         intros.
         find_copy_apply_lem_hyp removeAfterIndex_In_le; eauto.
         find_apply_lem_hyp removeAfterIndex_in.
-        apply removeAfterIndex_le_In; eauto; try omega.
+        apply removeAfterIndex_le_In; eauto; try lia.
         find_copy_apply_lem_hyp lastApplied_lastApplied_match_invariant.
         unfold lastApplied_lastApplied_match in *. simpl in *.
         match goal with
           | _ : ?x >= ?y |- _ =>
-            assert (y <= x) by omega
+            assert (y <= x) by lia
         end.
         eapply_prop_hyp le le; eauto. intuition.
     - unfold client_cache_complete in *.

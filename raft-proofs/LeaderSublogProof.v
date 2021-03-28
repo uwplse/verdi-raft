@@ -461,7 +461,7 @@ Section LeaderSublogProof.
         do_bool.
         find_rewrite.
         f_equal.
-        omega.
+        lia.
     - repeat find_higher_order_rewrite; repeat break_match; repeat find_inversion;
       subst; simpl in *; intuition eauto;
       find_apply_hyp_hyp; intuition eauto; subst; try discriminate.
@@ -471,7 +471,7 @@ Section LeaderSublogProof.
         do_bool.
         find_rewrite.
         f_equal.
-        omega.
+        lia.
   Qed.
 
   Lemma leader_sublog_do_generic_server :

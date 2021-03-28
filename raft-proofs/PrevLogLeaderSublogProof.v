@@ -297,7 +297,7 @@ Section PrevLogLeaderSublogProof.
       simpl in *.
       find_copy_eapply_lem_hyp doLeader_messages; eauto.
       intuition.
-      + omega.
+      + lia.
       + break_exists. break_and. subst.
         exists x0. find_apply_lem_hyp findAtIndex_elim. intuition.
         break_if.

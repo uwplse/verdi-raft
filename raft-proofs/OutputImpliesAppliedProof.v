@@ -118,7 +118,7 @@ Section OutputImpliesApplied.
     find_apply_lem_hyp In_rev.
     find_apply_lem_hyp filter_In.
     intuition. repeat (do_bool; intuition).
-    break_if; simpl in *; do_bool; [|try omega].
+    break_if; simpl in *; do_bool; [|try lia].
     match goal with
       | |- context [update _ ?st ?h ?st'] =>
         pose proof applied_entries_update st h st'
@@ -149,7 +149,7 @@ Section OutputImpliesApplied.
         | _ : In ?e1 (log _), _ : In ?e2 (log _) |- _ =>
           cut (e1 = e2); [intros; subst; auto|]
       end. eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto.
-      omega.
+      lia.
     - simpl in *. unfold raft_data in *. simpl in *.
       find_rewrite.
       match goal with

@@ -110,7 +110,7 @@ Section OutputGreatestId.
     - unfold cacheApplyEntry, applyEntry in *.
       repeat break_match; repeat find_inversion; simpl in *; intuition; eauto;
       try solve 
-          [find_inversion; find_rewrite; find_inversion; do_bool; omega];
+          [find_inversion; find_rewrite; find_inversion; do_bool; lia];
       try solve [find_inversion; repeat find_rewrite; congruence].
       + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * subst. find_rewrite. find_inversion.
@@ -158,8 +158,8 @@ Section OutputGreatestId.
             unfold cacheApplyEntry, applyEntry in *.
             find_apply_lem_hyp has_key_true_necessary. intuition.
             repeat break_match; repeat find_rewrite; find_inversion; do_bool; subst_max.
-            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
-            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; lia.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; lia.
             - find_eapply_lem_hyp applyEntries_cache; eauto;
               unfold getLastId in *; simpl in *; eauto using get_set_same.
             - find_eapply_lem_hyp applyEntries_cache; eauto;
@@ -171,8 +171,8 @@ Section OutputGreatestId.
           unfold cacheApplyEntry, applyEntry in *.
           find_apply_lem_hyp has_key_true_necessary. intuition.
           repeat break_match; repeat find_rewrite; find_inversion; do_bool; subst.
-            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
-            - find_eapply_lem_hyp applyEntries_cache; eauto; omega.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; lia.
+            - find_eapply_lem_hyp applyEntries_cache; eauto; lia.
             - eapply applyEntries_cache in Heqp0; eauto;
                 unfold getLastId in *; simpl in *; eauto using get_set_same.
             - eapply applyEntries_cache in Heqp0; eauto;
@@ -189,7 +189,7 @@ Section OutputGreatestId.
     unfold log_matching, log_matching_hosts in *.
     intuition.
     unfold contiguous_range_exact_lo. intuition; eauto.
-    find_apply_hyp_hyp. omega.
+    find_apply_hyp_hyp. lia.
   Qed.
   
   Lemma doGenericServer_key_in_output_list :
@@ -235,7 +235,7 @@ Section OutputGreatestId.
        match goal with
          | Ha : context [applyEntries], Hg : getLastId _ _ = Some (?x, _) |- _ =>
            eapply applyEntries_cache with (id' := x) in Ha
-       end; eauto; omega;
+       end; eauto; lia;
        intuition; find_rewrite; repeat find_rewrite].
     rewrite <- rev_app_distr in *.
     eapply before_func_prefix; eauto.
@@ -255,12 +255,12 @@ Section OutputGreatestId.
         intros.
         find_copy_apply_lem_hyp removeAfterIndex_In_le; eauto.
         find_apply_lem_hyp removeAfterIndex_in.
-        apply removeAfterIndex_le_In; eauto; try omega.
+        apply removeAfterIndex_le_In; eauto; try lia.
         find_copy_apply_lem_hyp commitIndex_lastApplied_match_invariant.
         unfold commitIndex_lastApplied_match in *. simpl in *.
         match goal with
           | _ : ?x >= ?y |- _ =>
-            assert (y <= x) by omega
+            assert (y <= x) by lia
         end.
         eapply_prop_hyp le le; eauto. intuition.
      - do_bool.
@@ -277,12 +277,12 @@ Section OutputGreatestId.
         intros.
         find_copy_apply_lem_hyp removeAfterIndex_In_le; eauto.
         find_apply_lem_hyp removeAfterIndex_in.
-        apply removeAfterIndex_le_In; eauto; try omega.
+        apply removeAfterIndex_le_In; eauto; try lia.
         find_copy_apply_lem_hyp lastApplied_lastApplied_match_invariant.
         unfold lastApplied_lastApplied_match in *. simpl in *.
         match goal with
           | _ : ?x >= ?y |- _ =>
-            assert (y <= x) by omega
+            assert (y <= x) by lia
         end.
         eapply_prop_hyp le le; eauto. intuition.
   Qed.

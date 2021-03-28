@@ -212,7 +212,7 @@ Section StateMachineSafety'.
     intuition.
     match goal with
       | H : forall _, _ <= _ -> _ |- _ =>
-        specialize (H e'); conclude H ltac:(omega)
+        specialize (H e'); conclude H ltac:(lia)
     end. intuition.
     eapply rachet; eauto.
   Qed.
@@ -310,7 +310,7 @@ Section StateMachineSafety'.
           {
             unfold Prefix_sane in *. intuition.
             find_apply_lem_hyp (@maxIndex_is_max _ _ x2 e); eauto.
-            omega.
+            lia.
           }
           pose proof H1 as Happ.
           find_copy_eapply_lem_hyp entries_contiguous; eauto.
@@ -371,7 +371,7 @@ Section StateMachineSafety'.
           do_in_app. intuition; [repeat find_apply_hyp_hyp;
                                   repeat find_rewrite; auto|].
           exfalso.
-          cut (eIndex e' < eIndex e); [intros; omega|].
+          cut (eIndex e' < eIndex e); [intros; lia|].
           match goal with
             | _ : In e ?ll1, _ : In e' ?ll2, _ : Prefix ?ll2 ?ll2' |- _ =>
               apply sorted_app_in_gt with (l1 := ll1) (l2 := ll2') (e := e) (e' := e')
@@ -379,7 +379,7 @@ Section StateMachineSafety'.
           repeat find_reverse_rewrite.
           eauto using lift_logs_sorted, removeAfterIndex_sorted.
         * left.
-          find_apply_lem_hyp maxIndex_is_max; [omega|].
+          find_apply_lem_hyp maxIndex_is_max; [lia|].
           find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
       + break_exists. intuition. subst.
         match goal with
@@ -426,7 +426,7 @@ Section StateMachineSafety'.
           do_in_app. intuition; [repeat find_apply_hyp_hyp;
                                   repeat find_rewrite; auto|].
           exfalso.
-          cut (eIndex e' < eIndex e); [intros; omega|].
+          cut (eIndex e' < eIndex e); [intros; lia|].
           match goal with
             | _ : In e ?ll1, _ : In e' ?ll2, _ : Prefix ?ll2 ?ll2' |- _ =>
               apply sorted_app_in_gt with (l1 := ll1) (l2 := ll2') (e := e) (e' := e')
@@ -447,7 +447,7 @@ Section StateMachineSafety'.
           {
             unfold Prefix_sane in *. intuition.
             find_apply_lem_hyp (@maxIndex_is_max _ _ old_entries e); eauto.
-            omega.
+            lia.
           }
           find_copy_eapply_lem_hyp entries_sorted_nw_invariant; eauto.
           eauto using contiguous_app, entries_contiguous.
@@ -476,7 +476,7 @@ Section StateMachineSafety'.
                match goal with
                  | H : forall _ _, In _ _ -> _ |- _ => eapply H
                end; eauto).
-        assert (0 < eIndex e) by omega.
+        assert (0 < eIndex e) by lia.
         do_in_app. intuition.
         destruct (le_gt_dec (eIndex e) (maxIndex (new_msg_entries ++ old_msg_entries))); intuition.
         right. right. right.
@@ -500,7 +500,7 @@ Section StateMachineSafety'.
         do_in_app. intuition; [repeat find_apply_hyp_hyp;
                                 repeat find_rewrite; auto|].
         exfalso.
-        cut (eIndex e' < eIndex e); [intros; omega|].
+        cut (eIndex e' < eIndex e); [intros; lia|].
         match goal with
           | _ : In e ?ll1, _ : In e' ?ll2, _ : Prefix ?ll2 ?ll2' |- _ =>
             apply sorted_app_in_gt with (l1 := ll1) (l2 := ll2') (e := e) (e' := e')

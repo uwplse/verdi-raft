@@ -104,7 +104,7 @@ Section AllEntriesLogMatching.
     intro_refined_invariant entries_sorted_invariant.
     find_apply_lem_hyp maxIndex_is_max; auto.
     find_rewrite.
-    omega.
+    lia.
   Qed.
 
   Ltac fix_data :=
@@ -112,7 +112,7 @@ Section AllEntriesLogMatching.
 
   Ltac contradict_maxIndex :=
     exfalso; find_apply_lem_hyp maxIndex_is_max;
-    try (fix_data; omega);
+    try (fix_data; lia);
     eapply entries_sorted_invariant; eauto.
 
   Lemma allEntries_log_matching_client_request :

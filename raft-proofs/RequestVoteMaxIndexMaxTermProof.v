@@ -87,7 +87,7 @@ Section RequestVoteMaxIndexMaxTerm.
         find_apply_lem_hyp requestVote_term_sanity_invariant.
         eapply_prop_hyp requestVote_term_sanity pBody; eauto.
         unfold raft_data in *; simpl in *; unfold raft_data in *; simpl in *.
-        omega.
+        lia.
       + do_in_map. remember (pSrc p). subst p.
         simpl in *.
         intuition; eapply handleTimeout_messages; eauto.

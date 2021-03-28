@@ -64,7 +64,7 @@ Section SpecLemmas.
       votedFor st' = votedFor st.
   Proof using. 
     unfold handleTimeout, tryToBecomeLeader.
-    intros. repeat break_match; repeat tuple_inversion; simpl in *; auto; omega.
+    intros. repeat break_match; repeat tuple_inversion; simpl in *; auto; lia.
   Qed.
 
   Lemma votes_update_elections_data_request_vote_reply_eq :
@@ -88,7 +88,7 @@ Section SpecLemmas.
     intros.
     repeat break_match; repeat tuple_inversion; do_bool; intuition;
     simpl in *; intuition; do_bool; try discriminate; intuition try congruence.
-    omega.
+    lia.
   Qed.
 
   Lemma votes_update_elections_data_request_vote_intro_old :
@@ -307,7 +307,7 @@ Section SpecLemmas.
     simpl.
     find_copy_apply_lem_hyp handleClientRequest_log.
     intuition.
-    - repeat find_rewrite. do_bool. omega.
+    - repeat find_rewrite. do_bool. lia.
     - right.  break_exists_exists. intuition.
       congruence.
   Qed.
@@ -332,10 +332,10 @@ Section SpecLemmas.
     unfold handleClientRequest in *.
     repeat break_match; repeat tuple_inversion; auto.
     - discriminate.
-    - do_bool. find_rewrite. omega.
-    - do_bool. find_rewrite. omega.
+    - do_bool. find_rewrite. lia.
+    - do_bool. find_rewrite. lia.
     - simpl in *. right. intuition. exists e. find_inversion. simpl. intuition.
-    - simpl in *. do_bool. omega.
+    - simpl in *. do_bool. lia.
   Qed.
 
   Lemma update_elections_data_requestVoteReply_allEntries :
@@ -466,7 +466,7 @@ Section SpecLemmas.
     intuition.
     - match goal with
         | H : log _ = log (snd _) |- _ => symmetry in H
-      end. repeat find_rewrite. simpl in *. omega.
+      end. repeat find_rewrite. simpl in *. lia.
     - break_exists. intuition. repeat find_rewrite.
       find_inversion. intuition.
   Qed.

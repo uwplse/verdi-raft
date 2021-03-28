@@ -124,7 +124,7 @@ Section MatchIndexSanity.
         * subst. rewrite get_set_same_default.
           apply Max.max_case; auto.
           { destruct es; simpl.
-            * omega.
+            * lia.
             * pose proof append_entries_reply_sublog_invariant _ ltac:(eauto).
               unfold append_entries_reply_sublog in *.
               eapply_prop_hyp pBody pBody; simpl; eauto.
@@ -180,7 +180,7 @@ Section MatchIndexSanity.
         destruct (name_eq_dec h (pDst p)).
         * subst. rewrite get_set_same_default. auto.
         * rewrite get_set_diff_default by auto.
-          unfold assoc_default. simpl. omega.
+          unfold assoc_default. simpl. lia.
     - auto.
   Qed.
 
@@ -228,7 +228,7 @@ Section MatchIndexSanity.
     subst.
     repeat find_higher_order_rewrite.
     update_destruct_simplify.
-    - unfold assoc_default. simpl. omega.
+    - unfold assoc_default. simpl. lia.
     - auto.
   Qed.
 

@@ -197,7 +197,7 @@ Section LeaderCompleteness.
       destruct (in_dec entry_eq_dec e l'); auto.
       find_eapply_lem_hyp contradicting_leader_logs_on_leader_complete; eauto.
       find_eapply_lem_hyp contradicting_leader_logs_complete; [|solve [apply all_fin_all]].
-      find_apply_hyp_hyp. simpl in *. omega.
+      find_apply_hyp_hyp. simpl in *. lia.
   Qed.
 
   Lemma maxTerm_zero_or_entry :
@@ -242,7 +242,7 @@ Section LeaderCompleteness.
           assert (exists x, In x quorum).
           {
             destruct quorum.
-            - simpl in *. omega.
+            - simpl in *. lia.
             - simpl. eauto.
           }
 
@@ -265,7 +265,7 @@ Section LeaderCompleteness.
           conclude_using eauto.
           unfold term_was_created in *.
           break_exists.
-          find_copy_apply_hyp_hyp. repeat break_or_hyp; try omega.
+          find_copy_apply_hyp_hyp. repeat break_or_hyp; try lia.
           assert (leaderLogs_preserved net) by eauto using leaderLogs_preserved_invariant.
           unfold leaderLogs_preserved in *.
           exfalso. eauto.
@@ -304,7 +304,7 @@ Section LeaderCompleteness.
               H' : In _ _ |- _ ] =>
             eapply H in H'
         end.
-        repeat (try break_or_hyp; break_and); try omega.
+        repeat (try break_or_hyp; break_and); try lia.
         congruence.
       }
 
@@ -324,7 +324,7 @@ Section LeaderCompleteness.
         destruct l.
         - simpl in *.
           unfold moreUpToDate in *. do_bool.
-          repeat (intuition; do_bool); try omega.
+          repeat (intuition; do_bool); try lia.
         - simpl in *. eauto.
       }
 
@@ -336,9 +336,9 @@ Section LeaderCompleteness.
       find_apply_hyp_hyp.
 
       unfold moreUpToDate in *.
-      do_bool; repeat (try break_or_hyp; break_and; do_bool); omega.
+      do_bool; repeat (try break_or_hyp; break_and; do_bool); lia.
     - match goal with
-        | [ H : context [In], H' : context [In] |- _ ] => apply H in H'; intuition; omega
+        | [ H : context [In], H' : context [In] |- _ ] => apply H in H'; intuition; lia
       end.
   Qed.
 
@@ -355,7 +355,7 @@ Section LeaderCompleteness.
 
     match goal with
       | [ H : _, H' : directly_committed _ _ |- _ ] => eapply H in H'
-    end; [ | |eauto]; [| omega].
+    end; [ | |eauto]; [| lia].
 
     assert (entries_match (Raft.log (snd (nwState net x))) log) by
         (eapply leaderLogs_entries_match_invariant; eauto).

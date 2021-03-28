@@ -78,13 +78,13 @@ Section AllEntriesLeaderLogs.
     find_copy_apply_lem_hyp leaderLogs_sorted_invariant; auto.
     find_copy_eapply_lem_hyp maxIndex_is_max; eauto.
     intuition.
-    - break_and. subst. omega.
+    - break_and. subst. lia.
     - break_exists. intuition. subst.
       unfold Prefix_sane in *. intuition.
       + eapply prefix_contiguous; eauto.
         pose proof entries_contiguous_nw_invariant _ ltac:(eauto) p _ _ _ _ _ _ ltac:(auto) ltac:(eauto).
         eapply contiguous_app ; eauto.
-      + omega.
+      + lia.
     - subst. auto.
   Qed.
 

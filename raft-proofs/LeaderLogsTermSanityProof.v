@@ -111,7 +111,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     unfold leaderLogs_currentTerm_sanity. intros. find_higher_order_rewrite.
     update_destruct; subst; rewrite_update.
-    - simpl in *. find_rewrite. find_apply_hyp_hyp. omega.
+    - simpl in *. find_rewrite. find_apply_hyp_hyp. lia.
     - eauto.
   Qed.
 
@@ -180,7 +180,7 @@ Section LeaderLogsTermSanity.
     find_copy_apply_lem_hyp handleRequestVoteReply_type.
     intuition.
     - find_apply_hyp_hyp. repeat find_rewrite. auto.
-    - find_apply_hyp_hyp. omega.
+    - find_apply_hyp_hyp. lia.
     - find_apply_hyp_hyp. repeat find_rewrite. auto.
     - subst. auto.
     - subst. auto.
@@ -255,7 +255,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     unfold leaderLogs_currentTerm_sanity_candidate. intros. find_higher_order_rewrite.
     update_destruct; subst; rewrite_update; [|eauto].
-    simpl in *. repeat find_rewrite. intuition; find_apply_hyp_hyp; omega.
+    simpl in *. repeat find_rewrite. intuition; find_apply_hyp_hyp; lia.
   Qed.
 
   Ltac ctsc_unchanged :=
@@ -282,7 +282,7 @@ Section LeaderLogsTermSanity.
     ctsc_start_update. subst. simpl in *.
     find_rewrite_lem update_elections_data_timeout_leaderLogs.
     find_apply_lem_hyp handleTimeout_type_strong. intuition.
-    - repeat find_reverse_rewrite. find_apply_hyp_hyp. omega.
+    - repeat find_reverse_rewrite. find_apply_hyp_hyp. lia.
     - find_apply_lem_hyp leaderLogs_currentTerm_sanity_invariant; auto.
       repeat find_rewrite. intuition.
   Qed.
@@ -320,7 +320,7 @@ Section LeaderLogsTermSanity.
     find_eapply_lem_hyp leaderLogs_update_elections_data_RVR; [|auto].
     intuition.
     - find_copy_apply_lem_hyp handleRequestVoteReply_type. intuition.
-      + find_rewrite. find_apply_hyp_hyp. omega.
+      + find_rewrite. find_apply_hyp_hyp. lia.
       + find_contradiction.
       + find_contradiction.
     - subst. unfold raft_data in *. simpl in *. find_contradiction.

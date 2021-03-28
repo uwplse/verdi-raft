@@ -154,7 +154,7 @@ Section RequestVoteReplyMoreUpToDate.
       repeat find_rewrite. simpl in *.
       find_eapply_lem_hyp requestVoteReply_term_sanity_invariant; eauto;
       unfold raft_data in *; simpl in *;
-      unfold raft_data in *; simpl in *; try omega; [idtac].
+      unfold raft_data in *; simpl in *; try lia; [idtac].
       find_apply_hyp_hyp. intuition.
       exfalso.
       do_in_map.
