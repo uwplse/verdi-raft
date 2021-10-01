@@ -552,7 +552,7 @@ Section RaftRefinementProof.
           intros. find_higher_order_rewrite.
           repeat break_match; auto. simpl in *. congruence.
       + unfold deghost in *.
-        eapply RRIR_handleMessage with (p0 := ghost_packet p);
+        eapply @RRIR_handleMessage with (p := ghost_packet p);
           repeat break_match; simpl in *; eauto.
         * simpl in *.
           match goal with
@@ -577,7 +577,7 @@ Section RaftRefinementProof.
           intros. find_higher_order_rewrite.
           repeat break_match; auto. simpl in *. congruence.
       + unfold deghost in *. simpl in *. repeat break_match; simpl in *.
-        eapply RRIR_doLeader with (d0 := d) (h0 := h);
+        eapply @RRIR_doLeader with (d := d) (h := h);
           repeat (break_match; simpl in *); eauto.
         * simpl in *. find_rewrite. simpl in *. auto.
         * simpl in *. in_crush.
@@ -593,7 +593,7 @@ Section RaftRefinementProof.
           intros. find_higher_order_rewrite.
           repeat break_match; auto. simpl in *. congruence.
       + unfold deghost in *. simpl in *. repeat break_match; simpl in *.
-        eapply RRIR_doGenericServer with (d0 := d) (h0 := h);
+        eapply @RRIR_doGenericServer with (d := d) (h := h);
           repeat (break_match; simpl in *); eauto.
         * simpl in *. find_rewrite. simpl in *. auto.
         * simpl in *. in_crush.
