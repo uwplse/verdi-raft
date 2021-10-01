@@ -451,10 +451,10 @@ Section MatchIndexAllEntries.
     refined_raft_intermediate_reachable net ->
     terms_and_indices_from_one (log (snd (nwState net h))).
   Proof using taifoli rri. 
-    intros.
+    intros net0;intros.
     pose proof (lift_prop _ terms_and_indices_from_one_log_invariant).
     unfold terms_and_indices_from_one_log in *.
-    rewrite <- deghost_spec with (net0 := net). auto.
+    rewrite <- deghost_spec with (net := net0). auto.
   Qed.
 
   Lemma lifted_leader_sublog_nw :

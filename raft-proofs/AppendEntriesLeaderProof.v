@@ -279,8 +279,8 @@ Section AppendEntriesLeader.
               |- _ ] =>
             match the_net with
             | context [ st' ] =>
-              apply one_leaderLog_per_term_host_invariant
-              with (net0 := the_net) (t := the_t) (ll := the_ll) (ll' := the_ll')
+              apply @one_leaderLog_per_term_host_invariant
+              with (net := the_net) (t := the_t) (ll := the_ll) (ll' := the_ll')
             end
           end; auto; simpl; repeat find_higher_order_rewrite; rewrite_update; simpl; auto.
         }

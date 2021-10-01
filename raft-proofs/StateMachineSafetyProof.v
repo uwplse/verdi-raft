@@ -149,8 +149,8 @@ Section StateMachineSafetyProof.
       msg_refined_raft_intermediate_reachable net ->
       sorted (log (snd (nwState net h))).
   Proof using rmri si rri. 
-    intros.
-    rewrite <- msg_deghost_spec with (net0 := net).
+    intros net0 ??.
+    rewrite <- msg_deghost_spec with (net := net0).
     eapply msg_lift_prop.
     - auto using lifted_sorted_host.
     - auto.
@@ -190,9 +190,9 @@ Section StateMachineSafetyProof.
     forall (net : ghost_log_network) h,
       snd (nwState net h) = nwState (deghost (mgv_deghost net)) h.
   Proof using rmri rri. 
-    intros.
+    intros net0 ?.
     rewrite deghost_spec.
-    rewrite msg_deghost_spec with (net0 := net).
+    rewrite msg_deghost_spec with (net := net0).
     auto.
   Qed.
 
@@ -320,7 +320,7 @@ Section StateMachineSafetyProof.
       sorted (log st').
   Proof using rmri si rri. 
     intros.
-    eapply handleAppendEntries_logs_sorted with (p0 := deghost_packet (mgv_deghost_packet p)).
+    eapply (handleAppendEntries_logs_sorted _ (deghost_packet (mgv_deghost_packet p))).
     - eauto using all_the_way_simulation_1.
     - apply lift_prop.
       + apply logs_sorted_invariant.
@@ -392,12 +392,12 @@ Section StateMachineSafetyProof.
        eIndex e > maxIndex entries \/
        In e entries).
   Proof using rmri rri. 
-    intros.
+    intros net0;intros.
     eapply lifted_sms_nw.
     - eauto.
     - eauto using in_mgv_ghost_packet.
     - rewrite pBody_mgv_deghost_packet. eauto.
-    - rewrite msg_deghost_spec with (net0 := net). eauto.
+    - rewrite msg_deghost_spec with (net := net0). eauto.
     - auto.
   Qed.
 
@@ -422,9 +422,9 @@ Section StateMachineSafetyProof.
       commit_recorded (deghost (mgv_deghost net)) h e.
   Proof using rmri rri. 
     unfold commit_recorded.
-    intros.
+    intros net0;intros.
     rewrite deghost_spec.
-    rewrite msg_deghost_spec with (net0 := net).
+    rewrite msg_deghost_spec with (net := net0).
     auto.
   Qed.
 
@@ -579,7 +579,7 @@ Section StateMachineSafetyProof.
         break_exists. intuition.
         match goal with
           | H : findAtIndex _ _ = None |- _ =>
-            eapply findAtIndex_None with (x1 := x) in H
+            eapply @findAtIndex_None with (x := x) in H
         end; eauto.
         * congruence.
         * apply msg_lifted_sorted_host. auto.
@@ -695,7 +695,7 @@ Section StateMachineSafetyProof.
         break_exists. intuition.
         match goal with
           | H : findAtIndex _ _ = None |- _ =>
-            eapply findAtIndex_None with (x1 := x) in H
+            eapply @findAtIndex_None with (x := x) in H
         end; eauto.
         * congruence.
         * apply msg_lifted_sorted_host; auto.
@@ -1580,12 +1580,12 @@ Section StateMachineSafetyProof.
       lifted_committed net e' t ->
       lifted_committed net e t.
   Proof using rmri tci. 
-    intros.
+    intros net0;intros.
     apply committed_lifted_committed.
     find_apply_lem_hyp lifted_committed_committed.
     repeat match goal with
              | H : _ |- _ =>
-               rewrite <- msg_deghost_spec with (net0 := net) in H
+               rewrite <- msg_deghost_spec with (net := net0) in H
            end.
     eapply transitive_commit_invariant; eauto.
     eapply msg_lift_prop; eauto.
@@ -2603,10 +2603,10 @@ Section StateMachineSafetyProof.
     refined_raft_intermediate_reachable net ->
     terms_and_indices_from_one (log (snd (nwState net h))).
   Proof using taifoli rri. 
-    intros.
+    intros net0;intros.
     pose proof (lift_prop _ terms_and_indices_from_one_log_invariant).
     unfold terms_and_indices_from_one_log in *.
-    rewrite <- deghost_spec with (net0 := net). auto.
+    rewrite <- deghost_spec with (net := net0). auto.
   Qed.
 
 
