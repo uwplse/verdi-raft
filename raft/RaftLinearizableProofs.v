@@ -971,7 +971,7 @@ Section RaftLinearizableProofs.
           apply exported_snoc_IO; congruence.
         * apply exported_snoc_IU; auto.
       + intros. apply H. intuition.
-      + intros. subst. eapply H0 with (ys0 := ys ++ [x]).
+      + intros. subst. eapply (H0 _ (ys ++ [x])).
         rewrite app_ass. simpl. eauto.
         eauto.
         eauto.
