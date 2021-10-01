@@ -187,7 +187,7 @@ Section OneLeaderLogPerTerm.
     - split; [subst; auto|].
       find_copy_eapply_lem_hyp leaderLogs_update_elections_data_RVR; [|eauto].
       pose proof H.
-      eapply leaderLogs_update_elections_data_RVR with (ll0 := ll) in H; [|eauto].
+      eapply @leaderLogs_update_elections_data_RVR with (ll := ll) in H; [|eauto].
       intro_refined_invariant leaderLogs_currentTerm_sanity_candidate_invariant.
       intuition.
       + match goal with

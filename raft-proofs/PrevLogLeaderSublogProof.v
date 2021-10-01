@@ -342,7 +342,7 @@ Section PrevLogLeaderSublogProof.
 
     match goal with
     | [ H : context [In _ _], H' : In _ _ |- _ ] =>
-      eapply H with (leader0 := leader) in H'; eauto
+      eapply (H leader) in H'; eauto
     end.
     - break_exists_exists. intuition.
       repeat find_higher_order_rewrite.

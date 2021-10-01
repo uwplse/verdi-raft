@@ -41,7 +41,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       exists (mkN (ps' ++ [mkP (pDst p) (pSrc p) (AppendEntries t n pli plt es ci)]) st').
       subst.
       exists pli,plt,ci,n. simpl in *; intuition.
-      eapply RIR_handleInput with (net0 := net') (inp := Timeout); eauto;
+      eapply @RIR_handleInput with (net := net') (inp := Timeout); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
       do_in_app. intuition.
@@ -73,7 +73,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       exists (mkN (ps' ++ [mkP (pDst p) (pSrc p) (AppendEntries t n pli plt es ci)]) st').
       subst.
       exists pli,plt,ci,n. simpl in *; intuition.
-      eapply RIR_handleInput with (net0 := net') (inp := ClientRequest client id c); eauto;
+      eapply @RIR_handleInput with (net := net') (inp := ClientRequest client id c); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
       do_in_app. intuition.
@@ -106,7 +106,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       exists (mkN (ps' ++ [mkP (pDst p) (pSrc p) (AppendEntries t n pli plt es ci)]) st').
       subst.
       exists pli,plt,ci,n. simpl in *; intuition.
-      eapply RIR_doLeader with (net0 := net'); eauto;
+      eapply @RIR_doLeader with (net := net'); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
       do_in_app. intuition.
@@ -138,7 +138,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       exists (mkN (ps' ++ [mkP (pDst p) (pSrc p) (AppendEntries t n pli plt es ci)]) st').
       subst.
       exists pli,plt,ci,n. simpl in *; intuition.
-      eapply RIR_doGenericServer with (net0 := net'); eauto;
+      eapply @RIR_doGenericServer with (net := net'); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
       do_in_app. intuition.
@@ -170,7 +170,7 @@ Section AppendEntriesRequestReplyCorrespondence.
     exists (mkN ((nwPackets net) ++ [mkP (pDst p) (pSrc p) (AppendEntries t n pli plt es ci)]) (nwState net')).
     subst.
     exists pli,plt,ci,n. simpl in *; repeat find_rewrite; intuition.
-    eapply RIR_step_failure with (net0 := net''); [|eapply StepFailure_reboot with (h0 := h) (failed := [h])]; eauto;
+    eapply @RIR_step_failure with (net := net''); [|eapply @StepFailure_reboot with (h := h) (failed := [h])]; eauto;
     simpl; repeat find_rewrite; eauto.
     f_equal.
     apply functional_extensionality.
@@ -267,7 +267,7 @@ Section AppendEntriesRequestReplyCorrespondence.
             by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
             clear H
       end.
-      eapply RIR_handleMessage with (net0 := net') (p1 := p);
+      eapply @RIR_handleMessage with (net := net') (p := p);
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
       intros. do_in_app. simpl in *.
@@ -286,8 +286,8 @@ Section AppendEntriesRequestReplyCorrespondence.
       simpl in *. intuition.
       + match goal with
           | _ : raft_intermediate_reachable (mkNetwork ?ps ?st) |- _ =>
-            eapply RIR_handleMessage with (net0 := (mkNetwork ps st)) (p0 := p)
-                                                                      (xs0 := (p :: xs))
+            eapply @RIR_handleMessage with (net := (mkNetwork ps st)) (p := p)
+                                                                      (xs := (p :: xs))
         end; eauto;
         simpl in *; repeat find_rewrite; simpl in *; repeat break_let; eauto;
         repeat find_inversion; eauto.
@@ -328,7 +328,7 @@ Section AppendEntriesRequestReplyCorrespondence.
             by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
             clear H
       end.
-      eapply RIR_handleMessage with (net0 := net') (p1 := p);
+      eapply @RIR_handleMessage with (net := net') (p := p);
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
       intros. do_in_app. simpl in *.
@@ -367,7 +367,7 @@ Section AppendEntriesRequestReplyCorrespondence.
             by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
             clear H
       end.
-      eapply RIR_handleMessage with (net0 := net') (p1 := p);
+      eapply @RIR_handleMessage with (net := net') (p := p);
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
       intros. do_in_app. simpl in *.
@@ -404,7 +404,7 @@ Section AppendEntriesRequestReplyCorrespondence.
           by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
           clear H
     end.
-    eapply RIR_handleMessage with (net0 := net') (p1 := p);
+    eapply @RIR_handleMessage with (net := net') (p := p);
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
     intros. do_in_app. simpl in *.

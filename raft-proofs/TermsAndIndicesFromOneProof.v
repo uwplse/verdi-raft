@@ -23,14 +23,14 @@ Section TermsAndIndicesFromOne.
     simpl. contradiction.
   Qed.
 
-  Lemma lifted_terms_and_indices_from_one_log : forall net h,
-    refined_raft_intermediate_reachable net ->
-    terms_and_indices_from_one (log (snd (nwState net h))).
+  Lemma lifted_terms_and_indices_from_one_log : forall net0 h,
+    refined_raft_intermediate_reachable net0 ->
+    terms_and_indices_from_one (log (snd (nwState net0 h))).
   Proof using taifoli rri. 
     intros.
     pose proof (lift_prop _ terms_and_indices_from_one_log_invariant).
     unfold terms_and_indices_from_one_log in *.
-    rewrite <- deghost_spec with (net0 := net). auto.
+    rewrite <- deghost_spec with (net := net0). auto.
   Qed.
 
   Lemma terms_and_indices_from_one_vwl_client_request :

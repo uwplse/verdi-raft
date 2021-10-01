@@ -292,7 +292,8 @@ Section LeaderLogsLogMatching.
     intros.
     find_apply_lem_hyp lifted_log_matching.
     unfold log_matching, log_matching_hosts in *.
-    intuition; repeat rewrite <- deghost_spec with (net0 := net).
+    rename net into net0.
+    intuition; repeat rewrite <- deghost_spec with (net := net0).
     - auto.
     - match goal with
         | [ H : _ |- _ ] => solve [apply H; rewrite deghost_spec; auto]
@@ -341,11 +342,12 @@ Section LeaderLogsLogMatching.
           conclude H ltac:(unfold deghost; simpl; eapply in_map_iff; eexists; eauto);
           conclude H ltac:(simpl; eauto)
     end.
+    rename net into net0.
     intuition.
-    - rewrite <- deghost_spec with (net0 := net).
+    - rewrite <- deghost_spec with (net := net0).
       eapply H3 with (e1:=e1)(e2:=e2); eauto.
       rewrite deghost_spec.  auto.
-    - rewrite <- deghost_spec with (net0 := net).
+    - rewrite <- deghost_spec with (net := net0).
       eapply H3 with (e1:=e1)(e2:=e2); eauto.
       rewrite deghost_spec.  auto.
   Qed.
@@ -383,7 +385,7 @@ Section LeaderLogsLogMatching.
         update_destruct_simplify; rewrite_update;
         try rewrite update_elections_data_appendEntries_leaderLogs in *; eauto.
         destruct (log d) using (handleAppendEntries_log_ind ltac:(eauto)); eauto.
-        + subst. eapply entries_match_scratch with (plt0 := plt).
+        + subst. eapply @entries_match_scratch with (plt := plt).
           * eauto using lifted_logs_sorted_nw.
           * apply sorted_uniqueIndices.
             eapply leaderLogs_sorted_invariant; eauto.
@@ -413,7 +415,7 @@ Section LeaderLogsLogMatching.
       find_erewrite_lem update_nop_ext'.
       find_apply_hyp_hyp. break_or_hyp.
       + intuition; match goal with
-            | [ H : _ |- _ ] => solve [eapply H with (p0 := p0); eauto with *]
+            | [ H : _ |- _ ] => solve [eapply (H _ _ _ p0); eauto with *]
           end.
       + simpl in *.
         find_copy_apply_lem_hyp handleAppendEntries_doesn't_send_AE.

@@ -68,7 +68,7 @@ Section EveryEntryWasCreated.
     - find_eapply_lem_hyp handleAppendEntries_not_append_entries.
       find_apply_hyp_hyp. intuition.
       + match goal with
-          | _ : In ?p' (_ ++ _) |- _ => eapply in_aer with (p1 := p'); eauto
+          | _ : In ?p' (_ ++ _) |- _ => eapply @in_aer with (p := p'); eauto
         end.
       + subst. simpl in *.
         find_false. unfold mEntries in *.
@@ -98,7 +98,7 @@ Section EveryEntryWasCreated.
     - find_eapply_lem_hyp handleRequestVote_no_append_entries.
       find_apply_hyp_hyp. intuition.
       + match goal with
-          | _ : In ?p' (_ ++ _) |- _ => eapply in_aer with (p1 := p'); eauto
+          | _ : In ?p' (_ ++ _) |- _ => eapply @in_aer with (p := p'); eauto
         end.
       + subst. simpl in *.
         find_false. unfold mEntries in *.
@@ -127,7 +127,7 @@ Section EveryEntryWasCreated.
     - find_eapply_lem_hyp handleAppendEntriesReply_packets.
       find_apply_hyp_hyp. intuition.
       + match goal with
-          | _ : In ?p' (_ ++ _) |- _ => eapply in_aer with (p1 := p'); eauto
+          | _ : In ?p' (_ ++ _) |- _ => eapply @in_aer with (p := p'); eauto
         end.
       + subst. simpl in *. intuition.
     - repeat find_higher_order_rewrite.
@@ -149,7 +149,7 @@ Section EveryEntryWasCreated.
       find_rewrite_lem handleRequestVoteReply_log_rewrite; eauto.
     - find_apply_hyp_hyp.
       match goal with
-        | _ : In ?p' (_ ++ _) |- _ => eapply in_aer with (p1 := p'); eauto
+        | _ : In ?p' (_ ++ _) |- _ => eapply @in_aer with (p := p'); eauto
       end.
     - repeat find_higher_order_rewrite.
       destruct_update; simpl in *; eauto.

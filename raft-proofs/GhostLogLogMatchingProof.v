@@ -302,7 +302,7 @@ Section GhostLogLogMatching.
       + find_apply_hyp_hyp. intuition.
         * eauto.
         * packet_simpl.
-          erewrite handleAppendEntriesReply_log with (st'0 := d) by eauto.
+          erewrite @handleAppendEntriesReply_log with (st' := d) by eauto.
           eapply lifted_entries_match_invariant; eauto.
     - find_apply_hyp_hyp.
       find_apply_hyp_hyp.
@@ -337,7 +337,7 @@ Section GhostLogLogMatching.
       + find_apply_hyp_hyp. intuition.
         * eauto.
         * packet_simpl.
-          erewrite handleRequestVote_log with (st'0 := d) by eauto.
+          erewrite @handleRequestVote_log with (st' := d) by eauto.
           eapply lifted_entries_match_invariant; eauto.
     - find_apply_hyp_hyp.
       find_apply_hyp_hyp.
@@ -462,7 +462,7 @@ Section GhostLogLogMatching.
         * packet_simpl. eauto.
       + find_apply_hyp_hyp. intuition.
         packet_simpl.
-        erewrite doLeader_log with (st'0 := d') by eauto.
+        erewrite @doLeader_log with (st' := d') by eauto.
         eapply lifted_entries_match_invariant; eauto.
     - find_apply_hyp_hyp.
       find_apply_hyp_hyp.
@@ -495,7 +495,7 @@ Section GhostLogLogMatching.
         * packet_simpl. eauto.
       + find_apply_hyp_hyp. intuition.
         packet_simpl.
-        erewrite doGenericServer_log with (st'0 := d') by eauto.
+        erewrite @doGenericServer_log with (st' := d') by eauto.
         eapply lifted_entries_match_invariant; eauto.
     - find_apply_hyp_hyp.
       find_apply_hyp_hyp.

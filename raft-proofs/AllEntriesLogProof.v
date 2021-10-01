@@ -479,7 +479,7 @@ Ltac all f ls :=
                 all:(try solve [eapply entries_sorted_nw_invariant; eauto]).
                 match goal with
                   | H : eIndex ?e1 = eIndex ?e2, _ : In ?e1 ?ll, _ : In ?e2 ?ll |- _ =>
-                    eapply uniqueIndices_elim_eq with (xs0 := ll) in H
+                    eapply @uniqueIndices_elim_eq with (xs := ll) in H
                 end; eauto using sorted_uniqueIndices.
                 subst. intuition.
           }
