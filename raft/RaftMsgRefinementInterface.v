@@ -467,6 +467,9 @@ Section RaftMsgRefinementInterface.
 
 End RaftMsgRefinementInterface.
 
+#[global]
 Hint Extern 3 (@BaseParams) => apply raft_msg_refined_base_params : typeclass_instances.
+#[global]
 Hint Extern 3 (@MultiParams _) => apply raft_msg_refined_multi_params : typeclass_instances.
+#[global]
 Hint Extern 3 (@FailureParams _ _) => apply raft_msg_refined_failure_params : typeclass_instances.

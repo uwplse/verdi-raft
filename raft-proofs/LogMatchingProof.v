@@ -8,8 +8,11 @@ Require Import VerdiRaft.LeaderSublogInterface.
 
 Require Import VerdiRaft.LogMatchingInterface.
 
+#[global]
 Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
+#[global]
 Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
+#[global]
 Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
 
 Section LogMatchingProof.
