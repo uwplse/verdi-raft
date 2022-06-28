@@ -48,6 +48,7 @@ Proof.
     repeat (cheerios_crush; simpl).
 Qed.
 
+#[global]
 Instance input_Serializer : Serializer VarD.input :=
   {| serialize := serialize_input;
      deserialize := deserialize_input;

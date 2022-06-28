@@ -877,6 +877,9 @@ Notation stateMachine := (RaftState.stateMachine term name entry logIndex server
 Notation electoralVictories := (RaftState.electoralVictories term name entry logIndex serverType data clientId output).
 Notation mkRaft_data              := (RaftState.mkRaft_data term name entry logIndex serverType data clientId output).
 
+#[global]
 Hint Extern 5 (@BaseParams) => apply base_params : typeclass_instances.
+#[global]
 Hint Extern 5 (@MultiParams _) => apply multi_params : typeclass_instances.
+#[global]
 Hint Extern 5 (@FailureParams _ _) => apply failure_params : typeclass_instances.

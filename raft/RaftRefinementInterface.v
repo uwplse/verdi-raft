@@ -570,6 +570,9 @@ Section RaftRefinementInterface.
 
 End RaftRefinementInterface.
 
+#[global]
 Hint Extern 4 (@BaseParams) => apply raft_refined_base_params : typeclass_instances.
+#[global]
 Hint Extern 4 (@MultiParams _) => apply raft_refined_multi_params : typeclass_instances.
+#[global]
 Hint Extern 4 (@FailureParams _ _) => apply raft_refined_failure_params : typeclass_instances.
