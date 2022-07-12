@@ -307,7 +307,7 @@ Section CommonTheorems.
     unfold uniqueIndices.
     induction ys; intros.
     - simpl in *. break_match; intuition.
-    - simpl in *. break_match; intuition.
+    - simpl in *. break_match; intuition idtac.
       + simpl. constructor.
       + subst. simpl in *. invc H0. constructor; auto.
         intro. apply H3.
