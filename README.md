@@ -1,75 +1,79 @@
-Verdi Raft
-==========
+# Verdi Raft
 
-[![Build Status](https://api.travis-ci.org/uwplse/verdi-raft.svg?branch=master)](https://travis-ci.org/uwplse/verdi-raft)
+[![Docker CI][docker-action-shield]][docker-action-link]
 
-An implementation of the [Raft](https://raft.github.io) distributed consensus protocol, verified in Coq using the Verdi framework.
+[docker-action-shield]: https://github.com/uwplse/verdi-raft/workflows/Docker%20CI/badge.svg?branch=master
+[docker-action-link]: https://github.com/uwplse/verdi-raft/actions?query=workflow:"Docker%20CI"
 
-Requirements
-------------
 
-Definitions and proofs:
 
-- [`Coq`](https://coq.inria.fr) (8.7 or later)
-- [`Verdi`](https://github.com/uwplse/verdi)
-- [`StructTact`](https://github.com/uwplse/StructTact)
-- [`Cheerios`](https://github.com/uwplse/cheerios)
+
+Raft is a distributed consensus algorithm that is designed to be easy to understand
+and is equivalent to Paxos in fault tolerance and performance. Verdi Raft is a
+verified implementation of Raft in Coq, constructed using the Verdi framework.
+Included is a verified fault-tolerant key-value store using Raft.
+
+## Meta
+
+- Author(s):
+  - Justin Adsuara
+  - Steve Anton
+  - Ryan Doenges
+  - Karl Palmskog
+  - Pavel Panchekha
+  - Zachary Tatlock
+  - James R. Wilcox
+  - Doug Woos
+- License: [BSD 2-Clause "Simplified" license](LICENSE)
+- Compatible Coq versions: 8.14 or later
+- Additional dependencies:
+  - [Verdi](https://github.com/uwplse/verdi)
+  - [StructTact](https://github.com/uwplse/StructTact)
+  - [Cheerios](https://github.com/uwplse/cheerios)
+- Coq namespace: `VerdiRaft`
+- Related publication(s):
+  - [Verdi: A Framework for Implementing and Verifying Distributed Systems](http://verdi.uwplse.org/verdi.pdf) doi:[10.1145/2737924.2737958](https://doi.org/10.1145/2737924.2737958)
+  - [Planning for Change in a Formal Verification of the Raft Consensus Protocol](http://verdi.uwplse.org/raft-proof.pdf) doi:[10.1145/2854065.2854081](https://doi.org/10.1145/2854065.2854081)
+
+## Optional requirements
 
 Executable `vard` key-value store:
-
 - [`OCaml`](https://ocaml.org/docs/install.html) (4.02.3 or later)
 - [`OCamlbuild`](https://github.com/ocaml/ocamlbuild)
 - [`verdi-runtime`](https://github.com/DistributedComponents/verdi-runtime)
 - [`cheerios-runtime`](https://github.com/uwplse/cheerios)
 
 Client for `vard`:
-
 - [`Python 2.7`](https://www.python.org/download/releases/2.7/)
 
 Integration testing of `vard`:
-
 - [`Python 2.7`](https://www.python.org/download/releases/2.7/)
 
 Unit testing of unverified `vard` code:
-
 - [`OUnit`](http://ounit.forge.ocamlcore.org) (2.0.0 or later)
 
-Building
---------
+## Building and installation instructions
 
 We recommend installing the dependencies of Verdi Raft via
-[OPAM](http://opam.ocaml.org/doc/Install.html):
-```
+[opam](http://opam.ocaml.org/doc/Install.html):
+```shell
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 opam install coq-struct-tact coq-cheerios coq-verdi
 ```
 
-Then, run `./configure` in the Verdi Raft root directory.  This will check
-for the appropriate version of Coq and ensure all necessary
-Coq dependencies can be located. By default, `Verdi`, `StructTact`,
-and `Cheerios` are assumed to be installed in Coq's
-`user-contrib` directory, but this can be overridden by setting the
-`Verdi_PATH`, `StructTact_PATH`, and `Cheerios_PATH` environment variables.
-
-Finally, run `make` in the root directory. This will compile the Raft
+Then, run `make` in the root directory. This will compile the Raft
 implementation and proof interfaces, and check all the proofs.
 To speed up proof checking on multi-core machines, use `make -jX`,
-where `X` is at least the number of cores.
+where `X` is at least the number of cores on your machine.
 
 To build the `vard` key-value store program in `extraction/vard`,
-you need to install additional dependencies:
-```
-opam repo add distributedcomponents-dev http://opam-dev.distributedcomponents.net
-opam install verdi-runtime cheerios-runtime ocamlbuild
-```
+you first need to install its requirements. Then, run `make vard`
+in the root directory. If the Coq implementation has been compiled
+as above, this simply compiles the extracted OCaml code to a native
+executable; otherwise, the implementation is extracted to OCaml and
+compiled without checking any proofs.
 
-Then, run `make vard` in the root directory. If the Coq implementation has
-been compiled as above, this simply compiles the extracted OCaml
-code to a native executable; otherwise, the implementation
-is extracted to OCaml and compiled without checking any proofs.
-
-Files
------
+## Files
 
 The `raft` and `raft-proofs` subdirectories contain the implementation and
 verification of Raft. For each proof interface file in `raft`, there is a 
@@ -95,8 +99,7 @@ subdirectory include:
 The file `EndToEndLinearizability.v` in `raft-proofs` uses the proofs of
 all proof interfaces to show Raft's *linearizability* property.
 
-The `vard` Key-Value Store
-------------------------
+## The `vard` Key-Value Store
 
 `vard` is a simple key-value store implemented using
 Verdi. `vard` is specified and verified against Verdi's state-machine
@@ -125,8 +128,7 @@ are not particularly meaningful). See below for instructions to run
 both stores on a cluster in order to get a more useful performance
 comparison.
 
-Running `vard` on a cluster
----------------------------
+### Running `vard` on a cluster
 
 `vard` accepts the following command-line options:
 
@@ -169,8 +171,7 @@ $ python2 bench/bench.py --service vard --keys 50 \
                          --threads 8 --requests 100
 ```
 
-Running `etcd` on a cluster
--------------------------
+### Running `etcd` on a cluster
 
 We can compare numbers for `vard` and `etcd` running on the same cluster as
 follows:
