@@ -1,20 +1,6 @@
 PYTHON=python2.7
 
-# sets VARDML, etc.
 include Makefile.ml-files
-
-COQPROJECT_EXISTS := $(wildcard _CoqProject)
-
-ifeq "$(COQPROJECT_EXISTS)" ""
-$(error "Run ./configure before running make")
-endif
-
-CHECKPATH := $(shell ./script/checkpaths.sh)
-
-ifneq ("$(CHECKPATH)","")
-$(info $(CHECKPATH))
-$(warning checkpath reported an error)
-endif
 
 default: Makefile.coq
 	$(MAKE) -f Makefile.coq

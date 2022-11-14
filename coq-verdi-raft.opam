@@ -1,26 +1,23 @@
 opam-version: "2.0"
-version: "dev"
 maintainer: "palmskog@gmail.com"
+version: "dev"
 
 homepage: "https://github.com/uwplse/verdi-raft"
 dev-repo: "git+https://github.com/uwplse/verdi-raft.git"
 bug-reports: "https://github.com/uwplse/verdi-raft/issues"
 license: "BSD-2-Clause"
+
 synopsis: "Verified implementation of the Raft distributed consensus protocol in Coq"
 description: """
 Raft is a distributed consensus algorithm that is designed to be easy to understand
 and is equivalent to Paxos in fault tolerance and performance. Verdi Raft is a
 verified implementation of Raft in Coq, constructed using the Verdi framework.
-Included is a verified fault-tolerant key-value store using Raft.
-"""
+Included is a verified fault-tolerant key-value store using Raft."""
 
-build: [
-  ["./configure"]
-  [make "-j%{jobs}%"]
-]
+build: [make "-j%{jobs}%"]
 install: [make "install"]
 depends: [
-  "coq" {(>= "8.7" & < "8.12~") | (= "dev")}
+  "coq" {>= "8.14"}
   "coq-verdi" {= "dev"}
   "coq-struct-tact" {= "dev"}
   "coq-cheerios" {= "dev"}
@@ -31,8 +28,8 @@ tags: [
   "keyword:program verification"
   "keyword:distributed algorithms"
   "keyword:fault tolerance"
-  "keyword:raft"
   "keyword:key-value store"
+  "keyword:raft"
   "logpath:VerdiRaft"
 ]
 authors: [
