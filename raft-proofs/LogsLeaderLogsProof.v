@@ -182,7 +182,7 @@ Section LogsLeaderLogs.
   Ltac prove_in :=
     match goal with
       | [ _ : nwPackets ?net = _,
-              _ : In (?p : packet) _ |- _] =>
+              _ : In ?p _ |- _] =>
         assert (In p (nwPackets net)) by (repeat find_rewrite; do_in_app; intuition)
       | [ _ : nwPackets ?net = _,
               _ : pBody ?p = _ |- _] =>

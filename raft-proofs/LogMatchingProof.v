@@ -233,7 +233,7 @@ Section LogMatchingProof.
         break_if;
         match goal with
           | [ _ : eIndex ?e = eIndex ?e',
-              H : forall _ _ _, In _ _ -> _ |- context [(?h : name) ] ] =>
+              H : forall _ _ _, In _ _ -> _ |- context [?h] ] =>
               specialize (H h e e')
         end; repeat concludes; intuition.
       + simpl in *.
@@ -410,7 +410,7 @@ Section LogMatchingProof.
           end. intuition.
           forwards;
             [match goal with
-               | H : forall _, In _ _ -> _ < _ |- context [ (?e : entry) ] =>
+               | H : forall _, In _ _ -> _ < _ |- context [ ?e ] =>
                  specialize (H e)
              end; concludes; lia|].
           concludes.
