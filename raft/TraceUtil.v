@@ -7,7 +7,7 @@ Section TraceUtil.
 
   Definition has_key (c : clientId) (i : nat) (e : entry) :=
     match e with
-      | mkEntry _ c' i' _ _ _ => andb (if clientId_eq_dec c c' then true else false) (beq_nat i i')
+      | mkEntry _ c' i' _ _ _ => andb (if clientId_eq_dec c c' then true else false) (Nat.eqb i i')
     end.
 
   Definition key_in_output_list (client : clientId) (id : nat) (os : list raft_output) :=
@@ -16,13 +16,13 @@ Section TraceUtil.
 
   Definition is_client_response_with_key (client : clientId) (id : nat) (out : raft_output) : bool :=
     match out with
-      | ClientResponse c i _ => andb (if clientId_eq_dec client c then true else false) (beq_nat id i)
+      | ClientResponse c i _ => andb (if clientId_eq_dec client c then true else false) (Nat.eqb id i)
       | NotLeader _ _ => false
     end.
 
   Definition key_in_output_list_dec (client : clientId) (id : nat) (os : list raft_output) :
     {key_in_output_list client id os} + {~ key_in_output_list client id os}.
-  Proof using. 
+  Proof using.
     unfold key_in_output_list.
     destruct (find (is_client_response_with_key client id) os) eqn:?.
     - find_apply_lem_hyp find_some. break_and.
@@ -76,7 +76,7 @@ Section TraceUtil.
 
   Definition is_client_response (client : clientId) (id : nat) (o : output) (out : raft_output) : bool :=
     match out with
-      | ClientResponse c i o' => andb (andb (if clientId_eq_dec client c then true else false) (beq_nat id i))
+      | ClientResponse c i o' => andb (andb (if clientId_eq_dec client c then true else false) (Nat.eqb id i))
                                      (if output_eq_dec o o' then true else false)
       | NotLeader _ _ => false
     end.
@@ -118,7 +118,7 @@ Section TraceUtil.
   Definition is_input_with_key (client : clientId) (id: nat)
              (trace_entry : (name * (raft_input + list raft_output))) :=
     match trace_entry with
-      | (_, inl (ClientRequest c i _)) => andb (if clientId_eq_dec client c then true else false) (beq_nat id i)
+      | (_, inl (ClientRequest c i _)) => andb (if clientId_eq_dec client c then true else false) (Nat.eqb id i)
       | _ => false
     end.
 End TraceUtil.

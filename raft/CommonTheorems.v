@@ -132,7 +132,7 @@ Section CommonTheorems.
     induction l; intros; intro.
     - intuition.
     - simpl in *. break_match; try discriminate. intuition.
-      + subst. rewrite <- beq_nat_refl in *. discriminate.
+      + subst. rewrite Nat.eqb_refl in *. discriminate.
       + find_copy_apply_hyp_hyp. intuition. break_if; do_bool; eauto. lia.
   Qed.
 
@@ -156,7 +156,7 @@ Section CommonTheorems.
     induction l; intros.
     - discriminate.
     - simpl in *. break_match.
-      + find_inversion. apply beq_nat_true in Heqb. auto.
+      + find_inversion. apply Nat.eqb_eq in Heqb. auto.
       + break_if; eauto; discriminate.
   Qed.
 
@@ -263,7 +263,7 @@ Section CommonTheorems.
       removeAfterIndex xs (min i j).
   Proof using. 
     intros.
-    pose proof Min.min_spec i j. intuition.
+    pose proof Nat.min_spec i j. intuition.
     - find_rewrite. rewrite removeAfterIndex_le with (i := i) (j := j) at 2;
         eauto using removeAfterIndex_comm; lia.
     - find_rewrite.
@@ -1175,7 +1175,7 @@ Section CommonTheorems.
             specialize (H (eIndex e3));
               conclude H
                        ltac:(split; [eauto|
-                                     eapply le_trans; eauto; apply maxIndex_is_max; eauto])
+                                     eapply Nat.le_trans; eauto; apply maxIndex_is_max; eauto])
 
         end.
         break_exists. intuition.
@@ -1266,7 +1266,7 @@ Section CommonTheorems.
               specialize (H (eIndex e))
           end.
           intuition.
-          conclude_using ltac:(eapply le_trans; eauto; apply maxIndex_is_max; eauto).
+          conclude_using ltac:(eapply Nat.le_trans; eauto; apply maxIndex_is_max; eauto).
           break_exists. intuition.
           match goal with
             | _: eIndex ?e1 = eIndex ?e2 |- context [ ?e2 ] =>

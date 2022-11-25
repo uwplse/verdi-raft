@@ -28,7 +28,7 @@ Section RaftRefinementInterface.
            allEntries := allEntries (fst st)
         |}
       | (Some cid, Some cid') =>
-        if andb (beq_nat (currentTerm (snd st)) (currentTerm st')) (if name_eq_dec cid cid' then true else false) then
+        if andb (Nat.eqb (currentTerm (snd st)) (currentTerm st')) (if name_eq_dec cid cid' then true else false) then
           fst st
         else
           {| votes := (currentTerm st', cid') :: votes (fst st) ;

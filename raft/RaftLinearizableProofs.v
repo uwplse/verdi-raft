@@ -161,7 +161,7 @@ Section RaftLinearizableProofs.
         * assert (eId a <= eId e).
           { repeat find_rewrite. auto using has_key_intro.
           }
-          { find_apply_lem_hyp le_lt_or_eq. break_or_hyp.
+          { find_apply_lem_hyp Nat.lt_eq_cases. break_or_hyp.
             - specialize (IHl _ ltac:(eauto)).
               match goal with
                 | [ |- context [deduplicate_log' _ ?ks] ] =>
@@ -206,7 +206,7 @@ Section RaftLinearizableProofs.
         * assert (eId a <= eId e).
           { repeat find_rewrite. auto using has_key_intro.
           }
-          { find_apply_lem_hyp le_lt_or_eq. break_or_hyp.
+          { find_apply_lem_hyp Nat.lt_eq_cases. break_or_hyp.
             - specialize (IHl _ ltac:(eauto)).
               match goal with
                 | [ |- context [deduplicate_log' _ ?ks] ] =>

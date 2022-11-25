@@ -321,7 +321,7 @@ Section SpecLemmas.
   Proof using. 
     intros.
     find_copy_apply_lem_hyp handleRequestVote_currentTerm_monotonic.
-    find_apply_lem_hyp le_lt_or_eq. intuition.
+    find_apply_lem_hyp Nat.lt_eq_cases. intuition.
     right. find_apply_lem_hyp handleRequestVote_votedFor; intuition.
   Qed.
 
@@ -1325,7 +1325,7 @@ Section SpecLemmas.
     unfold handleRequestVote, advanceCurrentTerm in *.
     intros.
     repeat break_match; find_inversion; simpl in *; auto; try congruence;
-    do_bool; try lia; eauto using le_antisym.
+    do_bool; try lia; eauto using Nat.le_antisymm.
   Qed.
   
 End SpecLemmas.

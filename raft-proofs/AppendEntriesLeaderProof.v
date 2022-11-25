@@ -286,7 +286,7 @@ Section AppendEntriesLeader.
         }
         exfalso.
         repeat find_rewrite.
-        eapply lt_irrefl.
+        eapply Nat.lt_irrefl.
         eapply leaderLogs_currentTerm_sanity_candidate_invariant; [|eauto|]; auto.
     - eauto.
   Qed.

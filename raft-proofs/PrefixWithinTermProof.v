@@ -128,7 +128,7 @@ Section PrefixWithinTerm.
     assert (exists e'', eIndex e'' = eIndex e /\ In e'' (log (snd (nwState net h')))) by
         (eapply entries_contiguous_invariant; eauto; intuition;
          [eapply entries_gt_0_invariant; eauto|];
-         eapply le_trans; eauto;
+         eapply Nat.le_trans; eauto;
          eapply maxIndex_is_max; eauto;
          apply entries_sorted_invariant; auto).
     break_exists. intuition.
@@ -186,7 +186,7 @@ Section PrefixWithinTerm.
         [|idtac|eapply removeAfterIndex_contiguous; [eapply entries_sorted_nw_invariant; eauto|eapply entries_contiguous_nw_invariant; eauto]|idtac]; eauto; [|lia].
       assert (exists e'', eIndex e'' = eIndex e /\ In e'' es') by
           (eapply entries_contiguous_nw_invariant; eauto; intuition;
-       eapply le_trans; eauto;
+       eapply Nat.le_trans; eauto;
        eapply maxIndex_is_max; eauto;
        eapply entries_sorted_nw_invariant; eauto).
       break_exists. intuition.
@@ -209,11 +209,11 @@ Section PrefixWithinTerm.
           (eapply entries_contiguous_nw_invariant; [idtac|idtac|eauto|]; eauto).
       assert (maxIndex x4 < eIndex e) by lia.
       assert (eIndex x0 < eIndex e).
-      eapply le_lt_trans; [|eauto].
+      eapply Nat.le_lt_trans; [|eauto].
       eapply maxIndex_is_max; eauto.
       assert (exists e'', eIndex e'' = eIndex e /\ In e'' es') by
           (eapply entries_contiguous_nw_invariant; eauto; intuition;
-           eapply le_trans; eauto;
+           eapply Nat.le_trans; eauto;
            eapply maxIndex_is_max; eauto;
            eapply entries_sorted_nw_invariant; eauto).
       break_exists. intuition.
@@ -240,7 +240,7 @@ Section PrefixWithinTerm.
           (eapply entries_contiguous_nw_invariant; [|idtac|idtac|eauto]; [|idtac|eauto]; eauto).
       assert (exists e'', eIndex e'' = eIndex e /\ In e'' es') by
           (eapply entries_contiguous_nw_invariant; eauto; intuition;
-           eapply le_trans; eauto;
+           eapply Nat.le_trans; eauto;
            eapply maxIndex_is_max; eauto;
            eapply entries_sorted_nw_invariant; eauto).
       break_exists. intuition.
@@ -269,7 +269,7 @@ Section PrefixWithinTerm.
       left.
       assert (exists e'', eIndex e'' = eIndex e /\ In e'' es') by
           (eapply entries_contiguous_nw_invariant; eauto; intuition;
-           eapply le_trans; eauto;
+           eapply Nat.le_trans; eauto;
            eapply maxIndex_is_max; eauto;
            eapply entries_sorted_nw_invariant; eauto).
       break_exists. intuition.
@@ -293,7 +293,7 @@ Section PrefixWithinTerm.
       left.
       assert (exists e'', eIndex e'' = eIndex e /\ In e'' es') by
           (eapply entries_contiguous_nw_invariant; eauto; intuition;
-           eapply le_trans; eauto;
+           eapply Nat.le_trans; eauto;
            eapply maxIndex_is_max; eauto;
            eapply entries_sorted_nw_invariant; eauto).
       break_exists. intuition.
@@ -364,7 +364,7 @@ Section PrefixWithinTerm.
             | H : contiguous_range_exact_lo ?l ?i , _ : In ?e ?l |- ?i < eIndex ?e =>
               eapply H
           end; eauto.
-          eapply le_trans; eauto.
+          eapply Nat.le_trans; eauto.
           eapply maxIndex_is_max; eauto using sorted_app_1.
         }
         break_exists. break_and.
@@ -507,7 +507,7 @@ Section PrefixWithinTerm.
             |- _ =>
             assert (exists e'', eIndex e'' = eIndex e /\ In e'' x) by
                 (eapply contiguous_app_prefix_2; eauto;
-                 intuition; [eapply H; eauto|eapply le_trans; eauto; eapply maxIndex_is_max; eauto using sorted_app_1])
+                 intuition; [eapply H; eauto|eapply Nat.le_trans; eauto; eapply maxIndex_is_max; eauto using sorted_app_1])
         end.
         break_exists. intuition.
         match goal with
@@ -580,7 +580,7 @@ Section PrefixWithinTerm.
         assert (exists e'', eIndex e'' = eIndex e /\ In e'' x1).
         { eapply_prop (contiguous_range_exact_lo x1). intuition.
           - eapply contiguous_0_app; eauto.
-          - eapply le_trans; eauto.
+          - eapply Nat.le_trans; eauto.
             eapply maxIndex_is_max; eauto using sorted_app_1.
         }
         break_exists. intuition.
@@ -719,7 +719,7 @@ Section PrefixWithinTerm.
           | _ : In e' ?l, H : contiguous_range_exact_lo (?l ++ _) 0 |- _ =>
             eapply contiguous_app_prefix_2 with (i := eIndex e) in H
         end; eauto; intuition;
-        [|eapply le_trans; eauto; eapply maxIndex_is_max; eauto using sorted_app_1]; [idtac].
+        [|eapply Nat.le_trans; eauto; eapply maxIndex_is_max; eauto using sorted_app_1]; [idtac].
         break_exists. intuition.
         match goal with
           | H : refined_raft_intermediate_reachable _ |- _ =>
@@ -1122,7 +1122,7 @@ Section PrefixWithinTerm.
               repeat find_rewrite.
               match goal with
                 | _ : ?x >= ?y, _ : ?x <= ?y |- _ =>
-                  assert (x = y) by eauto using le_antisym
+                  assert (x = y) by eauto using Nat.le_antisymm
               end. subst.
               break_exists. intuition.
               subst.

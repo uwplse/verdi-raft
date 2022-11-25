@@ -63,7 +63,7 @@ Section CroniesTermProof.
     update_destruct; subst; rewrite_update; eauto.
     simpl in *.
     find_eapply_lem_hyp handleTimeout_spec; eauto. intuition.
-    eapply le_trans; [|eauto]; eauto.
+    eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
   Lemma doLeader_spec :
@@ -149,7 +149,7 @@ Section CroniesTermProof.
     simpl in *.
     find_apply_lem_hyp handleAppendEntries_spec.
     find_eapply_lem_hyp update_elections_data_appendEntries_spec; eauto.
-    eapply le_trans; [|eauto]; eauto.
+    eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
   Lemma handleAppendEntriesReply_spec :
@@ -172,7 +172,7 @@ Section CroniesTermProof.
     update_destruct; subst; rewrite_update; eauto.
     simpl in *.
     find_apply_lem_hyp handleAppendEntriesReply_spec.
-    eapply le_trans; [|eauto]; eauto.
+    eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
   Lemma handleRequestVote_spec :
@@ -206,7 +206,7 @@ Section CroniesTermProof.
     simpl in *.
     find_apply_lem_hyp handleRequestVote_spec.
     find_eapply_lem_hyp update_elections_data_requestVote_spec; eauto.
-    eapply le_trans; [|eauto]; eauto.
+    eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
 
@@ -248,7 +248,7 @@ Section CroniesTermProof.
     - unfold update_elections_data_requestVoteReply in *.
       break_match; simpl in *;
       try solve [subst; unfold raft_data in *; congruence].
-      eapply le_trans; [|eauto]; eauto.
+      eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
   Lemma cronies_term_init :

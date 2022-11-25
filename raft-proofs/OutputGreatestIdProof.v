@@ -114,7 +114,7 @@ Section OutputGreatestId.
       try solve [find_inversion; repeat find_rewrite; congruence].
       + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * subst. find_rewrite. find_inversion.
-          eapply IHl; [eapply lt_le_trans; eauto|idtac|idtac|]; eauto.
+          eapply IHl; [eapply Nat.lt_le_trans; eauto|idtac|idtac|]; eauto.
           unfold getLastId.
           simpl. eauto using get_set_same.
         * eapply IHl; eauto.
@@ -127,7 +127,7 @@ Section OutputGreatestId.
           simpl. rewrite get_set_diff; eauto.
       + do_bool. destruct (clientId_eq_dec (eClient a) client).
         * repeat find_rewrite. find_inversion.
-          eapply IHl; [eapply lt_le_trans; eauto|idtac|idtac|]; eauto.
+          eapply IHl; [eapply Nat.lt_le_trans; eauto|idtac|idtac|]; eauto.
           unfold getLastId.
           simpl. eauto using get_set_same.
         * eapply IHl; eauto.

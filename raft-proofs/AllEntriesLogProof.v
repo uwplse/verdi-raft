@@ -361,7 +361,7 @@ Ltac all f ls :=
           assert (exists e', eIndex e' = eIndex e /\ In e' (x1 ++ x4)) by
               (eapply entries_contiguous_nw_invariant; eauto;
                intuition; [eapply entries_contiguous_invariant; eauto|];
-               eapply le_trans; [eapply maxIndex_is_max; eauto|];
+               eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|];
                eapply maxIndex_le'; eauto;
                [eapply entries_contiguous_invariant; eauto|
                 eapply entries_contiguous_nw_invariant; eauto]).
@@ -516,7 +516,7 @@ Ltac all f ls :=
         * contradict n0.
           apply in_app_iff. right. eapply removeAfterIndex_le_In; eauto.
           find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
-          eapply le_trans; [eapply maxIndex_is_max; eauto|]. lia.
+          eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|]. lia.
         * {
             break_exists. intuition. unfold Prefix_sane in *. intuition.
             - destruct (le_lt_dec (eIndex e) (eIndex x3)).
@@ -572,7 +572,7 @@ Ltac all f ls :=
                 match goal with
                   | H : forall _, _ < _ <= _ -> _ |- _ =>
                     specialize (H (eIndex e));
-                      conclude_using ltac:(intuition; eapply le_trans; [eapply maxIndex_is_max; eauto|]; eauto)
+                      conclude_using ltac:(intuition; eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|]; eauto)
                 end.
                 break_exists. break_and.
                 match goal with
@@ -609,7 +609,7 @@ Ltac all f ls :=
                 assert (exists e', eIndex e' = eIndex e /\ In e' (x1 ++ x2)) by
                       (eapply entries_contiguous_nw_invariant; eauto;
                        intuition;
-                       eapply le_trans; [eapply maxIndex_is_max; eauto|];
+                       eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|];
                        eapply maxIndex_le'; eauto;
                        [eapply entries_contiguous_invariant; eauto|
                         eapply entries_contiguous_nw_invariant; eauto]).
@@ -659,7 +659,7 @@ Ltac all f ls :=
                 assert (exists e', eIndex e' = eIndex e /\ In e' (x1 ++ x4)) by
                       (eapply entries_contiguous_nw_invariant; eauto;
                        intuition;
-                       eapply le_trans; [eapply maxIndex_is_max; eauto|];
+                       eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|];
                        eapply maxIndex_le'; eauto;
                        [eapply entries_contiguous_invariant; eauto|
                         eapply entries_contiguous_nw_invariant; eauto]).
@@ -733,7 +733,7 @@ Ltac all f ls :=
         * contradict n0.
           apply in_app_iff. right. eapply removeAfterIndex_le_In; eauto.
           find_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
-          eapply le_trans; [eapply maxIndex_is_max; eauto|]. lia.
+          eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|]. lia.
         * {
             break_exists. intuition. unfold Prefix_sane in *. intuition.
             - destruct (le_lt_dec (eIndex e) (eIndex x4)).
@@ -769,7 +769,7 @@ Ltac all f ls :=
             find_eapply_lem_hyp one_leaderLog_per_term_log_invariant; eauto.
             repeat find_rewrite.
             conclude_using eauto. subst.
-            find_eapply_lem_hyp le_antisym; eauto.
+            find_eapply_lem_hyp Nat.le_antisymm; eauto.
             destruct x1.
             - simpl in *. destruct x2; simpl in *; auto.
               break_match; auto.

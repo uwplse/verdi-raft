@@ -34,7 +34,7 @@ Section LastAppliedCommitIndexMatching.
           intuition
       end.
       + find_apply_hyp_hyp; lia.
-      + eapply le_trans; [|eapply_prop maxIndex_commitIndex].
+      + eapply Nat.le_trans; [|eapply_prop maxIndex_commitIndex].
         simpl. lia.
       + break_exists. intuition.
         match goal with
@@ -50,7 +50,7 @@ Section LastAppliedCommitIndexMatching.
           intuition
       end.
       + find_apply_hyp_hyp; lia.
-      + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
+      + eapply Nat.le_trans; [|eapply_prop maxIndex_lastApplied].
         simpl. lia.
       + break_exists. intuition.
         match goal with
@@ -79,7 +79,7 @@ Section LastAppliedCommitIndexMatching.
           intuition
       end.
       + find_apply_hyp_hyp; lia.
-      + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
+      + eapply Nat.le_trans; [|eapply_prop maxIndex_lastApplied].
         simpl. lia.
       + break_exists. intuition.
         match goal with
@@ -95,7 +95,7 @@ Section LastAppliedCommitIndexMatching.
           intuition
       end.
       + find_apply_hyp_hyp; lia.
-      + eapply le_trans; [|eapply_prop maxIndex_commitIndex].
+      + eapply Nat.le_trans; [|eapply_prop maxIndex_commitIndex].
         simpl. lia.
       + break_exists. intuition.
         match goal with
@@ -124,7 +124,7 @@ Section LastAppliedCommitIndexMatching.
           intuition
       end.
       + find_apply_hyp_hyp; lia.
-      + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
+      + eapply Nat.le_trans; [|eapply_prop maxIndex_lastApplied].
         simpl. lia.
       + break_exists. intuition.
         match goal with
@@ -140,7 +140,7 @@ Section LastAppliedCommitIndexMatching.
           intuition
       end.
       + find_apply_hyp_hyp; lia.
-      + eapply le_trans; [|eapply_prop maxIndex_lastApplied].
+      + eapply Nat.le_trans; [|eapply_prop maxIndex_lastApplied].
         simpl. lia.
       + break_exists. intuition.
         match goal with
