@@ -26,11 +26,10 @@ Section Raft.
   Definition nodes : list name := all_fin _.
   Definition name_eq_dec : forall x y : name, {x = y} + {x <> y} := fin_eq_dec _.
 
-  
   Notation "a >? b" := (b <? a) (at level 70).
   Notation "a >=? b" := (b <=? a) (at level 70).
-  Notation "a == b" := (beq_nat a b) (at level 70).
-  Notation "a != b" := (negb (beq_nat a b)) (at level 70).
+  Notation "a == b" := (Nat.eqb a b) (at level 70).
+  Notation "a != b" := (negb (Nat.eqb a b)) (at level 70).
 
   Notation "a === b" := (if fin_eq_dec _ a b then true else false) (at level 42).
   
@@ -127,13 +126,13 @@ Section Raft.
                     removeAfterIndex es i
     end.
 
-  Fixpoint maxIndex (entries : list entry) : logIndex :=
+  Definition maxIndex (entries : list entry) : logIndex :=
     match entries with
       | nil => 0
       | e :: es => eIndex e
     end.
 
-  Fixpoint maxTerm (entries : list entry) : term :=
+  Definition maxTerm (entries : list entry) : term :=
     match entries with
       | nil => 0
       | e :: es => eTerm e
@@ -178,7 +177,7 @@ Section Raft.
   Definition haveNewEntries (state : raft_data) (entries : list entry) :=
     andb (not_empty entries) (match findAtIndex (log state) (maxIndex entries) with
                                 | None => true
-                                | Some e => (negb (beq_nat (maxTerm entries) (eTerm e)))
+                                | Some e => (negb (Nat.eqb (maxTerm entries) (eTerm e)))
                               end).
 
   Definition handleAppendEntries (me : name)
@@ -203,7 +202,7 @@ Section Raft.
       else
         match (findAtIndex (log state) prevLogIndex) with
           | None => (state, AppendEntriesReply (currentTerm state) entries false)
-          | Some e => if negb (beq_nat prevLogTerm (eTerm e)) then
+          | Some e => if negb (Nat.eqb prevLogTerm (eTerm e)) then
                        (state, AppendEntriesReply (currentTerm state) entries false)
                      else
                        if haveNewEntries state entries then

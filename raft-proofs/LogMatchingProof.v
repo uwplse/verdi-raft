@@ -308,7 +308,7 @@ Section LogMatchingProof.
               | context [ nwState _ ?h ] =>
                 specialize (H h i)
             end;
-              conclude H ltac:(split; try lia; eapply le_trans; eauto using findGtIndex_max)
+              conclude H ltac:(split; try lia; eapply Nat.le_trans; eauto using findGtIndex_max)
         end.
         break_exists;
         eexists;
@@ -340,7 +340,7 @@ Section LogMatchingProof.
                 |- _ ] =>
             specialize (H (eIndex e3));
               conclude H ltac:(split; auto; repeat find_rewrite;
-                       eapply le_trans; eauto; apply maxIndex_is_max; intuition)
+                       eapply Nat.le_trans; eauto; apply maxIndex_is_max; intuition)
         end.
         break_exists. intuition.
         match goal with
@@ -1201,7 +1201,7 @@ Ltac assert_do_leader :=
                 | [ H : forall _, In _ ?es -> _ < eIndex _,
                       _ : In ?e ?es
                       |- 0 < eIndex ?e ] =>
-                  eapply le_lt_trans; [lia|eapply H; eauto]
+                  eapply Nat.le_lt_trans; [lia|eapply H; eauto]
               end.
               congruence.
             + use_nw_invariant; try solve [in_crush].
@@ -1226,7 +1226,7 @@ Ltac assert_do_leader :=
               end.
 
               * split; [destruct prevLogIndex; [congruence|lia]|].
-                apply lt_le_weak. eapply lt_le_trans.
+                apply Nat.lt_le_incl. eapply Nat.lt_le_trans.
                 eauto.
                 repeat find_rewrite.
                 eapply maxIndex_is_max; intuition eauto.
@@ -1339,8 +1339,8 @@ Ltac assert_do_leader :=
                                  |- context [removeAfterIndex _ ?pli ] ] =>
                       specialize (H pli); forward H
                   end.
-                  + split; [solve [eauto using lt_le_trans]|].
-                    eapply lt_le_weak. eapply lt_le_trans; eauto.
+                  + split; [solve [eauto using Nat.lt_le_trans]|].
+                    eapply Nat.lt_le_incl. eapply Nat.lt_le_trans; eauto.
                     repeat find_reverse_rewrite.
                     eapply maxIndex_is_max; eauto.
                   + concludes.
@@ -1417,8 +1417,8 @@ Ltac assert_do_leader :=
                       specialize (H pli);
                         conclude H ltac:(
                           split; intuition;
-                          eapply lt_le_weak;
-                          eapply lt_le_trans; eauto;
+                          eapply Nat.lt_le_incl;
+                          eapply Nat.lt_le_trans; eauto;
                           repeat find_reverse_rewrite;
                           apply maxIndex_is_max; eauto)
                   end.
@@ -1446,8 +1446,8 @@ Ltac assert_do_leader :=
                         conclude H
                                  ltac:(
                           split; auto;
-                          eapply lt_le_weak;
-                          eapply lt_le_trans; [eauto |
+                          eapply Nat.lt_le_incl;
+                          eapply Nat.lt_le_trans; [eauto |
                                                repeat find_rewrite;
                                                  eapply maxIndex_is_max;
                                                  eauto])
@@ -1465,8 +1465,8 @@ Ltac assert_do_leader :=
                 exists x. intuition.
                 apply in_or_app. right.
                 apply removeAfterIndex_le_In; eauto.
-                apply lt_le_weak.
-                eapply lt_le_trans; eauto.
+                apply Nat.lt_le_incl.
+                eapply Nat.lt_le_trans; eauto.
                 repeat find_rewrite.
                 eauto.
             - unfold log_matching_nw in *.

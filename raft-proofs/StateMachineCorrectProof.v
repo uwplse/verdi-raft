@@ -354,7 +354,7 @@ Section StateMachineCorrect.
     - break_if.
       + rewrite IHl.
         * subst. now rewrite max_l by eauto.
-        * intros. subst. eapply le_trans; [| apply Max.le_max_l]. eauto.
+        * intros. subst. eapply Nat.le_trans; [| apply Nat.le_max_l]. eauto.
       + auto.
   Qed.
 
@@ -397,9 +397,9 @@ Section StateMachineCorrect.
   Proof using. 
     induction l; simpl; intuition; subst.
     - break_if; try congruence.
-      rewrite Max.max_comm.
+      rewrite Nat.max_comm.
       rewrite max_id_for_client_default_on_max.
-      apply Max.le_max_l.
+      apply Nat.le_max_l.
     - break_if; auto.
   Qed.
 
@@ -410,7 +410,7 @@ Section StateMachineCorrect.
     induction l; simpl; intuition.
     break_if; intuition.
     rewrite max_id_for_client_default_on_max.
-    apply Max.le_max_l.
+    apply Nat.le_max_l.
   Qed.
 
   Lemma max_id_for_client_default_subset :
@@ -422,15 +422,15 @@ Section StateMachineCorrect.
     pose proof max_id_for_client_default_or_entry c l x.
     pose proof max_id_for_client_default_or_entry c l' x.
     intuition; break_exists; intuition; repeat find_rewrite.
-    - eapply le_trans; [|eapply Nat.eq_le_incl].
+    - eapply Nat.le_trans; [|eapply Nat.eq_le_incl].
       apply max_id_for_client_default_ge_default.
       eauto.
     - find_apply_hyp_hyp.
-      eapply le_trans.
+      eapply Nat.le_trans.
       + apply max_id_for_client_default_is_max; eauto.
       + eauto using Nat.eq_le_incl.
     - find_apply_hyp_hyp.
-      eapply le_trans.
+      eapply Nat.le_trans.
       + apply max_id_for_client_default_is_max; eauto.
       + eauto using Nat.eq_le_incl.
   Qed.
@@ -442,7 +442,7 @@ Section StateMachineCorrect.
       max_id_for_client_default x c l = max_id_for_client_default x c l'.
   Proof using. 
     intros.
-    apply le_antisym; auto using max_id_for_client_default_subset.
+    apply Nat.le_antisymm; auto using max_id_for_client_default_subset.
   Qed.
 
   Lemma log_to_ks'_assoc_default_ks :
@@ -459,7 +459,7 @@ Section StateMachineCorrect.
       + subst.
         find_rewrite_lem assoc_default_assoc_set.
         rewrite assoc_set_assoc_set_same.
-        eauto using le_trans.
+        eauto using Nat.le_trans.
       + erewrite assoc_default_a_equiv;
         [|eapply log_to_ks'_a_equiv;
            eapply assoc_set_assoc_set_diff; auto].
@@ -475,7 +475,7 @@ Section StateMachineCorrect.
     break_if; simpl in *; eauto.
     do_bool.
     destruct (clientId_eq_dec (eClient a) c); simpl in *; subst; auto.
-    - eapply le_trans; eauto.
+    - eapply Nat.le_trans; eauto.
       eauto using log_to_ks'_assoc_default_ks.
     - match goal with
         | [ |- context [ assoc_set ?e ?ks ?c' ?i ] ] =>
@@ -498,8 +498,8 @@ Section StateMachineCorrect.
             assert (assoc_default e ks c 0 = assoc_default e (assoc_set e ks c i) c 0)
         end; repeat find_rewrite; eauto.
         rewrite assoc_default_assoc_set.
-        eapply le_antisym; eauto.
-        eapply le_trans; [|eauto];
+        eapply Nat.le_antisymm; eauto.
+        eapply Nat.le_trans; [|eauto];
         eauto using log_to_ks'_assoc_default_ks.
       + match goal with
           | [ |- context [ assoc_set ?e ?ks ?c' ?i ] ] =>
@@ -513,10 +513,10 @@ Section StateMachineCorrect.
             assert (assoc_default e ks c 0 = assoc_default e (assoc_set e ks c i) c 0)
         end; repeat find_rewrite; eauto.
         rewrite assoc_default_assoc_set.
-        eapply le_antisym; eauto.
-        eapply le_trans; [|eauto];
+        eapply Nat.le_antisymm; eauto.
+        eapply Nat.le_trans; [|eauto];
         eauto using log_to_ks'_assoc_default_ks.
-        eapply le_trans; [|eauto using log_to_ks'_assoc_default_assoc_default_le].
+        eapply Nat.le_trans; [|eauto using log_to_ks'_assoc_default_assoc_default_le].
         lia.
       + match goal with
           | [ |- context [ assoc_set ?e ?ks ?c' ?i ] ] =>
@@ -583,8 +583,8 @@ Section StateMachineCorrect.
       destruct (clientId_eq_dec (eClient a) c); subst.
       + repeat rewrite assoc_set_assoc_set_same.
         find_rewrite_lem assoc_default_assoc_set.
-        assert (i = eId a) by (eapply le_antisym; auto;
-                               eapply le_trans; [|eauto];
+        assert (i = eId a) by (eapply Nat.le_antisymm; auto;
+                               eapply Nat.le_trans; [|eauto];
                                eauto using log_to_ks'_assoc_default_ks).
         subst. find_apply_hyp_hyp.
         find_rewrite_lem assoc_set_assoc_set_same.
@@ -607,9 +607,9 @@ Section StateMachineCorrect.
       + find_rewrite_lem assoc_default_assoc_set.
         rewrite assoc_set_assoc_set_same. 
         assert (i = eId a); subst; eauto.
-        eapply le_antisym; eauto.
-        eapply le_trans; [|eauto].
-        eapply le_trans; [|eapply log_to_ks'_assoc_default_assoc_default_le].
+        eapply Nat.le_antisymm; eauto.
+        eapply Nat.le_trans; [|eauto].
+        eapply Nat.le_trans; [|eapply log_to_ks'_assoc_default_assoc_default_le].
         lia.
       + rewrite assoc_default_assoc_set_diff in *; auto. lia.
   Qed.
@@ -770,7 +770,7 @@ Section StateMachineCorrect.
         repeat find_higher_order_rewrite.
         rewrite_update. auto.
       + apply log_matching_invariant; auto.
-        intuition; eauto using le_trans.
+        intuition; eauto using Nat.le_trans.
         enough (eIndex e > 0) by auto.
         get_invariant_post log_matching_invariant.
         unfold log_matching, log_matching_hosts in *. intuition.
@@ -844,7 +844,7 @@ Section StateMachineCorrect.
     - do_bool.
       find_erewrite_lem assoc_assoc_default.
       rewrite assoc_set_same; eauto.
-      find_eapply_lem_hyp le_antisym; eauto. subst. auto.
+      find_eapply_lem_hyp Nat.le_antisymm; eauto. subst. auto.
     - exfalso. do_bool.
       find_erewrite_lem assoc_assoc_default_missing. lia.
   Qed.
@@ -1449,7 +1449,7 @@ Section StateMachineCorrect.
               (apply filter_fun_ext_eq;
                intros; do_bool; right;
                apply leb_correct_conv;
-               eapply le_lt_trans; eauto;
+               eapply Nat.le_lt_trans; eauto;
                eapply findGtIndex_necessary; eauto)
       end.
       repeat find_rewrite.

@@ -211,8 +211,8 @@ Section StateMachineSafetyProof.
     simpl. intros.
     find_copy_apply_lem_hyp handleClientRequest_maxIndex.
     - intuition; simpl in *; repeat find_higher_order_rewrite; update_destruct_simplify; auto.
-      + erewrite handleClientRequest_lastApplied by eauto. eauto using le_trans.
-      + erewrite handleClientRequest_commitIndex by eauto. eauto using le_trans.
+      + erewrite handleClientRequest_lastApplied by eauto. eauto using Nat.le_trans.
+      + erewrite handleClientRequest_commitIndex by eauto. eauto using Nat.le_trans.
     - match goal with H : _ |- _ => rewrite all_the_way_deghost_spec with (net := net) in H end.
         eapply handleClientRequest_logs_sorted; eauto.
         * auto using all_the_way_simulation_1.
@@ -254,7 +254,7 @@ Section StateMachineSafetyProof.
       max a (min b c) <= c.
   Proof using. 
     intros.
-    destruct (max a (min b c)) using (Max.max_case _ _); intuition.
+    destruct (max a (min b c)) using (Nat.max_case _ _); intuition.
   Qed.
 
   Lemma in_ghost_packet :
@@ -525,7 +525,7 @@ Section StateMachineSafetyProof.
               eapply contiguous_range_exact_lo_elim_lt.
               * eapply lifted_entries_contiguous_nw_invariant; eauto.
               * auto.
-            + eapply le_trans; [|eauto]. simpl in *. lia.
+            + eapply Nat.le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. break_and.
         eapply findAtIndex_None; [|eauto| |]; eauto.
@@ -539,7 +539,7 @@ Section StateMachineSafetyProof.
 
         find_eapply_lem_hyp msg_lifted_sms_nw; eauto;
         [|eapply msg_commit_recorded_lift_intro; eauto;
-        left; repeat find_rewrite; auto using lt_le_weak].
+        left; repeat find_rewrite; auto using Nat.lt_le_incl].
         intuition.
         * subst.
           assert (0 < eIndex x) by (eapply lifted_entries_contiguous_invariant; eauto).
@@ -548,7 +548,7 @@ Section StateMachineSafetyProof.
           intuition; subst; auto.
           find_apply_hyp_hyp. lia.
       + destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p)))) pli); intuition;
-        [eapply le_trans; [| apply sorted_maxIndex_app]; auto;
+        [eapply Nat.le_trans; [| apply sorted_maxIndex_app]; auto;
          break_exists; break_and;
          erewrite maxIndex_removeAfterIndex by (eauto; apply msg_lifted_sorted_host; auto);
          auto|]; [idtac].
@@ -568,13 +568,13 @@ Section StateMachineSafetyProof.
               destruct es.
               * simpl in *. intuition.
               * simpl.  subst.
-                { eapply le_lt_trans with (m := eIndex x).
+                { eapply Nat.le_lt_trans with (m := eIndex x).
                   - lia.
                   - eapply contiguous_range_exact_lo_elim_lt.
                     + eapply lifted_entries_contiguous_nw_invariant; eauto.
                     + intuition.
                 }
-            + eapply le_trans; [|eauto]. simpl in *. lia.
+            + eapply Nat.le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. intuition.
         match goal with
@@ -596,7 +596,7 @@ Section StateMachineSafetyProof.
 
         find_eapply_lem_hyp msg_lifted_sms_nw; eauto;
         [|eapply msg_commit_recorded_lift_intro; eauto;
-        left; repeat find_rewrite; auto using lt_le_weak].
+        left; repeat find_rewrite; auto using Nat.lt_le_incl].
 
         match goal with
           | _ : In ?x es, _ : maxIndex es = eIndex ?x |- _ =>
@@ -643,7 +643,7 @@ Section StateMachineSafetyProof.
               eapply contiguous_range_exact_lo_elim_lt.
               * eapply lifted_entries_contiguous_nw_invariant; eauto.
               * auto.
-            + eapply le_trans; [|eauto]. simpl in *. lia.
+            + eapply Nat.le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. intuition.
         find_eapply_lem_hyp findAtIndex_None; eauto.
@@ -666,7 +666,7 @@ Section StateMachineSafetyProof.
           intuition; subst; auto.
           find_apply_hyp_hyp. lia.
       + destruct (le_lt_dec (commitIndex (snd (nwState net (pDst p)))) pli); intuition;
-        [eapply le_trans; [| apply sorted_maxIndex_app]; auto;
+        [eapply Nat.le_trans; [| apply sorted_maxIndex_app]; auto;
          break_exists; intuition;
          erewrite maxIndex_removeAfterIndex; eauto; apply msg_lifted_sorted_host; auto|]; [idtac].
         destruct (le_lt_dec (commitIndex (snd (nwState net (pDst p)))) (maxIndex es)); intuition;
@@ -684,13 +684,13 @@ Section StateMachineSafetyProof.
               destruct es.
               * simpl in *. intuition.
               * simpl.  subst.
-                { eapply le_lt_trans with (m := eIndex x).
+                { eapply Nat.le_lt_trans with (m := eIndex x).
                   - lia.
                   - eapply contiguous_range_exact_lo_elim_lt.
                     + eapply lifted_entries_contiguous_nw_invariant; eauto.
                     + intuition.
                 }
-            + eapply le_trans; [|eauto]. simpl in *. lia.
+            + eapply Nat.le_trans; [|eauto]. simpl in *. lia.
         }
         break_exists. intuition.
         match goal with
@@ -793,7 +793,7 @@ Section StateMachineSafetyProof.
   Proof using. 
     induction l; intros.
     - auto.
-    - simpl. apply IHl. apply Max.max_case_strong; lia.
+    - simpl. apply IHl. apply Nat.max_case_strong; lia.
   Qed.
 
   Lemma fold_left_maximum_le :
@@ -813,7 +813,7 @@ Section StateMachineSafetyProof.
     induction l; intros.
     - auto.
     - simpl in *. revert H.
-      repeat (apply Max.max_case_strong; intros).
+      repeat (apply Nat.max_case_strong; intros).
       + eauto.
       + assert (a = y) by lia. subst_max. eauto.
       + subst x. pose proof (fold_left_maximum_le l a).
@@ -838,7 +838,7 @@ Section StateMachineSafetyProof.
       specialize (IHl (max x a)).
       intuition.
       + revert H.
-        apply Max.max_case_strong; intuition.
+        apply Nat.max_case_strong; intuition.
         intuition eauto using fold_left_maxmimum_increase_init.
       + break_exists. break_and. eauto.
   Qed.
@@ -1101,7 +1101,7 @@ Section StateMachineSafetyProof.
     repeat find_rewrite_lem msg_deghost_spec';
     rewrite msg_deghost_spec';
     apply lifted_committed_committed; auto.
-    eauto using le_trans, msg_lifted_lastApplied_le_commitIndex.
+    eauto using Nat.le_trans, msg_lifted_lastApplied_le_commitIndex.
   Qed.
 
   Lemma handleClientRequest_currentTerm :
@@ -1964,7 +1964,7 @@ Section StateMachineSafetyProof.
                    - eapply lifted_entries_contiguous_invariant. auto.
                    - split.
                      + auto.
-                     + eapply le_trans; [eauto|].
+                     + eapply Nat.le_trans; [eauto|].
                        eapply_prop lifted_maxIndex_sanity.
                  }
                  break_exists_name e'.
@@ -1993,7 +1993,7 @@ Section StateMachineSafetyProof.
                  | [ H : commit_invariant_nw _ |- _ ] =>
                    rename H into Hnet; unfold commit_invariant_nw in *
                  end.
-                 eapply_prop_hyp In In; [| eauto | | eauto using Min.min_glb_l].
+                 eapply_prop_hyp In In; [| eauto | | eauto using Nat.min_glb_l].
                  * eapply handleAppendEntries_preserves_commit; eauto.
                  * find_eapply_lem_hyp ghost_log_correct_invariant; eauto.
                    conclude_using eauto.
@@ -2030,7 +2030,7 @@ Section StateMachineSafetyProof.
                        - eapply lifted_entries_contiguous_invariant. auto.
                        - split.
                          + auto.
-                         + eapply le_trans; [eauto|].
+                         + eapply Nat.le_trans; [eauto|].
                            eapply_prop lifted_maxIndex_sanity.
                      }
                      break_exists_name e'.
@@ -2080,7 +2080,7 @@ Section StateMachineSafetyProof.
                      end.
                      match goal with
                      | [ H : In _ (nwPackets _), H' : _ |- _ ] => eapply H' in H
-                     end; [| eauto | | eauto using Min.min_glb_l].
+                     end; [| eauto | | eauto using Nat.min_glb_l].
                      * eapply handleAppendEntries_preserves_commit; eauto.
                      * find_copy_eapply_lem_hyp ghost_log_correct_invariant; eauto.
                        conclude_using eauto.
@@ -2123,7 +2123,7 @@ Section StateMachineSafetyProof.
                          eapply contiguous_range_exact_lo_elim_exists; eauto.
                          split.
                          + eapply lifted_entries_gt_0_invariant; eauto using removeAfterIndex_in.
-                         + eapply le_trans with (m := eIndex gple); try lia.
+                         + eapply Nat.le_trans with (m := eIndex gple); try lia.
                            apply maxIndex_is_max; auto.
                            pose proof log_properties_hold_on_ghost_logs_invariant _ ltac:(eauto) as Hsort.
                            unfold log_properties_hold_on_ghost_logs in *.
@@ -2152,7 +2152,7 @@ Section StateMachineSafetyProof.
                          rename H into Hnet; unfold commit_invariant_nw in *
                        end.
                        eapply handleAppendEntries_preserves_commit; eauto.
-                       eapply Hnet; eauto using Min.min_glb_l.
+                       eapply Hnet; eauto using Nat.min_glb_l.
                    }
            }
        + eapply handleAppendEntries_preserves_commit; eauto.

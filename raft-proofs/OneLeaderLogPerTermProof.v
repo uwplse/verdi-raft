@@ -111,7 +111,7 @@ Section OneLeaderLogPerTerm.
     find_inversion. right.
     unfold handleRequestVoteReply in *.
     repeat break_match; simpl in *; intuition; try congruence;
-    break_if; try congruence; do_bool; eauto using le_antisym.
+    break_if; try congruence; do_bool; eauto using Nat.le_antisymm.
   Qed.
 
   Lemma wonElection_length :
@@ -196,13 +196,13 @@ Section OneLeaderLogPerTerm.
       + apply_prop_hyp leaderLogs_currentTerm_sanity_candidate nwState; auto.
         find_copy_apply_lem_hyp handleRequestVoteReply_type. intuition; unfold raft_data in *; simpl in *.
         * subst. repeat find_rewrite. discriminate.
-        * find_apply_lem_hyp lt_asym. congruence.
-        * subst. repeat find_rewrite. find_apply_lem_hyp lt_irrefl. contradiction.
+        * find_apply_lem_hyp Nat.lt_asymm. congruence.
+        * subst. repeat find_rewrite. find_apply_lem_hyp Nat.lt_irrefl. contradiction.
       + apply_prop_hyp leaderLogs_currentTerm_sanity_candidate nwState; auto.
         find_copy_apply_lem_hyp handleRequestVoteReply_type. intuition; unfold raft_data in *; simpl in *.
         * subst. repeat find_rewrite. discriminate.
-        * find_apply_lem_hyp lt_asym. congruence.
-        * subst. repeat find_rewrite. find_apply_lem_hyp lt_irrefl. contradiction.
+        * find_apply_lem_hyp Nat.lt_asymm. congruence.
+        * subst. repeat find_rewrite. find_apply_lem_hyp Nat.lt_irrefl. contradiction.
       + subst. auto.
     - exfalso. eapply contradiction_case; eauto.
     - exfalso. eapply contradiction_case; eauto.

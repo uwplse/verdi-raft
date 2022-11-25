@@ -297,7 +297,7 @@ Section StateMachineSafety'.
       end.
       intuition.
       + left.
-        eapply gt_le_trans; eauto.
+        apply (Nat.le_lt_trans _ (maxIndex x2)); auto.
         eapply maxIndex_is_max; eauto.
       + break_exists. intuition. subst.
         match goal with

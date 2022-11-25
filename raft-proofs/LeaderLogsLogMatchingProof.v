@@ -555,10 +555,10 @@ Section LeaderLogsLogMatching.
                   remember (x) as index;
                   specialize (H index); forward H
               end.
-              + intuition; auto using neq_0_lt.
+              + intuition; auto using Nat.neq_0_lt_0.
                 find_apply_lem_hyp findGtIndex_necessary. break_and.
-                eapply le_trans.
-                * apply lt_le_weak. eauto.
+                eapply Nat.le_trans.
+                * apply Nat.lt_le_incl. eauto.
                 * repeat find_rewrite. eapply maxIndex_is_max; auto.
                   eapply leaderLogs_sorted_invariant; eauto.
               + concludes. break_exists_exists. intuition.

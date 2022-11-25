@@ -21,7 +21,7 @@ Section LastAppliedLeCommitIndex.
     repeat find_rewrite.
     find_apply_lem_hyp handleAppendEntries_log_detailed.
     intuition; repeat find_rewrite; eauto;
-    eapply le_trans; eauto; eauto using Max.le_max_l.
+    eapply Nat.le_trans; eauto; eauto using Nat.le_max_l.
   Qed.
 
   Lemma lastApplied_le_commitIndex_appendEntriesReply :
@@ -82,7 +82,7 @@ Section LastAppliedLeCommitIndex.
     intros.
     specialize (IHl y (max z a)).
     forward IHl; eauto. concludes.
-    forward IHl; [eapply le_trans; eauto; eauto using Max.le_max_l|].
+    forward IHl; [eapply Nat.le_trans; eauto; eauto using Nat.le_max_l|].
     concludes. auto.
   Qed.
   
@@ -107,7 +107,7 @@ Section LastAppliedLeCommitIndex.
     intros.
     unfold doLeader in *.
     repeat break_match; tuple_inversion; auto; eauto using advanceCommitIndex_commitIndex.
-    eapply le_trans; [eapply advanceCommitIndex_commitIndex with (h := h0)|]; eauto.
+    eapply Nat.le_trans; [eapply advanceCommitIndex_commitIndex with (h := h0)|]; eauto.
   Qed.
   
   Lemma lastApplied_le_commitIndex_doLeader :
@@ -119,7 +119,7 @@ Section LastAppliedLeCommitIndex.
     destruct_update; simpl in *; eauto.
     find_copy_apply_lem_hyp doLeader_same_lastApplied.
     find_copy_apply_lem_hyp doLeader_same_commitIndex.
-    repeat find_rewrite. eapply le_trans; [|eauto]; eauto.
+    repeat find_rewrite. eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
   
   Lemma doGenericServer_lastApplied:
@@ -133,9 +133,9 @@ Section LastAppliedLeCommitIndex.
     simpl in *.
     break_if; simpl in *; do_bool; auto.
     - use_applyEntries_spec. subst. simpl in *.
-      eauto using Max.le_max_r.
+      eauto using Nat.le_max_r.
     - use_applyEntries_spec. subst. simpl in *.
-      eauto using Max.le_max_l.
+      eauto using Nat.le_max_l.
   Qed.
 
   Lemma lastApplied_le_commitIndex_doGenericServer :
@@ -148,7 +148,7 @@ Section LastAppliedLeCommitIndex.
     find_copy_apply_lem_hyp doGenericServer_commitIndex.
     find_copy_apply_lem_hyp doGenericServer_lastApplied.
     repeat find_rewrite.
-    erewrite Max.max_r in *; eauto.
+    erewrite Nat.max_r in *; eauto.
   Qed.
 
   Lemma lastApplied_le_commitIndex_clientRequest :

@@ -1,8 +1,6 @@
 Require Import VerdiRaft.Raft.
 Require Import VerdiRaft.CommonTheorems.
-
 Require Import VerdiRaft.SpecLemmas.
-
 Require Import VerdiRaft.TermSanityInterface.
 Require Import VerdiRaft.SortedInterface.
 
@@ -296,7 +294,7 @@ Section SortedProof.
     - find_rewrite. apply sorted_append; eauto using removeAfterIndex_sorted.
       + intros. find_apply_lem_hyp removeAfterIndex_In_le; eauto.
         unfold packets_gt_prevIndex in *.
-        eapply gt_le_trans; [|eauto].
+        eapply Nat.le_lt_trans; [eauto|].
         find_eapply_hyp_goal; [in_crush|eauto|eauto].
         simpl in *. eauto.
       + intros. find_copy_apply_lem_hyp removeAfterIndex_In_le; eauto.
@@ -307,7 +305,7 @@ Section SortedProof.
             apply sorted_index_term with (l := ll) (e := x) (e' := x') in H
         end; eauto.
         match goal with |- ?a >= ?b => cut (b <= a); [lia|] end.
-        eapply le_trans; eauto.
+        eapply Nat.le_trans; eauto.
         unfold packets_ge_prevTerm in *.
         find_eapply_hyp_goal; [in_crush|eauto|eauto];
         simpl in *; eauto.

@@ -69,12 +69,12 @@ Section LogAllEntries.
       intuition; eauto; repeat find_rewrite; repeat rewrite_goal; eauto.
     - copy_eapply_prop_hyp In In; repeat find_rewrite; auto.
       find_apply_lem_hyp no_entries_past_current_term_host_lifted_invariant; auto.
-      repeat find_rewrite. eauto using le_antisym.
+      repeat find_rewrite. eauto using Nat.le_antisymm.
     - subst.
       apply in_app_iff. right.
       find_apply_hyp_hyp.
       find_apply_lem_hyp no_entries_past_current_term_host_lifted_invariant; auto.
-      eauto using le_antisym.
+      eauto using Nat.le_antisymm.
     - subst.
       apply in_app_iff.
       left.
@@ -89,7 +89,7 @@ Section LogAllEntries.
         find_apply_lem_hyp removeAfterIndex_in.
         find_apply_hyp_hyp.
         find_apply_lem_hyp no_entries_past_current_term_host_lifted_invariant; auto.
-        eauto using le_antisym.
+        eauto using Nat.le_antisymm.
   Qed.
 
   Lemma log_all_entries_append_entries_reply :
@@ -103,7 +103,7 @@ Section LogAllEntries.
     find_copy_apply_lem_hyp handleAppendEntriesReply_type_term.
     intuition; repeat find_rewrite; copy_eapply_prop_hyp In In; repeat find_rewrite; auto.
     find_apply_lem_hyp no_entries_past_current_term_host_lifted_invariant; auto.
-    repeat find_rewrite. eauto using le_antisym.
+    repeat find_rewrite. eauto using Nat.le_antisymm.
   Qed.
 
   Lemma log_all_entries_request_vote :
@@ -118,9 +118,8 @@ Section LogAllEntries.
     rewrite update_elections_data_requestVote_allEntries.
     intuition; repeat find_rewrite; copy_eapply_prop_hyp In In; repeat find_rewrite; auto.
     find_apply_lem_hyp no_entries_past_current_term_host_lifted_invariant; auto.
-    repeat find_rewrite. eauto using le_antisym.
+    repeat find_rewrite. eauto using Nat.le_antisymm.
   Qed.
-
 
   Lemma log_all_entries_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply log_all_entries.

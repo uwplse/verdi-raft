@@ -172,7 +172,7 @@ Section TermSanityProof.
       intros. simpl in *.
       find_higher_order_rewrite; break_if; eauto.
       subst; repeat find_rewrite.
-      eapply le_trans; [|eauto]; eauto.
+      eapply Nat.le_trans; [|eauto]; eauto.
     - eauto using no_entries_past_current_term_nw_no_append_entries.
   Qed.
 
@@ -203,7 +203,7 @@ Section TermSanityProof.
       intros. simpl in *. find_higher_order_rewrite.
       break_if; eauto. subst.
       find_apply_hyp_hyp. intuition.
-      + eapply le_trans; [|eauto]; eauto.
+      + eapply Nat.le_trans; [|eauto]; eauto.
       + subst.
         eapply_prop no_entries_past_current_term_nw; eauto.
     - match goal with
@@ -231,7 +231,7 @@ Section TermSanityProof.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
       break_if; eauto. subst.
-      repeat find_rewrite. eapply le_trans; [|eauto].
+      repeat find_rewrite. eapply Nat.le_trans; [|eauto].
       eauto.
     - unfold no_entries_past_current_term_nw.
       intros. simpl in *.
@@ -265,7 +265,7 @@ Section TermSanityProof.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
       break_if; eauto. subst.
-      repeat find_rewrite. eapply le_trans; [|eauto].
+      repeat find_rewrite. eapply Nat.le_trans; [|eauto].
       eauto.
     - unfold no_entries_past_current_term_nw.
       intros. simpl in *.
@@ -297,7 +297,7 @@ Section TermSanityProof.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
       break_if; eauto. subst.
-      repeat find_rewrite. eapply le_trans; [|eauto].
+      repeat find_rewrite. eapply Nat.le_trans; [|eauto].
       eauto.
     - unfold no_entries_past_current_term_nw.
       intros. simpl in *.

@@ -388,7 +388,8 @@ Section LogsLeaderLogs.
                 rewrite update_elections_data_appendEntries_leaderLogs. auto.
               + rewrite removeAfterIndex_in_app_l'; eauto;
                 [rewrite <- removeAfterIndex_le; auto|].
-                intros. eapply gt_le_trans; [|eauto].
+                intros.
+                apply (Nat.le_lt_trans _ (eIndex x)); [auto|].
                 eapply entries_contiguous_nw_invariant; eauto.
           }
       + find_apply_hyp_hyp. break_exists_exists; intuition.

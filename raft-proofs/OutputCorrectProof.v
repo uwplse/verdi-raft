@@ -647,11 +647,11 @@ Section OutputCorrect.
           do_in_app. simpl in *.
           { intuition.
             - eapply_prop_hyp In In. break_exists. break_and. subst.
-              eauto using le_trans, cacheAppliedEntry_clientCache_nondecreasing.
+              eauto using Nat.le_trans, cacheAppliedEntry_clientCache_nondecreasing.
             - subst. find_copy_apply_lem_hyp cacheApplyEntry_clientCache.
               intuition.
               + break_exists. break_and.
-                eauto using le_trans, cacheAppliedEntry_clientCache_nondecreasing.
+                eauto using Nat.le_trans, cacheAppliedEntry_clientCache_nondecreasing.
               + unfold getLastId in *. break_let. break_and. repeat find_rewrite.
                 rewrite get_set_same in *. find_inversion. auto.
               + unfold getLastId in *. break_let. break_and.

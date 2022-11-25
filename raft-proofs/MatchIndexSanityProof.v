@@ -42,7 +42,7 @@ Section MatchIndexSanity.
         destruct (name_eq_dec h0 leader).
         * subst. rewrite get_set_same_default. auto.
         * rewrite get_set_diff_default by auto.
-          eauto using le_trans.
+          eauto using Nat.le_trans.
     - auto.
   Qed.
 
@@ -122,7 +122,7 @@ Section MatchIndexSanity.
       + repeat find_rewrite.
         destruct (name_eq_dec h (pSrc p)).
         * subst. rewrite get_set_same_default.
-          apply Max.max_case; auto.
+          apply Nat.max_case; auto.
           { destruct es; simpl.
             * lia.
             * pose proof append_entries_reply_sublog_invariant _ ltac:(eauto).

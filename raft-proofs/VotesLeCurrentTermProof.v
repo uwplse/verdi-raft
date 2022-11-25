@@ -40,7 +40,7 @@ Section VotesLeCurrentTerm.
     break_or_hyp; auto with *.
     find_apply_lem_hyp handleTimeout_currentTerm.
     find_apply_hyp_hyp.
-    eauto using le_trans.
+    eauto using Nat.le_trans.
   Qed.
 
   Lemma votes_le_current_term_append_entries :
@@ -51,7 +51,7 @@ Section VotesLeCurrentTerm.
     rewrite @votes_same_append_entries in *.
     find_apply_lem_hyp handleAppendEntries_currentTerm.
     find_apply_hyp_hyp.
-    eauto using le_trans.
+    eauto using Nat.le_trans.
   Qed.
 
   Lemma votes_le_current_term_append_entries_reply :
@@ -61,7 +61,7 @@ Section VotesLeCurrentTerm.
     start_proof.
     find_apply_lem_hyp handleAppendEntriesReply_currentTerm.
     find_apply_hyp_hyp.
-    eauto using le_trans.
+    eauto using Nat.le_trans.
   Qed.
 
   Lemma votes_le_current_term_request_vote :
@@ -72,7 +72,7 @@ Section VotesLeCurrentTerm.
     find_eapply_lem_hyp votes_update_elections_data_request_vote; eauto.
     intuition.
     find_apply_hyp_hyp.
-    eauto using le_trans, handleRequestVote_currentTerm.
+    eauto using Nat.le_trans, handleRequestVote_currentTerm.
   Qed.
 
   Lemma votes_le_current_term_request_vote_reply :
@@ -81,7 +81,7 @@ Section VotesLeCurrentTerm.
     unfold refined_raft_net_invariant_request_vote_reply, votes_le_currentTerm.
     start_proof.
     find_eapply_lem_hyp votes_update_elections_data_request_vote_reply; eauto.
-    eapply le_trans; [|eapply handleRequestVoteReply_currentTerm'; eauto]; eauto.
+    eapply Nat.le_trans; [|eapply handleRequestVoteReply_currentTerm'; eauto]; eauto.
   Qed.
 
   Lemma votes_le_current_term_do_leader :

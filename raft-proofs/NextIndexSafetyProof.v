@@ -49,7 +49,7 @@ Section NextIndexSafety.
     unfold assoc_default in *.
     specialize (H h').
     break_match.
-    - eauto using le_trans.
+    - eauto using Nat.le_trans.
     - lia.
   Qed.
 
@@ -159,7 +159,7 @@ Section NextIndexSafety.
       + destruct (name_eq_dec h' (pSrc p)).
         * subst. rewrite get_set_same_default.
           unfold getNextIndex.
-          apply Max.max_case; auto.
+          apply Nat.max_case; auto.
           { destruct es; simpl.
             * lia.
             * pose proof append_entries_reply_sublog_invariant _ ltac:(eauto).

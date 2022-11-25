@@ -189,7 +189,7 @@ Section MatchIndexAllEntries.
               assert (es <> nil).
               {
                 apply maxIndex_gt_0_nonempty.
-                eapply lt_le_trans; [|eauto].
+                eapply Nat.lt_le_trans; [|eauto].
                 simpl in *. break_or_hyp.
                 - repeat find_rewrite. lia.
                 - eapply entries_gt_0_invariant; eauto.

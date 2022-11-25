@@ -203,7 +203,7 @@ Section AppliedEntriesMonotonicProof.
           end;
             copy_eapply_prop_hyp log_matching_nw AppendEntries; eauto;
             repeat (forwards; [intuition eauto; lia|]; concludes);
-            intuition; [eapply le_trans; eauto|].
+            intuition; [eapply Nat.le_trans; eauto|].
           match goal with
             | H : exists _, _ |- _ => destruct H as [e']
           end.
