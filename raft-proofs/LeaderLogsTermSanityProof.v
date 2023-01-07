@@ -49,7 +49,7 @@ Section LeaderLogsTermSanity.
       pose lem; eauto.
 
   Tactic Notation "term_sanity_unchanged" constr(lem) := term_sanity_unchanged' lem.
-  Tactic Notation "term_sanity_unchanged" := term_sanity_unchanged' eq_refl (* bogus *).
+  Tactic Notation "term_sanity_unchanged" := term_sanity_unchanged' (@eq_refl) (* bogus *).
 
   Lemma leaderLogs_term_sanity_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply leaderLogs_term_sanity.
