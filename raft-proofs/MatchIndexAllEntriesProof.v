@@ -349,7 +349,7 @@ Section MatchIndexAllEntries.
   Proof using. 
     unfold handleAppendEntries, advanceCurrentTerm.
     intros. repeat break_match; repeat find_inversion; simpl in *; repeat do_bool; eauto;
-            eexists; f_equal; eauto using NPeano.Nat.le_antisymm.
+            eexists; f_equal; eauto using Nat.le_antisymm.
   Qed.
 
   Lemma not_empty_true_elim :

@@ -281,7 +281,8 @@ Section CommonTheorems.
     induction xs; intros; simpl in *; intuition; break_match; try discriminate.
     - subst. do_bool. congruence.
     - do_bool. break_if; eauto.
-      do_bool. find_apply_hyp_hyp. intuition.
+      do_bool. find_apply_hyp_hyp.
+      lia.
   Qed.
 
   Lemma findAtIndex_removeAfterIndex_agree :
@@ -344,8 +345,8 @@ Section CommonTheorems.
   Proof using. 
     induction entries; intros.
     - simpl in *. intuition.
-    - simpl in *. break_if; intuition.
-      + subst. in_crush.
+    - simpl in *. break_if; intuition auto with datatypes.
+      + subst. in_crush_tac (intuition auto).
       + subst. do_bool. lia.
       + do_bool. find_apply_hyp_hyp. lia.
   Qed.
@@ -468,10 +469,10 @@ Section CommonTheorems.
     intros new current prev e Hsorted Huniq Hinv. intros. red. intros.
     intuition.
     - destruct (le_lt_dec i prev).
-      + unfold contiguous_range_exact_lo in *. intuition.
+      + unfold contiguous_range_exact_lo in *. intuition auto.
         match goal with
           | H: forall _, _ < _ <= _ current -> _, H' : In _ current |- _ =>
-            specialize (H i); apply maxIndex_is_max in H'; auto; forward H; intuition
+            specialize (H i); apply maxIndex_is_max in H'; auto; forward H; intuition auto with zarith
         end.
         break_exists. exists x. intuition.
         apply in_or_app. right. subst.
@@ -481,15 +482,15 @@ Section CommonTheorems.
           unfold contiguous_range_exact_lo in *. intuition.
           match goal with
             | H: forall _, _ < _ <= _ new -> _ |- _ =>
-              specialize (H i); auto; forward H; intuition
-          end. break_exists. exists x. intuition.
+              specialize (H i); auto; forward H; intuition auto with zarith
+          end. break_exists. exists x. intuition auto with datatypes.
         * subst. simpl in *. clean.
           exfalso.
           pose proof maxIndex_removeAfterIndex current (eIndex e) e.
-          intuition.
+          intuition lia.
     - unfold contiguous_range_exact_lo in *.
       do_in_app. intuition.
-      + firstorder auto with zarith.
+      + firstorder lia.
       + firstorder using removeAfterIndex_in.
   Qed.
 
@@ -503,7 +504,7 @@ Section CommonTheorems.
         In y (es ++ (removeAfterIndex log i)).
   Proof using. 
     intros.
-    exists x. intuition.
+    exists x. intuition auto with datatypes.
   Qed.
 
   Lemma findGtIndex_necessary :
@@ -538,7 +539,7 @@ Section CommonTheorems.
       maxIndex (findGtIndex entries x) <= maxIndex entries.
   Proof using. 
     intros. destruct entries; simpl; auto.
-    break_if; simpl; intuition.
+    break_if; simpl; intuition auto with arith.
   Qed.
 
   Lemma findAtIndex_uniq_equal :
@@ -1375,8 +1376,10 @@ Section CommonTheorems.
     eapply applyEntries_spec_ind; eauto.
   Qed.
 
+  (* FIXME: move to StructTact *)
   Functional Scheme div2_ind := Induction for div2 Sort Prop.
 
+  (* FIXME: move to StructTact *)
   Theorem div2_correct' :
     forall n,
       n <= div2 n + S (div2 n).
@@ -1384,6 +1387,7 @@ Section CommonTheorems.
     intro n. functional induction (div2 n); lia.
   Qed.
 
+  (* FIXME: move to StructTact *)
   Theorem div2_correct :
     forall c a b,
       a > div2 c ->
@@ -1424,7 +1428,7 @@ Section CommonTheorems.
   Proof using. 
     induction log; intros.
     - simpl. rewrite app_nil_r. auto.
-    - simpl. break_let. rewrite IHlog. rewrite app_ass. simpl.
+    - simpl. break_let. rewrite IHlog. rewrite <- app_assoc. simpl.
       rewrite IHlog with (tr := [(eInput a, o)]).
       auto.
   Qed.
@@ -1497,9 +1501,9 @@ Section CommonTheorems.
       contiguous_range_exact_lo (a :: b :: l) i ->
       eIndex a = S (eIndex b) /\ eIndex a > i.
   Proof using. 
-    intros. unfold contiguous_range_exact_lo in *. intuition.
+    intros. unfold contiguous_range_exact_lo in *. intuition auto with datatypes.
     assert (i < S (eIndex b) <= eIndex a).
-      simpl in *. intuition. specialize (H0 b). concludes. intuition.
+      simpl in *. intuition auto with arith. specialize (H0 b). concludes. intuition auto with arith.
     specialize (H1 (S (eIndex b))). concludes.
     break_exists. simpl In in *. intuition; subst.
     - auto.
@@ -1517,7 +1521,7 @@ Section CommonTheorems.
     - apply contiguous_nil.
     - eapply contiguous_index_adjacent in H; eauto.
       unfold contiguous_range_exact_lo in *. break_and.
-      intuition. simpl maxIndex in *. specialize (H0 i0).
+      intuition auto with datatypes. simpl maxIndex in *. specialize (H0 i0).
       assert (i < i0 <= eIndex a0) by lia.
       concludes. break_exists. intuition. simpl in *. intuition; subst.
       + lia.
@@ -1590,8 +1594,6 @@ Section CommonTheorems.
     simpl; intuition.
   Qed.
 
-
-
   Lemma sorted_NoDup :
     forall l,
       sorted l -> NoDup l.
@@ -1601,7 +1603,8 @@ Section CommonTheorems.
     - constructor; intuition.
       match goal with
         | H : forall _, _ |- _ => specialize (H a)
-      end. intuition.
+      end.
+      intuition lia.
   Qed.
 
   Lemma sorted_Permutation_eq :
@@ -1616,9 +1619,9 @@ Section CommonTheorems.
     - destruct l'.
       + apply Permutation_nil. apply Permutation_sym. assumption.
       + simpl in *. intuition.
-        find_copy_eapply_lem_hyp Permutation_in; intuition.
+        find_copy_eapply_lem_hyp Permutation_in; intuition auto with datatypes.
         find_copy_apply_lem_hyp Permutation_sym.
-        find_copy_eapply_lem_hyp Permutation_in; intuition.
+        find_copy_eapply_lem_hyp Permutation_in; intuition auto with datatypes.
         simpl in *. intuition;
           try (subst a; f_equal; eauto using Permutation_cons_inv).
         repeat find_apply_hyp_hyp. intuition.
@@ -1849,7 +1852,8 @@ Section CommonTheorems.
     try congruence.
     symmetry. apply findGtIndex_nil.
     intros. find_apply_lem_hyp removeAfterIndex_in.
-    find_apply_hyp_hyp. intuition.
+    find_apply_hyp_hyp.
+    lia.
   Qed.
 
   Lemma findGtIndex_app_1 :
@@ -1874,8 +1878,10 @@ Section CommonTheorems.
     break_if; do_bool; auto.
     - f_equal. eauto.
     - exfalso.
-      destruct l'; simpl in *; intuition.
-      specialize (H1 e); conclude_using intuition; intuition.
+      destruct l'; simpl in *; [lia|];
+      specialize (H1 e).
+      conclude_using ltac:(intuition auto with datatypes);
+      lia.
   Qed.
 
   Lemma thing3 :
@@ -1885,12 +1891,13 @@ Section CommonTheorems.
       In e (l ++ l') ->
       eIndex e <= maxIndex l' ->
       In e l'.
-  Proof using. 
+  Proof using.
     induction l; intros; simpl in *; intuition.
     subst. destruct l'; simpl in *; intuition.
-    - exfalso. specialize (H0 e). intuition.
-    - exfalso. specialize (H3 e0). conclude_using intuition.
-      intuition.
+    - exfalso. specialize (H0 e). intuition lia.
+    - exfalso. specialize (H3 e0). 
+      conclude_using ltac:(intuition auto with datatypes);
+      lia.
   Qed.
   
   Lemma findGtIndex_non_empty :
@@ -1898,11 +1905,11 @@ Section CommonTheorems.
       i < maxIndex l ->
       findGtIndex l i <> [].
   Proof using. 
-    intros. induction l; simpl in *; intuition.
-    break_if; do_bool; simpl in *; intuition.
+    intros. induction l; simpl in *; [lia|].
+    break_if; do_bool; simpl in *; [|lia].
     congruence.
   Qed.
-  
+
   Lemma sorted_Prefix_in_eq :
     forall l' l,
       sorted l ->
@@ -1938,7 +1945,7 @@ Section CommonTheorems.
       (removeAfterIndex l (eIndex e)) ++ l'.
   Proof using. 
     induction l; intros; simpl in *; intuition;
-    subst; break_if; do_bool; eauto using app_ass.
+    subst; break_if; do_bool; eauto using app_assoc.
     lia.
   Qed.
 
@@ -1950,7 +1957,7 @@ Section CommonTheorems.
       removeAfterIndex l' (eIndex e).
   Proof using. 
     induction l; intros; simpl in *; intuition;
-    subst; break_if; do_bool; eauto using app_ass.
+    subst; break_if; do_bool; eauto using app_assoc.
     specialize (H a). intuition. lia.
   Qed.
 
@@ -1969,7 +1976,7 @@ Section CommonTheorems.
       contiguous_range_exact_lo [x] n.
   Proof using. 
     red. intuition.
-    - exists x. intuition. simpl in *. inv H2; [reflexivity | lia].
+    - exists x. intuition auto with datatypes. simpl in *. inv H2; [reflexivity | lia].
     - simpl in *. intuition. subst. lia.
   Qed.
 
@@ -1981,11 +1988,11 @@ Section CommonTheorems.
   Proof using. 
     intros. unfold contiguous_range_exact_lo in *. intuition.
     - invc H4.
-      + eexists; intuition.
+      + eexists; intuition auto with datatypes.
       + find_rewrite. find_apply_lem_hyp Nat.succ_inj. subst.
         assert (i < i0 <= maxIndex (y :: l)). simpl. lia.
         find_apply_hyp_hyp. break_exists. simpl in *.
-        intuition; subst; eexists; intuition.
+        intuition; subst; eexists; intuition auto.
     - simpl in *. intuition; subst; auto. specialize (H2 y). concludes. lia.
   Qed.
 
@@ -2026,7 +2033,7 @@ Section CommonTheorems.
       In x l2 ->
       In x l.
   Proof using. 
-    intros. subst. intuition.
+    intros. subst. intuition auto with datatypes.
   Qed.
 
   Lemma app_contiguous_maxIndex_le_eq :
@@ -2042,7 +2049,7 @@ Section CommonTheorems.
     simpl in *.
     break_match; intuition. subst. simpl in *.
     unfold contiguous_range_exact_lo in *.
-    intuition. specialize (H0 e0). conclude_using intuition.
+    intuition. specialize (H0 e0). conclude_using ltac:(intuition auto with datatypes).
     lia.
   Qed.
 
@@ -2051,8 +2058,8 @@ Section CommonTheorems.
       sorted (l1 ++ l2) ->
       sorted l1.
   Proof using. 
-    intros. induction l1; simpl in *; intuition;
-    eapply H0; intuition.
+    intros. induction l1; simpl in *; intuition auto with datatypes;
+    eapply H0; intuition auto with datatypes.
   Qed.
 
   Lemma Prefix_maxIndex :
@@ -2076,7 +2083,7 @@ Section CommonTheorems.
       match goal with
         | [ H : forall _, _ = _ \/ In _ _ -> _, _ : eIndex _ <= eIndex ?e |- _ ] =>
           specialize (H e)
-      end; intuition.
+      end; intuition lia.
   Qed.
 
   Lemma app_maxIndex_In_l :
@@ -2087,10 +2094,10 @@ Section CommonTheorems.
       In e l.
   Proof using. 
     induction l; intros; simpl in *; intuition.
-    - destruct l'; simpl in *; intuition; subst; intuition.
-      find_apply_hyp_hyp. intuition.
+    - destruct l'; simpl in *; intuition auto; subst; try lia.
+      find_apply_hyp_hyp. lia.
     - do_in_app. intuition. right. eapply IHl; eauto.
-      intuition.
+      intuition auto with datatypes.
   Qed.
 
   Lemma contiguous_app_prefix_contiguous :
@@ -2118,8 +2125,8 @@ Section CommonTheorems.
       eTerm e <= eTerm e'.
   Proof using. 
     intros.
-    induction l; simpl in *; intuition; repeat subst; auto;
-    find_apply_hyp_hyp; intuition.
+    induction l; simpl in *; intuition auto; repeat subst; auto;
+    find_apply_hyp_hyp; lia.
   Qed.
 
   Lemma contiguous_app_prefix_2 :
@@ -2152,11 +2159,11 @@ Section CommonTheorems.
       end. intuition.
       + subst. simpl in *. intuition.
         destruct l2; simpl in *.
-        * unfold contiguous_range_exact_lo in *. intuition.
+        * unfold contiguous_range_exact_lo in *. intuition auto with datatypes.
         * match goal with
             | H : _ |- eIndex _ > eIndex ?e =>
               specialize (H e)
-          end. conclude_using intuition. intuition.
+          end. conclude_using ltac:(intuition auto with datatypes). intuition.
       + find_apply_lem_hyp cons_contiguous_sorted; eauto.
         simpl in *. intuition.
   Qed.
@@ -2185,12 +2192,12 @@ Section CommonTheorems.
     induction l; intros; intuition.
     simpl in *.
     repeat break_if; simpl in *; repeat break_if;
-    repeat (do_bool; intuition); try lia.
+    repeat (do_bool; intuition auto); try lia.
     simpl. f_equal.
     rewrite IHl; eauto.
     apply removeAfterIndex_eq.
     intros.
-    find_apply_hyp_hyp. intuition.
+    find_apply_hyp_hyp. lia.
   Qed.
 
   Lemma findGtIndex_removeAfterIndex_i'_le_i :

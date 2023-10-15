@@ -130,7 +130,7 @@ Section RaftMsgRefinement.
            end.
            simpl.
            f_equal; auto.
-           - repeat rewrite app_ass. auto.
+           - repeat rewrite <- app_assoc. auto.
            - apply functional_extensionality.
              intros. repeat break_if; simpl; auto.
            - repeat find_rewrite; auto.
@@ -218,7 +218,7 @@ Section RaftMsgRefinement.
            end.
            simpl.
            f_equal; auto.
-           - repeat rewrite app_ass. auto.
+           - repeat rewrite <- app_assoc. auto.
            - apply functional_extensionality.
              intros. repeat break_if; simpl; auto.
            - repeat find_rewrite; auto.

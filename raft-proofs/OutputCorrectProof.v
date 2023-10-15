@@ -398,7 +398,7 @@ Section OutputCorrect.
     intuition.
     pose proof (deduplicate_log_app xs ys). break_exists.
     repeat find_rewrite.
-    rewrite app_ass in *. simpl in *.
+    rewrite <- app_assoc in *. simpl in *.
     eexists. eexists. eexists. eexists. eexists.
     intuition eauto.
   Qed.
@@ -880,7 +880,7 @@ Section OutputCorrect.
       pose proof deduplicate_log_app l l'; break_exists; find_rewrite
     end.
     repeat eexists; intuition eauto; repeat find_rewrite; auto.
-    rewrite app_ass. simpl. repeat f_equal.
+    rewrite <- app_assoc. simpl. repeat f_equal.
   Defined.
   Next Obligation.
     unfold in_output_trace in *. intuition.

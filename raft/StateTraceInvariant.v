@@ -89,10 +89,10 @@ Section ST.
         apply refl_trans_n1_1n_trace; auto.
       + eapply H_RT_input with (failed:=failed); eauto.
         * apply refl_trans_n1_1n_trace; auto.
-        * eapply T_snoc_inv. rewrite app_ass. simpl. eauto.
+        * eapply T_snoc_inv. rewrite <- app_assoc. simpl. eauto.
         * eapply IHrefl_trans_n1_trace; eauto.
           eapply T_snoc_inv. eapply T_snoc_inv.
-          rewrite app_ass. simpl. eauto.
+          rewrite <- app_assoc. simpl. eauto.
       + rewrite app_nil_r in *.
         eapply H_RT_drop with (failed:=failed); eauto.
         apply refl_trans_n1_1n_trace. eauto.

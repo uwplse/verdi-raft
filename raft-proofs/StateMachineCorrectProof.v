@@ -917,7 +917,7 @@ Section StateMachineCorrect.
     find_apply_hyp_hyp.
     break_exists. intuition.
     repeat find_rewrite. find_inversion.
-    repeat eexists; eauto using app_ass.
+    repeat eexists; eauto using app_assoc.
   Qed.
 
   Lemma getLastId_clientCache_to_ks_assoc :
@@ -1025,7 +1025,7 @@ Section StateMachineCorrect.
       end.
       repeat find_rewrite.
       repeat eexists; eauto.
-      rewrite app_ass.
+      rewrite <- app_assoc.
       rewrite <- app_comm_cons. eauto.
     - do_bool. repeat find_inversion.
       copy_eapply_prop_hyp applyEntries applyEntries;
@@ -1045,7 +1045,7 @@ Section StateMachineCorrect.
       end.
       repeat find_rewrite.
       repeat eexists; eauto.
-      rewrite app_ass.
+      rewrite <- app_assoc.
       rewrite <- app_comm_cons. eauto.
     - do_bool. subst.
       destruct (clientId_eq_dec (eClient x) client).
@@ -1101,7 +1101,7 @@ Section StateMachineCorrect.
         end.
         repeat find_rewrite.
         repeat eexists; eauto.
-        rewrite app_ass.
+        rewrite <- app_assoc.
         rewrite <- app_comm_cons. eauto.
     - do_bool. subst.
       destruct (clientId_eq_dec (eClient x) client).
@@ -1157,7 +1157,7 @@ Section StateMachineCorrect.
         end.
         repeat find_rewrite.
         repeat eexists; eauto.
-        rewrite app_ass.
+        rewrite <- app_assoc.
         rewrite <- app_comm_cons. eauto.
   Qed.
 
@@ -1223,7 +1223,7 @@ Section StateMachineCorrect.
     intuition.
     pose proof (deduplicate_log_app xs ys). break_exists.
     repeat find_rewrite.
-    rewrite app_ass in *. simpl in *.
+    rewrite <- app_assoc in *. simpl in *.
     eexists. eexists. eexists. eexists. eexists.
     intuition eauto.
   Qed.
@@ -1236,7 +1236,7 @@ Section StateMachineCorrect.
     induction l; intros; simpl in *.
     - find_inversion. auto.
     - repeat break_let.
-      rewrite app_ass.
+      rewrite <- app_assoc.
       eauto.
   Qed.
 
@@ -1603,7 +1603,7 @@ Section StateMachineCorrect.
           (exists (l ++ xs), e, ys)
       end.
       unfold execute_log.
-      repeat rewrite app_ass.
+      repeat rewrite <- app_assoc.
       rewrite execute_log'_app.
       break_let.
       get_invariant_pre state_machine_log_invariant.

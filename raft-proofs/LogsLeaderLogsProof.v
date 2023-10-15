@@ -298,7 +298,7 @@ Section LogsLeaderLogs.
                   simpl in *.
                   rewrite update_elections_data_appendEntries_leaderLogs. auto.
                 * rewrite removeAfterIndex_in_app; auto.
-                  rewrite app_ass. repeat find_rewrite. auto.
+                  rewrite <- app_assoc. repeat find_rewrite. auto.
                 * repeat find_rewrite. do_in_app. intuition; eauto.
               + (* we share an entry with the leader, so we can use
                 log matching to make sure our old entries match. we'll
@@ -318,7 +318,7 @@ Section LogsLeaderLogs.
                   simpl in *.
                   rewrite update_elections_data_appendEntries_leaderLogs. auto.
                 * rewrite removeAfterIndex_in_app; auto.
-                  repeat find_rewrite. rewrite app_ass.
+                  repeat find_rewrite. rewrite <- app_assoc.
                   find_copy_eapply_lem_hyp leaderLogs_sorted_invariant; eauto.
                   f_equal.
                   eapply thing; eauto using lift_logs_sorted;
@@ -343,7 +343,7 @@ Section LogsLeaderLogs.
                   simpl in *.
                   rewrite update_elections_data_appendEntries_leaderLogs. auto.
                 * rewrite removeAfterIndex_in_app; auto.
-                  repeat find_rewrite. rewrite app_ass.
+                  repeat find_rewrite. rewrite <- app_assoc.
                   f_equal.
                   assert (x2 = []).
                   {
@@ -504,7 +504,7 @@ Section LogsLeaderLogs.
              end; intuition.
              + find_higher_order_rewrite; update_destruct; subst; rewrite_update; eauto;
                simpl in *; rewrite update_elections_data_client_request_leaderLogs; eauto.
-             + break_if; eauto using app_ass; do_bool; lia.
+             + break_if; eauto using app_assoc; do_bool; lia.
              + simpl in *. intuition; subst; eauto.
            - find_copy_apply_lem_hyp maxIndex_is_max; eauto using lift_logs_sorted.
              find_apply_hyp_hyp. break_exists_exists; intuition;

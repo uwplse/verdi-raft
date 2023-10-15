@@ -1944,7 +1944,7 @@ Section StateMachineSafetyProof.
                repeat match goal with
                | [ H : _ <= _, H': _ |- _ ] => rewrite H' in H
                end.
-               find_apply_lem_hyp NPeano.Nat.max_le. break_or_hyp.
+               find_apply_lem_hyp Nat.max_le. break_or_hyp.
                + (* my log is just the entries in the incoming AE.
                     so e was in the incoming entries.
                     but eIndex e <= old commit index.
@@ -2016,7 +2016,7 @@ Section StateMachineSafetyProof.
                repeat match goal with
                       | [ H : _ <= _, H': _ |- _ ] => rewrite H' in H
                       end.
-               find_apply_lem_hyp NPeano.Nat.max_le. break_or_hyp.
+               find_apply_lem_hyp Nat.max_le. break_or_hyp.
                + (* eIndex e <= old commit index *)
                  repeat find_rewrite.
                  match goal with
