@@ -1424,7 +1424,7 @@ Section CommonTheorems.
   Proof using. 
     induction log; intros.
     - simpl. rewrite app_nil_r. auto.
-    - simpl. break_let. rewrite IHlog. rewrite app_ass. simpl.
+    - simpl. break_let. rewrite IHlog. rewrite <- app_assoc. simpl.
       rewrite IHlog with (tr := [(eInput a, o)]).
       auto.
   Qed.
@@ -1938,7 +1938,7 @@ Section CommonTheorems.
       (removeAfterIndex l (eIndex e)) ++ l'.
   Proof using. 
     induction l; intros; simpl in *; intuition;
-    subst; break_if; do_bool; eauto using app_ass.
+    subst; break_if; do_bool; eauto using app_assoc.
     lia.
   Qed.
 
@@ -1950,7 +1950,7 @@ Section CommonTheorems.
       removeAfterIndex l' (eIndex e).
   Proof using. 
     induction l; intros; simpl in *; intuition;
-    subst; break_if; do_bool; eauto using app_ass.
+    subst; break_if; do_bool; eauto using app_assoc.
     specialize (H a). intuition. lia.
   Qed.
 

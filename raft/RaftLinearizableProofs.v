@@ -959,7 +959,7 @@ Section RaftLinearizableProofs.
       simpl.
       eapply_prop_hyp execute_log execute_log; auto.
       + find_rewrite. simpl in *.
-        rewrite <- app_ass.
+        rewrite app_assoc.
         rewrite log_to_IR_app.
         simpl.
         specialize (H x). conclude_using eauto.
@@ -972,7 +972,7 @@ Section RaftLinearizableProofs.
         * apply exported_snoc_IU; auto.
       + intros. apply H. intuition.
       + intros. subst. eapply (H0 _ (ys ++ [x])).
-        rewrite app_ass. simpl. eauto.
+        rewrite <- app_assoc. simpl. eauto.
         eauto.
         eauto.
         eauto.

@@ -264,7 +264,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       match goal with
         | H : nwPackets net' = (?xs ++ ?p :: ?ys) ++ ?l |- _ =>
           assert (nwPackets net' = xs ++ p :: (ys ++ l))
-            by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
+            by (rewrite <- app_assoc in H; rewrite app_comm_cons; auto);
             clear H
       end.
       eapply @RIR_handleMessage with (net := net') (p := p);
@@ -325,7 +325,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       match goal with
         | H : nwPackets net' = (?xs ++ ?p :: ?ys) ++ ?l |- _ =>
           assert (nwPackets net' = xs ++ p :: (ys ++ l))
-            by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
+            by (rewrite <- app_assoc in H; rewrite app_comm_cons; auto);
             clear H
       end.
       eapply @RIR_handleMessage with (net := net') (p := p);
@@ -364,7 +364,7 @@ Section AppendEntriesRequestReplyCorrespondence.
       match goal with
         | H : nwPackets net' = (?xs ++ ?p :: ?ys) ++ ?l |- _ =>
           assert (nwPackets net' = xs ++ p :: (ys ++ l))
-            by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
+            by (rewrite <- app_assoc in H; rewrite app_comm_cons; auto);
             clear H
       end.
       eapply @RIR_handleMessage with (net := net') (p := p);
@@ -401,7 +401,7 @@ Section AppendEntriesRequestReplyCorrespondence.
     match goal with
       | H : nwPackets net' = (?xs ++ ?p :: ?ys) ++ ?l |- _ =>
         assert (nwPackets net' = xs ++ p :: (ys ++ l))
-          by (find_rewrite_lem app_ass; rewrite app_comm_cons; auto);
+          by (rewrite <- app_assoc in H; rewrite app_comm_cons; auto);
           clear H
     end.
     eapply @RIR_handleMessage with (net := net') (p := p);

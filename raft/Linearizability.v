@@ -786,7 +786,7 @@ Section Linearizability.
   Proof using. 
     intros.
     rewrite app_comm_cons.
-    replace (xs ++ I k :: ys) with ((xs ++ [I k]) ++ ys) by now rewrite app_ass.
+    replace (xs ++ I k :: ys) with ((xs ++ [I k]) ++ ys) by now rewrite <- app_assoc.
     auto using op_equiv_app_tail, op_equivalent_all_Is_I.
   Qed.
 
@@ -926,7 +926,7 @@ Section Linearizability.
   Proof using. 
     intros.
     rewrite app_comm_cons.
-    replace (xs ++ O k :: ys) with ((xs ++ [O k]) ++ ys) by now rewrite app_ass.
+    replace (xs ++ O k :: ys) with ((xs ++ [O k]) ++ ys) by now rewrite <- app_assoc.
     auto using op_equiv_app_tail, op_equivalent_all_Is_O.
   Qed.
 
@@ -1310,17 +1310,17 @@ Section Linearizability.
         apply In_app_before; auto using op_eq_dec.
         find_rewrite_lem get_op_input_keys_app. rewrite get_op_input_keys_defn in *.
         intro. eapply NoDup_remove_2; eauto using in_or_app, get_op_input_keys_complete.
-      + repeat rewrite app_ass.
+      + repeat rewrite <- app_assoc.
         rewrite acknowledge_all_ops_func_defn.
         break_if.
         * constructor.
           { eapply IR_equiv_trans.
             - apply op_equiv_AAOF_IR_equiv.
-              rewrite <- app_ass.
+              rewrite app_assoc.
               eauto using op_equivalent_all_Is_O_middle, no_Ik_in_first2.
             - simpl. constructor.
               rewrite acknowledge_all_ops_func_target_ext with (t' := ir).
-              + rewrite app_ass.
+              + rewrite <- app_assoc.
                 apply IHP; auto.
                 * eauto using O_IRO_preserved.
                 * eauto using IRO_O_preserved.
