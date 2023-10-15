@@ -773,7 +773,7 @@ Section Raft.
               {|
                 nwPackets := (xs ++ ys) ++ (send_packets (pDst p) l0);
                 nwState := update name_eq_dec (nwState net) (pDst p) r
-              |}) by (eapply RIR_handleMessage; eauto; in_crush).
+              |}) by (eapply RIR_handleMessage; eauto; in_crush_tac (intuition auto)).
          assert
            (raft_intermediate_reachable
               {|
@@ -781,7 +781,7 @@ Section Raft.
                                 (send_packets (pDst p) l1) ;
                 nwState := (update name_eq_dec (update name_eq_dec (nwState net) (pDst p) r) (pDst p) r0)
               |}) by (eapply RIR_doLeader; eauto;
-                      [simpl in *; break_if; try congruence; eauto| in_crush]).
+                      [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition auto)]).
          eapply_prop raft_net_invariant_do_generic_server. eauto. 
          eapply_prop raft_net_invariant_do_leader. eauto.
          eapply raft_invariant_handle_message with (P := P); eauto using in_app_or.
@@ -794,7 +794,7 @@ Section Raft.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. in_crush.
+         simpl. in_crush_tac (intuition auto with datatypes).
        + unfold RaftInputHandler in *. repeat break_let.
          repeat find_inversion.
          assert
@@ -802,14 +802,14 @@ Section Raft.
               {|
                 nwPackets := nwPackets net ++ send_packets h l0;
                 nwState := update name_eq_dec (nwState net) h r |})
-           by (eapply RIR_handleInput; eauto; in_crush).
+           by (eapply RIR_handleInput; eauto; in_crush_tac (intuition auto)).
          assert
            (raft_intermediate_reachable
               {|
                 nwPackets := ((nwPackets net ++ send_packets h l0) ++ send_packets h l2) ;
                 nwState := update name_eq_dec (update name_eq_dec (nwState net) h r) h r0
               |})  by (eapply RIR_doLeader; eauto;
-                       [simpl in *; break_if; try congruence; eauto| in_crush]).
+                       [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition auto)]).
          eapply_prop raft_net_invariant_do_generic_server. eauto.
          eapply_prop raft_net_invariant_do_leader. eauto.
          eapply raft_invariant_handle_input with (P := P); eauto using in_app_or.
@@ -823,7 +823,7 @@ Section Raft.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. unfold send_packets.  intros. in_crush.
+         simpl. unfold send_packets.  intros. in_crush_tac (intuition auto with datatypes).
        + match goal with
            | [ H : nwPackets ?net = _ |- _ {| nwPackets := ?ps ; nwState := ?st |} ] =>
              assert (forall p, In p (nwPackets {| nwPackets := ps ; nwState := st |}) ->

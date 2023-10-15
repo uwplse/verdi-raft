@@ -173,7 +173,7 @@ Section NextIndexSafety.
       + destruct (name_eq_dec h' (pSrc p)).
         * subst. rewrite get_set_same_default.
           unfold getNextIndex.
-          apply NPeano.Nat.le_le_pred.
+          apply Nat.le_le_pred.
           auto.
         * rewrite get_set_diff_default by auto.
           auto.
@@ -229,7 +229,7 @@ Section NextIndexSafety.
       intuition; repeat find_rewrite.
       + auto.
       + unfold assoc_default. simpl.
-        auto using NPeano.Nat.le_le_pred.
+        auto using Nat.le_le_pred.
     - auto.
   Qed.
 
