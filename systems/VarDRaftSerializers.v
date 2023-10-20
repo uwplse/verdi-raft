@@ -1,11 +1,6 @@
-Require Import Verdi.Verdi.
-Require Import Verdi.VarD.
-
-Require Import Cheerios.Cheerios.
-Require Import Cheerios.Tree.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.VarDRaft.
+From Verdi Require Import Verdi VarD.
+From Cheerios Require Import Cheerios Tree.
+From VerdiRaft Require Import Raft VarDRaft.
 
 Import DeserializerNotations.
 

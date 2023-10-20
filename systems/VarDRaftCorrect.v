@@ -1,14 +1,7 @@
-Require Import Verdi.Verdi.
-Require Import Verdi.VarD.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.Linearizability.
-Require Import VerdiRaft.RaftLinearizableProofs.
-
-Require Import VerdiRaft.EndToEndLinearizability.
-
-Require Import VerdiRaft.VarDRaft.
+From Verdi Require Import Verdi VarD.
+From VerdiRaft Require Import Raft CommonDefinitions.
+From VerdiRaft Require Import Linearizability RaftLinearizableProofs.
+From VerdiRaft Require Import EndToEndLinearizability VarDRaft.
 
 Section VarDRaftCorrect.
   Variable n : nat.

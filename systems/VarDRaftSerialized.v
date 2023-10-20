@@ -1,12 +1,6 @@
-Require Import Verdi.Verdi.
-Require Import Verdi.SerializedMsgParams.
-Require Import Verdi.VarD.
-
-Require Import Cheerios.Cheerios.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.VarDRaft.
-Require Import VerdiRaft.VarDRaftSerializers.
+From Verdi Require Import Verdi SerializedMsgParams VarD.
+From Cheerios Require Import Cheerios.
+From VerdiRaft Require Import Raft VarDRaft VarDRaftSerializers.
 
 Section Serialized.
   Variable n : nat.
