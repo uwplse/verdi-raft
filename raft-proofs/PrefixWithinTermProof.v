@@ -229,7 +229,7 @@ Section PrefixWithinTerm.
         10: { eauto. }
         5: { eauto. }
         4: { eauto. }
-        all:eauto; try lia. repeat find_rewrite; auto.
+        all:eauto; try lia.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         lia.
@@ -256,7 +256,7 @@ Section PrefixWithinTerm.
         10: { eauto. }
         5: { eauto. }
         4: { eauto. }       
-        all:eauto; try lia. repeat find_rewrite; auto.
+        all:eauto; try lia.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         lia.
@@ -285,7 +285,7 @@ Section PrefixWithinTerm.
         10: { eauto. }
         5: { eauto. }
         4: { eauto. }
-        all:eauto; try lia. repeat find_rewrite; auto.
+        all:eauto; try lia.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         lia.
@@ -309,7 +309,7 @@ Section PrefixWithinTerm.
         10: { eauto. }
         5: { eauto. }
         4: { eauto. }       
-        all:eauto; try lia. repeat find_rewrite; auto.
+        all:eauto; try lia.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; eauto.
         lia.
