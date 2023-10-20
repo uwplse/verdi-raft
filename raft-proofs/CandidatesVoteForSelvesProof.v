@@ -1,7 +1,5 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-
-Require Import VerdiRaft.CandidatesVoteForSelvesInterface.
+From VerdiRaft Require Import Raft CommonTheorems.
+From VerdiRaft Require Import CandidatesVoteForSelvesInterface.
 
 Section CandidatesVoteForSelvesProof.
   Context {orig_base_params : BaseParams}.

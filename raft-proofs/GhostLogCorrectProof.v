@@ -1,15 +1,11 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RaftMsgRefinementInterface.
-
-Require Import VerdiRaft.NextIndexSafetyInterface.
-Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft CommonTheorems SpecLemmas.
+From VerdiRaft Require Import RaftMsgRefinementInterface.
+From VerdiRaft Require Import NextIndexSafetyInterface.
+From VerdiRaft Require Import RefinedLogMatchingLemmasInterface.
+From VerdiRaft Require Import GhostLogCorrectInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-Require Import VerdiRaft.GhostLogCorrectInterface.
 
 Section GhostLogCorrectProof.
   Context {orig_base_params : BaseParams}.

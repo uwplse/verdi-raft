@@ -1,21 +1,16 @@
-Require Import Sumbool.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Require Import VerdiRaft.RefinementCommonDefinitions.
-
-Require Import VerdiRaft.LeaderCompletenessInterface.
-Require Import VerdiRaft.PrefixWithinTermInterface.
-Require Import VerdiRaft.LeaderLogsTermSanityInterface.
-Require Import VerdiRaft.LeaderLogsPreservedInterface.
-Require Import VerdiRaft.EveryEntryWasCreatedInterface.
-Require Import VerdiRaft.LeaderLogsVotesWithLogInterface.
-Require Import VerdiRaft.AllEntriesVotesWithLogInterface.
-Require Import VerdiRaft.VotesWithLogSortedInterface.
-Require Import VerdiRaft.TermsAndIndicesFromOneInterface.
-Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
+From Coq Require Import Sumbool.
+From VerdiRaft Require Import Raft CommonTheorems RaftRefinementInterface.
+From VerdiRaft Require Import RefinementCommonDefinitions.
+From VerdiRaft Require Import LeaderCompletenessInterface.
+From VerdiRaft Require Import PrefixWithinTermInterface.
+From VerdiRaft Require Import LeaderLogsTermSanityInterface.
+From VerdiRaft Require Import LeaderLogsPreservedInterface.
+From VerdiRaft Require Import EveryEntryWasCreatedInterface.
+From VerdiRaft Require Import LeaderLogsVotesWithLogInterface.
+From VerdiRaft Require Import AllEntriesVotesWithLogInterface.
+From VerdiRaft Require Import VotesWithLogSortedInterface.
+From VerdiRaft Require Import TermsAndIndicesFromOneInterface.
+From VerdiRaft Require Import LeaderLogsLogMatchingInterface.
 
 Section LeaderCompleteness.
 

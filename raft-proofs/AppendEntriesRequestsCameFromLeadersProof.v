@@ -1,12 +1,9 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import LeadersHaveLeaderLogsInterface.
+From VerdiRaft Require Import AppendEntriesRequestsCameFromLeadersInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
-Require Import VerdiRaft.AppendEntriesRequestsCameFromLeadersInterface.
 
 Section AppendEntriesRequestsCameFromLeaders.
   Context {orig_base_params : BaseParams}.

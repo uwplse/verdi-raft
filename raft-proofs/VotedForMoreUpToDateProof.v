@@ -1,15 +1,10 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface SpecLemmas.
+From VerdiRaft Require Import RefinementSpecLemmas CommonTheorems.
+From VerdiRaft Require Import RequestVoteMaxIndexMaxTermInterface.
+From VerdiRaft Require Import VotedForTermSanityInterface.
+From VerdiRaft Require Import VotedForMoreUpToDateInterface.
+
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
-Require Import VerdiRaft.CommonTheorems.
-
-Require Import VerdiRaft.RequestVoteMaxIndexMaxTermInterface.
-Require Import VerdiRaft.VotedForTermSanityInterface.
-
-Require Import VerdiRaft.VotedForMoreUpToDateInterface.
 
 Section VotedForMoreUpToDate.
   Context {orig_base_params : BaseParams}.

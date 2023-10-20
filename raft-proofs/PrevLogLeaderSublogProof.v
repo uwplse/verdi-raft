@@ -1,24 +1,16 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.RefinementCommonDefinitions.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft CommonTheorems SpecLemmas.
+From VerdiRaft Require Import RaftRefinementInterface.
+From VerdiRaft Require Import RefinementCommonDefinitions.
+From VerdiRaft Require Import PrevLogCandidateEntriesTermInterface.
+From VerdiRaft Require Import VotesCorrectInterface.
+From VerdiRaft Require Import CroniesCorrectInterface.
+From VerdiRaft Require Import LeaderSublogInterface.
+From VerdiRaft Require Import PrevLogLeaderSublogInterface.
 
-Require Import VerdiRaft.PrevLogCandidateEntriesTermInterface.
-Require Import VerdiRaft.VotesCorrectInterface.
-Require Import VerdiRaft.CroniesCorrectInterface.
-Require Import VerdiRaft.LeaderSublogInterface.
-
-Require Import VerdiRaft.PrevLogLeaderSublogInterface.
-
-#[global]
-Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
-
+#[global] Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
+#[global] Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
+#[global] Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
 
 Section PrevLogLeaderSublogProof.
   Context {orig_base_params : BaseParams}.

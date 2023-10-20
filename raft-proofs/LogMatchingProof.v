@@ -1,19 +1,10 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft SpecLemmas CommonTheorems.
+From VerdiRaft Require Import SortedInterface UniqueIndicesInterface.
+From VerdiRaft Require Import LeaderSublogInterface LogMatchingInterface.
 
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.UniqueIndicesInterface.
-Require Import VerdiRaft.LeaderSublogInterface.
-
-Require Import VerdiRaft.LogMatchingInterface.
-
-#[global]
-Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
+#[global] Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
+#[global] Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
+#[global] Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
 
 Section LogMatchingProof.
   Context {orig_base_params : BaseParams}.

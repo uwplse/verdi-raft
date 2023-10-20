@@ -1,17 +1,12 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft SpecLemmas CommonTheorems.
+From VerdiRaft Require Import SortedInterface DecompositionWithPostState.
+From VerdiRaft Require Import MaxIndexSanityInterface.
+From VerdiRaft Require Import StateMachineSafetyInterface.
+From VerdiRaft Require Import LogMatchingInterface.
+From VerdiRaft Require Import StateMachineCorrectInterface.
+From Coq Require Import ZArith.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.CommonTheorems.
-
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.DecompositionWithPostState.
-Require Import VerdiRaft.MaxIndexSanityInterface.
-Require Import VerdiRaft.StateMachineSafetyInterface.
-Require Import VerdiRaft.LogMatchingInterface.
-Require Import VerdiRaft.StateMachineCorrectInterface.
-Require Import ZArith.
 
 Section StateMachineCorrect.
   Context {orig_base_params : BaseParams}.

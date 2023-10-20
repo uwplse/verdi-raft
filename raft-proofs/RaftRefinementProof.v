@@ -1,11 +1,6 @@
-Require Import FunctionalExtensionality.
-
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Set Bullet Behavior "Strict Subproofs".
+From Coq Require Import FunctionalExtensionality.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section RaftRefinementProof.
   Context {orig_base_params : BaseParams}.
@@ -631,9 +626,6 @@ Section RaftRefinementProof.
   Qed.
 End RaftRefinementProof.
 
-#[global]
-Hint Extern 4 (@BaseParams) => apply raft_refined_base_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@MultiParams _) => apply raft_refined_multi_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@FailureParams _ _) => apply raft_refined_failure_params : typeclass_instances.
+#[global] Hint Extern 4 (@BaseParams) => apply raft_refined_base_params : typeclass_instances.
+#[global] Hint Extern 4 (@MultiParams _) => apply raft_refined_multi_params : typeclass_instances.
+#[global] Hint Extern 4 (@FailureParams _ _) => apply raft_refined_failure_params : typeclass_instances.

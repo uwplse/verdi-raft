@@ -1,11 +1,7 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Require Import VerdiRaft.CommonTheorems.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonTheorems CroniesTermInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.CroniesTermInterface.
 
 Section CroniesTermProof.
   Context {orig_base_params : BaseParams}.
@@ -34,9 +30,6 @@ Section CroniesTermProof.
     repeat find_rewrite.
     repeat break_match; simpl in *; eauto.
   Qed.
-  (*   H : handleTimeout h' (snd (nwState net h')) = (out, d, l)
-       In h0 (cronies (update_elections_data_timeout h' (nwState net h')) t)
-   *)
 
   Lemma handleTimeout_spec :
     forall h st out st' l t h',

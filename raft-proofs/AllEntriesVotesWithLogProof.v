@@ -1,17 +1,11 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import AllEntriesVotesWithLogInterface AllEntriesLogInterface.
+From VerdiRaft Require Import VotesWithLogTermSanityInterface VotesCorrectInterface.
+From VerdiRaft Require Import VotesVotesWithLogCorrespondInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
-
-Require Import VerdiRaft.AllEntriesVotesWithLogInterface.
-Require Import VerdiRaft.AllEntriesLogInterface.
-Require Import VerdiRaft.VotesWithLogTermSanityInterface.
-Require Import VerdiRaft.VotesCorrectInterface.
-Require Import VerdiRaft.VotesVotesWithLogCorrespondInterface.
 
 Section AllEntriesVotesWithLog.
 

@@ -1,15 +1,10 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.CommonDefinitions.
-
-Require Import VerdiRaft.SpecLemmas.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonDefinitions SpecLemmas.
+From VerdiRaft Require Import VotesWithLogSortedInterface.
+From VerdiRaft Require Import SortedInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.VotesWithLogSortedInterface.
-Require Import VerdiRaft.SortedInterface.
 
 Section VotesWithLogSorted.
   Context {orig_base_params : BaseParams}.

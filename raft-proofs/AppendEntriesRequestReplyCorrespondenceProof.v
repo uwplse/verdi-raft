@@ -1,13 +1,9 @@
-Require Import FunctionalExtensionality.
-
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.SpecLemmas.
+From Coq Require Import FunctionalExtensionality.
+From VerdiRaft Require Import Raft SpecLemmas.
+From VerdiRaft Require Import AppendEntriesRequestReplyCorrespondenceInterface.
+From Verdi Require Import DupDropReordering.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
-Require Import VerdiRaft.AppendEntriesRequestReplyCorrespondenceInterface.
-
-Require Import Verdi.DupDropReordering.
 
 Section AppendEntriesRequestReplyCorrespondence.
   Context {orig_base_params : BaseParams}.

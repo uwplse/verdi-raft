@@ -1,14 +1,10 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import VotesReceivedMoreUpToDateInterface.
+From VerdiRaft Require Import RequestVoteReplyMoreUpToDateInterface.
+From VerdiRaft Require Import LeaderLogsVotesWithLogInterface.
+
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
-
-Require Import VerdiRaft.VotesReceivedMoreUpToDateInterface.
-Require Import VerdiRaft.RequestVoteReplyMoreUpToDateInterface.
-
-Require Import VerdiRaft.LeaderLogsVotesWithLogInterface.
 
 Section LeaderLogsVotesWithLog.
   Context {orig_base_params : BaseParams}.

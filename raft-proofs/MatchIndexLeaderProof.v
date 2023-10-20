@@ -1,12 +1,8 @@
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.SpecLemmas.
+From VerdiRaft Require Import Raft SpecLemmas.
+From VerdiRaft Require Import NoAppendEntriesRepliesToSelfInterface.
+From VerdiRaft Require Import MatchIndexLeaderInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.NoAppendEntriesRepliesToSelfInterface.
-
-Require Import VerdiRaft.MatchIndexLeaderInterface.
 
 Section MatchIndexLeader.
   Context {orig_base_params : BaseParams}.

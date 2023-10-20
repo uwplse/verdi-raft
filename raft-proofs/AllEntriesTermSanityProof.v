@@ -1,11 +1,7 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From VerdiRaft Require Import Raft RaftRefinementInterface SpecLemmas.
+From VerdiRaft Require Import RefinementSpecLemmas AllEntriesTermSanityInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.AllEntriesTermSanityInterface.
 
 Section AllEntriesTermSanity.
 

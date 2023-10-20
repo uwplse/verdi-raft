@@ -1,10 +1,8 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-Require Import VerdiRaft.SpecLemmas.
+From VerdiRaft Require Import Raft RaftRefinementInterface SpecLemmas.
+From VerdiRaft Require Import LeaderLogsLogPropertiesInterface.
+From VerdiRaft Require Import RefinementSpecLemmas.
 
-Require Import VerdiRaft.LeaderLogsLogPropertiesInterface.
-Require Import VerdiRaft.RefinementSpecLemmas.
+Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LeaderLogsLogProperties.
   Context {orig_base_params : BaseParams}.

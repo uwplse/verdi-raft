@@ -1,14 +1,10 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import CandidateTermGtLogInterface.
+From VerdiRaft Require Import LeaderLogsTermSanityInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.CandidateTermGtLogInterface.
-Require Import VerdiRaft.LeaderLogsTermSanityInterface.
 
 Section LeaderLogsTermSanity.
 

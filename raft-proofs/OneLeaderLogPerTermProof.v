@@ -1,20 +1,16 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
-Require Import VerdiRaft.RefinementCommonTheorems.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonTheorems SpecLemmas.
+From VerdiRaft Require Import RefinementSpecLemmas.
+From VerdiRaft Require Import RefinementCommonTheorems.
+From VerdiRaft Require Import LeaderLogsVotesWithLogInterface.
+From VerdiRaft Require Import VotesCorrectInterface.
+From VerdiRaft Require Import CroniesCorrectInterface.
+From VerdiRaft Require Import VotesVotesWithLogCorrespondInterface.
+From VerdiRaft Require Import LeaderLogsTermSanityInterface.
+From VerdiRaft Require Import OneLeaderLogPerTermInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.LeaderLogsVotesWithLogInterface.
-Require Import VerdiRaft.VotesCorrectInterface.
-Require Import VerdiRaft.CroniesCorrectInterface.
-Require Import VerdiRaft.VotesVotesWithLogCorrespondInterface.
-Require Import VerdiRaft.LeaderLogsTermSanityInterface.
-Require Import VerdiRaft.OneLeaderLogPerTermInterface.
 
 Section OneLeaderLogPerTerm.
   Context {orig_base_params : BaseParams}.

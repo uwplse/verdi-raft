@@ -1,36 +1,28 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.CommitRecordedCommittedInterface.
-Require Import VerdiRaft.StateMachineSafetyInterface.
-Require Import VerdiRaft.StateMachineSafetyPrimeInterface.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.MaxIndexSanityInterface.
-Require Import VerdiRaft.LeaderCompletenessInterface.
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.LogMatchingInterface.
-Require Import VerdiRaft.PrevLogLeaderSublogInterface.
-Require Import VerdiRaft.CurrentTermGtZeroInterface.
-Require Import VerdiRaft.LastAppliedLeCommitIndexInterface.
-Require Import VerdiRaft.MatchIndexAllEntriesInterface.
-Require Import VerdiRaft.LeadersHaveLeaderLogsInterface.
-Require Import VerdiRaft.LeaderSublogInterface.
-Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
-Require Import VerdiRaft.GhostLogCorrectInterface.
-Require Import VerdiRaft.GhostLogsLogPropertiesInterface.
-Require Import VerdiRaft.GhostLogLogMatchingInterface.
-Require Import VerdiRaft.TransitiveCommitInterface.
-Require Import VerdiRaft.TermSanityInterface.
-Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
-Require Import VerdiRaft.OneLeaderLogPerTermInterface.
-
-Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
-
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
-
-Require Import VerdiRaft.RaftMsgRefinementInterface.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft CommonTheorems.
+From VerdiRaft Require Import CommitRecordedCommittedInterface.
+From VerdiRaft Require Import StateMachineSafetyInterface.
+From VerdiRaft Require Import StateMachineSafetyPrimeInterface.
+From VerdiRaft Require Import RaftRefinementInterface.
+From VerdiRaft Require Import MaxIndexSanityInterface.
+From VerdiRaft Require Import LeaderCompletenessInterface.
+From VerdiRaft Require Import SortedInterface LogMatchingInterface.
+From VerdiRaft Require Import PrevLogLeaderSublogInterface.
+From VerdiRaft Require Import CurrentTermGtZeroInterface.
+From VerdiRaft Require Import LastAppliedLeCommitIndexInterface.
+From VerdiRaft Require Import MatchIndexAllEntriesInterface.
+From VerdiRaft Require Import LeadersHaveLeaderLogsInterface.
+From VerdiRaft Require Import LeaderSublogInterface.
+From VerdiRaft Require Import TermsAndIndicesFromOneLogInterface.
+From VerdiRaft Require Import GhostLogCorrectInterface.
+From VerdiRaft Require Import GhostLogsLogPropertiesInterface.
+From VerdiRaft Require Import GhostLogLogMatchingInterface.
+From VerdiRaft Require Import TransitiveCommitInterface TermSanityInterface.
+From VerdiRaft Require Import LeadersHaveLeaderLogsStrongInterface.
+From VerdiRaft Require Import OneLeaderLogPerTermInterface.
+From VerdiRaft Require Import RefinedLogMatchingLemmasInterface.
+From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import RaftMsgRefinementInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
