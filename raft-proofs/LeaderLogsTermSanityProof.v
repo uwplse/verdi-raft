@@ -4,7 +4,7 @@ From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
 From VerdiRaft Require Import CandidateTermGtLogInterface.
 From VerdiRaft Require Import LeaderLogsTermSanityInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LeaderLogsTermSanity.
 

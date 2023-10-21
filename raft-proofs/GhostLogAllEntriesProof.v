@@ -5,7 +5,7 @@ From VerdiRaft Require Import RaftMsgRefinementInterface.
 From VerdiRaft Require Import InLogInAllEntriesInterface.
 From VerdiRaft Require Import GhostLogAllEntriesInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section GhostLogAllEntriesProof.
   Context {orig_base_params : BaseParams}.

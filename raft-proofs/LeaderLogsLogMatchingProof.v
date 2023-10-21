@@ -10,7 +10,7 @@ From VerdiRaft Require Import LeaderLogsContiguousInterface.
 From VerdiRaft Require Import TermsAndIndicesFromOneInterface.
 From VerdiRaft Require Import LeaderLogsLogMatchingInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LeaderLogsLogMatching.
 

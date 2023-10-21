@@ -4,7 +4,7 @@ From VerdiRaft Require Import AppendEntriesRequestsCameFromLeadersInterface.
 From VerdiRaft Require Import OneLeaderLogPerTermInterface LeaderLogsTermSanityInterface.
 From VerdiRaft Require Import OneLeaderPerTermInterface AppendEntriesLeaderInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AppendEntriesLeader.
 

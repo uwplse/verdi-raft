@@ -3,7 +3,7 @@ From VerdiRaft Require Import Raft RaftRefinementInterface CommonTheorems.
 From VerdiRaft Require Import LeaderLogsContiguousInterface.
 From VerdiRaft Require Import LogMatchingInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LeaderLogsContiguous.
 

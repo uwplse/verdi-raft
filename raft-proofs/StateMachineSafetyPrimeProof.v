@@ -14,7 +14,7 @@ From VerdiRaft Require Import LogsLeaderLogsInterface.
 From VerdiRaft Require Import OneLeaderLogPerTermInterface.
 From VerdiRaft Require Import RefinedLogMatchingLemmasInterface.
 
-Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
 Section StateMachineSafety'.
   Context {orig_base_params : BaseParams}.

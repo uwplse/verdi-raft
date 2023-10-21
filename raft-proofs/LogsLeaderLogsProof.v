@@ -10,7 +10,7 @@ From VerdiRaft Require Import LeadersHaveLeaderLogsStrongInterface.
 From VerdiRaft Require Import NextIndexSafetyInterface.
 From VerdiRaft Require Import SortedInterface LeaderLogsLogPropertiesInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LogsLeaderLogs.
   Context {orig_base_params : BaseParams}.

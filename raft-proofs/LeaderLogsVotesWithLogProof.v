@@ -4,7 +4,7 @@ From VerdiRaft Require Import VotesReceivedMoreUpToDateInterface.
 From VerdiRaft Require Import RequestVoteReplyMoreUpToDateInterface.
 From VerdiRaft Require Import LeaderLogsVotesWithLogInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LeaderLogsVotesWithLog.
   Context {orig_base_params : BaseParams}.

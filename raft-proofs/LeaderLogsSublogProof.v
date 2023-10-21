@@ -10,7 +10,7 @@ From VerdiRaft Require Import VotesCorrectInterface.
 From VerdiRaft Require Import RefinementCommonTheorems.
 From VerdiRaft Require Import LeaderLogsSublogInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LeaderLogsSublog.
   Context {orig_base_params : BaseParams}.

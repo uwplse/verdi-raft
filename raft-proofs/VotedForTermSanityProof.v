@@ -3,7 +3,7 @@ From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
 From VerdiRaft Require Import RequestVoteTermSanityInterface.
 From VerdiRaft Require Import VotedForTermSanityInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section VotedForTermSanity.
   Context {orig_base_params : BaseParams}.

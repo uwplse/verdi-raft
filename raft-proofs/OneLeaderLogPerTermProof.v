@@ -10,7 +10,7 @@ From VerdiRaft Require Import VotesVotesWithLogCorrespondInterface.
 From VerdiRaft Require Import LeaderLogsTermSanityInterface.
 From VerdiRaft Require Import OneLeaderLogPerTermInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section OneLeaderLogPerTerm.
   Context {orig_base_params : BaseParams}.

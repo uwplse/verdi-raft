@@ -18,7 +18,7 @@ From VerdiRaft Require Import VotesCorrectInterface.
 From VerdiRaft Require Import CroniesCorrectInterface.
 From VerdiRaft Require Import MatchIndexAllEntriesInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section MatchIndexAllEntries.
   Context {orig_base_params : BaseParams}.

@@ -10,7 +10,7 @@ From VerdiRaft Require Import OneLeaderLogPerTermInterface.
 From VerdiRaft Require Import LeaderLogsSortedInterface TermSanityInterface.
 From VerdiRaft Require Import AllEntriesTermSanityInterface AllEntriesLogInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AllEntriesLog.
 

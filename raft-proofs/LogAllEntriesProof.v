@@ -4,7 +4,7 @@ From VerdiRaft Require Import RefinementSpecLemmas.
 From VerdiRaft Require Import TermSanityInterface.
 From VerdiRaft Require Import LogAllEntriesInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section LogAllEntries.
   Context {orig_base_params : BaseParams}.

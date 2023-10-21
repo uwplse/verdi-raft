@@ -7,7 +7,7 @@ From VerdiRaft Require Import RefinementSpecLemmas.
 From VerdiRaft Require Import RefinementCommonTheorems.
 From VerdiRaft Require Import PrevLogCandidateEntriesTermInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section PrevLogCandidateEntriesTerm.
   Context {orig_base_params : BaseParams}.

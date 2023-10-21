@@ -6,7 +6,7 @@ From VerdiRaft Require Import LogMatchingInterface.
 From VerdiRaft Require Import StateMachineCorrectInterface.
 From Coq Require Import ZArith.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section StateMachineCorrect.
   Context {orig_base_params : BaseParams}.

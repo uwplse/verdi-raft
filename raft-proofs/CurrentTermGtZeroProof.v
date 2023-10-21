@@ -1,6 +1,6 @@
 From VerdiRaft Require Import Raft SpecLemmas CurrentTermGtZeroInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section CurrentTermGtZero.
   Context {orig_base_params : BaseParams}.

@@ -8,7 +8,7 @@ From VerdiRaft Require Import LeaderCompletenessInterface.
 From VerdiRaft Require Import LastAppliedCommitIndexMatchingInterface.
 From VerdiRaft Require Import SpecLemmas AppliedEntriesMonotonicInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AppliedEntriesMonotonicProof.
   Context {orig_base_params : BaseParams}.
