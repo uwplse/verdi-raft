@@ -1,0 +1,6 @@
+(coq.theory
+ (name VerdiRaft)
+ (package coq-verdi-raft)
+ (synopsis "Verified implementation of the Raft distributed consensus protocol in Coq"))
+
+(include_subdirs qualified)
