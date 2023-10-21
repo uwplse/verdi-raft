@@ -6,7 +6,7 @@ From VerdiRaft Require Import MaxIndexSanityInterface.
 From VerdiRaft Require Import TraceUtil SortedInterface.
 From VerdiRaft Require Import OutputImpliesAppliedInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section OutputImpliesApplied.
   Context {orig_base_params : BaseParams}.

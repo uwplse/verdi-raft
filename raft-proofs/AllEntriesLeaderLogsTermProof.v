@@ -3,7 +3,7 @@ From VerdiRaft Require Import RefinementSpecLemmas SpecLemmas.
 From VerdiRaft Require Import AllEntriesLeaderLogsTermInterface.
 From VerdiRaft Require Import AppendEntriesRequestLeaderLogsInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AllEntriesLeaderLogsTerm.
 

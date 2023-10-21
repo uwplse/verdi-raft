@@ -8,7 +8,7 @@ From VerdiRaft Require Import SortedInterface LogMatchingInterface.
 From VerdiRaft Require Import StateMachineSafetyInterface MaxIndexSanityInterface.
 From VerdiRaft Require Import UniqueIndicesInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section InputBeforeOutput.
   Context {orig_base_params : BaseParams}.

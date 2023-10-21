@@ -1,13 +1,10 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonDefinitions SpecLemmas.
+From VerdiRaft Require Import RefinementSpecLemmas.
+From VerdiRaft Require Import TermsAndIndicesFromOneInterface.
+From VerdiRaft Require Import TermsAndIndicesFromOneLogInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.TermsAndIndicesFromOneInterface.
-Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section TermsAndIndicesFromOne.
   Context {orig_base_params : BaseParams}.

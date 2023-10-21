@@ -5,7 +5,7 @@ From VerdiRaft Require Import AllEntriesLeaderSublogInterface.
 From VerdiRaft Require Import LeaderSublogInterface RefinedLogMatchingLemmasInterface.
 From VerdiRaft Require Import AllEntriesLogMatchingInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AllEntriesLogMatching.
 

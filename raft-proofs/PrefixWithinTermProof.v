@@ -14,7 +14,7 @@ From VerdiRaft Require Import AllEntriesLogMatchingInterface.
 From VerdiRaft Require Import AppendEntriesRequestTermSanityInterface.
 From VerdiRaft Require Import AllEntriesLeaderSublogInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section PrefixWithinTerm.
   Context {orig_base_params : BaseParams}.

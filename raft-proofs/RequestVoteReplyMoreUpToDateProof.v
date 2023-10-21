@@ -5,7 +5,7 @@ From VerdiRaft Require Import RequestVoteReplyTermSanityInterface.
 From VerdiRaft Require Import VotedForMoreUpToDateInterface.
 From VerdiRaft Require Import RequestVoteReplyMoreUpToDateInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section RequestVoteReplyMoreUpToDate.
   Context {orig_base_params : BaseParams}.

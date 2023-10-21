@@ -3,7 +3,7 @@ From VerdiRaft Require Import RefinementSpecLemmas CommonTheorems.
 From VerdiRaft Require Import RequestVoteReplyMoreUpToDateInterface.
 From VerdiRaft Require Import VotesReceivedMoreUpToDateInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section VotesReceivedMoreUpToDate.
   Context {orig_base_params : BaseParams}.

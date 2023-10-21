@@ -8,7 +8,7 @@ From VerdiRaft Require Import AllEntriesCandidateEntriesInterface.
 From VerdiRaft Require Import VotesCorrectInterface CroniesCorrectInterface.
 From VerdiRaft Require Import LeaderSublogInterface OneLeaderPerTermInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AllEntriesLeaderSublog.
 

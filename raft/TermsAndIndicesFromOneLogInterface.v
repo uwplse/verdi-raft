@@ -1,6 +1,4 @@
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.CommonDefinitions.
+From VerdiRaft Require Import Raft CommonDefinitions.
 
 Section TermsAndIndicesFromOneLogInterface.
   Context {orig_base_params : BaseParams}.

@@ -6,7 +6,7 @@ From VerdiRaft Require Import CommonTheorems.
 From VerdiRaft Require Export RefinementCommonDefinitions.
 From VerdiRaft Require Import SpecLemmas.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section CommonTheorems.
   Context {orig_base_params : BaseParams}.

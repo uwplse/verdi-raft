@@ -4,7 +4,7 @@ From VerdiRaft Require Import CommonDefinitions SpecLemmas.
 From VerdiRaft Require Import VotesWithLogSortedInterface.
 From VerdiRaft Require Import SortedInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section VotesWithLogSorted.
   Context {orig_base_params : BaseParams}.

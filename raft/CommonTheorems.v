@@ -2,7 +2,7 @@ From Coq Require Import PeanoNat FunInd.
 From VerdiRaft Require Import RaftState Raft.
 From VerdiRaft Require Export CommonDefinitions.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section CommonTheorems.
   Context {orig_base_params : BaseParams}.

@@ -3,7 +3,7 @@ From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
 From VerdiRaft Require Import VotesCorrectInterface.
 From VerdiRaft Require Import VotesLeCurrentTermInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section VotesCorrect.
   Context {orig_base_params : BaseParams}.

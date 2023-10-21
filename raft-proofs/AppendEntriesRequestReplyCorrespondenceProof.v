@@ -3,7 +3,7 @@ From VerdiRaft Require Import Raft SpecLemmas.
 From VerdiRaft Require Import AppendEntriesRequestReplyCorrespondenceInterface.
 From Verdi Require Import DupDropReordering.
 
-Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
 Section AppendEntriesRequestReplyCorrespondence.
   Context {orig_base_params : BaseParams}.

@@ -24,7 +24,7 @@ From VerdiRaft Require Import RefinedLogMatchingLemmasInterface.
 From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
 From VerdiRaft Require Import RaftMsgRefinementInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section StateMachineSafetyProof.
   Context {orig_base_params : BaseParams}.

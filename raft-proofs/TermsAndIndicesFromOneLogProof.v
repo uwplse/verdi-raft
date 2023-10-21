@@ -1,16 +1,14 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SpecLemmas.
+From VerdiRaft Require Import Raft CommonTheorems SpecLemmas.
+From VerdiRaft Require Import TermsAndIndicesFromOneLogInterface.
+From VerdiRaft Require Import CurrentTermGtZeroInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.TermsAndIndicesFromOneLogInterface.
-Require Import VerdiRaft.CurrentTermGtZeroInterface.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section TermsAndIndicesFromOneLog.
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
+
   Context {ctgzi : current_term_gt_zero_interface}.
 
   Definition terms_and_indices_from_one_log_ind (net : network) : Prop :=

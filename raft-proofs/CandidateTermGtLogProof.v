@@ -1,7 +1,7 @@
 From VerdiRaft Require Import Raft SpecLemmas TermSanityInterface.
 From VerdiRaft Require Import CandidateTermGtLogInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section CandidateTermGtLog.
   Context {orig_base_params : BaseParams}.

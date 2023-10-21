@@ -5,7 +5,7 @@ From VerdiRaft Require Import AllEntriesVotesWithLogInterface AllEntriesLogInter
 From VerdiRaft Require Import VotesWithLogTermSanityInterface VotesCorrectInterface.
 From VerdiRaft Require Import VotesVotesWithLogCorrespondInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AllEntriesVotesWithLog.
 

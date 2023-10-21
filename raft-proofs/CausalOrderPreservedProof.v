@@ -5,7 +5,7 @@ From VerdiRaft Require Import OutputImpliesAppliedInterface.
 From VerdiRaft Require Import AppliedImpliesInputInterface.
 From VerdiRaft Require Import AppliedEntriesMonotonicInterface.
 
-Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
 Section CausalOrderPreserved.
   Context {orig_base_params : BaseParams}.

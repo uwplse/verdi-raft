@@ -3,7 +3,7 @@ From VerdiRaft Require Import Raft CommonTheorems.
 From VerdiRaft Require Import TraceUtil OutputImpliesAppliedInterface.
 From VerdiRaft Require Import SpecLemmas AppliedImpliesInputInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AppliedImpliesInputProof.
   Context {orig_base_params : BaseParams}.

@@ -6,7 +6,7 @@ From VerdiRaft Require Import TraceUtil StateMachineCorrectInterface.
 From VerdiRaft Require Import SortedInterface LastAppliedCommitIndexMatchingInterface.
 From VerdiRaft Require Import LogMatchingInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section OutputCorrect.
   Context {orig_base_params : BaseParams}.

@@ -4,7 +4,7 @@ From VerdiRaft Require Import VotesCorrectInterface TermSanityInterface.
 From VerdiRaft Require Import CroniesTermInterface RefinementCommonTheorems.
 From VerdiRaft Require Import SpecLemmas CandidateEntriesInterface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section CandidateEntriesProof.
   Context {orig_base_params : BaseParams}.

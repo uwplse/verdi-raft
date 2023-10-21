@@ -4,7 +4,7 @@ From VerdiRaft Require Import CommonDefinitions RefinementSpecLemmas.
 From VerdiRaft Require Import TermsAndIndicesFromOneLogInterface.
 From VerdiRaft Require Import AllEntriesIndicesGt0Interface.
 
-Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
+#[local] Arguments update {_} {_} _ _ _ _ _ : simpl never.
 
 Section AllEntriesIndicesGt0.
   Context {orig_base_params : BaseParams}.

@@ -161,7 +161,7 @@ Section Serializers.
       cheerios_crush.
   Qed.
 
-  Global Instance msg_Serializer : Serializer msg :=
+  #[global] Instance msg_Serializer : Serializer msg :=
     {| serialize := msg_serialize;
        deserialize := msg_deserialize;
        serialize_deserialize_id := msg_serialize_deserialize_id |}.
@@ -217,7 +217,7 @@ Section Serializers.
       repeat (cheerios_crush; simpl).
   Qed.
 
-  Global Instance output_Serializer : Serializer output :=
+  #[global] Instance output_Serializer : Serializer output :=
     {| serialize := serialize_output;
        deserialize := deserialize_output;
        serialize_deserialize_id := output_serialize_deserialize_id |}.
@@ -265,7 +265,7 @@ Section Serializers.
     reflexivity.
   Qed.
 
-  Global Instance raft_data_Serializer : Serializer raft_data :=
+  #[global] Instance raft_data_Serializer : Serializer raft_data :=
     {| serialize := serialize_raft_data;
        deserialize := deserialize_raft_data;
        serialize_deserialize_id := raft_data_serialize_deserialize_id |}.
@@ -302,7 +302,7 @@ Section Serializers.
     destruct i; repeat (cheerios_crush; simpl).
   Qed.
 
-  Global Instance raft_input_Serializer : Serializer raft_input :=
+  #[global] Instance raft_input_Serializer : Serializer raft_input :=
     {| serialize := serialize_raft_input;
        deserialize := deserialize_raft_input;
        serialize_deserialize_id := raft_input_serialize_deserialize_id |}.
