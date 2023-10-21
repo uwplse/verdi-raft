@@ -1,15 +1,10 @@
-Require Import Sumbool.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.TraceUtil.
-Require Import VerdiRaft.Linearizability.
-Require Import VerdiRaft.OutputImpliesAppliedInterface.
-Require Import VerdiRaft.AppliedImpliesInputInterface.
-Require Import VerdiRaft.CausalOrderPreservedInterface.
-Require Import VerdiRaft.OutputCorrectInterface.
-Require Import VerdiRaft.InputBeforeOutputInterface.
-Require Import VerdiRaft.OutputGreatestIdInterface.
+From Coq Require Import Sumbool.
+From VerdiRaft Require Import Raft CommonTheorems TraceUtil.
+From VerdiRaft Require Import Linearizability OutputImpliesAppliedInterface.
+From VerdiRaft Require Import AppliedImpliesInputInterface.
+From VerdiRaft Require Import CausalOrderPreservedInterface.
+From VerdiRaft Require Import OutputCorrectInterface InputBeforeOutputInterface.
+From VerdiRaft Require Import OutputGreatestIdInterface.
 
 Section RaftLinearizableProofs.
   Context {orig_base_params : BaseParams}.

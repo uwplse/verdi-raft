@@ -1,9 +1,7 @@
-Require Import FunctionalExtensionality.
-
-Require Import VerdiRaft.Raft.
+From Coq Require Import FunctionalExtensionality.
+From VerdiRaft Require Import Raft.
 
 Section DecompositionWithPostState.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -335,5 +333,4 @@ Section DecompositionWithPostState.
     - eapply_prop raft_net_invariant_do_leader'; eauto using RIR_doLeader.
     - eapply_prop raft_net_invariant_do_generic_server'; eauto using RIR_doGenericServer.
   Qed.
-
 End DecompositionWithPostState.

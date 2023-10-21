@@ -1,8 +1,6 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section MatchIndexAllEntries.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -21,6 +19,5 @@ Section MatchIndexAllEntries.
         forall net,
           refined_raft_intermediate_reachable net ->
           match_index_all_entries net
-    }.
-  
+    }.  
 End MatchIndexAllEntries.

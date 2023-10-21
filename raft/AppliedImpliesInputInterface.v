@@ -1,6 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.TraceUtil.
+From VerdiRaft Require Import Raft CommonDefinitions TraceUtil.
 
 Section AppliedImpliesInputInterface.
   Context {orig_base_params : BaseParams}.

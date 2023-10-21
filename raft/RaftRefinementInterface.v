@@ -1,5 +1,5 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft.
 
 Section RaftRefinementInterface.
   Context {orig_base_params : BaseParams}.
@@ -567,12 +567,8 @@ Section RaftRefinementInterface.
           refined_raft_intermediate_reachable net ->
           raft_intermediate_reachable (deghost net)
     }.
-
 End RaftRefinementInterface.
 
-#[global]
-Hint Extern 4 (@BaseParams) => apply raft_refined_base_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@MultiParams _) => apply raft_refined_multi_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@FailureParams _ _) => apply raft_refined_failure_params : typeclass_instances.
+#[global] Hint Extern 4 (@BaseParams) => apply raft_refined_base_params : typeclass_instances.
+#[global] Hint Extern 4 (@MultiParams _) => apply raft_refined_multi_params : typeclass_instances.
+#[global] Hint Extern 4 (@FailureParams _ _) => apply raft_refined_failure_params : typeclass_instances.

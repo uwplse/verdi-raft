@@ -1,5 +1,4 @@
-Require Import VerdiRaft.Raft.
-
+From VerdiRaft Require Import Raft.
 
 Section AppendEntriesRequestReplyCorrespondence.
   Context {orig_base_params : BaseParams}.
@@ -26,6 +25,4 @@ Section AppendEntriesRequestReplyCorrespondence.
           raft_intermediate_reachable net ->
           append_entries_request_reply_correspondence net
     }.
-
-    
 End AppendEntriesRequestReplyCorrespondence.

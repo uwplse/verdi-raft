@@ -1,11 +1,9 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section VotedForTermSanity.
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
-
 
   Definition votedFor_term_sanity (net : network) : Prop :=
     forall t h h',

@@ -1,11 +1,9 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.LeaderCompletenessInterface.
-Require Import VerdiRaft.CommonDefinitions.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import LeaderCompletenessInterface.
+From VerdiRaft Require Import CommonDefinitions.
 
 Section CommitRecordedCommitted.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -22,5 +20,4 @@ Section CommitRecordedCommitted.
           refined_raft_intermediate_reachable net ->
           commit_recorded_committed net
     }.
-  
 End CommitRecordedCommitted.

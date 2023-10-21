@@ -1,14 +1,10 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Require Import VerdiRaft.VotesCorrectInterface.
-Require Import VerdiRaft.CroniesCorrectInterface.
-
-Require Import VerdiRaft.CommonTheorems.
-Require Export VerdiRaft.RefinementCommonDefinitions.
-
-Require Import VerdiRaft.SpecLemmas.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import VotesCorrectInterface.
+From VerdiRaft Require Import CroniesCorrectInterface.
+From VerdiRaft Require Import CommonTheorems.
+From VerdiRaft Require Export RefinementCommonDefinitions.
+From VerdiRaft Require Import SpecLemmas.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 

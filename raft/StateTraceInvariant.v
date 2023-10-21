@@ -1,6 +1,5 @@
-Require Import FunctionalExtensionality.
-
-Require Import Verdi.Verdi.
+From Coq Require Import FunctionalExtensionality.
+From Verdi Require Import Verdi.
 
 Section ST.
   Context {B : BaseParams}.

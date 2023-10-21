@@ -1,9 +1,7 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.LeaderCompletenessInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import LeaderCompletenessInterface.
 
 Section TransitiveCommit.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -22,6 +20,5 @@ Section TransitiveCommit.
         forall net,
           refined_raft_intermediate_reachable net ->
           transitive_commit net
-    }.
-  
+    }.  
 End TransitiveCommit.

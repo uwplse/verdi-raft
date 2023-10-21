@@ -1,7 +1,5 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.RaftRefinementInterface.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section RaftMsgRefinementInterface.
   Context {orig_base_params : BaseParams}.
@@ -467,9 +465,6 @@ Section RaftMsgRefinementInterface.
 
 End RaftMsgRefinementInterface.
 
-#[global]
-Hint Extern 3 (@BaseParams) => apply raft_msg_refined_base_params : typeclass_instances.
-#[global]
-Hint Extern 3 (@MultiParams _) => apply raft_msg_refined_multi_params : typeclass_instances.
-#[global]
-Hint Extern 3 (@FailureParams _ _) => apply raft_msg_refined_failure_params : typeclass_instances.
+#[global] Hint Extern 3 (@BaseParams) => apply raft_msg_refined_base_params : typeclass_instances.
+#[global] Hint Extern 3 (@MultiParams _) => apply raft_msg_refined_multi_params : typeclass_instances.
+#[global] Hint Extern 3 (@FailureParams _ _) => apply raft_msg_refined_failure_params : typeclass_instances.

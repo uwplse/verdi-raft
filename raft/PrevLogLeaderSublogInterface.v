@@ -1,4 +1,4 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft.
 
 Section PrevLogLeaderSublogInterface.
   Context {orig_base_params : BaseParams}.
@@ -24,5 +24,4 @@ Section PrevLogLeaderSublogInterface.
           raft_intermediate_reachable net ->
           prevLog_leader_sublog net
     }.
-
 End PrevLogLeaderSublogInterface.

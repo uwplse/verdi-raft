@@ -1,7 +1,5 @@
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.RaftMsgRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import RaftMsgRefinementInterface.
 
 Section GhostLogAllEntriesInterface.
   Context {orig_base_params : BaseParams}.
@@ -15,13 +13,11 @@ Section GhostLogAllEntriesInterface.
       exists t,
         In (t, e) (allEntries (fst (nwState net (pSrc p)))).
 
-
   Class ghost_log_allEntries_interface : Prop :=
     {
       ghost_log_allEntries_invariant :
         forall net,
           msg_refined_raft_intermediate_reachable net ->
           ghost_log_allEntries net
-    }.
-  
+    }.  
 End GhostLogAllEntriesInterface.

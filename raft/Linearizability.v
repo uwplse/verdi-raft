@@ -1,4 +1,4 @@
-Require Import Verdi.Verdi.
+From Verdi Require Import Verdi.
 
 Section Linearizability.
   Variable K : Type.
@@ -1426,6 +1426,7 @@ Section Linearizability.
   Qed.
 
 End Linearizability.
+
 Arguments I {_} _.
 Arguments O {_} _.
 

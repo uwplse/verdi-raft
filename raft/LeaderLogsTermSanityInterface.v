@@ -1,5 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section LeaderLogsTermSanity.
   Context {orig_base_params : BaseParams}.

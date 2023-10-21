@@ -1,9 +1,6 @@
-Require Import VerdiRaft.RaftState.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
+From VerdiRaft Require Import RaftState Raft CommonTheorems.
 
 Section SpecLemmas.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -1326,6 +1323,5 @@ Section SpecLemmas.
     intros.
     repeat break_match; find_inversion; simpl in *; auto; try congruence;
     do_bool; try lia; eauto using Nat.le_antisymm.
-  Qed.
-  
+  Qed.  
 End SpecLemmas.
