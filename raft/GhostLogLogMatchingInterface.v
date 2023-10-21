@@ -1,10 +1,7 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftMsgRefinementInterface.
-
-Require Import VerdiRaft.CommonDefinitions.
+From VerdiRaft Require Import Raft RaftMsgRefinementInterface.
+From VerdiRaft Require Import CommonDefinitions.
 
 Section GhostLogLogMatching.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -21,5 +18,4 @@ Section GhostLogLogMatching.
           msg_refined_raft_intermediate_reachable net ->
           ghost_log_entries_match_host net
     }.
-  
 End GhostLogLogMatching.

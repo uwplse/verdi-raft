@@ -1,18 +1,8 @@
-Require Import Verdi.Verdi.
-Require Import Verdi.VarD.
-Require Import Cheerios.Cheerios.
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.Linearizability.
-Require Import VerdiRaft.RaftLinearizableProofs.
-
-Require Import VerdiRaft.EndToEndLinearizability.
-
-Require Import Verdi.Log.
-Require Import Verdi.LogCorrect.
-
-Require Import VerdiRaft.VarDRaftLog.
+From Verdi Require Import Verdi VarD Log LogCorrect.
+From Cheerios Require Import Cheerios.
+From VerdiRaft Require Import Raft CommonDefinitions.
+From VerdiRaft Require Import Linearizability RaftLinearizableProofs.
+From VerdiRaft Require Import EndToEndLinearizability VarDRaftLog.
 
 Section VarDLogCorrect.
   Variables n snapshot_interval : nat.
@@ -20,9 +10,12 @@ Section VarDLogCorrect.
   Instance raft_params : RaftParams VarD.vard_base_params :=
     raft_params n.
 
-  Instance transformed_base_params : BaseParams := transformed_base_params n.
-  Instance transformed_multi_params : DiskOpMultiParams _ := transformed_multi_params n snapshot_interval.
-  Instance transformed_failure_params : DiskOpFailureParams _ := transformed_failure_params n snapshot_interval.
+  Instance transformed_base_params : BaseParams :=
+    transformed_base_params n.
+  Instance transformed_multi_params : DiskOpMultiParams _ :=
+    transformed_multi_params n snapshot_interval.
+  Instance transformed_failure_params : DiskOpFailureParams _ :=
+    transformed_failure_params n snapshot_interval.
 
   Theorem vard_raft_log_linearizable :
     forall failed net tr,

@@ -1,5 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.TraceUtil.
+From VerdiRaft Require Import Raft TraceUtil.
 
 Section InputBeforeOutputInterface.
   Context {orig_base_params : BaseParams}.
@@ -7,6 +6,7 @@ Section InputBeforeOutputInterface.
   Context {raft_params : RaftParams orig_base_params}.
 
   Section inner.
+
   Variable client : clientId.
   Variables id : nat.
 

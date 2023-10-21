@@ -1,10 +1,7 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.SpecLemmas.
+From VerdiRaft Require Import Raft CommonTheorems.
+From VerdiRaft Require Import RaftRefinementInterface SpecLemmas.
 
 Section SpecLemmas.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
@@ -658,5 +655,4 @@ Section SpecLemmas.
     find_inversion; auto; do_bool; intuition; try congruence.
     do_bool. subst. intuition.
   Qed.
-
 End SpecLemmas.

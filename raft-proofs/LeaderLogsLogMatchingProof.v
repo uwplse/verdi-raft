@@ -1,23 +1,16 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Require Import VerdiRaft.CommonTheorems.
-
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonTheorems SpecLemmas.
+From VerdiRaft Require Import RefinementSpecLemmas.
+From VerdiRaft Require Import LogMatchingInterface.
+From VerdiRaft Require Import LeaderLogsTermSanityInterface.
+From VerdiRaft Require Import LeaderLogsSortedInterface.
+From VerdiRaft Require Import SortedInterface LeaderLogsSublogInterface.
+From VerdiRaft Require Import LeaderLogsContiguousInterface.
+From VerdiRaft Require Import TermsAndIndicesFromOneInterface.
+From VerdiRaft Require Import LeaderLogsLogMatchingInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.LogMatchingInterface.
-Require Import VerdiRaft.LeaderLogsTermSanityInterface.
-Require Import VerdiRaft.LeaderLogsSortedInterface.
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.LeaderLogsSublogInterface.
-Require Import VerdiRaft.LeaderLogsContiguousInterface.
-Require Import VerdiRaft.TermsAndIndicesFromOneInterface.
-
-Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
 
 Section LeaderLogsLogMatching.
 

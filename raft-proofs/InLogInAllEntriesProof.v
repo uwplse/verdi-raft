@@ -1,13 +1,8 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonTheorems SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import InLogInAllEntriesInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.InLogInAllEntriesInterface.
 
 Section InLogInAllEntries.
   Context {orig_base_params : BaseParams}.

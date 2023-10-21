@@ -1,12 +1,8 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft AppendEntriesReplySublogInterface.
+From VerdiRaft Require Import AppendEntriesRequestReplyCorrespondenceInterface.
+From VerdiRaft Require Import RaftRefinementInterface AppendEntriesLeaderInterface.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.AppendEntriesReplySublogInterface.
-
-Require Import VerdiRaft.AppendEntriesRequestReplyCorrespondenceInterface.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.AppendEntriesLeaderInterface.
 
 Section AppendEntriesReplySublog.
   Context {orig_base_params : BaseParams}.

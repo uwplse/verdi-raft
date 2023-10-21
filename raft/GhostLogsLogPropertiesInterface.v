@@ -1,5 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftMsgRefinementInterface.
+From VerdiRaft Require Import Raft RaftMsgRefinementInterface.
 
 Section GhostLogsLogProperties.
   Context {orig_base_params : BaseParams}.
@@ -24,5 +23,4 @@ Section GhostLogsLogProperties.
           msg_refined_raft_intermediate_reachable net ->
           log_properties_hold_on_ghost_logs net
     }.
-        
 End GhostLogsLogProperties.

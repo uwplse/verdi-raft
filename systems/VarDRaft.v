@@ -1,6 +1,6 @@
-Require Import VerdiRaft.Raft.
-Require Import Verdi.VarD.
-Require Import String.
+From VerdiRaft Require Import Raft.
+From Verdi Require Import VarD.
+From Coq Require Import String.
 
 Section VarDRaft.
   Variable n : nat.

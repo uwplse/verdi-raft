@@ -1,11 +1,9 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section AllEntriesLeaderLogsTerm.
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
-
 
   Definition allEntries_leaderLogs_term (net : network) : Prop :=
     forall t e h,
@@ -22,5 +20,4 @@ Section AllEntriesLeaderLogsTerm.
           refined_raft_intermediate_reachable net ->
           allEntries_leaderLogs_term net
     }.
-
 End AllEntriesLeaderLogsTerm.

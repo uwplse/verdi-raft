@@ -1,24 +1,11 @@
-Require Import Verdi.Verdi.
-Require Import Cheerios.Cheerios.
+From Verdi Require Import Verdi VarD.
+From Cheerios Require Import Cheerios.
+From VerdiRaft Require Import VarDRaftLog.
+From Coq Require Import ExtrOcamlBasic ExtrOcamlNatInt ExtrOcamlString.
+From Verdi Require Import ExtrOcamlBasicExt ExtrOcamlNatIntExt.
+From Verdi Require Import ExtrOcamlBool ExtrOcamlList ExtrOcamlFinInt ExtrOcamlDiskOp.
+From Cheerios Require Import ExtrOcamlCheeriosBasic ExtrOcamlCheeriosNatInt.
+From Cheerios Require Import ExtrOcamlCheeriosString ExtrOcamlCheeriosFinInt.
 
-Require Import Verdi.VarD.
-Require Import VerdiRaft.VarDRaftLog.
-
-Require Import ExtrOcamlBasic.
-Require Import ExtrOcamlNatInt.
-Require Import ExtrOcamlString.
-
-Require Import Verdi.ExtrOcamlBasicExt.
-Require Import Verdi.ExtrOcamlNatIntExt.
-
-Require Import Verdi.ExtrOcamlBool.
-Require Import Verdi.ExtrOcamlList.
-Require Import Verdi.ExtrOcamlFinInt.
-Require Import Verdi.ExtrOcamlDiskOp.
-
-Require Import Cheerios.ExtrOcamlCheeriosBasic.
-Require Import Cheerios.ExtrOcamlCheeriosNatInt.
-Require Import Cheerios.ExtrOcamlCheeriosString.
-Require Import Cheerios.ExtrOcamlCheeriosFinInt.
-
-Extraction "extraction/vard-log/ml/VarDRaftLog.ml" seq transformed_base_params transformed_multi_params transformed_failure_params.
+Extraction "extraction/vard-log/ml/VarDRaftLog.ml" seq transformed_base_params
+  transformed_multi_params transformed_failure_params.

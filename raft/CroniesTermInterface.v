@@ -1,5 +1,4 @@
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section CroniesTermInterface.
   Context {orig_base_params : BaseParams}.

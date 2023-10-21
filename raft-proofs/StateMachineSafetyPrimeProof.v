@@ -1,21 +1,18 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.StateMachineSafetyPrimeInterface.
-Require Import VerdiRaft.LeaderCompletenessInterface.
-Require Import VerdiRaft.LeaderLogsContiguousInterface.
-Require Import VerdiRaft.AllEntriesLeaderLogsInterface.
-Require Import VerdiRaft.LogMatchingInterface.
-Require Import VerdiRaft.UniqueIndicesInterface.
-Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
-Require Import VerdiRaft.LeaderLogsSortedInterface.
-Require Import VerdiRaft.LeaderLogsLogMatchingInterface.
-Require Import VerdiRaft.LogsLeaderLogsInterface.
-Require Import VerdiRaft.OneLeaderLogPerTermInterface.
-Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import CommonTheorems Raft.
+From VerdiRaft Require Import SortedInterface RaftRefinementInterface.
+From VerdiRaft Require Import StateMachineSafetyPrimeInterface.
+From VerdiRaft Require Import LeaderCompletenessInterface.
+From VerdiRaft Require Import LeaderLogsContiguousInterface.
+From VerdiRaft Require Import AllEntriesLeaderLogsInterface.
+From VerdiRaft Require Import LogMatchingInterface.
+From VerdiRaft Require Import UniqueIndicesInterface.
+From VerdiRaft Require Import AppendEntriesRequestLeaderLogsInterface.
+From VerdiRaft Require Import LeaderLogsSortedInterface.
+From VerdiRaft Require Import LeaderLogsLogMatchingInterface.
+From VerdiRaft Require Import LogsLeaderLogsInterface.
+From VerdiRaft Require Import OneLeaderLogPerTermInterface.
+From VerdiRaft Require Import RefinedLogMatchingLemmasInterface.
 
 Local Arguments update {_} {_} {_} _ _ _ _ : simpl never.
 
@@ -230,6 +227,7 @@ Section StateMachineSafety'.
     concludes. intuition.
   Qed.
 
+  (* FIXME: move to StructTact *)
   Lemma Prefix_In :
     forall A (l : list A) l' x,
       Prefix l l' ->
@@ -245,7 +243,8 @@ Section StateMachineSafety'.
       | H : refined_raft_intermediate_reachable _ |- _ =>
         copy_apply i H
     end.
-  
+
+  (* FIXME: move to StructTact *)
   Lemma in_not_nil :
     forall A (l : list A) x,
       In x l ->
@@ -253,8 +252,6 @@ Section StateMachineSafety'.
   Proof using. 
     destruct l; simpl; intuition congruence.
   Qed.
-
-  Set Bullet Behavior "Strict Subproofs".
 
   Theorem state_machine_safety_nw'_invariant :
     forall net,

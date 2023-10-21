@@ -1,7 +1,5 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.SpecLemmas.
-
-Require Import VerdiRaft.NoAppendEntriesToSelfInterface.
+From VerdiRaft Require Import Raft SpecLemmas.
+From VerdiRaft Require Import NoAppendEntriesToSelfInterface.
 
 Section NoAppendEntriesToSelf.
   Context {orig_base_params : BaseParams}.

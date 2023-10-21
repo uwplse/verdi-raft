@@ -1,4 +1,4 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft.
 
 Section MatchIndexLeader.
   Context {orig_base_params : BaseParams}.

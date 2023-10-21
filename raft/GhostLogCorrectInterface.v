@@ -1,6 +1,4 @@
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.RaftMsgRefinementInterface.
+From VerdiRaft Require Import Raft RaftMsgRefinementInterface.
 
 Section GhostLogCorrectInterface.
   Context {orig_base_params : BaseParams}.
@@ -20,13 +18,11 @@ Section GhostLogCorrectInterface.
          In e l) /\
       entries = findGtIndex l prevLogIndex.
 
-
   Class ghost_log_correct_interface : Prop :=
     {
       ghost_log_correct_invariant :
         forall net,
           msg_refined_raft_intermediate_reachable net ->
           ghost_log_correct net
-    }.
-  
+    }.  
 End GhostLogCorrectInterface.

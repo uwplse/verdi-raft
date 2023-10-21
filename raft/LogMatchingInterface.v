@@ -1,6 +1,4 @@
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.CommonDefinitions.
+From VerdiRaft Require Import Raft CommonDefinitions.
 
 Section LogMatchingInterface.
   Context {orig_base_params : BaseParams}.

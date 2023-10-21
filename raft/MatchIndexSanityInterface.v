@@ -1,4 +1,4 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft.
 
 Section MatchIndexSanity.
   Context {orig_base_params : BaseParams}.
@@ -17,6 +17,5 @@ Section MatchIndexSanity.
         forall net,
           raft_intermediate_reachable net ->
           match_index_sanity net
-    }.
-  
+    }.  
 End MatchIndexSanity.

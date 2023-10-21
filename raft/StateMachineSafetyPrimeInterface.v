@@ -1,6 +1,5 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.LeaderCompletenessInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import LeaderCompletenessInterface.
 
 Section StateMachineSafety'.
   Context {orig_base_params : BaseParams}.
@@ -36,5 +35,4 @@ Section StateMachineSafety'.
           refined_raft_intermediate_reachable net ->
           state_machine_safety' net
     }.
-
 End StateMachineSafety'.

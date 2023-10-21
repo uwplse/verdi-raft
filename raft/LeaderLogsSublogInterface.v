@@ -1,5 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section LeaderLogsSublogInterface.
   Context {orig_base_params : BaseParams}.
@@ -21,5 +20,4 @@ Section LeaderLogsSublogInterface.
           refined_raft_intermediate_reachable net ->
           leaderLogs_sublog net
     }.
-
 End LeaderLogsSublogInterface.

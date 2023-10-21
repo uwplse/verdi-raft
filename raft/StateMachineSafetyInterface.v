@@ -1,6 +1,4 @@
-Require Import VerdiRaft.CommonDefinitions.
-
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import CommonDefinitions Raft.
 
 Section StateMachineSafety.
   Context {orig_base_params : BaseParams}.
@@ -36,5 +34,4 @@ Section StateMachineSafety.
           raft_intermediate_reachable net ->
           state_machine_safety net
     }.
-
 End StateMachineSafety.

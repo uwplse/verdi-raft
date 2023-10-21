@@ -1,14 +1,6 @@
-Require Import Verdi.Verdi.
-Require Import Verdi.VarD.
-Require Import Verdi.SerializedMsgParams.
-Require Import Verdi.Log.
-
-Require Import Cheerios.Cheerios.
-Require Import Cheerios.Tree.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.VarDRaftSerializers.
-Require Import VerdiRaft.VarDRaftSerialized.
+From Verdi Require Import Verdi VarD SerializedMsgParams Log.
+From Cheerios Require Import Cheerios Tree.
+From VerdiRaft Require Import Raft VarDRaftSerializers VarDRaftSerialized.
 
 Section SerializedLog.
   Variables n snapshot_interval : nat.

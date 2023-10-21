@@ -1,6 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.TraceUtil.
+From VerdiRaft Require Import Raft CommonDefinitions TraceUtil.
 
 Section CausalOrderPreserved.
   Context {orig_base_params : BaseParams}.
@@ -8,6 +6,7 @@ Section CausalOrderPreserved.
   Context {raft_params : RaftParams orig_base_params}.
 
   Section inner.
+
   Variable client : clientId.
   Variable id : nat.
   Variable client' : clientId.
@@ -18,6 +17,7 @@ Section CausalOrderPreserved.
 
   Definition entries_ordered net :=
     before_func (has_key client id) (has_key client' id') (applied_entries (nwState net)).
+
   End inner.
 
   Class causal_order_preserved_interface : Prop :=

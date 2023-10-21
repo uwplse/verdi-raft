@@ -1,22 +1,16 @@
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.OneLeaderPerTermInterface.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft CommonTheorems.
+From VerdiRaft Require Import OneLeaderPerTermInterface.
+From VerdiRaft Require Import CandidateEntriesInterface.
+From VerdiRaft Require Import RaftRefinementInterface.
+From VerdiRaft Require Import VotesCorrectInterface.
+From VerdiRaft Require Import CroniesCorrectInterface.
+From VerdiRaft Require Import RefinementCommonTheorems.
+From VerdiRaft Require Import LeaderSublogInterface.
 
-Require Import VerdiRaft.CandidateEntriesInterface.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.VotesCorrectInterface.
-Require Import VerdiRaft.CroniesCorrectInterface.
-Require Import VerdiRaft.RefinementCommonTheorems.
-
-Require Import VerdiRaft.LeaderSublogInterface.
-
-#[global]
-Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
-#[global]
-Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
+#[global] Hint Extern 4 (@BaseParams) => apply base_params : typeclass_instances.
+#[global] Hint Extern 4 (@MultiParams _) => apply multi_params : typeclass_instances.
+#[global] Hint Extern 4 (@FailureParams _ _) => apply failure_params : typeclass_instances.
 
 Section LeaderSublogProof.
   Context {orig_base_params : BaseParams}.

@@ -1,16 +1,11 @@
-Require Import Verdi.GhostSimulations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.CommonTheorems.
+From Verdi Require Import GhostSimulations.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import CommonTheorems LeadersHaveLeaderLogsStrongInterface.
+From VerdiRaft Require Import SortedInterface LogMatchingInterface.
+From VerdiRaft Require Import AppendEntriesRequestLeaderLogsInterface.
+From VerdiRaft Require Import NextIndexSafetyInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.LeadersHaveLeaderLogsStrongInterface.
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.LogMatchingInterface.
-Require Import VerdiRaft.AppendEntriesRequestLeaderLogsInterface.
-Require Import VerdiRaft.NextIndexSafetyInterface.
 
 Section AppendEntriesRequestLeaderLogs.
   Context {orig_base_params : BaseParams}.

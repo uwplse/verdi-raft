@@ -1,5 +1,4 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
 
 Section AppendEntriesRequestTermSanity.
   Context {orig_base_params : BaseParams}.
@@ -21,5 +20,4 @@ Section AppendEntriesRequestTermSanity.
           refined_raft_intermediate_reachable net ->
           append_entries_request_term_sanity net
     }.
-
 End AppendEntriesRequestTermSanity.

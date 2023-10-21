@@ -1,6 +1,6 @@
-Require Export Verdi.Verdi.
-Require Import VerdiRaft.RaftState.
-Require Export StructTact.Fin.
+From Verdi Require Export Verdi.
+From VerdiRaft Require Import RaftState.
+From StructTact Require Export Fin.
 
 Open Scope bool.
 

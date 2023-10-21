@@ -1,15 +1,10 @@
-Require Import Verdi.TraceRelations.
-
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.OutputCorrectInterface.
-Require Import VerdiRaft.AppliedEntriesMonotonicInterface.
-Require Import VerdiRaft.TraceUtil.
-
-Require Import VerdiRaft.StateMachineCorrectInterface.
-Require Import VerdiRaft.SortedInterface.
-Require Import VerdiRaft.LastAppliedCommitIndexMatchingInterface.
-Require Import VerdiRaft.LogMatchingInterface.
+From Verdi Require Import TraceRelations.
+From VerdiRaft Require Import Raft CommonTheorems.
+From VerdiRaft Require Import OutputCorrectInterface.
+From VerdiRaft Require Import AppliedEntriesMonotonicInterface.
+From VerdiRaft Require Import TraceUtil StateMachineCorrectInterface.
+From VerdiRaft Require Import SortedInterface LastAppliedCommitIndexMatchingInterface.
+From VerdiRaft Require Import LogMatchingInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
 

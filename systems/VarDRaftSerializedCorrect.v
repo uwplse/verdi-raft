@@ -1,17 +1,9 @@
-Require Import Verdi.Verdi.
-Require Import Verdi.VarD.
-Require Import Verdi.PartialMapSimulations.
-Require Import Cheerios.Cheerios.
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.Linearizability.
-Require Import VerdiRaft.RaftLinearizableProofs.
-
-Require Import VerdiRaft.EndToEndLinearizability.
-Require Import Verdi.SerializedMsgParamsCorrect.
-
-Require Import VerdiRaft.VarDRaftSerialized.
+From Verdi Require Import Verdi VarD.
+From Verdi Require Import PartialMapSimulations SerializedMsgParamsCorrect.
+From Cheerios Require Import Cheerios.
+From VerdiRaft Require Import Raft CommonDefinitions.
+From VerdiRaft Require Import Linearizability RaftLinearizableProofs.
+From VerdiRaft Require Import EndToEndLinearizability VarDRaftSerialized.
 
 Section VarDSerializedCorrect.
   Variable n : nat.

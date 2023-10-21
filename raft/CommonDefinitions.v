@@ -1,4 +1,4 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft.
 
 Section CommonDefinitions.
   Context {orig_base_params : BaseParams}.
@@ -125,5 +125,4 @@ Section CommonDefinitions.
     forall e,
       In e l ->
       eTerm e >= 1 /\ eIndex e >= 1.
-
 End CommonDefinitions.

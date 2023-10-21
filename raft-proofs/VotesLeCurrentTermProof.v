@@ -1,13 +1,8 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.RefinementSpecLemmas.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import SpecLemmas RefinementSpecLemmas.
+From VerdiRaft Require Import VotesLeCurrentTermInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.VotesLeCurrentTermInterface.
-
-Set Bullet Behavior "Strict Subproofs".
 
 Section VotesLeCurrentTerm.
   Context {orig_base_params : BaseParams}.

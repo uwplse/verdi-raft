@@ -1,18 +1,13 @@
-Require Import FunctionalExtensionality.
-
-Require Import Verdi.GhostSimulations.
-Require Import VerdiRaft.Raft.
-Require Import Verdi.DupDropReordering.
-Require Import VerdiRaft.SpecLemmas.
-
-Require Import VerdiRaft.RaftRefinementInterface.
-Require Import VerdiRaft.RaftMsgRefinementInterface.
+From Coq Require Import FunctionalExtensionality.
+From Verdi Require Import GhostSimulations DupDropReordering.
+From VerdiRaft Require Import Raft SpecLemmas.
+From VerdiRaft Require Import RaftRefinementInterface.
+From VerdiRaft Require Import RaftMsgRefinementInterface.
 
 Section RaftMsgRefinement.
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
-
 
   Lemma msg_refined_raft_invariant_handle_message P :
     forall xs p ys net st' ps' gd d l,

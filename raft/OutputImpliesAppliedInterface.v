@@ -1,18 +1,14 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.CommonDefinitions.
-Require Import VerdiRaft.TraceUtil.
+From VerdiRaft Require Import Raft CommonDefinitions TraceUtil.
 
 Section OutputImpliesApplied.
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
 
-
   Section inner.
 
   Variable client : clientId.
   Variable id : nat.
-
 
   Definition in_applied_entries (net : network) : Prop :=
     exists e,

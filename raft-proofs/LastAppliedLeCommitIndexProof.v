@@ -1,10 +1,7 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft LastAppliedLeCommitIndexInterface.
+From VerdiRaft Require Import SpecLemmas CommonTheorems.
 
-Require Import VerdiRaft.LastAppliedLeCommitIndexInterface.
-Require Import VerdiRaft.SpecLemmas.
-Require Import VerdiRaft.CommonTheorems.
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
 
 Section LastAppliedLeCommitIndex.
   Context {orig_base_params : BaseParams}.

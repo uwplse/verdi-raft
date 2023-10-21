@@ -1,19 +1,14 @@
-Require Import VerdiRaft.Raft.
-Require Import VerdiRaft.RaftRefinementInterface.
-
-Require Import VerdiRaft.LeaderCompletenessInterface.
-Require Import VerdiRaft.RefinedLogMatchingLemmasInterface.
-
-Require Import VerdiRaft.TransitiveCommitInterface.
+From VerdiRaft Require Import Raft RaftRefinementInterface.
+From VerdiRaft Require Import LeaderCompletenessInterface.
+From VerdiRaft Require Import RefinedLogMatchingLemmasInterface.
+From VerdiRaft Require Import TransitiveCommitInterface.
 
 Section TransitiveCommit.
-
   Context {orig_base_params : BaseParams}.
   Context {one_node_params : OneNodeParams orig_base_params}.
   Context {raft_params : RaftParams orig_base_params}.
 
-  Context {rri : raft_refinement_interface}.
-  
+  Context {rri : raft_refinement_interface}.  
   Context {rlmli : refined_log_matching_lemmas_interface}.
 
   Theorem transitive_commit_invariant :

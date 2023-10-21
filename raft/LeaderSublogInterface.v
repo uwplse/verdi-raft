@@ -1,4 +1,4 @@
-Require Import VerdiRaft.Raft.
+From VerdiRaft Require Import Raft.
 
 Section LeaderSublogInterface.
   Context {orig_base_params : BaseParams}.
@@ -33,5 +33,4 @@ Section LeaderSublogInterface.
           raft_intermediate_reachable net ->
           leader_sublog_invariant net
     }.
-
 End LeaderSublogInterface.

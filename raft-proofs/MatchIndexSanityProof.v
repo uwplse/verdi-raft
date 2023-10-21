@@ -1,14 +1,9 @@
-Require Import VerdiRaft.Raft.
-
-Require Import VerdiRaft.CommonTheorems.
-Require Import VerdiRaft.SpecLemmas.
+From VerdiRaft Require Import Raft CommonTheorems SpecLemmas.
+From VerdiRaft Require Import AppendEntriesReplySublogInterface.
+From VerdiRaft Require Import MatchIndexSanityInterface.
+From VerdiRaft Require Import SortedInterface.
 
 Local Arguments update {_} {_} _ _ _ _ _ : simpl never.
-
-Require Import VerdiRaft.AppendEntriesReplySublogInterface.
-
-Require Import VerdiRaft.MatchIndexSanityInterface.
-Require Import VerdiRaft.SortedInterface.
 
 Section MatchIndexSanity.
   Context {orig_base_params : BaseParams}.
