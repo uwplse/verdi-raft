@@ -31,8 +31,8 @@ proofalytics-aux: Makefile.coq
 Makefile.coq: _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq
 
-raft/RaftState.v: raft/RaftState.v.rec
-	$(PYTHON) script/extract_record_notation.py raft/RaftState.v.rec raft_data > raft/RaftState.v
+theories/Raft/RaftState.v: theories/Raft/RaftState.v.rec
+	$(PYTHON) script/extract_record_notation.py theories/Raft/RaftState.v.rec raft_data > theories/Raft/RaftState.v
 
 clean: Makefile.coq
 	$(MAKE) -f Makefile.coq cleanall

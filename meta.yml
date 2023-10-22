@@ -131,9 +131,9 @@ build: |-
 documentation: |-
   ## Files
 
-  The `raft` and `raft-proofs` subdirectories contain the implementation and
-  verification of Raft. For each proof interface file in `raft`, there is a 
-  corresponding proof file in `raft-proofs`. The files in the `raft` 
+  The `Raft` and `RaftProofs` subdirectories of `theories` contain the implementation
+  and verification of Raft. For each proof interface file in `Raft`, there is a
+  corresponding proof file in `RaftProofs`. The files in the `Raft`
   subdirectory include:
   
   - `Raft.v`: an implementation of Raft in Verdi
@@ -143,16 +143,16 @@ documentation: |-
   - `CommonTheorems.v`: several useful theorems about functions used by
     the Raft implementation
   - `OneLeaderPerTermInterface`: a statement of Raft's *election
-    safety* property. See also the corresponding proof file in `raft-proofs`.
+    safety* property. See also the corresponding proof file in `RaftProofs`.
       - `CandidatesVoteForSelvesInterface.v`, `VotesCorrectInterface.v`, and
         `CroniesCorrectInterface.v`: statements of properties used by the proof
         `OneLeaderPerTermProof.v`
   - `LogMatchingInterface.v`: a statement of Raft's *log matching*
-      property. See also `LogMatchingProof.v` in `raft-proofs`
+      property. See also `LogMatchingProof.v` in `RaftProofs`
       - `LeaderSublogInterface.v`, `SortedInterface.v`, and `UniqueIndicesInterface.v`: statements
         of properties used by `LogMatchingProof.v`
   
-  The file `EndToEndLinearizability.v` in `raft-proofs` uses the proofs of
+  The file `EndToEndLinearizability.v` in `RaftProofs` uses the proofs of
   all proof interfaces to show Raft's *linearizability* property.
 
   ## The `vard` Key-Value Store
