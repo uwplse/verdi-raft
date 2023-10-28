@@ -33,7 +33,7 @@ Section AllEntriesTermSanity.
     subst. repeat find_higher_order_rewrite.
     destruct_update; simpl in *; eauto.
     find_copy_eapply_lem_hyp update_elections_data_appendEntries_allEntries_term'; eauto.
-    intuition.
+    intuition (try lia).
     find_apply_lem_hyp handleAppendEntries_currentTerm_monotonic;
       find_apply_hyp_hyp; lia.
   Qed.

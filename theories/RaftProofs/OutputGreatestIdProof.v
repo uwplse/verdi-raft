@@ -89,7 +89,7 @@ Section OutputGreatestId.
   Proof using. 
     intros. unfold has_key in *. break_match.
     simpl in *. subst.
-    break_if; repeat (do_bool; intuition); try congruence.
+    break_if; repeat (do_bool; intuition (auto with bool)); try congruence.
   Qed.
 
   Lemma applyEntries_cache :
@@ -222,7 +222,7 @@ Section OutputGreatestId.
        find_apply_lem_hyp In_rev;
        apply Bool.not_true_iff_false;
        intuition; unfold has_key in *;
-       break_match; break_if; repeat (do_bool; intuition); simpl in *;
+       break_match; break_if; repeat (do_bool; intuition (auto with bool)); simpl in *;
        eapply_prop_hyp client_cache_complete In; eauto;
        break_exists; intuition; simpl in *;
        subst;
@@ -240,7 +240,7 @@ Section OutputGreatestId.
         match goal with
           | |- context [applied_entries (update _ ?sigma ?h ?st)] =>
             pose proof applied_entries_update sigma h st
-        end. conclude_using intuition.
+        end. conclude_using ltac:(intuition (auto with arith)).
         intuition; simpl in *;
         unfold raft_data in *; simpl in *; find_rewrite; auto using Prefix_refl.
         unfold applied_entries in *.

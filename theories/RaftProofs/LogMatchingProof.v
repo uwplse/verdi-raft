@@ -114,7 +114,7 @@ Section LogMatchingProof.
       | [ H : forall _ _ _ _ _ _ _, In _ _ -> Net.pBody _ = _ -> _,
             H' : Net.pBody ?p = AppendEntries _ _ _ _ ?xs _,
             _ : In ?p (nwPackets _) |- _] =>
-        apply H in H'; clear H; intuition
+        apply H in H'; clear H; intuition (auto with datatypes)
     end.
 
   Ltac rewrite_if_log :=
@@ -158,23 +158,23 @@ Section LogMatchingProof.
       | [ H : forall _, uniqueIndices _ |- _ ] => apply H
     end.
 
-  Ltac use_log_matching_nw_nw :=
+  Tactic Notation "use_log_matching_nw_nw_tac" tactic(tac) :=
     match goal with
       | [ H : forall _ _ _ _ _ _ _, In _ _ -> _,
             Hp' : Net.pBody ?p' = AppendEntries _ _ _ _ ?entries' _,
             Hp : Net.pBody ?p = _
             |- context [ In _ ?entries' ] ] =>
-        apply H in Hp; clear H; intuition
+        apply H in Hp; clear H; tac
       | [ H : forall _ _ _ _ _ _ _, In _ _ -> _,
             Hp : Net.pBody _ = AppendEntries _ _ _ _ _ _,
             Hp' : Net.pBody _ = AppendEntries _ _ (eIndex ?e'') _ _ _
             |- _ ] =>
-        apply H in Hp; auto; intuition; clear H
+        apply H in Hp; auto; tac; clear H
       | [ H : forall _ _ _ _ _ _ _, In _ _ -> _,
             Hp' : Net.pBody ?p' = AppendEntries _ _ _ ?plt' _ _,
             Hp : Net.pBody ?p = _
             |- ?plt = ?plt' ] =>
-        apply H in Hp; auto; intuition; clear H
+        apply H in Hp; auto; tac; clear H
     end;
     try match goal with
           | [ H : forall _ _ _ _ _ _ _, In _ _ -> _,
@@ -182,7 +182,10 @@ Section LogMatchingProof.
               Hp : Net.pBody ?p = _
           |- _ ] =>
           eapply H with (e1:=e)(e2:=e') in Hp; eauto
-        end; intuition.
+        end; tac.
+
+  Tactic Notation "use_log_matching_nw_nw" :=
+    use_log_matching_nw_nw_tac intuition.
 
   Ltac shouldSend_true :=
     match goal with
@@ -226,7 +229,7 @@ Section LogMatchingProof.
           | [ _ : eIndex ?e = eIndex ?e',
               H : forall _ _ _, In _ _ -> _ |- context [?h] ] =>
               specialize (H h e e')
-        end; repeat concludes; intuition.
+        end; repeat concludes; intuition (auto with zarith).
       + simpl in *.
         shouldSend_true.
         unfold log_matching_hosts in *.
@@ -261,7 +264,7 @@ Section LogMatchingProof.
           | [ H : forall _ _, 1 <= _ <= _ -> _ |- context [eIndex _ = ?x] ] =>
             remember (x) as index; specialize (H leaderId index); forward H
         end.
-        * intuition; try (destruct index; intuition; lia).
+        * intuition auto; try (destruct index; intuition auto; lia).
           match goal with
             | _ : eIndex ?e > index, _ : In ?e ?l |- _ =>
               pose proof maxIndex_is_max l e
@@ -305,7 +308,7 @@ Section LogMatchingProof.
         eexists;
         intuition; eauto; eauto using findGtIndex_sufficient.
         unfold logs_sorted in *.
-        apply findGtIndex_sufficient; intuition.
+        apply findGtIndex_sufficient; intuition (auto; try lia).
     - use_packet_subset_clear.
       + unfold log_matching, log_matching_nw in *; intuition. use_nw_invariant.
       + shouldSend_true. simpl in *. clean.
@@ -367,7 +370,7 @@ Section LogMatchingProof.
         simpl in *. clean.
         repeat do_in_map. simpl in *. do 2 (find_inversion; simpl in *).
         repeat do_elim.
-        use_log_matching_nw_host; repeat concludes; intuition.
+        use_log_matching_nw_host; repeat concludes; intuition (try lia).
         break_exists. intuition.
         match goal with
           | _ : eIndex ?x = eIndex ?y |- context [ ?y ] =>
@@ -407,7 +410,7 @@ Section LogMatchingProof.
           concludes.
           unfold logs_sorted in *.
           forwards;
-            [find_apply_lem_hyp maxIndex_is_max; intuition; lia|].
+            [find_apply_lem_hyp maxIndex_is_max; intuition auto; lia|].
           concludes. break_exists. intuition.
           eapply findAtIndex_None; intuition eauto.
       + shouldSend_true. simpl in *. clean.
@@ -713,7 +716,7 @@ Ltac assert_do_leader :=
     match goal with
       | [ _ : S (maxIndex ?l) <= eIndex ?e,
               He : In ?e ?l |- _ ] =>
-        exfalso; apply maxIndex_is_max in He; intuition; lia
+        exfalso; apply maxIndex_is_max in He; intuition auto; lia
     end.
 
   Lemma handleClientRequest_log_matching_hosts_entries_match :
@@ -845,12 +848,12 @@ Ltac assert_do_leader :=
             - right. unfold log_matching_nw in *. intuition.
               find_apply_hyp_hyp. intuition.
               use_nw_invariant.
-              use_log_matching_nw_host. intuition.
+              use_log_matching_nw_host. intuition (auto with zarith).
           }
         * unfold log_matching_nw in *.
           find_apply_hyp_hyp. intuition.
           use_nw_invariant.
-          use_log_matching_nw_host. intuition.
+          use_log_matching_nw_host. intuition (auto with zarith).
       + break_if; subst.
         * { intuition.
             - subst. simpl in *. find_copy_apply_lem_hyp leader_sublog_invariant_invariant.
@@ -880,7 +883,7 @@ Ltac assert_do_leader :=
         use_nw_invariant.
       + unfold log_matching_nw in *.
         do 2 (find_apply_hyp_hyp; intuition). subst.
-        use_log_matching_nw_nw.
+        use_log_matching_nw_nw_tac (intuition (auto with zarith)).
       + unfold log_matching_nw in *.
         do 2 (find_apply_hyp_hyp; intuition). subst.
         use_log_matching_nw_nw.
@@ -1071,7 +1074,8 @@ Ltac assert_do_leader :=
     match goal with
       | _ : nwPackets ?net = ?xs ++ ?p :: ?ys,
             p : packet |- _ =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; in_crush)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; in_crush_tac (intuition (auto with datatypes)))
     end.
 
   Ltac contradict_append_entries :=
@@ -1195,8 +1199,8 @@ Ltac assert_do_leader :=
                   eapply Nat.le_lt_trans; [lia|eapply H; eauto]
               end.
               congruence.
-            + use_nw_invariant; try solve [in_crush].
-              use_log_matching_nw_host. intuition.
+            + use_nw_invariant; try solve [in_crush_tac (intuition auto)].
+              use_log_matching_nw_host. intuition (auto with zarith).
           - break_if.
             + subst.
               match goal with
@@ -1231,7 +1235,7 @@ Ltac assert_do_leader :=
               | H : pBody _ = AppendEntries _ _ _ _ (log _) _ |- _ =>
                 clear H
             end.
-            use_log_matching_nw_nw.
+            use_log_matching_nw_nw_tac (intuition (auto with zarith)).
           - match goal with
               | H : pBody _ = AppendEntries _ _ _ _ (log _) _ |- _ =>
                 clear H
@@ -1280,7 +1284,7 @@ Ltac assert_do_leader :=
               * unfold log_matching_nw in *.
                 prove_in.
                 use_nw_invariant.
-                find_apply_hyp_hyp. intuition.
+                find_apply_hyp_hyp. intuition lia.
               * find_apply_lem_hyp removeAfterIndex_in.
                 unfold log_matching_hosts in *. intuition eauto.
             + unfold log_matching_hosts in *. intuition eauto.
@@ -1352,7 +1356,7 @@ Ltac assert_do_leader :=
                   }
                 - apply in_or_app. left.
                   unfold log_matching_nw in *.
-                  use_log_matching_nw_nw.
+                  use_log_matching_nw_nw_tac (intuition (auto with zarith)).
               }
             * (* e2 old *)
               apply in_or_app. right.
@@ -1362,11 +1366,11 @@ Ltac assert_do_leader :=
               find_apply_lem_hyp removeAfterIndex_in.
               apply removeAfterIndex_le_In; [lia|].
               use_log_matching_nw_host.
-              intuition. eapply_prop logs_sorted_host.
+              intuition (auto with zarith). eapply_prop logs_sorted_host.
           + unfold log_matching_nw in *.
             use_nw_invariant.
             use_log_matching_nw_host.
-            intuition.
+            intuition (auto with zarith).
         - simpl in *.
           { break_if.
             - subst. repeat find_rewrite.
@@ -1426,11 +1430,11 @@ Ltac assert_do_leader :=
                   repeat find_rewrite.
                   exists x1. intuition.
                   apply in_or_app. right.
-                  apply removeAfterIndex_le_In; intuition.
+                  apply removeAfterIndex_le_In; intuition lia.
                 * subst. break_exists. intuition. do_elim.
                   eexists; intuition eauto.
                   apply in_or_app. right.
-                  apply removeAfterIndex_le_In; intuition.
+                  apply removeAfterIndex_le_In; intuition lia.
                 * match goal with
                     | [ H : forall _, pli < _ <= _ -> _ |- _ ] =>
                       specialize (H prevLogIndex);
@@ -1443,7 +1447,7 @@ Ltac assert_do_leader :=
                                                  eapply maxIndex_is_max;
                                                  eauto])
                   end.
-                  break_exists. exists x. intuition.
+                  break_exists. exists x. intuition (auto with datatypes).
               + (* e2 old *)
                 unfold log_matching_nw in *.
                 repeat find_rewrite.
@@ -1476,7 +1480,7 @@ Ltac assert_do_leader :=
         - simpl in *.
           unfold log_matching_nw in *.
           repeat find_rewrite.
-          use_log_matching_nw_nw.
+          use_log_matching_nw_nw_tac (intuition (auto with zarith)).
         - simpl in *.
           unfold log_matching_nw in *.
           repeat find_rewrite.

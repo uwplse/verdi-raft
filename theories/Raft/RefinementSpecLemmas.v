@@ -351,7 +351,8 @@ Section SpecLemmas.
       t' = t /\ es' = es /\ (forall e, In e es -> In e (log st') \/ haveNewEntries st es = false /\ log st' = log st).
   Proof using. 
     intros. unfold handleAppendEntries in *.
-    repeat break_match; find_inversion; simpl in *; intuition; eauto using advanceCurrentTerm_log.
+    repeat break_match; find_inversion; simpl in *; intuition (auto with datatypes);
+      eauto using advanceCurrentTerm_log.
   Qed.
 
   Lemma update_elections_data_appendEntries_allEntries :
@@ -367,7 +368,6 @@ Section SpecLemmas.
     - do_in_map. subst. simpl in *. auto.
     - left. apply in_map_iff. eexists; eauto.
   Qed.
-
 
   Lemma update_elections_data_appendEntries_allEntries_term :
     forall h st t h' pli plt es ci te e,
@@ -567,7 +567,7 @@ Section SpecLemmas.
     unfold update_elections_data_appendEntries.
     intros. break_let. break_match; auto.
     break_if; auto.
-    simpl. intuition.
+    simpl. intuition (auto with datatypes).
   Qed.
 
   Lemma update_elections_data_request_vote_votesWithLog_old :
@@ -652,7 +652,7 @@ Section SpecLemmas.
     repeat find_rewrite.
     unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; repeat find_inversion; simpl in *; auto; try congruence;
-    find_inversion; auto; do_bool; intuition; try congruence.
+    find_inversion; auto; do_bool; intuition (auto with arith); try congruence.
     do_bool. subst. intuition.
   Qed.
 End SpecLemmas.

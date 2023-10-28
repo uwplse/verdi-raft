@@ -18,7 +18,7 @@ Section AppliedImpliesInputProof.
       in_input_trace c id i (tr1 ++ tr2).
   Proof using. 
     unfold in_input_trace.
-    intuition; break_exists_exists; intuition.
+    intuition; break_exists_exists; intuition (auto with datatypes).
   Qed.
 
   Section inner.
@@ -400,7 +400,7 @@ Section AppliedImpliesInputProof.
     Defined.
     Next Obligation.
       unfold in_input_trace in *. break_exists_exists.
-      intuition.
+      intuition (auto with datatypes).
     Defined.
     Next Obligation.
       unfold applied_implies_input_state. intro. break_exists. break_and.

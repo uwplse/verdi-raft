@@ -116,7 +116,7 @@ Section OutputImpliesApplied.
     match goal with
       | |- context [update _ ?st ?h ?st'] =>
         pose proof applied_entries_update st h st'
-    end. forwards; [simpl in *; intuition|]. concludes.
+    end. forwards; [simpl in *; intuition (auto with arith)|]. concludes.
     intuition.
     - simpl in *. unfold raft_data in *. simpl in *.
       find_rewrite.
@@ -127,7 +127,7 @@ Section OutputImpliesApplied.
       match goal with
         | |- In _ (rev ?l') => apply in_rev with (l := l')
       end.
-      apply removeAfterIndex_le_In; intuition.
+      apply removeAfterIndex_le_In; intuition (try lia).
       find_copy_apply_lem_hyp log_matching_invariant.
       find_copy_apply_lem_hyp max_index_sanity_invariant.
       find_apply_lem_hyp state_machine_safety_invariant.
@@ -136,7 +136,7 @@ Section OutputImpliesApplied.
       match goal with
         | [ e : entry, H : forall _ _, _ <= _ <= _ -> _, Hm : maxIndex_lastApplied _
                                                    |- In _ (log (_ _ ?h)) ] =>
-          specialize (H h (eIndex e)); specialize (Hm h); forward H; intuition
+          specialize (H h (eIndex e)); specialize (Hm h); forward H; intuition (try lia)
       end. break_exists. intuition.
       find_apply_lem_hyp findGtIndex_necessary. intuition.
       match goal with

@@ -46,7 +46,7 @@ Section TermsAndIndicesFromOneLog.
       + break_exists. intuition.
         unfold terms_and_indices_from_one_log, terms_and_indices_from_one in *.
         intros. repeat find_rewrite. simpl in *. break_or_hyp.
-        * intuition. find_apply_lem_hyp current_term_gt_zero_invariant. find_rewrite.
+        * intuition (try lia). find_apply_lem_hyp current_term_gt_zero_invariant. find_rewrite.
           eapply_prop current_term_gt_zero. congruence.
         * eauto.
     - eapply taifol_no_append_entries; pose handleClientRequest_no_append_entries; eauto.

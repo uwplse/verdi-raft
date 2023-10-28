@@ -181,7 +181,7 @@ Section GhostLogCorrectProof.
       eapply contiguous_findAtIndex;
         [eapply lifted_entries_sorted_invariant; eauto|
          eapply lifted_entries_contiguous_invariant; eauto|].
-      intuition.
+      intuition (auto with arith).
       repeat find_rewrite. 
       erewrite doLeader_getNextIndex; eauto.
       eapply lifted_nextIndex_safety_invariant; eauto.

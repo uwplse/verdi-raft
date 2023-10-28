@@ -62,7 +62,7 @@ Section RequestVoteReplyTermSanity.
       + remember (pDst p0). subst p0. simpl in *.
         subst.
         find_copy_apply_lem_hyp handleRequestVote_reply_true'.
-        intuition.
+        intuition lia.
     - find_apply_hyp_hyp. intuition.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).
         find_copy_apply_lem_hyp handleRequestVote_currentTerm_leaderId.

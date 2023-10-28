@@ -269,7 +269,7 @@ Section SortedProof.
   Proof using. 
     induction l; intros; simpl in *; intuition.
     - subst_max. intuition.
-    - subst. find_apply_hyp_hyp. intuition.
+    - subst. find_apply_hyp_hyp. intuition lia.
     - subst. find_apply_hyp_hyp. intuition.
   Qed.
 
@@ -363,13 +363,13 @@ Section SortedProof.
       repeat find_higher_order_rewrite. break_match; try find_rewrite; eauto.
     - find_apply_lem_hyp handleAppendEntriesReply_packets. subst. simpl in *.
       eapply logs_sorted_nw_packets_unchanged; eauto.
-      intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+      intros. find_apply_hyp_hyp. find_rewrite. in_crush_tac (intuition (auto with datatypes)).
     - find_apply_lem_hyp handleAppendEntriesReply_packets. subst. simpl in *.
       eapply packets_gt_prevIndex_packets_unchanged; eauto.
-      intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+      intros. find_apply_hyp_hyp. find_rewrite. in_crush_tac (intuition (auto with datatypes)).
     - find_apply_lem_hyp handleAppendEntriesReply_packets. subst. simpl in *.
       eapply packets_ge_prevTerm_packets_unchanged; eauto.
-      intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+      intros. find_apply_hyp_hyp. find_rewrite. in_crush_tac (intuition (auto with datatypes)).
   Qed.
 
   Lemma handleRequestVote_packets :
@@ -379,7 +379,7 @@ Section SortedProof.
   Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion;
-    subst; intuition; break_exists; congruence.
+    subst; intuition auto; break_exists; congruence.
   Qed.
 
   Theorem logs_sorted_request_vote :
@@ -392,15 +392,18 @@ Section SortedProof.
       repeat find_higher_order_rewrite. break_match; try find_rewrite; eauto.
     - find_apply_lem_hyp handleRequestVote_packets. subst. simpl in *.
       eapply logs_sorted_nw_not_append_entries; eauto.
-      + intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+      + intros. find_apply_hyp_hyp. find_rewrite.
+        in_crush_tac (intuition (auto with datatypes)).
       + simpl. auto.
     - find_apply_lem_hyp handleRequestVote_packets. subst. simpl in *.
       eapply packets_gt_prevIndex_not_append_entries; eauto.
-      + intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+      + intros. find_apply_hyp_hyp. find_rewrite.
+        in_crush_tac (intuition (auto with datatypes)).
       + simpl. auto.
     - find_apply_lem_hyp handleRequestVote_packets. subst. simpl in *.
       eapply packets_ge_prevTerm_not_append_entries; eauto.
-      + intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+      + intros. find_apply_hyp_hyp. find_rewrite.
+        in_crush_tac (intuition (auto with datatypes)).
       + simpl. auto.
   Qed.
 
@@ -454,7 +457,7 @@ Section SortedProof.
       subst. simpl in *. find_inversion.
       find_apply_lem_hyp findGtIndex_necessary; intuition.
     - unfold replicaMessage in *. do_in_map. simpl in *.
-      subst. simpl in *. find_inversion. break_match; intuition.
+      subst. simpl in *. find_inversion. break_match; intuition (auto with arith).
       find_apply_lem_hyp findGtIndex_necessary; intuition.
       find_apply_lem_hyp findAtIndex_elim. simpl in *.
       intuition. repeat find_rewrite.

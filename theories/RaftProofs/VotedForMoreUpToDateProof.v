@@ -67,7 +67,7 @@ Section VotedForMoreUpToDate.
         eapply_prop_hyp requestVote_maxIndex_maxTerm pBody. conclude_using eauto.
         all:eauto.
         intuition; subst.
-        eexists; intuition; eauto.
+        eexists; intuition (auto with datatypes); eauto.
     - find_eapply_lem_hyp update_elections_data_request_vote_votedFor; eauto.
       intuition; repeat find_rewrite.
       + eapply_prop_hyp RaftState.votedFor RaftState.votedFor; eauto.
@@ -78,7 +78,7 @@ Section VotedForMoreUpToDate.
         eapply_prop_hyp requestVote_maxIndex_maxTerm pBody. conclude_using eauto.
         all:eauto.
         intuition; subst.
-        eexists; intuition; eauto.
+        eexists; intuition (auto with datatypes); eauto.
   Qed.
 
   Lemma votedFor_moreUpToDate_request_vote_reply :

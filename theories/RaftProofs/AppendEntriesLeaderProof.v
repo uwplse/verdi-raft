@@ -219,7 +219,8 @@ Section AppendEntriesLeader.
   Proof using. 
     unfold handleRequestVoteReply.
     intros.
-    repeat break_match; repeat find_inversion; do_bool; subst; simpl; intuition.
+    repeat break_match; repeat find_inversion; do_bool; subst; simpl;
+      intuition (auto with arith).
   Qed.
 
   Lemma update_elections_data_RVR_ascending_leaderLog :

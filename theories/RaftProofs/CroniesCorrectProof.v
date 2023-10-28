@@ -329,7 +329,7 @@ Section CroniesCorrectProof.
   Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; simpl in *; subst; simpl in *; do_bool; intuition.
+    repeat break_match; simpl in *; subst; simpl in *; do_bool; intuition (auto with arith).
   Qed.
 
   Lemma handleRequestVoteReply_leader :
@@ -396,7 +396,7 @@ Section CroniesCorrectProof.
           match goal with
             | H : pBody _ = _, Hpbody : forall _ _, pBody _ = _ -> _ |- _ =>
               apply Hpbody in H
-          end; [|solve [repeat find_rewrite; in_crush]].
+          end; [|solve [repeat find_rewrite; in_crush_tac (intuition auto)]].
           repeat find_rewrite; eauto.
         * repeat find_rewrite.
           unfold votes_received_cronies in *.
@@ -416,7 +416,7 @@ Section CroniesCorrectProof.
           match goal with
             | H : pBody _ = _, Hpbody : forall _ _, pBody _ = _ -> _ |- _ =>
               apply Hpbody in H
-          end; [|solve [repeat find_rewrite; in_crush]].
+          end; [|solve [repeat find_rewrite; in_crush_tac (intuition auto)]].
           repeat find_rewrite; eauto.
         * repeat find_rewrite.
           unfold votes_received_cronies in *.
@@ -443,7 +443,7 @@ Section CroniesCorrectProof.
           match goal with
             | H : pBody _ = _, Hpbody : forall _ _, pBody _ = _ -> _ |- _ =>
               apply Hpbody in H
-          end; [|solve [repeat find_rewrite; in_crush]].
+          end; [|solve [repeat find_rewrite; in_crush_tac (intuition auto)]].
           repeat find_rewrite; eauto.
         * repeat find_rewrite.
           unfold votes_received_cronies in *.
@@ -463,7 +463,7 @@ Section CroniesCorrectProof.
           match goal with
             | H : pBody _ = _, Hpbody : forall _ _, pBody _ = _ -> _ |- _ =>
               apply Hpbody in H
-          end; [|solve [repeat find_rewrite; in_crush]].
+          end; [|solve [repeat find_rewrite; in_crush_tac (intuition auto)]].
           repeat find_rewrite; eauto.
         * repeat find_rewrite.
           unfold votes_received_cronies in *.

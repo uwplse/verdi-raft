@@ -29,7 +29,7 @@ Section CurrentTermGtZero.
   Proof using. 
     unfold raft_net_invariant_timeout, current_term_gt_zero.
     simpl. intuition. find_higher_order_rewrite. update_destruct; subst; rewrite_update.
-    - find_apply_lem_hyp handleTimeout_type_strong. intuition.
+    - find_apply_lem_hyp handleTimeout_type_strong. intuition (try lia).
       repeat find_rewrite. auto.
     - auto.
   Qed.

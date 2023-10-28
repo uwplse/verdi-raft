@@ -155,7 +155,7 @@ Section TermSanityProof.
       ( forall m, In m ms -> ~ is_append_entries (snd m)).
   Proof using. 
     intros. unfold handleTimeout, tryToBecomeLeader in *.
-    repeat break_match; find_inversion; subst; intuition;
+    repeat break_match; find_inversion; subst; intuition (auto with arith);
     do_in_map; subst; simpl in *; congruence.
   Qed.
 
@@ -185,9 +185,9 @@ Section TermSanityProof.
   Proof using. 
     intros.
     unfold handleAppendEntries, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try solve [break_exists; congruence];
-    in_crush; eauto using removeAfterIndex_in.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition auto; try solve [break_exists; congruence];
+    in_crush_tac (intuition (auto with arith)); eauto using removeAfterIndex_in.
   Qed.
 
   Lemma no_entries_past_current_term_append_entries :
@@ -208,7 +208,8 @@ Section TermSanityProof.
           eapply no_entries_past_current_term_nw_not_append_entries
           with (p' := {| pSrc := ps; pDst := pd; pBody := pb |})
       end; eauto.
-     intros. find_apply_hyp_hyp. find_rewrite. in_crush.
+     intros. find_apply_hyp_hyp. find_rewrite.
+     in_crush_tac (intuition (auto with datatypes)).
   Qed.
 
   Lemma no_entries_past_current_term_unaffected :
@@ -223,7 +224,7 @@ Section TermSanityProof.
       log d = log (nwState net (pDst p)) ->
       (forall m, In m ms -> ~ is_append_entries (snd m)) ->
       no_entries_past_current_term {| nwPackets := ps'; nwState := st' |}.
-  Proof using. 
+  Proof using.
     intros. unfold no_entries_past_current_term in *. intuition.
     - unfold no_entries_past_current_term_host in *.
       intros. simpl in *. find_higher_order_rewrite.
@@ -315,9 +316,9 @@ Section TermSanityProof.
   Proof using. 
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try solve [break_exists; congruence];
-    in_crush; eauto using removeAfterIndex_in.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition auto; try solve [break_exists; congruence];
+    in_crush_tac (intuition (auto with arith)); eauto using removeAfterIndex_in.
   Qed.
 
   Lemma no_entries_past_current_term_append_entries_reply :
@@ -337,9 +338,9 @@ Section TermSanityProof.
   Proof using. 
     intros.
     unfold handleRequestVote, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try solve [break_exists; congruence];
-    in_crush; eauto using removeAfterIndex_in.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition auto; try solve [break_exists; congruence];
+    in_crush_tac (intuition auto); eauto using removeAfterIndex_in.
   Qed.
 
   Lemma no_entries_past_current_term_request_vote :
@@ -358,8 +359,8 @@ Section TermSanityProof.
   Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition (auto with arith).
   Qed.
 
   Lemma no_entries_past_current_term_request_vote_reply :

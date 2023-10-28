@@ -19,7 +19,7 @@ Section TransitiveCommit.
     unfold transitive_commit, committed. intros.
     break_exists_name h'; exists h'.
     break_exists_name e''; exists e''.
-    intuition; eauto.
+    intuition (try lia); eauto.
     eapply (entries_match_invariant net h h'); eauto.
   Qed.
 

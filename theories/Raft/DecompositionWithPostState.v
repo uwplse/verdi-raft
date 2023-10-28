@@ -195,7 +195,8 @@ Section DecompositionWithPostState.
                 nwPackets := (send_packets (pDst p) (l0 ++ l1)) ++ xs ++ ys;
                 nwState := (update name_eq_dec (update name_eq_dec (nwState net) (pDst p) r) (pDst p) r0)
               |}) by (eapply RIR_doLeader; eauto;
-                      [simpl in *; break_if; try congruence; eauto| in_crush]).
+                      [simpl in *; break_if; try congruence; eauto|
+                        in_crush_tac (intuition (auto with datatypes))]).
          assert
            (HREACH3 : raft_intermediate_reachable
               {|
@@ -205,11 +206,12 @@ Section DecompositionWithPostState.
          { eapply RIR_doGenericServer; eauto.
            - simpl in *. break_if; try congruence; eauto.
            - intros. simpl.
-             repeat do_in_app. intuition; try solve [in_crush].
+             repeat do_in_app. intuition auto;
+               try solve [in_crush_tac (intuition (auto with datatypes))].
              simpl in *. do_in_map. subst.
              do_in_app. intuition; try do_in_app; intuition.
-             + left. in_crush. left. in_crush.
-             + left. in_crush. left. in_crush.
+             + left. in_crush. left. in_crush_tac (intuition auto).
+             + left. in_crush. left. in_crush_tac (intuition auto).
              + in_crush. }
          eapply_prop raft_net_invariant_do_generic_server'. eauto.
          eapply_prop raft_net_invariant_do_leader'. eauto. 
@@ -223,7 +225,7 @@ Section DecompositionWithPostState.
          apply HREACH2.
          simpl. break_if; intuition eauto.
          intros. simpl. repeat break_if; subst; eauto.
-         simpl. in_crush. auto.
+         simpl. in_crush_tac (intuition (auto with datatypes)). auto.
          {
            simpl in HREACH3.
            match goal with
@@ -241,11 +243,12 @@ Section DecompositionWithPostState.
          repeat rewrite update_neq by auto; auto.
          simpl.
          intros. simpl.
-         repeat do_in_app. intuition; try solve [in_crush].
+         repeat do_in_app. intuition auto;
+           try solve [in_crush_tac (intuition auto with datatypes)].
          simpl in *. do_in_map. subst.
          do_in_app. intuition; try do_in_app; intuition.
-         * left. in_crush. left. in_crush.
-         * left. in_crush. left. in_crush.
+         * left. in_crush. left. in_crush_tac (intuition auto).
+         * left. in_crush. left. in_crush_tac (intuition auto).
          * in_crush.
        + unfold RaftInputHandler in *. repeat break_let.
          repeat find_inversion.
@@ -261,7 +264,7 @@ Section DecompositionWithPostState.
                 nwPackets := (send_packets h (l0 ++ l2)) ++ (nwPackets net);
                 nwState := (update name_eq_dec (update name_eq_dec (nwState net) h r) h r0)
               |}) by (eapply RIR_doLeader; eauto;
-                      [simpl in *; break_if; try congruence; eauto| in_crush]).
+                      [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition (auto with datatypes))]).
          assert
            (HREACH3 : raft_intermediate_reachable
               {|
@@ -271,11 +274,12 @@ Section DecompositionWithPostState.
           { eapply RIR_doGenericServer; eauto.
            - simpl in *. break_if; try congruence; eauto.
            - intros. simpl. 
-             repeat do_in_app. intuition; try solve [in_crush].
+             repeat do_in_app. intuition auto;
+               try solve [in_crush_tac (intuition (auto with datatypes))].
              simpl in *. do_in_map. subst.
              do_in_app. intuition; try do_in_app; intuition.
-             + left. in_crush. left. in_crush.
-             + left. in_crush. left. in_crush.
+             + left. in_crush. left. in_crush_tac (intuition auto).
+             + left. in_crush. left. in_crush_tac (intuition auto).
              + in_crush. }
          eapply_prop raft_net_invariant_do_generic_server'. eauto.
          eapply_prop raft_net_invariant_do_leader'. eauto.
@@ -288,7 +292,7 @@ Section DecompositionWithPostState.
          auto.
          apply HREACH2.
          simpl. break_if; intuition eauto.
-         eauto. simpl. in_crush.
+         eauto. simpl. in_crush_tac (intuition (auto with datatypes)).
          auto.
          {
            simpl in HREACH3.
@@ -303,11 +307,12 @@ Section DecompositionWithPostState.
          simpl. break_if; congruence.
          simpl. intros. repeat break_if; subst; eauto.
          intros. simpl.
-         repeat do_in_app. intuition; try solve [in_crush].
+         repeat do_in_app. intuition auto;
+           try solve [in_crush_tac (intuition (auto with datatypes))].
          simpl in *. do_in_map. subst.
          do_in_app. intuition; try do_in_app; intuition.
-         * left. in_crush. left. in_crush.
-         * left. in_crush. left. in_crush.
+         * left. in_crush. left. in_crush_tac (intuition auto).
+         * left. in_crush. left. in_crush_tac (intuition auto).
          * in_crush.
        + match goal with
            | [ H : nwPackets ?net = _ |- _ {| nwPackets := ?ps ; nwState := ?st |} ] =>

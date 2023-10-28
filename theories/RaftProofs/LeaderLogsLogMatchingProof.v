@@ -350,7 +350,7 @@ Section LeaderLogsLogMatching.
     match goal with
       | [ H : _  |- _ ] =>
         eapply H; [|eauto];
-        repeat find_rewrite; intuition
+        repeat find_rewrite; intuition (auto with datatypes)
     end.
 
   Lemma handleAppendEntries_doesn't_send_AE :
@@ -426,7 +426,8 @@ Section LeaderLogsLogMatching.
     - eapply leaderLogs_entries_match_nw_packet_set; eauto; simpl.
       + intros. find_apply_hyp_hyp. repeat find_rewrite. intuition; [eauto with *|].
         find_apply_lem_hyp handleAppendEntriesReply_packets. subst. simpl in *. intuition.
-      + intros. repeat find_higher_order_rewrite; update_destruct_simplify; rewrite_update; auto; find_rewrite; auto.
+      + intros. repeat find_higher_order_rewrite; update_destruct_simplify; rewrite_update;
+          auto; find_rewrite; auto.
   Qed.
 
   Lemma handleRequestVote_packets :
@@ -436,7 +437,7 @@ Section LeaderLogsLogMatching.
   Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion;
-    subst; intuition; break_exists; congruence.
+    subst; intuition auto; break_exists; congruence.
   Qed.
 
   Lemma leaderLogs_entries_match_request_vote :
@@ -548,7 +549,7 @@ Section LeaderLogsLogMatching.
                   remember (x) as index;
                   specialize (H index); forward H
               end.
-              + intuition; auto using Nat.neq_0_lt_0.
+              + intuition (try lia); auto using Nat.neq_0_lt_0.
                 find_apply_lem_hyp findGtIndex_necessary. break_and.
                 eapply Nat.le_trans.
                 * apply Nat.lt_le_incl. eauto.

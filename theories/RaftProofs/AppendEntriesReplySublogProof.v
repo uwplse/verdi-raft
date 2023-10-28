@@ -64,7 +64,7 @@ Section AppendEntriesReplySublog.
     match goal with
       | H : In _ (nwPackets _) |- _ => clear H
     end.
-    assert (In aer (nwPackets net')) by (repeat find_rewrite; intuition).
+    assert (In aer (nwPackets net')) by (repeat find_rewrite; intuition (auto with datatypes)).
     match goal with
       | H : nwState net' = nwState net |- _ =>
         rewrite <- H in *; clear H
@@ -73,6 +73,7 @@ Section AppendEntriesReplySublog.
   Qed.
   
   Instance aersi : append_entries_reply_sublog_interface.
-  split. exact append_entries_reply_sublog_invariant.
+  Proof using aeli rri aerrci.
+    split. exact append_entries_reply_sublog_invariant.
   Qed.
 End AppendEntriesReplySublog.

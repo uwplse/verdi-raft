@@ -48,7 +48,7 @@ Section VotesWithLogTermSanity.
     ].
 
   Ltac solve_currentTerm lem :=
-    find_apply_lem_hyp lem; solve [intuition].
+    find_apply_lem_hyp lem; solve [intuition lia].
 
   Lemma votesWithLog_term_sanity_invariant :
     forall net,

@@ -33,8 +33,9 @@ Section CausalOrderPreserved.
     intuition.
     break_exists. unfold in_input_trace in *.
     break_exists. do_in_app. intuition;
-      [find_apply_hyp_hyp; simpl in *; break_if; repeat (do_bool; intuition)|].
-    invcs H0; intuition.
+      [find_apply_hyp_hyp; simpl in *; break_if;
+       repeat (do_bool; intuition (auto with bool))|].
+    invcs H0; intuition (try lia).
     - break_if; congruence.
     - find_inversion; try congruence.
       repeat (do_bool; intuition).
@@ -51,7 +52,7 @@ Section CausalOrderPreserved.
     induction tr; simpl in *; intuition.
     - unfold key_in_output_trace.
       unfold is_output_with_key in *. repeat break_match; try congruence.
-      subst. do 2 eexists. intuition; eauto.
+      subst. do 2 eexists. intuition (auto with datatypes); eauto.
     - unfold key_in_output_trace in *.
       break_exists_exists. simpl; intuition.
   Qed.

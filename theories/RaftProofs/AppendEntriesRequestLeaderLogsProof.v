@@ -107,10 +107,12 @@ Section AppendEntriesRequestLeaderLogs.
     match goal with
       | [ _ : nwPackets ?net = _,
               _ : In ?p _ |- _] =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; do_in_app; intuition)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; do_in_app; intuition (auto with datatypes))
       | [ _ : nwPackets ?net = _,
               _ : pBody ?p = _ |- _] =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; intuition)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; intuition (auto with datatypes))
     end.
   
   Lemma append_entries_leaderLogs_appendEntries :
@@ -329,7 +331,7 @@ Section AppendEntriesRequestLeaderLogs.
          | _ : S _ = pred ?x |- context [pred ?y] =>
            assert (pred x = pred y) by auto
        end.
-       repeat find_rewrite. intuition.
+       repeat find_rewrite. intuition lia.
   Qed.
 
   Lemma lift_nextIndex_safety :

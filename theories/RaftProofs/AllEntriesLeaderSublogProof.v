@@ -177,8 +177,8 @@ Section AllEntriesLeaderSublog.
   Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try right; congruence.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition (try lia); try right; congruence.
   Qed.
 
   Lemma allEntries_leader_sublog_request_vote_reply :

@@ -92,7 +92,7 @@ Section LastAppliedLeCommitIndex.
     intros.
     do_in_map. subst.
     find_apply_lem_hyp filter_In.
-    repeat (intuition; do_bool).
+    repeat (intuition (auto with arith); do_bool).
   Qed.
   
   Lemma doLeader_same_commitIndex :

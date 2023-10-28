@@ -40,9 +40,9 @@ Section AppendEntriesRequestReplyCorrespondence.
       eapply @RIR_handleInput with (net := net') (inp := Timeout); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
-      do_in_app. intuition.
+      do_in_app. intuition (auto with datatypes).
       find_apply_hyp_hyp.
-      intuition.
+      intuition (auto with datatypes).
     - exfalso.
       do_in_map. subst. simpl in *.
       unfold handleTimeout, tryToBecomeLeader in *.
@@ -72,15 +72,14 @@ Section AppendEntriesRequestReplyCorrespondence.
       eapply @RIR_handleInput with (net := net') (inp := ClientRequest client id c); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
-      do_in_app. intuition.
+      do_in_app. intuition (auto with datatypes).
       find_apply_hyp_hyp.
-      intuition.
+      intuition (auto with datatypes).
     - exfalso.
       do_in_map. subst. simpl in *.
       unfold handleClientRequest in *.
       repeat break_match; find_inversion; intuition; do_in_map; subst; simpl in *; congruence.
   Qed.
-
 
   Lemma append_entries_request_reply_correspondence_do_leader :
     raft_net_invariant_do_leader append_entries_request_reply_correspondence.
@@ -105,9 +104,9 @@ Section AppendEntriesRequestReplyCorrespondence.
       eapply @RIR_doLeader with (net := net'); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
-      do_in_app. intuition.
+      do_in_app. intuition (auto with datatypes).
       find_apply_hyp_hyp.
-      intuition.
+      intuition (auto with datatypes).
     - exfalso.
       do_in_map. subst. simpl in *.
       unfold doLeader in *.
@@ -137,9 +136,9 @@ Section AppendEntriesRequestReplyCorrespondence.
       eapply @RIR_doGenericServer with (net := net'); eauto;
       simpl; repeat find_rewrite; eauto.
       intros.
-      do_in_app. intuition.
+      do_in_app. intuition (auto with datatypes).
       find_apply_hyp_hyp.
-      intuition.
+      intuition (auto with datatypes).
     - exfalso.
       do_in_map. subst. simpl in *.
       unfold doGenericServer in *.
@@ -219,7 +218,7 @@ Section AppendEntriesRequestReplyCorrespondence.
     - simpl in *. repeat find_rewrite.
       apply functional_extensionality. eauto.
     - simpl.
-      intros. repeat find_rewrite. do_in_app. intuition.
+      intros. repeat find_rewrite. do_in_app. intuition (auto with datatypes).
   Qed.
   
   Lemma handleAppendEntries_reply_spec:
@@ -267,7 +266,8 @@ Section AppendEntriesRequestReplyCorrespondence.
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
       intros. do_in_app. simpl in *.
-      intuition; try find_apply_hyp_hyp; intuition; in_crush.
+      intuition auto; try find_apply_hyp_hyp; intuition auto;
+        in_crush_tac (intuition (auto with datatypes)).
     - subst. simpl in *. subst. unfold exists_equivalent_network_with_aer.
       find_eapply_lem_hyp RIR_step_failure; [|eapply StepFailure_dup with (failed := [])]; eauto.
       remember mkNetwork as mkN.
@@ -328,13 +328,13 @@ Section AppendEntriesRequestReplyCorrespondence.
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
       intros. do_in_app. simpl in *.
-      intuition; try find_apply_hyp_hyp; intuition; in_crush.
+      intuition auto; try find_apply_hyp_hyp; intuition auto;
+        in_crush_tac (intuition (auto with datatypes)).
     - do_in_map.
       subst. simpl in *.
       find_apply_lem_hyp handleAppendEntriesReply_packets.
       subst. simpl in *. intuition.
   Qed.
-
 
   Lemma append_entries_request_reply_correspondence_request_vote :
     raft_net_invariant_request_vote append_entries_request_reply_correspondence.
@@ -367,7 +367,8 @@ Section AppendEntriesRequestReplyCorrespondence.
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
       intros. do_in_app. simpl in *.
-      intuition; try find_apply_hyp_hyp; intuition; in_crush.
+      intuition auto; try find_apply_hyp_hyp; intuition auto;
+        in_crush_tac (intuition (auto with datatypes)).
     - subst. simpl in *. subst.
       unfold handleRequestVote in *.
       repeat break_match; find_inversion; congruence.
@@ -404,24 +405,25 @@ Section AppendEntriesRequestReplyCorrespondence.
       simpl; repeat find_rewrite; eauto;
       simpl; repeat break_let; eauto; try find_inversion; eauto.
     intros. do_in_app. simpl in *.
-    intuition; try find_apply_hyp_hyp; intuition; in_crush.
+    intuition auto; try find_apply_hyp_hyp; intuition auto;
+      in_crush_tac (intuition (auto with datatypes)).
   Qed.
 
   Instance aerrci : append_entries_request_reply_correspondence_interface.
-  split.
-  intros. apply raft_net_invariant; auto.
-  - exact append_entries_request_reply_correspondence_init.
-  - exact append_entries_request_reply_correspondence_client_request.
-  - exact append_entries_request_reply_correspondence_timeout.
-  - exact append_entries_request_reply_correspondence_append_entries.
-  - exact append_entries_request_reply_correspondence_append_entries_reply.
-  - exact append_entries_request_reply_correspondence_request_vote.
-  - exact append_entries_request_reply_correspondence_request_vote_reply.
-  - exact append_entries_request_reply_correspondence_do_leader.
-  - exact append_entries_request_reply_correspondence_do_generic_server.
-  - exact append_entries_request_reply_correspondence_state_same_packet_subset.
-  - exact append_entries_request_reply_correspondence_reboot.
+  Proof using.
+    split.
+    intros. apply raft_net_invariant; auto.
+    - exact append_entries_request_reply_correspondence_init.
+    - exact append_entries_request_reply_correspondence_client_request.
+    - exact append_entries_request_reply_correspondence_timeout.
+    - exact append_entries_request_reply_correspondence_append_entries.
+    - exact append_entries_request_reply_correspondence_append_entries_reply.
+    - exact append_entries_request_reply_correspondence_request_vote.
+    - exact append_entries_request_reply_correspondence_request_vote_reply.
+    - exact append_entries_request_reply_correspondence_do_leader.
+    - exact append_entries_request_reply_correspondence_do_generic_server.
+    - exact append_entries_request_reply_correspondence_state_same_packet_subset.
+    - exact append_entries_request_reply_correspondence_reboot.
   Qed.
-  
 
 End AppendEntriesRequestReplyCorrespondence.

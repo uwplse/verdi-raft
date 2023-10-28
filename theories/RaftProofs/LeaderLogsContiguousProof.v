@@ -64,7 +64,7 @@ Section LeaderLogsContiguous.
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition.
+    do_bool; intuition (auto with arith).
   Qed.
   
   Lemma update_elections_data_requestVoteReply_leaderLogs :
