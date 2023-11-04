@@ -39,7 +39,7 @@ Section LastAppliedCommitIndexMatching.
             cut (e = e'); [intros; subst; auto|]
         end.
         eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto;
-        simpl in *; intuition.
+        simpl in *; intuition lia.
     - unfold log_matching_hosts in *. intuition. simpl in *.
       match goal with
         | H : forall (_ : name) (_ : nat), _ |- In ?e (_ (_ ?h)) =>
@@ -55,7 +55,7 @@ Section LastAppliedCommitIndexMatching.
             cut (e = e'); [intros; subst; auto|]
         end.
         eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto;
-        simpl in *; intuition.
+        simpl in *; intuition lia.
   Qed.
 
   Theorem commitIndex_lastApplied_match_invariant :
@@ -84,7 +84,7 @@ Section LastAppliedCommitIndexMatching.
             cut (e = e'); [intros; subst; auto|]
         end.
         eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto;
-        simpl in *; intuition.
+        simpl in *; intuition lia.
     - unfold log_matching_hosts in *. intuition. simpl in *.
       match goal with
         | H : forall (_ : name) (_ : nat), _ |- In ?e (_ (_ ?h)) =>
@@ -100,7 +100,7 @@ Section LastAppliedCommitIndexMatching.
             cut (e = e'); [intros; subst; auto|]
         end.
         eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto;
-        simpl in *; intuition.
+        simpl in *; intuition lia.
   Qed.
   
   Theorem lastApplied_lastApplied_match_invariant :
@@ -129,7 +129,7 @@ Section LastAppliedCommitIndexMatching.
             cut (e = e'); [intros; subst; auto|]
         end.
         eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto;
-        simpl in *; intuition.
+        simpl in *; intuition lia.
     - unfold log_matching_hosts in *. intuition. simpl in *.
       match goal with
         | H : forall (_ : name) (_ : nat), _ |- In ?e (_ (_ ?h)) =>
@@ -145,7 +145,7 @@ Section LastAppliedCommitIndexMatching.
             cut (e = e'); [intros; subst; auto|]
         end.
         eapply_prop state_machine_safety_host; unfold commit_recorded; intuition eauto;
-        simpl in *; intuition.
+        simpl in *; intuition lia.
   Qed.
 
   Instance lacimi : lastApplied_commitIndex_match_interface.

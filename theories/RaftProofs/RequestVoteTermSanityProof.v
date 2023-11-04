@@ -82,7 +82,7 @@ Section RequestVoteTermSanity.
       + find_apply_lem_hyp handleTimeout_log_term_type.
         intuition; repeat find_rewrite; eauto.
       + do_in_map. remember (pSrc p). subst p. simpl in *.
-        find_eapply_lem_hyp handleTimeout_messages; eauto; intuition.
+        find_eapply_lem_hyp handleTimeout_messages; eauto; intuition lia.
     - find_apply_hyp_hyp. intuition.
       + find_apply_lem_hyp handleTimeout_log_term_type.
         intuition; repeat find_rewrite; eauto.

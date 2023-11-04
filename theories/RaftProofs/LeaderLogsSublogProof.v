@@ -192,8 +192,8 @@ Section LeaderLogsSublog.
   Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try right; congruence.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition (auto with arith); try right; congruence.
   Qed.
 
   Lemma contradict_leaderLogs_term_sanity :

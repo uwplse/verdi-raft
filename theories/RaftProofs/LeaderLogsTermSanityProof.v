@@ -134,7 +134,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     currentTerm_sanity_unchanged.
     - apply update_elections_data_client_request_leaderLogs.
-    - find_apply_lem_hyp handleClientRequest_type. intuition.
+    - find_apply_lem_hyp handleClientRequest_type. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_timeout :
@@ -142,7 +142,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     currentTerm_sanity_unchanged.
     - apply update_elections_data_timeout_leaderLogs.
-    - find_apply_lem_hyp handleTimeout_type_strong. intuition.
+    - find_apply_lem_hyp handleTimeout_type_strong. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_append_entries :
@@ -150,14 +150,14 @@ Section LeaderLogsTermSanity.
   Proof using. 
     currentTerm_sanity_unchanged.
     - apply update_elections_data_appendEntries_leaderLogs.
-    - find_apply_lem_hyp handleAppendEntries_type_term. intuition.
+    - find_apply_lem_hyp handleAppendEntries_type_term. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_append_entries_reply :
     refined_raft_net_invariant_append_entries_reply leaderLogs_currentTerm_sanity.
   Proof using. 
     currentTerm_sanity_unchanged.
-    - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition.
+    - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_request_vote :
@@ -165,7 +165,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     currentTerm_sanity_unchanged.
     - apply leaderLogs_update_elections_data_requestVote.
-    - find_apply_lem_hyp handleRequestVote_type_term. intuition.
+    - find_apply_lem_hyp handleRequestVote_type_term. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_request_vote_reply :
@@ -188,7 +188,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     currentTerm_sanity_unchanged.
     - find_rewrite. auto.
-    - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition.
+    - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_do_generic_server :
@@ -196,7 +196,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     currentTerm_sanity_unchanged.
     - find_rewrite. auto.
-    - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition.
+    - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_state_same_packet_subset :
@@ -268,8 +268,8 @@ Section LeaderLogsTermSanity.
   Proof using. 
     ctsc_unchanged.
     - apply update_elections_data_client_request_leaderLogs.
-    - find_apply_lem_hyp handleClientRequest_type; intuition.
-    - find_apply_lem_hyp handleClientRequest_type; intuition.
+    - find_apply_lem_hyp handleClientRequest_type; intuition lia.
+    - find_apply_lem_hyp handleClientRequest_type; intuition lia.
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_timeout :
@@ -280,7 +280,7 @@ Section LeaderLogsTermSanity.
     find_apply_lem_hyp handleTimeout_type_strong. intuition.
     - repeat find_reverse_rewrite. find_apply_hyp_hyp. lia.
     - find_apply_lem_hyp leaderLogs_currentTerm_sanity_invariant; auto.
-      repeat find_rewrite. intuition.
+      repeat find_rewrite. intuition (auto with arith).
   Qed.
 
   Lemma leaderLogs_currentTerm_sanity_candidate_append_entries :
@@ -288,7 +288,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     ctsc_unchanged.
     - apply update_elections_data_appendEntries_leaderLogs.
-    - find_apply_lem_hyp handleAppendEntries_type_term. intuition.
+    - find_apply_lem_hyp handleAppendEntries_type_term. intuition lia.
     - find_apply_lem_hyp handleAppendEntries_type_term. intuition. right. congruence.
   Qed.
 
@@ -296,7 +296,7 @@ Section LeaderLogsTermSanity.
     refined_raft_net_invariant_append_entries_reply leaderLogs_currentTerm_sanity_candidate.
   Proof using. 
     ctsc_unchanged.
-    - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition.
+    - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition lia.
     - find_apply_lem_hyp handleAppendEntriesReply_type_term. intuition. right. congruence.
   Qed.
 
@@ -305,7 +305,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     ctsc_unchanged.
     - apply leaderLogs_update_elections_data_requestVote.
-    - find_apply_lem_hyp handleRequestVote_type_term. intuition.
+    - find_apply_lem_hyp handleRequestVote_type_term. intuition lia.
     - find_apply_lem_hyp handleRequestVote_type_term. intuition. right. congruence.
   Qed.
 
@@ -327,7 +327,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     ctsc_unchanged.
     - find_rewrite. auto.
-    - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition.
+    - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition lia.
     - find_rewrite. simpl. find_apply_lem_hyp doLeader_type. intuition.
   Qed.
 
@@ -336,7 +336,7 @@ Section LeaderLogsTermSanity.
   Proof using. 
     ctsc_unchanged.
     - find_rewrite. auto.
-    - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition.
+    - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition lia.
     - find_rewrite. simpl. find_apply_lem_hyp doGenericServer_type. intuition.
   Qed.
 

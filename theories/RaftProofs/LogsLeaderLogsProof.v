@@ -176,10 +176,12 @@ Section LogsLeaderLogs.
     match goal with
       | [ _ : nwPackets ?net = _,
               _ : In ?p _ |- _] =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; do_in_app; intuition)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; do_in_app; intuition (auto with datatypes))
       | [ _ : nwPackets ?net = _,
               _ : pBody ?p = _ |- _] =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; intuition)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; intuition (auto with datatypes))
     end.
 
   Lemma contiguous_log_property :
@@ -268,7 +270,7 @@ Section LogsLeaderLogs.
                     | _ : removeAfterIndex _ ?index = _ ++ ?e :: _ |- _ =>
                       assert (In e es) by
                           (apply removeAfterIndex_in with (i := index);
-                           repeat find_rewrite; intuition)
+                           repeat find_rewrite; intuition (auto with datatypes))
                   end.
                   eapply_prop_hyp In In. lia.
                 } subst. rewrite app_nil_r in *.
@@ -350,7 +352,7 @@ Section LogsLeaderLogs.
                       | _ : removeAfterIndex _ ?index = _ ++ ?e :: _ |- _ =>
                         assert (In e es) by
                             (apply removeAfterIndex_in with (i := index);
-                             repeat find_rewrite; intuition)
+                             repeat find_rewrite; intuition (auto with datatypes))
                     end.
                     clear H0 H7.
                     eapply_prop_hyp In In. lia.
@@ -599,7 +601,7 @@ Section LogsLeaderLogs.
          | _ : S _ = pred ?x |- context [pred ?y] =>
            assert (pred x = pred y) by auto
        end.
-       repeat find_rewrite. intuition.
+       repeat find_rewrite. intuition lia.
   Qed.
 
   Lemma logs_leaderLogs_inductive_doLeader :

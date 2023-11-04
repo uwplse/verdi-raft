@@ -411,7 +411,7 @@ Section MatchIndexAllEntries.
       repeat (do_bool; repeat break_and).
       + find_apply_lem_hyp not_empty_true_elim.
         pose proof maxIndex_non_empty es ltac:(auto).
-        break_exists_exists. intuition.
+        break_exists_exists. intuition (auto with datatypes).
       + break_or_hyp.
         * find_apply_lem_hyp not_empty_false_elim. congruence.
         * break_match; try discriminate.
@@ -816,9 +816,9 @@ Section MatchIndexAllEntries.
   Proof using. 
     unfold handleRequestVoteReply.
     intros.
-    repeat break_match; repeat find_inversion; do_bool; subst; simpl; intuition.
+    repeat break_match; repeat find_inversion; do_bool; subst; simpl;
+      intuition (auto with arith).
   Qed.
-
 
   Lemma match_index_all_entries_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply match_index_all_entries_inv.

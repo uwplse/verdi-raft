@@ -159,8 +159,8 @@ Section LeaderCompleteness.
       In h nodes ->
       In (t', l) (contradicting_leader_logs_on_leader (leaderLogs (fst (nwState net h))) t e) ->
       In (t', h, l) (contradicting_leader_logs net nodes t e).
-  Proof using. 
-    induction nodes; intros; simpl in *; intuition.
+  Proof using.
+    induction nodes; intros; simpl in *; intuition (auto with datatypes).
     apply in_or_app.
     subst. left. apply in_map_iff. eexists. intuition eauto. simpl. auto.
   Qed.

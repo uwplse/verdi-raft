@@ -338,10 +338,10 @@ Section RaftLinearizableProofs.
     intros.
     induction log; simpl in *; intuition.
     - subst. break_exists.
-      repeat break_match; intuition.
+      repeat break_match; intuition (auto with datatypes).
       simpl in *.
       subst. congruence.
-    - repeat break_match; in_crush.
+    - repeat break_match; in_crush_tac (intuition (auto with datatypes)).
   Qed.
 
   Theorem In_get_output' :
@@ -450,7 +450,7 @@ Section RaftLinearizableProofs.
       In (I k) (import tr).
   Proof using. 
     induction tr; intros; simpl in *; intuition; subst.
-    - rewrite <- surjective_pairing. intuition.
+    - rewrite <- surjective_pairing. intuition (auto with datatypes).
     - break_match; simpl; eauto.
       subst.
       destruct (key_eq_dec (c, n) k).
@@ -602,7 +602,8 @@ Section RaftLinearizableProofs.
       key_of e <> (c, i).
   Proof using. 
     intros. unfold has_key, key_of in *.
-    break_match. subst. simpl in *. break_if; try congruence. repeat (do_bool; intuition); congruence.
+    break_match. subst. simpl in *. break_if; try congruence.
+    repeat (do_bool; intuition auto); congruence.
   Qed.
 
   Lemma key_of_has_key_false :
@@ -781,7 +782,7 @@ Section RaftLinearizableProofs.
   Proof using. 
     intros; induction tr; simpl in *; intuition.
     - repeat break_match; subst; simpl in *; intuition; try congruence.
-      break_if; repeat (do_bool; intuition); try congruence.
+      break_if; repeat (do_bool; intuition auto); try congruence.
       destruct k; subst; simpl in *; intuition.
     - repeat break_match; subst; simpl in *; intuition; try congruence.
       + destruct k.
@@ -965,12 +966,12 @@ Section RaftLinearizableProofs.
         * specialize (H0 o o0 d0). repeat concludes.
           apply exported_snoc_IO; congruence.
         * apply exported_snoc_IU; auto.
-      + intros. apply H. intuition.
+      + intros. apply H. intuition (auto with datatypes).
       + intros. subst. eapply (H0 _ (ys ++ [x])).
-        rewrite <- app_assoc. simpl. eauto.
-        eauto.
-        eauto.
-        eauto.
+        * rewrite <- app_assoc. simpl. eauto.
+        * eauto.
+        * eauto.
+        * eauto.
   Qed.
 
   Lemma exported_execute_log :
@@ -1015,9 +1016,9 @@ Section RaftLinearizableProofs.
     intros. induction tr; simpl in *; try congruence.
     repeat break_let. subst.
     repeat break_match; simpl in *; intuition; subst;
-    try solve [unfold in_output_trace in *;break_exists_exists; intuition].
+    try solve [unfold in_output_trace in *;break_exists_exists; intuition (auto with datatypes)].
     find_inversion. find_apply_lem_hyp get_output'_In.
-    repeat eexists; eauto; in_crush.
+    repeat eexists; eauto; in_crush_tac (intuition auto).
   Qed.
 
   Lemma deduplicate_partition :

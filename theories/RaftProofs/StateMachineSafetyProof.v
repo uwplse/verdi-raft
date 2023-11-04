@@ -121,7 +121,7 @@ Section StateMachineSafetyProof.
     - simpl in *. break_and.
       destruct (log st); simpl in *.
       + lia.
-      + find_insterU. conclude_using eauto. intuition.
+      + find_insterU. conclude_using eauto. intuition lia.
   Qed.
 
   Lemma lifted_sorted_host :
@@ -236,8 +236,9 @@ Section StateMachineSafetyProof.
       maxIndex l2 <= maxIndex (l1 ++ l2).
   Proof using. 
     induction l1; intros; simpl in *; intuition.
-    destruct l2; intuition. simpl in *.
-    specialize (H0 e). conclude H0 intuition. intuition.
+    destruct l2; intuition (auto with arith). simpl in *.
+    specialize (H0 e). conclude H0 ltac:(intuition (auto with datatypes)).
+    intuition (auto with arith).
   Qed.
 
   Lemma max_min_thing:
@@ -246,7 +247,7 @@ Section StateMachineSafetyProof.
       max a (min b c) <= c.
   Proof using. 
     intros.
-    destruct (max a (min b c)) using (Nat.max_case _ _); intuition.
+    destruct (max a (min b c)) using (Nat.max_case _ _); intuition lia.
   Qed.
 
   Lemma in_ghost_packet :
@@ -506,7 +507,7 @@ Section StateMachineSafetyProof.
         destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p))))
                             (maxIndex (log d))); auto.
         exfalso.
-        assert (In p (nwPackets net)) by (find_rewrite; intuition).
+        assert (In p (nwPackets net)) by (find_rewrite; intuition (auto with datatypes)).
         assert (exists x, eIndex x = maxIndex (log d) /\ In x (log (snd (nwState net (pDst p))))).
         {
           eapply contiguous_range_exact_lo_elim_exists.
@@ -526,13 +527,13 @@ Section StateMachineSafetyProof.
         destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p))))
                             (maxIndex (log d))); auto.
         exfalso.
-        assert (In p (nwPackets net)) by (find_rewrite; intuition).
+        assert (In p (nwPackets net)) by (find_rewrite; intuition (auto with datatypes)).
         break_exists; intuition. find_apply_lem_hyp findAtIndex_elim; intuition.
 
         find_eapply_lem_hyp msg_lifted_sms_nw; eauto;
         [|eapply msg_commit_recorded_lift_intro; eauto;
         left; repeat find_rewrite; auto using Nat.lt_le_incl].
-        intuition.
+        intuition (try lia).
         * subst.
           assert (0 < eIndex x) by (eapply lifted_entries_contiguous_invariant; eauto).
           lia.
@@ -544,12 +545,11 @@ Section StateMachineSafetyProof.
          break_exists; break_and;
          erewrite maxIndex_removeAfterIndex by (eauto; apply msg_lifted_sorted_host; auto);
          auto|]; [idtac].
-
         destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p)))) (maxIndex es)); intuition;
         [match goal with
            | |- context [ maxIndex (?ll1 ++ ?ll2) ] =>
              pose proof maxIndex_app ll1 ll2
-         end; simpl in *; intuition|]; [idtac].
+         end; simpl in *; intuition lia|]; [idtac].
         assert (exists x, eIndex x = maxIndex es /\ In x (log (snd (nwState net (pDst p))))).
         {
           eapply contiguous_range_exact_lo_elim_exists.
@@ -575,29 +575,26 @@ Section StateMachineSafetyProof.
         end; eauto.
         * congruence.
         * apply msg_lifted_sorted_host. auto.
-      +   destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p)))) (maxIndex es)); intuition;
+      + destruct (le_lt_dec (lastApplied (snd (nwState net (pDst p)))) (maxIndex es)); intuition;
         [match goal with
            | |- context [ maxIndex (?ll1 ++ ?ll2) ] =>
              pose proof maxIndex_app ll1 ll2
-         end; simpl in *; intuition|]; [idtac].
+         end; simpl in *; (intuition lia)|]; [idtac].
         exfalso.
-        assert (In p (nwPackets net)) by (find_rewrite; intuition).
+        assert (In p (nwPackets net)) by (find_rewrite; intuition (auto with datatypes)).
         break_exists; intuition. find_apply_lem_hyp findAtIndex_elim; intuition.
         find_copy_apply_lem_hyp maxIndex_non_empty.
         break_exists. intuition.
-
         find_eapply_lem_hyp msg_lifted_sms_nw; eauto;
         [|eapply msg_commit_recorded_lift_intro; eauto;
         left; repeat find_rewrite; auto using Nat.lt_le_incl].
-
         match goal with
           | _ : In ?x es, _ : maxIndex es = eIndex ?x |- _ =>
             assert (pli < eIndex x)
                    by ( eapply contiguous_range_exact_lo_elim_lt; eauto;
                         eapply lifted_entries_contiguous_nw_invariant; eauto)
         end.
-        intuition.
-
+        intuition (try lia).
         match goal with
           | H : _ = _ ++ _ |- _ => symmetry in H
         end.
@@ -608,7 +605,7 @@ Section StateMachineSafetyProof.
         match goal with
           | _ : eIndex ?x' = eIndex ?x, H : context [eIndex ?x'] |- _ =>
             specialize (H x); conclude H ltac:(apply in_app_iff; auto)
-          end; intuition.
+          end; intuition lia.
     - assert (sorted (log d)) by (eauto using lifted_handleAppendEntries_logs_sorted).
       match goal with
         | _ : handleAppendEntries ?h ?s ?t ?n ?pli ?plt ?es ?ci = (?s', ?m) |- _ =>
@@ -624,7 +621,7 @@ Section StateMachineSafetyProof.
         destruct (le_lt_dec (commitIndex (snd (nwState net (pDst p))))
                             (maxIndex (log d))); auto.
         exfalso.
-        assert (In p (nwPackets net)) by (find_rewrite; intuition).
+        assert (In p (nwPackets net)) by (find_rewrite; intuition (auto with datatypes)).
         assert (exists x, eIndex x = maxIndex (log d) /\ In x (log (snd (nwState net (pDst p))))).
         {
           eapply contiguous_range_exact_lo_elim_exists.
@@ -644,13 +641,12 @@ Section StateMachineSafetyProof.
         destruct (le_lt_dec (commitIndex (snd (nwState net (pDst p))))
                             (maxIndex (log d))); auto.
         exfalso.
-        assert (In p (nwPackets net)) by (find_rewrite; intuition).
+        assert (In p (nwPackets net)) by (find_rewrite; intuition (auto with datatypes)).
         break_exists; intuition. find_apply_lem_hyp findAtIndex_elim; intuition.
-
         find_eapply_lem_hyp msg_lifted_sms_nw; eauto;
         [|eapply msg_commit_recorded_lift_intro; eauto;
-        right; repeat find_rewrite; intuition].
-        intuition.
+        right; repeat find_rewrite; intuition lia].
+        intuition (try lia).
         * subst.
           assert (0 < eIndex x) by (eapply lifted_entries_contiguous_invariant; eauto).
           lia.
@@ -665,7 +661,7 @@ Section StateMachineSafetyProof.
         [match goal with
            | |- context [ maxIndex (?ll1 ++ ?ll2) ] =>
              pose proof maxIndex_app ll1 ll2
-         end; simpl in *; intuition|]; [idtac].
+         end; simpl in *; intuition lia|]; [idtac].
         assert (exists x, eIndex x = maxIndex es /\ In x (log (snd (nwState net (pDst p))))).
         {
           eapply contiguous_range_exact_lo_elim_exists.
@@ -695,24 +691,22 @@ Section StateMachineSafetyProof.
         [match goal with
            | |- context [ maxIndex (?ll1 ++ ?ll2) ] =>
              pose proof maxIndex_app ll1 ll2
-         end; simpl in *; intuition|]; [idtac].
+         end; simpl in *; intuition lia|]; [idtac].
         exfalso.
-        assert (In p (nwPackets net)) by (find_rewrite; intuition).
+        assert (In p (nwPackets net)) by (find_rewrite; intuition (auto with datatypes)).
         break_exists; intuition. find_apply_lem_hyp findAtIndex_elim; intuition.
         find_copy_apply_lem_hyp maxIndex_non_empty.
         break_exists. intuition.
-
         find_eapply_lem_hyp msg_lifted_sms_nw; eauto;
         [|eapply msg_commit_recorded_lift_intro; eauto;
-        right; repeat find_rewrite; intuition].
+        right; repeat find_rewrite; intuition lia].
         match goal with
           | _ : In ?x es, _ : maxIndex es = eIndex ?x |- _ =>
             assert (pli < eIndex x)
               by (eapply contiguous_range_exact_lo_elim_lt; eauto;
                         eapply lifted_entries_contiguous_nw_invariant; eauto)
         end.
-
-        intuition.
+        intuition (try lia).
         * match goal with
             | H : _ = _ ++ _ |- _ => symmetry in H
           end.
@@ -723,7 +717,7 @@ Section StateMachineSafetyProof.
           match goal with
             | _ : eIndex ?x' = eIndex ?x, H : context [eIndex ?x'] |- _ =>
               specialize (H x); conclude H ltac:(apply in_app_iff; auto)
-          end; intuition.
+          end; intuition lia.
   Qed.
 
   Lemma lifted_maxIndex_sanity_append_entries_reply :
@@ -1183,7 +1177,7 @@ Section StateMachineSafetyProof.
       | [ |- context [ allEntries ?x ] ] =>
         destruct (allEntries x)
                  using (update_elections_data_client_request_allEntries_ind ltac:(eauto))
-    end; intuition.
+    end; intuition (auto with datatypes).
   Qed.
 
   Lemma handleClientRequest_preservers_log :
@@ -1193,7 +1187,8 @@ Section StateMachineSafetyProof.
       In e (log st').
   Proof using. 
     intros.
-    destruct (log st') using (handleClientRequest_log_ind ltac:(eauto)); intuition.
+    destruct (log st') using (handleClientRequest_log_ind ltac:(eauto));
+      intuition (auto with datatypes).
   Qed.
 
   Lemma committed_log_allEntries_preserved :
@@ -1433,16 +1428,14 @@ Section StateMachineSafetyProof.
       t <= t' ->
       lifted_committed net e t'.
   Proof using. 
-    unfold lifted_committed.
-    intros.
+    unfold lifted_committed. intros.
     break_exists_exists.
-    intuition.
+    intuition lia.
   Qed.
-
 
   Lemma commit_invariant_timeout :
     msg_refined_raft_net_invariant_timeout commit_invariant.
-  Proof using rmri. 
+  Proof using rmri.
     unfold msg_refined_raft_net_invariant_timeout, commit_invariant.
     simpl. intuition.
     - unfold commit_invariant_host in *.
@@ -1560,7 +1553,7 @@ Section StateMachineSafetyProof.
     unfold update_elections_data_appendEntries.
     intros. break_let. break_match; auto.
     break_if; auto.
-    simpl. intuition.
+    simpl. intuition (auto with datatypes).
   Qed.
 
   Lemma lifted_transitive_commit_invariant :
@@ -1649,14 +1642,14 @@ Section StateMachineSafetyProof.
           | |- In ?e _ =>
             assert (lifted_committed net e (currentTerm (snd (nwState net host)))) by
                 (unfold lifted_committed;
-                 exists host, e'; intuition;
+                 exists host, e'; intuition (try lia);
                  eapply lifted_no_entries_past_current_term_host_invariant; eauto)
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex x > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; lia.
+        intuition lia.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
-        intuition;
+        (intuition (auto with datatypes));
           try solve
               [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
@@ -1676,7 +1669,7 @@ Section StateMachineSafetyProof.
         * enough (eIndex e <= maxIndex (log (snd (nwState net host)))) by lia.
           apply maxIndex_is_max; auto.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
-        intuition;
+        (intuition (auto with datatypes));
           try solve
               [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
@@ -1694,7 +1687,7 @@ Section StateMachineSafetyProof.
           | |- In ?e _ =>
             assert (lifted_committed net e (currentTerm (snd (nwState net host)))) by
                 (unfold lifted_committed;
-                 exists host, e'; intuition;
+                 exists host, e'; intuition (try lia);
                  eapply lifted_no_entries_past_current_term_host_invariant; eauto)
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
@@ -1744,14 +1737,14 @@ Section StateMachineSafetyProof.
           | |- In ?e _ =>
             assert (lifted_committed net e (currentTerm (snd (nwState net host)))) by
                 (unfold lifted_committed;
-                 exists host, e'; intuition;
+                 exists host, e'; intuition (try lia);
                  eapply lifted_no_entries_past_current_term_host_invariant; eauto)
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
         assert (eIndex x > 0) by (eapply lifted_entries_gt_0_invariant; eauto).
-        intuition; lia.
+        intuition lia.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
-        intuition;
+        (intuition (auto with datatypes));
           try solve
               [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
@@ -1771,7 +1764,7 @@ Section StateMachineSafetyProof.
         * enough (eIndex e' <= maxIndex (log (snd (nwState net host)))) by lia.
           apply maxIndex_is_max; auto.
       + find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
-        intuition;
+        (intuition (auto with datatypes));
           try solve
               [apply in_app_iff; right; apply removeAfterIndex_le_In; auto; lia];
           [idtac].
@@ -1789,7 +1782,7 @@ Section StateMachineSafetyProof.
           | |- In ?e _ =>
             assert (lifted_committed net e (currentTerm (snd (nwState net host)))) by
                 (unfold lifted_committed;
-                 exists host, e'; intuition;
+                 exists host, e'; intuition (try lia);
                  eapply lifted_no_entries_past_current_term_host_invariant; eauto)
         end.
         find_copy_eapply_lem_hyp lifted_state_machine_safety_nw'_invariant; eauto.
@@ -2245,7 +2238,7 @@ Section StateMachineSafetyProof.
         end.
         eapply lifted_committed_monotonic; eauto.
         find_apply_lem_hyp handleRequestVote_currentTerm_leaderId.
-        intuition.
+        intuition (auto with arith).
         unfold mgv_refined_base_params, raft_refined_base_params, refined_base_params in *.
         simpl in *.
         repeat find_rewrite. auto.
@@ -2300,7 +2293,7 @@ Section StateMachineSafetyProof.
         | [ H : context [log] |- _ ] => erewrite handleRequestVoteReply_same_log in H
         end.
         eapply lifted_committed_monotonic; eauto.
-        intuition; repeat find_rewrite; auto.
+        intuition (auto with arith); repeat find_rewrite; auto.
       + rewrite_update. eapply handleRequestVoteReply_preserves_committed; eauto.
         simpl. subst. auto.
     - unfold commit_invariant_nw. simpl.
@@ -2309,7 +2302,6 @@ Section StateMachineSafetyProof.
       eapply handleRequestVoteReply_preserves_committed; eauto.
       simpl. subst. auto.
   Qed.
-
 
   Lemma committed_ext' :
     forall ps ps' st st' t e,
@@ -2398,7 +2390,7 @@ Section StateMachineSafetyProof.
     match goal with
     | [ H : context [fold_left Nat.max ?l ?x] |- _ ] =>
       pose proof fold_left_maximum_cases l x
-    end. intuition.
+    end. intuition (auto with zarith).
     break_exists. break_and.
     find_apply_lem_hyp in_map_iff.
     break_exists_name witness. break_and.
@@ -2406,7 +2398,7 @@ Section StateMachineSafetyProof.
     find_apply_lem_hyp findGtIndex_necessary. do_bool. break_and. do_bool. break_and.
     do_bool.
     unfold committed.
-    exists h, witness. intuition.
+    exists h, witness. intuition (try lia).
     eapply haveQuorum_directly_committed; eauto.
   Qed.
 
@@ -2493,7 +2485,7 @@ Section StateMachineSafetyProof.
     intuition. subst.
     unfold mgv_refined_base_params, raft_refined_base_params, refined_base_params in *.
     simpl in *.
-    repeat find_rewrite. intuition.
+    repeat find_rewrite. intuition (auto with datatypes).
   Qed.
 
   Definition lifted_leaders_have_leaderLogs (net : ghost_log_network) : Prop :=

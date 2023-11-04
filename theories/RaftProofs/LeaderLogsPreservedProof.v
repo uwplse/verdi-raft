@@ -91,7 +91,7 @@ Section LeaderLogsPreserved.
     simpl in *. intuition.
     find_inversion. right.
     unfold handleRequestVoteReply in *.
-    repeat break_match; simpl in *; intuition; try congruence;
+    repeat break_match; simpl in *; intuition auto; try congruence;
     break_if; try congruence; do_bool; eauto using Nat.le_antisymm.
   Qed.
 

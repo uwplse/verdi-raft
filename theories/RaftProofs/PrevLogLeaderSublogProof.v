@@ -42,7 +42,7 @@ Section PrevLogLeaderSublogProof.
     find_apply_lem_hyp handleClientRequest_log.
     intuition.
     - find_rewrite. auto.
-    - break_exists. intuition. find_rewrite. intuition.
+    - break_exists. intuition. find_rewrite. intuition (auto with datatypes).
   Qed.
 
   Lemma prevLog_leader_sublog_client_request :
@@ -252,7 +252,8 @@ Section PrevLogLeaderSublogProof.
   Proof using. 
     unfold handleRequestVoteReply.
     intros.
-    repeat break_match; repeat find_inversion; subst; simpl in *; auto; do_bool; intuition.
+    repeat break_match; repeat find_inversion; subst; simpl in *; auto;
+      do_bool; intuition lia.
   Qed.
 
   Lemma prevLog_leader_sublog_request_vote_reply :

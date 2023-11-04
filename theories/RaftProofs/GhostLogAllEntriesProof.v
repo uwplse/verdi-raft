@@ -45,7 +45,7 @@ Section GhostLogAllEntriesProof.
     unfold update_elections_data_appendEntries.
     intros. break_let. break_match; auto.
     break_if; auto.
-    simpl. intuition.
+    simpl. intuition (auto with datatypes).
   Qed.
 
   Lemma ghost_log_allEntries_append_entries :

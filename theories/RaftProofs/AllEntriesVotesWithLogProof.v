@@ -117,8 +117,8 @@ Section AllEntriesVotesWithLog.
     unfold update_elections_data_requestVote.
     intros.
     repeat break_match; repeat tuple_inversion; intuition;
-    simpl in *; intuition;
-    tuple_inversion; intuition; repeat (do_bool; intuition);
+      simpl in *; intuition;
+    tuple_inversion; intuition; repeat (do_bool; intuition (auto with bool));
     try congruence;
     unfold raft_data, ghost_data in *; simpl in *;
     repeat find_rewrite; repeat find_inversion;
@@ -147,15 +147,15 @@ Section AllEntriesVotesWithLog.
         intuition.
         right. break_exists_exists. repeat find_higher_order_rewrite.
         simpl in *.
-        destruct_update; simpl in *; intuition; 
+        destruct_update; simpl in *; intuition (try lia); 
         try rewrite leaderLogs_update_elections_data_requestVote; eauto.
-      +  subst.
+      + subst.
         find_apply_lem_hyp handleRequestVote_log. repeat find_rewrite.
         find_copy_eapply_lem_hyp allEntries_log_invariant; eauto.
         intuition.
         right. break_exists_exists. repeat find_higher_order_rewrite.
         simpl in *.
-        destruct_update; simpl in *; intuition; 
+        destruct_update; simpl in *; intuition (try lia);
         try rewrite leaderLogs_update_elections_data_requestVote; eauto.
     - eapply_prop_hyp votesWithLog votesWithLog; eauto; intuition;
       right; break_exists_exists; intuition;
@@ -254,7 +254,7 @@ Section AllEntriesVotesWithLog.
         find_copy_apply_lem_hyp handleTimeout_log_same. repeat find_rewrite.
         find_apply_lem_hyp allEntries_log_invariant; eauto. intuition.
         right.
-        break_exists_exists; intuition;
+        break_exists_exists; intuition (try lia);
         find_higher_order_rewrite; destruct_update; simpl in *; auto;
         rewrite update_elections_data_timeout_leaderLogs; auto.
     - eapply_prop_hyp votesWithLog votesWithLog; eauto; intuition;

@@ -171,7 +171,7 @@ Section PrefixWithinTerm.
     end.
     find_eapply_lem_hyp one_leaderLog_per_term_log_invariant; eauto.
     conclude_using eauto. subst.
-    intuition; subst.
+    intuition auto; subst.
     - destruct (lt_eq_lt_dec (eIndex e) pli'); intuition.
       left.
       match goal with
@@ -375,7 +375,7 @@ Section PrefixWithinTerm.
         end. all:eauto. all:intuition.
         * eapply_prop_hyp eTerm In. congruence.
         * replace (eIndex e) with (eIndex x8).
-          eapply_prop (contiguous_range_exact_lo (x1 ++ x2)); eauto. in_crush.
+          eapply_prop (contiguous_range_exact_lo (x1 ++ x2)); eauto. in_crush_tac (intuition auto).
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; [|idtac|eauto]; eauto.
         match goal with
@@ -731,7 +731,7 @@ Section PrefixWithinTerm.
             eapply H with (es := es) (p := p) (p' := p')
         end.
         7: { eauto. }
-        all:repeat find_rewrite. all:eauto. intuition.
+        all:repeat find_rewrite. all:eauto. intuition lia.
       + exfalso.
         find_eapply_lem_hyp Prefix_maxIndex; [|idtac|eauto]; eauto.
         find_eapply_lem_hyp contiguous_0_app; eauto. lia.
@@ -964,10 +964,10 @@ Section PrefixWithinTerm.
         find_apply_lem_hyp allEntries_gt_0_invariant; eauto. lia.
       + unfold prefix_within_term, allEntries_append_entries_prefix_within_term_nw in *.
         intros.
-        find_apply_lem_hyp update_elections_data_appendEntries_allEntries. intuition.
+        find_apply_lem_hyp update_elections_data_appendEntries_allEntries. intuition (auto with datatypes).
         do_in_app. intuition.
         * {
-            copy_eapply_prop_hyp pBody pBody; eauto. intuition.
+            copy_eapply_prop_hyp pBody pBody; eauto. intuition (auto with datatypes).
             - subst. apply in_app_iff. right.
               apply removeAfterIndex_le_In; auto.
               break_exists. intuition.
@@ -999,7 +999,7 @@ Section PrefixWithinTerm.
         intros.
         do_in_app. intuition.
         * {
-            copy_eapply_prop_hyp pBody pBody; eauto. intuition.
+            copy_eapply_prop_hyp pBody pBody; eauto. intuition (auto with datatypes).
             - subst. apply in_app_iff. right.
               apply removeAfterIndex_le_In; auto.
               break_exists. intuition.
@@ -1079,12 +1079,12 @@ Section PrefixWithinTerm.
         end.
         conclude_using ltac:(repeat find_rewrite; in_crush).
         concludes.
-        conclude_using ltac:(repeat find_rewrite; in_crush).
+        conclude_using ltac:(repeat find_rewrite; in_crush_tac (intuition auto)).
         repeat concludes. intuition.
         * exfalso.
           match goal with
             | _ : eIndex ?e = 0 |- _ =>
-              cut (eIndex e > 0); [intuition|]
+              cut (eIndex e > 0); [intuition (try lia)|]
           end.
           eapply entries_gt_0_nw_invariant; [|idtac|idtac|eauto]; [|idtac|eauto]; eauto.
         * lia.
@@ -1101,8 +1101,8 @@ Section PrefixWithinTerm.
             end.
             conclude_using ltac:(repeat find_rewrite; in_crush).
             concludes.
-            conclude_using ltac:(repeat find_rewrite; in_crush).
-            repeat concludes. intuition.
+            conclude_using ltac:(repeat find_rewrite; in_crush_tac (intuition auto)).
+            repeat concludes. intuition (auto with datatypes).
             + (* use  log matching *)
               break_exists. intuition.
               subst.
@@ -1127,7 +1127,7 @@ Section PrefixWithinTerm.
               6: { eauto. }
               5: { eauto. }
               2: { eauto. }
-              all:eauto; repeat find_rewrite; intuition.
+              all:eauto; repeat find_rewrite; intuition lia.
           - apply in_app_iff. right.
             find_copy_apply_lem_hyp removeAfterIndex_in.
             find_apply_lem_hyp removeAfterIndex_In_le; [|eapply entries_sorted_invariant; eauto].
@@ -1326,7 +1326,7 @@ Section PrefixWithinTerm.
          | _ : S _ = pred ?x |- context [pred ?y] =>
            assert (pred x = pred y) by auto
        end.
-       repeat find_rewrite. intuition.
+       repeat find_rewrite. intuition lia.
   Qed.
 
   Lemma doLeader_in_entries_in_log :
@@ -1336,7 +1336,7 @@ Section PrefixWithinTerm.
       snd m = AppendEntries t n pli plt es ci ->
       In e es -> In e (log st).
   Proof using. 
-  intros. unfold doLeader, advanceCommitIndex in *.
+    intros. unfold doLeader, advanceCommitIndex in *.
     break_match; try solve [find_inversion; simpl in *; intuition].
     break_if; try solve [find_inversion; simpl in *; intuition].
     find_inversion. do_in_map. subst. simpl in *. find_inversion.

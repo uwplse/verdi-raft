@@ -85,7 +85,7 @@ Section AppliedEntriesMonotonicProof.
   Proof using. 
     intros.
     unfold committed in *.
-    break_exists_exists. intuition.
+    break_exists_exists. intuition (try lia).
     unfold log_matching, log_matching_hosts in *.
     intuition. unfold entries_match in *.
     rewrite deghost_snd in *.
@@ -142,14 +142,15 @@ Section AppliedEntriesMonotonicProof.
     find_apply_hyp_hyp. intuition.
   Qed.
   
+  (* FIXME: redundant with other files *)
   Lemma sorted_app :
     forall l l',
       sorted (l ++ l') ->
       sorted l.
   Proof using. 
     induction l; simpl in *; intros; intuition eauto.
-    - apply H0. intuition.
-    - apply H0. intuition.
+    - apply H0. intuition (auto with datatypes).
+    - apply H0. intuition (auto with datatypes).
   Qed.
   
   Lemma handleMessage_applied_entries :
@@ -188,14 +189,14 @@ Section AppliedEntriesMonotonicProof.
             find_apply_lem_hyp logs_contiguous; auto; lia.
         * intros.
           find_copy_apply_lem_hyp log_matching_invariant.
-          unfold log_matching, log_matching_hosts in *. intuition.
+          unfold log_matching, log_matching_hosts in *. intuition (auto with datatypes).
           match goal with
             | H : forall _ _, _ <= _ <= _ -> _ |- _ => specialize (H h (eIndex e));
                 forward H
           end;
             copy_eapply_prop_hyp log_matching_nw AppendEntries; eauto;
             repeat (forwards; [intuition eauto; lia|]; concludes);
-            intuition; [eapply Nat.le_trans; eauto|].
+            (intuition (auto with arith)); [eapply Nat.le_trans; eauto|].
           match goal with
             | H : exists _, _ |- _ => destruct H as [e']
           end.
@@ -237,7 +238,7 @@ Section AppliedEntriesMonotonicProof.
           unfold state_machine_safety_nw in *.
           eapply_prop_hyp commit_recorded In; intuition; eauto; try lia;
           try solve [find_apply_lem_hyp logs_contiguous; auto; lia].
-          unfold commit_recorded. intuition.
+          unfold commit_recorded. intuition lia.
       + repeat find_rewrite.
         find_copy_apply_lem_hyp logs_sorted_invariant.
         unfold logs_sorted in *. intuition.
@@ -256,7 +257,7 @@ Section AppliedEntriesMonotonicProof.
           simpl in *. intuition eauto. forwards; eauto. concludes.
           forwards; [unfold commit_recorded in *; intuition eauto|].
           concludes.
-          intuition; apply in_app_iff;
+          intuition (auto with datatypes); apply in_app_iff;
           try solve [right; eapply removeAfterIndex_le_In; eauto; lia];
           exfalso.
           find_eapply_lem_hyp findAtIndex_max_thing; eauto using entries_max_thing.
@@ -281,7 +282,7 @@ Section AppliedEntriesMonotonicProof.
             simpl in *. intuition eauto. forwards; eauto. concludes.
             forwards; [unfold commit_recorded in *; intuition eauto|].
             concludes.
-            intuition; apply in_app_iff;
+            intuition (auto with datatypes); apply in_app_iff;
             try solve [right; eapply removeAfterIndex_le_In; eauto; lia].
             subst.
             find_apply_lem_hyp maxIndex_non_empty.
@@ -293,7 +294,7 @@ Section AppliedEntriesMonotonicProof.
             unfold state_machine_safety_nw in *.
             eapply rachet; eauto using sorted_app, sorted_uniqueIndices.
             copy_eapply_prop_hyp commit_recorded In; intuition; eauto; try lia;
-            unfold commit_recorded; intuition.
+            unfold commit_recorded; intuition (try lia).
             - exfalso.
               pose proof entries_gt_pli.
               eapply_prop_hyp AppendEntries AppendEntries;
@@ -412,7 +413,8 @@ Section AppliedEntriesMonotonicProof.
       find_copy_apply_lem_hyp doLeader_appliedEntries.
       find_copy_eapply_lem_hyp RIR_handleMessage; eauto.
       find_eapply_lem_hyp RIR_doLeader; simpl in *; eauto.
-      find_apply_lem_hyp handleMessage_applied_entries; auto; [|destruct p; find_rewrite; in_crush].
+      find_apply_lem_hyp handleMessage_applied_entries; auto;
+        [|destruct p; find_rewrite; in_crush_tac (intuition auto)].
       unfold raft_data in *. simpl in *. unfold raft_data in *. simpl in *.
       match goal with
         | H : applied_entries (update _ (update _ _ _ _) _ _) =
@@ -446,9 +448,9 @@ Section AppliedEntriesMonotonicProof.
       repeat find_rewrite.
       repeat match goal with H : applied_entries _ = applied_entries _ |- _ => clear H end.
       eauto using doGenericServer_applied_entries.
-    - exists nil; intuition.
-    - exists nil; intuition.
-    - exists nil; intuition.
+    - exists nil; intuition (auto with datatypes).
+    - exists nil; intuition (auto with datatypes).
+    - exists nil; intuition (auto with datatypes).
     - exists nil.
       rewrite app_nil_r.
       apply applied_entries_log_lastApplied_same;
@@ -463,11 +465,11 @@ Section AppliedEntriesMonotonicProof.
       In e (applied_entries (nwState net')).
   Proof using lacimi misi smsi uii lmi si. 
     intros. find_eapply_lem_hyp applied_entries_monotonic'; eauto.
-    break_exists. find_rewrite. in_crush.
+    break_exists. find_rewrite. in_crush_tac (intuition (auto with datatypes)).
   Qed.
 
   Instance aemi : applied_entries_monotonic_interface.
-  Proof.
+  Proof using lacimi misi smsi uii lmi si.
     split;
     eauto using applied_entries_monotonic,
                 applied_entries_monotonic'.

@@ -54,7 +54,7 @@ Section OutputCorrect.
       unfold in_output_list in *. break_exists.
       find_eapply_lem_hyp find_none; eauto.
       simpl in *. find_apply_lem_hyp Bool.andb_false_elim.
-      break_if; repeat (intuition; do_bool).
+      break_if; repeat (intuition (auto with bool); do_bool).
       break_if; congruence.
   Qed.
 
@@ -148,7 +148,7 @@ Section OutputCorrect.
       in_output_list c i o l2.
   Proof using. 
     unfold in_output_list.
-    intuition.
+    intuition (auto with datatypes).
   Qed.
 
   Lemma in_output_trace_inp_inv :
@@ -355,7 +355,7 @@ Section OutputCorrect.
       end.
       intros.
       find_eapply_lem_hyp find_none; eauto.
-      simpl in *. break_if; repeat (do_bool; intuition); try congruence.
+      simpl in *. break_if; repeat (do_bool; intuition auto); try congruence.
   Qed.
 
   (* FIXME: move to StructTact *)
@@ -514,7 +514,8 @@ Section OutputCorrect.
   Proof using. 
     unfold applyEntry.
     intros.
-    repeat break_match; repeat find_inversion. intuition.
+    repeat break_match; repeat find_inversion.
+    intuition (auto with datatypes).
   Qed.
 
   Lemma cacheApplyEntry_clientCache :
@@ -658,12 +659,13 @@ Section OutputCorrect.
           { intuition.
             - eapply_prop_hyp In In. break_exists. break_and.
               find_copy_eapply_lem_hyp cacheAppliedEntry_clientCache_preserved; eauto.
-              break_exists_exists. intuition.
+              break_exists_exists.
+              intuition lia.
             - subst. find_copy_apply_lem_hyp cacheApplyEntry_clientCache.
               intuition.
               + break_exists. break_and.
                 find_copy_eapply_lem_hyp cacheAppliedEntry_clientCache_preserved; eauto.
-                break_exists_exists. intuition.
+                break_exists_exists. intuition lia.
               + break_let. break_and. unfold getLastId. repeat find_rewrite.
                 eexists. eexists. rewrite get_set_same. intuition eauto.
               + break_let. break_and. unfold getLastId. repeat find_rewrite.
@@ -752,7 +754,7 @@ Section OutputCorrect.
         match goal with
           | |- context [applied_entries (update _ ?sigma ?h ?st)] =>
             pose proof applied_entries_update sigma h st
-        end. conclude_using intuition.
+        end. conclude_using ltac:(intuition (auto with arith)).
         intuition; simpl in *;
         unfold raft_data in *; simpl in *; find_rewrite; auto using Prefix_refl.
         unfold applied_entries in *.

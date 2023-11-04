@@ -59,8 +59,9 @@ Section InputBeforeOutput.
     induction (applied_entries (nwState net)); simpl in *; try congruence; intuition.
     - break_exists; intuition.
     - break_if; try congruence.
-      do_bool.      
-      break_exists; break_if; try congruence; intuition; do_bool; subst; eauto.
+      do_bool.
+      break_exists; break_if; try congruence;
+        intuition (try lia); do_bool; subst; eauto.
   Qed.
 
   Lemma doGenericServer_applied_entries :
@@ -77,14 +78,14 @@ Section InputBeforeOutput.
     use_applyEntries_spec. subst. simpl in *. unfold raft_data in *.
     simpl in *.
     break_if; [|rewrite applied_entries_safe_update; simpl in *; eauto;
-                exists nil; simpl in *; intuition].
+                exists nil; simpl in *; intuition (auto with datatypes)].
     do_bool.
     match goal with
       | |- context [update _ ?sigma ?h ?st] => pose proof applied_entries_update sigma h st
     end.
     simpl in *.
     assert (commitIndex (sigma h) >= lastApplied (sigma h)) by lia.
-    concludes. intuition; [find_rewrite; exists nil; simpl in *; intuition|].
+    concludes. intuition; [find_rewrite; exists nil; simpl in *; intuition (auto with datatypes)|].
     pose proof applied_entries_cases sigma.
     intuition; repeat find_rewrite; eauto;
     [eexists; intuition; eauto;
@@ -226,10 +227,10 @@ Section InputBeforeOutput.
     forall l l',
       sorted (l ++ l') ->
       sorted l.
-  Proof using. 
+  Proof using.
     induction l; simpl in *; intros; intuition eauto.
-    - apply H0. intuition.
-    - apply H0. intuition.
+    - apply H0. intuition (auto with datatypes).
+    - apply H0. intuition (auto with datatypes).
   Qed.
   
   Lemma handleMessage_applied_entries :
@@ -275,7 +276,7 @@ Section InputBeforeOutput.
           end;
             copy_eapply_prop_hyp log_matching_nw AppendEntries; eauto;
             repeat (forwards; [intuition eauto; lia|]; concludes);
-            intuition; [eapply Nat.le_trans; eauto|].
+            (intuition (auto with arith)); [eapply Nat.le_trans; eauto|].
           match goal with
             | H : exists _, _ |- _ => destruct H as [e']
           end.
@@ -317,7 +318,7 @@ Section InputBeforeOutput.
           unfold state_machine_safety_nw in *.
           eapply_prop_hyp commit_recorded In; intuition; eauto; try lia;
           try solve [find_apply_lem_hyp logs_contiguous; auto; lia].
-          unfold commit_recorded. intuition.
+          unfold commit_recorded. intuition lia.
       + repeat find_rewrite.
         find_copy_apply_lem_hyp logs_sorted_invariant.
         unfold logs_sorted in *. intuition.
@@ -336,7 +337,7 @@ Section InputBeforeOutput.
           simpl in *. intuition eauto. forwards; eauto. concludes.
           forwards; [unfold commit_recorded in *; intuition eauto|].
           concludes.
-          intuition; apply in_app_iff;
+          intuition (auto with datatypes); apply in_app_iff;
           try solve [right; eapply removeAfterIndex_le_In; eauto; lia];
           exfalso.
           find_eapply_lem_hyp findAtIndex_max_thing; eauto using entries_max_thing.
@@ -361,7 +362,7 @@ Section InputBeforeOutput.
             simpl in *. intuition eauto. forwards; eauto. concludes.
             forwards; [unfold commit_recorded in *; intuition eauto|].
             concludes.
-            intuition; apply in_app_iff;
+            intuition (auto with datatypes); apply in_app_iff;
             try solve [right; eapply removeAfterIndex_le_In; eauto; lia].
             subst.
             find_apply_lem_hyp maxIndex_non_empty.
@@ -373,7 +374,7 @@ Section InputBeforeOutput.
             unfold state_machine_safety_nw in *.
             eapply rachet; eauto using sorted_app, sorted_uniqueIndices.
             copy_eapply_prop_hyp commit_recorded In; intuition; eauto; try lia;
-            unfold commit_recorded; intuition.
+            unfold commit_recorded; intuition (try lia).
             - exfalso.
               pose proof entries_gt_pli.
               eapply_prop_hyp AppendEntries AppendEntries;
@@ -501,7 +502,7 @@ Section InputBeforeOutput.
       find_eapply_lem_hyp RIR_doLeader; simpl in *; eauto.
       simpl in *.
       find_copy_apply_lem_hyp handleMessage_applied_entries; repeat find_rewrite; eauto;
-      try solve [destruct p; simpl in *; intuition].
+      try solve [destruct p; simpl in *; intuition (auto with datatypes)].
       find_copy_apply_lem_hyp doLeader_appliedEntries.
       find_eapply_lem_hyp doGenericServer_applied_entries; eauto.
       break_exists. intuition.
@@ -511,7 +512,7 @@ Section InputBeforeOutput.
       + contradict H1. eexists; intuition; repeat find_rewrite; eauto.
       + find_apply_hyp_hyp. break_exists. intuition.
         eapply handleMessage_log with (h'' := x1); eauto;
-        [destruct p; simpl in *; repeat find_rewrite; intuition|].
+        [destruct p; simpl in *; repeat find_rewrite; intuition (auto with datatypes)|].
         update_destruct; subst; rewrite_update; eauto.
         find_apply_lem_hyp doLeader_log. repeat find_rewrite. auto.
     - unfold RaftInputHandler in *. repeat break_let. subst.
@@ -598,11 +599,11 @@ Section InputBeforeOutput.
           apply Bool.not_true_iff_false. intuition.
           find_false. unfold is_output_with_key in *.
           break_match; subst. repeat break_match; try congruence.
-          exists l, n. intuition.
+          exists l, n. intuition (auto with datatypes).
         * conclude_using eauto.
           conclude_using
             ltac:(intros; find_false; unfold key_in_output_trace in *;
-                    break_exists_exists; intuition).
+                    break_exists_exists; intuition (auto with datatypes)).
           eauto.
   Qed.
 
@@ -620,10 +621,10 @@ Section InputBeforeOutput.
         apply Bool.not_true_iff_false. intuition.
         find_false. unfold is_output_with_key in *.
         break_match; subst. repeat break_match; try congruence.
-        exists l, n. intuition.
+        exists l, n. intuition (auto with datatypes).
       + conclude_using
           ltac:(intros; find_false; unfold key_in_output_trace in *;
-                  break_exists_exists; intuition).
+                  break_exists_exists; intuition (auto with datatypes)).
         eauto.
   Qed.
 

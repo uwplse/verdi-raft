@@ -271,7 +271,7 @@ Section StateMachineCorrect.
       filter (fun x => eIndex x <=? i) (findGtIndex l i') ++ removeAfterIndex l i'.
   Proof using. 
     intros. induction l; simpl in *; auto.
-    repeat (break_match; simpl in *); do_bool; intuition; try lia; try congruence.
+    repeat (break_match; simpl in *); do_bool; intuition (auto with arith); try lia; try congruence.
     f_equal. repeat find_reverse_rewrite.
     rewrite removeAfterIndex_eq; auto.
     intros. find_apply_hyp_hyp. lia.
@@ -416,7 +416,7 @@ Section StateMachineCorrect.
     intros.
     pose proof max_id_for_client_default_or_entry c l x.
     pose proof max_id_for_client_default_or_entry c l' x.
-    intuition; break_exists; intuition; repeat find_rewrite.
+    intuition (try lia); break_exists; intuition; repeat find_rewrite.
     - eapply Nat.le_trans; [|eapply Nat.eq_le_incl].
       apply max_id_for_client_default_ge_default.
       eauto.
@@ -622,7 +622,7 @@ Section StateMachineCorrect.
         * repeat find_rewrite. unfold assoc_default in *. find_rewrite.
           specialize (IHl (assoc_set clientId_eq_dec ks (eClient a) (eId a)) (eId a)).
           conclude_using ltac:(now rewrite get_set_same).
-          break_exists_exists. intuition.
+          break_exists_exists. intuition lia.
         * rewrite log_to_ks'_assoc_set_diff by auto.
           auto.
       + auto.
@@ -701,7 +701,7 @@ Section StateMachineCorrect.
       unfold log_matching, log_matching_hosts in *. intuition.
       copy_eapply_prop_hyp In In.
       copy_eapply_prop_hyp pBody pBody; eauto.
-      intuition.
+      intuition (auto with datatypes).
       + apply in_app_iff. right.
         apply removeAfterIndex_le_In; eauto; lia.
       + apply in_app_iff. right.

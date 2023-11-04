@@ -233,9 +233,10 @@ Section StateMachineSafety'.
       Prefix l l' ->
       In x l ->
       In x l'.
-  Proof using. 
+  Proof using.
     induction l; intros; simpl in *; intuition;
-    subst; break_match; intuition; subst; intuition.
+    subst; break_match; intuition auto; subst;
+      intuition (auto with datatypes).
   Qed.
   
   Ltac get_invariant i :=
@@ -261,7 +262,7 @@ Section StateMachineSafety'.
     unfold state_machine_safety_nw'.
     intros.
     unfold committed in *. break_exists; intuition.
-    destruct (lt_eq_lt_dec (eTerm x0) t); intuition.
+    destruct (lt_eq_lt_dec (eTerm x0) t); intuition (try lia).
     - find_copy_apply_lem_hyp append_entries_leaderLogs_invariant.
       copy_eapply_prop_hyp append_entries_leaderLogs AppendEntries; eauto.
       break_exists; break_and.
@@ -474,7 +475,7 @@ Section StateMachineSafety'.
                  | H : forall _ _, In _ _ -> _ |- _ => eapply H
                end; eauto).
         assert (0 < eIndex e) by lia.
-        do_in_app. intuition.
+        do_in_app. intuition (auto with datatypes).
         destruct (le_gt_dec (eIndex e) (maxIndex (new_msg_entries ++ old_msg_entries))); intuition.
         right. right. right.
         match goal with
@@ -507,7 +508,7 @@ Section StateMachineSafety'.
   Qed.
 
   Instance sms'i : state_machine_safety'interface.
-  Proof.
+  Proof using aelli aerlli lci llci llli lllmi llsi lmi lsi ollpti rlmli rri uii.
     split.
     intuition.
     split.

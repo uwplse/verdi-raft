@@ -65,7 +65,7 @@ Section VotesLeCurrentTerm.
     unfold refined_raft_net_invariant_request_vote, votes_le_currentTerm.
     start_proof.
     find_eapply_lem_hyp votes_update_elections_data_request_vote; eauto.
-    intuition.
+    intuition (try lia).
     find_apply_hyp_hyp.
     eauto using Nat.le_trans, handleRequestVote_currentTerm.
   Qed.

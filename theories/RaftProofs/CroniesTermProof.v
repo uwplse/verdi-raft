@@ -55,7 +55,7 @@ Section CroniesTermProof.
     intros. subst. simpl in *. repeat find_higher_order_rewrite.
     update_destruct; subst; rewrite_update; eauto.
     simpl in *.
-    find_eapply_lem_hyp handleTimeout_spec; eauto. intuition.
+    find_eapply_lem_hyp handleTimeout_spec; eauto. intuition (try lia).
     eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
@@ -153,7 +153,7 @@ Section CroniesTermProof.
     intros.
     unfold handleAppendEntriesReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *;
-    do_bool; intuition.
+    do_bool; intuition lia.
   Qed.
 
 
@@ -202,7 +202,6 @@ Section CroniesTermProof.
     eapply Nat.le_trans; [|eauto]; eauto.
   Qed.
 
-
   Lemma handleRequestVoteReply_spec :
     forall h st h' t v st',
       st' = handleRequestVoteReply h st h' t v ->
@@ -213,9 +212,8 @@ Section CroniesTermProof.
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
     repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition.
+    do_bool; intuition lia.
   Qed.
-
 
   Lemma cronies_term_request_vote_reply :
     refined_raft_net_invariant_request_vote_reply cronies_term.

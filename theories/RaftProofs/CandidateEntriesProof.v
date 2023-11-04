@@ -242,11 +242,10 @@ Section CandidateEntriesProof.
   Proof using. 
     intros.
     unfold handleAppendEntries, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try solve [break_exists; congruence];
-    in_crush; eauto using removeAfterIndex_in.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition auto; try solve [break_exists; congruence];
+    in_crush_tac (intuition (auto with arith)); eauto using removeAfterIndex_in.
   Qed.
-
 
   Lemma handleAppendEntries_term_same_or_type_follower :
     forall h t n pli plt es ci d m st,
@@ -362,10 +361,12 @@ Section CandidateEntriesProof.
     match goal with
       | [ _ : nwPackets ?net = _,
               _ : In ?p _ |- _] =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; do_in_app; intuition)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; do_in_app; intuition (auto with datatypes))
       | [ _ : nwPackets ?net = _,
               _ : pBody ?p = _ |- _] =>
-        assert (In p (nwPackets net)) by (repeat find_rewrite; intuition)
+        assert (In p (nwPackets net)) by
+          (repeat find_rewrite; intuition (auto with datatypes))
     end.
 
   Lemma candidate_entries_append_entries_reply :

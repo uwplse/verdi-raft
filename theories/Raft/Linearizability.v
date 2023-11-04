@@ -1062,7 +1062,7 @@ Section Linearizability.
                 In (I k) (xs ++ ys).
   Proof using. 
     intros.
-    apply in_middle_reduce with (y := I k'); intuition.
+    apply in_middle_reduce with (y := I k'); intuition (auto with datatypes).
     find_inversion.
     auto using get_IR_output_keys_complete_U.
   Qed.
@@ -1332,12 +1332,12 @@ Section Linearizability.
                 * eauto using subseq_NoDup, subseq_get_op_input_keys, subseq_2_3.
                 * eauto using subseq_NoDup, subseq_get_op_output_keys, subseq_2_3.
               + simpl. intuition congruence.
-              + intuition.
+              + intuition (auto with datatypes).
           }
         * { break_if.
             - simpl in *. intuition (try congruence).
               exfalso. eauto using get_IR_output_keys_complete_U.
-            - exfalso. apply n. red. intuition.
+            - exfalso. apply n. red. intuition (auto with datatypes).
           }
     - (* IRU case. *)
       match goal with
@@ -1370,7 +1370,7 @@ Section Linearizability.
         break_if.
         * exfalso.
           intuition eauto using in_middle_insert, in_cons, in_eq, acknowledged_op_defn.
-        * rewrite if_decider_true by intuition.
+        * rewrite if_decider_true by intuition (auto with datatypes).
           { constructor. constructor.
             rewrite acknowledge_all_ops_func_target_ext_strong with (t' := ir).
             - apply IHP; auto.

@@ -86,7 +86,7 @@ Section RaftRefinementProof.
                                                              (pSrc p)
                                                              (pBody p)
                                                              (nwState net (pDst p)), r0) |})
-           by (eapply RRIR_handleMessage; eauto; in_crush).
+           by (eapply RRIR_handleMessage; eauto; in_crush_tac (intuition auto)).
          assert
            (refined_raft_intermediate_reachable
               {|
@@ -108,7 +108,7 @@ Section RaftRefinementProof.
                                                     (pSrc p) (pBody p) (nwState net (pDst p)), r1) |})
            by
              (eapply RRIR_doLeader; eauto;
-              [simpl in *; break_if; try congruence; eauto| in_crush]).
+              [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition auto)]).
          eapply_prop refined_raft_net_invariant_do_generic_server. eauto.
          eapply_prop refined_raft_net_invariant_do_leader. eauto.
          eapply refined_raft_invariant_handle_message with (P := P); eauto using in_app_or.
@@ -121,7 +121,7 @@ Section RaftRefinementProof.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. in_crush.
+         simpl. in_crush_tac (intuition (auto with datatypes)).
        + unfold refined_input_handlers in *. simpl in *.
          unfold RaftInputHandler, update_elections_data_input in *. repeat break_let.
          repeat find_inversion.
@@ -133,7 +133,7 @@ Section RaftRefinementProof.
                                   (update_elections_data_input h
                                                                inp
                                                                (nwState net h), r0) |})
-           by (eapply RRIR_handleInput; eauto; in_crush).
+           by (eapply RRIR_handleInput; eauto; in_crush_tac (intuition auto)).
          assert
            (refined_raft_intermediate_reachable
               {|
@@ -153,7 +153,7 @@ Section RaftRefinementProof.
                          (update_elections_data_input h inp (nwState net h), r1) |})
            by
              (eapply RRIR_doLeader; eauto;
-              [simpl in *; break_if; try congruence; eauto| in_crush]).
+              [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition auto)]).
          eapply_prop refined_raft_net_invariant_do_generic_server. eauto.
          eapply_prop refined_raft_net_invariant_do_leader. eauto.
          eapply refined_raft_invariant_handle_input with (P := P); eauto using in_app_or.
@@ -167,11 +167,12 @@ Section RaftRefinementProof.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. unfold send_packets.  intros. in_crush.
+         simpl. unfold send_packets. intros. in_crush_tac (intuition (auto with datatypes)).
        + match goal with
            | [ H : nwPackets ?net = _ |- _ {| nwPackets := ?ps ; nwState := ?st |} ] =>
              assert (forall p, In p (nwPackets {| nwPackets := ps ; nwState := st |}) ->
-                          In p (nwPackets net)) by (intros; simpl in *; find_rewrite; in_crush)
+                          In p (nwPackets net)) by
+               (intros; simpl in *; find_rewrite; in_crush_tac (intuition auto))
          end.
          eapply_prop refined_raft_net_invariant_state_same_packet_subset; [|eauto|idtac|];
          eauto.
@@ -285,7 +286,7 @@ Section RaftRefinementProof.
                                                              (pSrc p)
                                                              (pBody p)
                                                              (nwState net (pDst p)), r0) |})
-           by (eapply RRIR_handleMessage; eauto; in_crush).
+           by (eapply RRIR_handleMessage; eauto; in_crush_tac (intuition auto)).
          assert
            (refined_raft_intermediate_reachable
               {|
@@ -306,7 +307,7 @@ Section RaftRefinementProof.
                                                     (pSrc p) (pBody p) (nwState net (pDst p)), r1) |})
            by
              (eapply RRIR_doLeader; eauto;
-              [simpl in *; break_if; try congruence; eauto| in_crush]).
+              [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition auto)]).
          eapply_prop refined_raft_net_invariant_do_generic_server'. eauto.
          eapply_prop refined_raft_net_invariant_do_leader'. eauto.
          eapply refined_raft_invariant_handle_message' with (P := P); auto.
@@ -320,7 +321,7 @@ Section RaftRefinementProof.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. in_crush.
+         simpl. in_crush_tac (intuition (auto with datatypes)).
        + match goal with 
          | [ H : refined_raft_intermediate_reachable _ |- _ ?x ] => 
            assert (refined_raft_intermediate_reachable x) as Hpost
@@ -344,7 +345,7 @@ Section RaftRefinementProof.
                                   (update_elections_data_input h
                                                                inp
                                                                (nwState net h), r0) |})
-           by (eapply RRIR_handleInput; eauto; in_crush).
+           by (eapply RRIR_handleInput; eauto; in_crush_tac (intuition auto)).
          assert
            (refined_raft_intermediate_reachable
               {|
@@ -364,7 +365,7 @@ Section RaftRefinementProof.
                          (update_elections_data_input h inp (nwState net h), r1) |})
            by
              (eapply RRIR_doLeader; eauto;
-              [simpl in *; break_if; try congruence; eauto| in_crush]).
+              [simpl in *; break_if; try congruence; eauto| in_crush_tac (intuition auto)]).
          eapply_prop refined_raft_net_invariant_do_generic_server'. eauto.
          eapply_prop refined_raft_net_invariant_do_leader'. eauto.
          eapply refined_raft_invariant_handle_input' with (P := P); auto. 
@@ -378,7 +379,8 @@ Section RaftRefinementProof.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. unfold send_packets.  intros. in_crush.
+         simpl. unfold send_packets. intros.
+         in_crush_tac (intuition (auto with datatypes)).
        + match goal with
            | [ H : nwPackets ?net = _ |- _ {| nwPackets := ?ps ; nwState := ?st |} ] =>
              assert (forall p, In p (nwPackets {| nwPackets := ps ; nwState := st |}) ->

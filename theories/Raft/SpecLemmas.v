@@ -29,7 +29,7 @@ Section SpecLemmas.
     repeat break_match; repeat find_inversion; intuition idtac.
     - simpl in *. discriminate.
     - unfold advanceCurrentTerm in *.
-      break_if; simpl in *; do_bool; intuition.
+      break_if; simpl in *; do_bool; intuition (auto with arith).
   Qed.
 
   Lemma handleRequestVoteReply_term_votedFor_cases :
@@ -230,7 +230,7 @@ Section SpecLemmas.
       currentTerm (advanceCurrentTerm st t) = t.
   Proof using. 
     intros. unfold advanceCurrentTerm in *.
-    break_if; do_bool; intuition.
+    break_if; do_bool; intuition (auto with arith).
   Qed.
     
   Theorem handleAppendEntries_log_detailed :
@@ -460,8 +460,8 @@ Section SpecLemmas.
   Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try right; congruence.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition auto; try right; congruence.
   Qed.
 
   Lemma handleRequestVoteReply_spec' :
@@ -479,8 +479,8 @@ Section SpecLemmas.
   Proof using. 
     intros.
     unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; try find_inversion; subst; simpl in *; intuition;
-    do_bool; intuition; try right; congruence.
+    repeat break_match; try find_inversion; subst; simpl in *; intuition auto;
+    do_bool; intuition (auto with arith); try right; congruence.
   Qed.
   
   Theorem handleTimeout_not_is_append_entries :
@@ -531,7 +531,7 @@ Section SpecLemmas.
       (type st' = Follower /\ currentTerm st' >= currentTerm st).
   Proof using. 
     intros. unfold handleAppendEntriesReply, advanceCurrentTerm in *.
-    repeat break_match; tuple_inversion; do_bool; intuition.
+    repeat break_match; tuple_inversion; do_bool; intuition (auto with arith).
   Qed.
 
   Lemma handleRequestVote_type :
@@ -539,7 +539,7 @@ Section SpecLemmas.
       handleRequestVote h st t h' lli llt = (st', m) ->
       (type st' = type st /\ currentTerm st' = currentTerm st) \/
       type st' = Follower.
-  Proof using. 
+  Proof using.
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; auto.
   Qed.
@@ -562,7 +562,7 @@ Section SpecLemmas.
       (type st = Candidate /\ type st' = Leader /\ currentTerm st' = currentTerm st).
   Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; subst; do_bool; intuition.
+    repeat break_match; subst; do_bool; intuition auto.
   Qed.
 
   Lemma handleClientRequest_type :
@@ -1017,7 +1017,7 @@ Section SpecLemmas.
   Proof using. 
     intros. unfold handleRequestVote, advanceCurrentTerm in *.
     repeat break_match; find_inversion; subst; auto;
-    intuition; break_exists; congruence.
+    intuition auto; break_exists; congruence.
   Qed.
 
   Theorem handleClientRequest_no_append_entries :
@@ -1170,7 +1170,7 @@ Section SpecLemmas.
       (r = true /\ v = h' /\ currentTerm (handleRequestVoteReply h st h' t r) = t).
   Proof using. 
     intros. unfold handleRequestVoteReply, advanceCurrentTerm in *.
-    repeat break_match; subst; simpl in *; do_bool; intuition.
+    repeat break_match; subst; simpl in *; do_bool; intuition (auto with arith).
   Qed.
 
   Theorem handleTimeout_log_term_type :

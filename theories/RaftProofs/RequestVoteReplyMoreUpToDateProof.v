@@ -77,8 +77,9 @@ Section RequestVoteReplyMoreUpToDate.
         * find_apply_lem_hyp requestVote_maxIndex_maxTerm_invariant.
           eapply_prop_hyp requestVote_maxIndex_maxTerm pBody; eauto.
           concludes. intuition; subst.
-          eexists; intuition; eauto.
-    - find_copy_apply_lem_hyp handleRequestVote_log_term_type; intuition; try congruence.
+          eexists; intuition (auto with datatypes); eauto.
+    - find_copy_apply_lem_hyp handleRequestVote_log_term_type; 
+        intuition auto; try congruence.
       repeat find_rewrite.
       find_apply_hyp_hyp. intuition.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).
@@ -105,7 +106,7 @@ Section RequestVoteReplyMoreUpToDate.
         * find_apply_lem_hyp requestVote_maxIndex_maxTerm_invariant.
           eapply_prop_hyp requestVote_maxIndex_maxTerm pBody; eauto.
           concludes. intuition; subst.
-          eexists; intuition; eauto.
+          eexists; intuition (auto with datatypes); eauto.
     - find_apply_hyp_hyp. intuition.
       + assert (In p0 (nwPackets net)) by (repeat find_rewrite; in_crush).
         repeat find_rewrite.

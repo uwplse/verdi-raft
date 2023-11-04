@@ -91,7 +91,7 @@ Section RaftMsgRefinement.
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) (pDst p)
                                   (post_ghost_state, r0) |})
-           by (subst; eapply MRRIR_handleMessage; eauto; in_crush).
+           by (subst; eapply MRRIR_handleMessage; eauto; in_crush_tac (intuition auto)).
          assert
            (msg_refined_raft_intermediate_reachable
               {|
@@ -106,7 +106,7 @@ Section RaftMsgRefinement.
                 nwState := update name_eq_dec (nwState net) (pDst p)
                                   (post_ghost_state, r1) |}) by
              (eapply MRRIR_doLeader; eauto;
-              try solve [in_crush];
+              try solve [in_crush_tac (intuition (auto with datatypes))];
               simpl in *; intros; repeat break_if; try congruence; auto).
          subst.
          eapply_prop msg_refined_raft_net_invariant_do_generic_server. eauto.
@@ -134,7 +134,7 @@ Section RaftMsgRefinement.
          simpl in *.
          intros. repeat break_if; auto.
          intros. simpl in *.
-         in_crush. 
+         in_crush_tac (intuition (auto with datatypes)).
          unfold add_ghost_msg in *. do_in_map.
          subst. do_in_app. intuition; try do_in_app; intuition.
          * left. apply in_app_iff. left. apply in_app_iff. right.
@@ -161,8 +161,7 @@ Section RaftMsgRefinement.
            simpl in *.
            rewrite map_map.
            apply in_map_iff.
-           eexists; intuition; eauto.
-           
+           eexists; intuition; eauto.           
        + unfold mgv_refined_input_handlers in *. simpl in *.
          unfold refined_input_handlers in *. simpl in *.
          unfold RaftInputHandler in *.
@@ -179,7 +178,7 @@ Section RaftMsgRefinement.
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) h
                                   (post_ghost_state, r0) |})
-           by (subst; eapply MRRIR_handleInput; eauto; in_crush).
+           by (subst; eapply MRRIR_handleInput; eauto; in_crush_tac (intuition auto)).
          assert
            (msg_refined_raft_intermediate_reachable
               {|
@@ -194,7 +193,7 @@ Section RaftMsgRefinement.
                 nwState := update name_eq_dec (nwState net) h
                                   (post_ghost_state, r1) |}) by
              (eapply MRRIR_doLeader; eauto;
-              try solve [in_crush];
+              try solve [in_crush_tac (intuition (auto with datatypes))];
               simpl in *; intros; repeat break_if; try congruence; auto).
          subst.
          eapply_prop msg_refined_raft_net_invariant_do_generic_server. eauto.
@@ -222,7 +221,7 @@ Section RaftMsgRefinement.
          simpl in *.
          intros. repeat break_if; auto.
          intros. simpl in *.
-         in_crush. 
+         in_crush_tac (intuition (auto with datatypes)).
          unfold add_ghost_msg in *. do_in_map.
          subst. do_in_app. intuition; try do_in_app; intuition.
          * left. apply in_app_iff. left. apply in_app_iff. right.
@@ -369,7 +368,7 @@ Section RaftMsgRefinement.
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) (pDst p)
                                   (post_ghost_state, r0) |}) as Hr0
-           by (subst; eapply MRRIR_handleMessage; eauto; in_crush).
+           by (subst; eapply MRRIR_handleMessage; eauto; in_crush_tac (intuition auto)).
          assert
            (msg_refined_raft_intermediate_reachable
               {|
@@ -384,7 +383,7 @@ Section RaftMsgRefinement.
                 nwState := update name_eq_dec (nwState net) (pDst p)
                                   (post_ghost_state, r1) |}) as Hr1 by
              (eapply MRRIR_doLeader; eauto;
-              try solve [in_crush];
+              try solve [in_crush_tac (intuition (auto with datatypes))];
               simpl in *; intros; repeat break_if; try congruence; auto).
          subst.
          eapply_prop msg_refined_raft_net_invariant_do_generic_server'. eauto.
@@ -394,13 +393,13 @@ Section RaftMsgRefinement.
          exact Hr1.
          simpl. break_if; intuition eauto.
          simpl. intros. break_if; intuition eauto.
-         simpl. in_crush. auto. auto.
+         simpl. in_crush_tac (intuition (auto with datatypes)). auto. auto.
          simpl. break_if; eauto; congruence.
          simpl. intros.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. in_crush.
+         simpl. in_crush_tac (intuition (auto with datatypes)).
          (* here *)
          unfold add_ghost_msg in *. do_in_map.
          subst. do_in_app. intuition; try do_in_app; intuition.
@@ -458,7 +457,7 @@ Section RaftMsgRefinement.
                                                        (post_ghost_state, r0) l4);
                 nwState := update name_eq_dec (nwState net) h
                                   (post_ghost_state, r0) |}) as Hr0
-           by (subst; eapply MRRIR_handleInput; eauto; in_crush).
+           by (subst; eapply MRRIR_handleInput; eauto; in_crush_tac (intuition auto)).
          assert
            (msg_refined_raft_intermediate_reachable
               {|
@@ -473,7 +472,7 @@ Section RaftMsgRefinement.
                 nwState := update name_eq_dec (nwState net) h
                                   (post_ghost_state, r1) |}) as Hr1 by
              (eapply MRRIR_doLeader; eauto;
-              try solve [in_crush];
+              try solve [in_crush_tac (intuition (auto with datatypes))];
               simpl in *; intros; repeat break_if; try congruence; auto).
          subst.
          eapply_prop msg_refined_raft_net_invariant_do_generic_server'. eauto.
@@ -483,13 +482,13 @@ Section RaftMsgRefinement.
          exact Hr1.
          simpl. break_if; intuition eauto.
          simpl. intros. break_if; intuition eauto.
-         simpl. in_crush. auto. auto.
+         simpl. in_crush_tac (intuition (auto with datatypes)). auto. auto.
          simpl. break_if; eauto; congruence.
          simpl. intros.
          break_if; subst;
          repeat rewrite update_same by auto;
          repeat rewrite update_neq by auto; auto.
-         simpl. in_crush.
+         simpl. in_crush_tac (intuition (auto with datatypes)).
          unfold add_ghost_msg in *. do_in_map.
          subst. do_in_app. intuition; try do_in_app; intuition.
          * left. apply in_app_iff. right. apply in_app_iff. left.
@@ -722,7 +721,7 @@ Section RaftMsgRefinement.
                                                        |})) by
           (unfold mgv_deghost in *; repeat break_match; simpl in *;
              eapply MRRIR_handleInput; repeat break_match; simpl in *; eauto;
-           simpl in *; in_crush).
+           simpl in *; in_crush_tac (intuition auto)).
       pose proof map_subset _ _ mgv_deghost_packet
            (nwPackets x ++
                       @send_packets _ raft_msg_refined_multi_params h
@@ -771,7 +770,7 @@ Section RaftMsgRefinement.
       { unfold mgv_deghost in *; repeat break_match; simpl in *.
         eapply MRRIR_handleMessage. eauto. simpl. eauto. simpl. eauto.
         simpl. eauto. simpl. auto.
-        simpl in *; in_crush.
+        simpl in *; in_crush_tac (intuition auto).
       }
       pose proof map_subset _ _ mgv_deghost_packet
            ((xs' ++ ys') ++
@@ -791,13 +790,13 @@ Section RaftMsgRefinement.
         rewrite map_app.
         in_crush.
         - left. apply in_map_iff.
-          eexists; intuition; eauto.
+          eexists; intuition (auto with datatypes); eauto.
         - left. apply in_map_iff.
-          eexists; intuition; eauto.
+          eexists; intuition (auto with datatypes); eauto.
         - right.
           unfold add_ghost_msg.
           repeat rewrite map_map. simpl in *.
-          in_crush.
+          in_crush_tac (intuition auto).
       }
       concludes.
       break_exists_name dps'.
@@ -819,7 +818,7 @@ Section RaftMsgRefinement.
                                                        |})).
       { unfold mgv_deghost in *; repeat break_match; simpl in *.
         eapply MRRIR_doLeader; repeat break_match; simpl in *; eauto;
-        simpl in *; in_crush.
+        simpl in *; in_crush_tac (intuition auto).
       }
       pose proof map_subset _ _ mgv_deghost_packet
            (nwPackets x ++
@@ -860,7 +859,7 @@ Section RaftMsgRefinement.
                                                        |})).
       { unfold mgv_deghost in *; repeat break_match; simpl in *.
         eapply MRRIR_doGenericServer; repeat break_match; simpl in *; eauto;
-        simpl in *; in_crush.
+        simpl in *; in_crush_tac (intuition auto).
       }
       pose proof map_subset _ _ mgv_deghost_packet
            (nwPackets x ++
