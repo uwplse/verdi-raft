@@ -109,7 +109,7 @@ Section LeaderLogsContiguous.
       match goal with
         | H : forall _ _, _ <= _ <= _ -> _ |- _ =>
           specialize (H h i);
-            conclude H ltac:(simpl; repeat break_match; simpl in *; repeat find_rewrite; simpl in *;lia)
+            conclude H (simpl; repeat break_match; simpl in *; repeat find_rewrite; simpl in *;lia)
       end.
       break_exists_exists; intuition.
       simpl in *.

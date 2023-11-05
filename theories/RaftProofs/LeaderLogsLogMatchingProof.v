@@ -332,8 +332,8 @@ Section LeaderLogsLogMatching.
     match goal with
       | [ H : forall _ : packet , _ |- _ ] =>
         do 7 insterU H;
-          conclude H ltac:(unfold deghost; simpl; eapply in_map_iff; eexists; eauto);
-          conclude H ltac:(simpl; eauto)
+          conclude H (unfold deghost; simpl; eapply in_map_iff; eexists; eauto);
+          conclude H (simpl; eauto)
     end.
     rename net into net0.
     intuition.

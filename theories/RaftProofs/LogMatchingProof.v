@@ -288,7 +288,7 @@ Section LogMatchingProof.
                    specialize (Hentries leader h e1 e2 x)
               end.
               assert (eIndex x <= eIndex e1) by lia.
-              repeat conclude. intuition.
+              intuition.
           }
     - use_packet_subset_clear; unfold log_matching in *; intuition.
       + unfold log_matching_nw in *; intuition. use_nw_invariant.
@@ -302,7 +302,7 @@ Section LogMatchingProof.
               | context [ nwState _ ?h ] =>
                 specialize (H h i)
             end;
-              conclude H ltac:(split; try lia; eapply Nat.le_trans; eauto using findGtIndex_max)
+              conclude H (split; try lia; eapply Nat.le_trans; eauto using findGtIndex_max)
         end.
         break_exists;
         eexists;
@@ -333,7 +333,7 @@ Section LogMatchingProof.
               _ : eIndex ?e3 <= eIndex _
                 |- _ ] =>
             specialize (H (eIndex e3));
-              conclude H ltac:(split; auto; repeat find_rewrite;
+              conclude H (split; auto; repeat find_rewrite;
                        eapply Nat.le_trans; eauto; apply maxIndex_is_max; intuition)
         end.
         break_exists. intuition.
@@ -1410,7 +1410,7 @@ Ltac assert_do_leader :=
                     | [ H : forall _, prevLogIndex < _ <= _ -> _
                                  |- _ ] =>
                       specialize (H pli);
-                        conclude H ltac:(
+                        conclude H (
                           split; intuition;
                           eapply Nat.lt_le_incl;
                           eapply Nat.lt_le_trans; eauto;

@@ -237,7 +237,7 @@ Section StateMachineSafetyProof.
   Proof using. 
     induction l1; intros; simpl in *; intuition.
     destruct l2; intuition (auto with arith). simpl in *.
-    specialize (H0 e). conclude H0 ltac:(intuition (auto with datatypes)).
+    specialize (H0 e). conclude H0 (intuition (auto with datatypes)).
     intuition (auto with arith).
   Qed.
 
@@ -604,7 +604,7 @@ Section StateMachineSafetyProof.
         repeat clean;
         match goal with
           | _ : eIndex ?x' = eIndex ?x, H : context [eIndex ?x'] |- _ =>
-            specialize (H x); conclude H ltac:(apply in_app_iff; auto)
+            specialize (H x); conclude H (apply in_app_iff; auto)
           end; intuition lia.
     - assert (sorted (log d)) by (eauto using lifted_handleAppendEntries_logs_sorted).
       match goal with
@@ -716,7 +716,7 @@ Section StateMachineSafetyProof.
           repeat clean;
           match goal with
             | _ : eIndex ?x' = eIndex ?x, H : context [eIndex ?x'] |- _ =>
-              specialize (H x); conclude H ltac:(apply in_app_iff; auto)
+              specialize (H x); conclude H (apply in_app_iff; auto)
           end; intuition lia.
   Qed.
 
@@ -1991,7 +1991,7 @@ Section StateMachineSafetyProof.
                        unfold log_properties_hold_on_ghost_logs in *.
                        unfold msg_log_property in *.
                        specialize (Hprop (fun l => forall e, In e l -> eIndex e > 0) p).
-                       conclude_using ltac:(intros; eapply lifted_entries_gt_0_invariant; eauto).
+                       conclude_using (intros; eapply lifted_entries_gt_0_invariant; eauto).
                        conclude_using eauto. simpl in *.
                        find_apply_hyp_hyp.
                        lia.
@@ -2092,7 +2092,7 @@ Section StateMachineSafetyProof.
                    unfold log_properties_hold_on_ghost_logs in *.
                    unfold msg_log_property in *.
                    specialize (Hprop (fun l => contiguous_range_exact_lo l 0) p).
-                   conclude_using ltac:(intros; eapply lifted_entries_contiguous_invariant; eauto).
+                   conclude_using (intros; eapply lifted_entries_contiguous_invariant; eauto).
                    concludes.
                    simpl in *.
 

@@ -151,7 +151,7 @@ Ltac all f ls :=
       eIndex e' < eIndex e.
   Proof using. 
     induction l1; intros; simpl in *; intuition; eauto.
-    subst. find_insterU. conclude_using ltac:(apply in_app_iff; intuition eauto).
+    subst. find_insterU. conclude_using (apply in_app_iff; intuition eauto).
     intuition.
   Qed.
   
@@ -547,7 +547,7 @@ Ltac all f ls :=
                 match goal with
                   | H : forall _, _ < _ <= _ -> _ |- _ =>
                     specialize (H (eIndex e));
-                      conclude_using ltac:(intuition; eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|]; eauto)
+                      conclude_using (intuition; eapply Nat.le_trans; [eapply maxIndex_is_max; eauto|]; eauto)
                 end.
                 break_exists. break_and.
                 match goal with

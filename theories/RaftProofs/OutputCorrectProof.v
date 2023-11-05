@@ -754,7 +754,7 @@ Section OutputCorrect.
         match goal with
           | |- context [applied_entries (update _ ?sigma ?h ?st)] =>
             pose proof applied_entries_update sigma h st
-        end. conclude_using ltac:(intuition (auto with arith)).
+        end. conclude_using (intuition (auto with arith)).
         intuition; simpl in *;
         unfold raft_data in *; simpl in *; find_rewrite; auto using Prefix_refl.
         unfold applied_entries in *.

@@ -209,7 +209,7 @@ Section StateMachineSafety'.
     intuition.
     match goal with
       | H : forall _, _ <= _ -> _ |- _ =>
-        specialize (H e'); conclude H ltac:(lia)
+        specialize (H e'); conclude H lia
     end. intuition.
     eapply rachet; eauto.
   Qed.

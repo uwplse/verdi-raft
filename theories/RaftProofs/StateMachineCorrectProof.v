@@ -621,7 +621,7 @@ Section StateMachineCorrect.
       + destruct (clientId_eq_dec (eClient e) (eClient a)).
         * repeat find_rewrite. unfold assoc_default in *. find_rewrite.
           specialize (IHl (assoc_set clientId_eq_dec ks (eClient a) (eId a)) (eId a)).
-          conclude_using ltac:(now rewrite get_set_same).
+          conclude_using (now rewrite get_set_same).
           break_exists_exists. intuition lia.
         * rewrite log_to_ks'_assoc_set_diff by auto.
           auto.
