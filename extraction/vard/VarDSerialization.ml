@@ -1,7 +1,6 @@
 open Str
 open Printf
 open VarDRaft
-open VarD
 open Util
 
 let serializeOutput out =

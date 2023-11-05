@@ -1,0 +1,4 @@
+(test
+ (name VarDTest)
+ (flags :standard -w -27)
+ (libraries verdi-runtime VarDSerialization VarDRaft ounit2))

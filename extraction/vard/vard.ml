@@ -1,6 +1,5 @@
 open List
 open Printf
-open Str
 open Opts
 
 let _ =

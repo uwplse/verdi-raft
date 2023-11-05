@@ -2,6 +2,7 @@
 *.glob
 *.v.d
 *.buildtime
+_build
 Makefile.coq
 Makefile.coq.bak
 Makefile.coq.conf
