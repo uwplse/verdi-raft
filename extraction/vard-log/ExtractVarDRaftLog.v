@@ -7,5 +7,5 @@ From Verdi Require Import ExtrOcamlBool ExtrOcamlList ExtrOcamlFinInt ExtrOcamlD
 From Cheerios Require Import ExtrOcamlCheeriosBasic ExtrOcamlCheeriosNatInt.
 From Cheerios Require Import ExtrOcamlCheeriosString ExtrOcamlCheeriosFinInt.
 
-Extraction "extraction/vard-log/ml/VarDRaftLog.ml" seq transformed_base_params
+Extraction "VarDRaftLog.ml" seq transformed_base_params
   transformed_multi_params transformed_failure_params.

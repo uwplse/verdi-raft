@@ -1,7 +1,6 @@
 open Str
 open Printf
 open VarDRaftLog
-open VarD
 open Util
 
 let outputToString out =
