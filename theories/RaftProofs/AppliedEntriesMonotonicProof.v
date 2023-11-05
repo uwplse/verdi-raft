@@ -42,7 +42,7 @@ Section AppliedEntriesMonotonicProof.
     match goal with
       | H : forall _ _, _ <= _ <= _ -> _ |- _ =>
         specialize (H h i);
-          conclude H ltac:(intuition; find_apply_lem_hyp maxIndex_is_max; eauto; lia)
+          conclude H (intuition; find_apply_lem_hyp maxIndex_is_max; eauto; lia)
     end.
     break_exists_exists. intuition. apply findAtIndex_intro; eauto using sorted_uniqueIndices.
   Qed.
@@ -368,7 +368,7 @@ Section AppliedEntriesMonotonicProof.
       find_apply_lem_hyp argmax_elim. intuition.
       match goal with
         | H : forall _: name, _ |- _ =>
-          specialize (H h'); conclude H ltac:(eauto using all_fin_all)
+          specialize (H h'); conclude H (eauto using all_fin_all)
       end.
       rewrite_update. simpl in *.
       update_destruct_hyp; subst; rewrite_update; simpl in *.

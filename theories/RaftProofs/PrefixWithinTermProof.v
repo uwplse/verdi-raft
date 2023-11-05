@@ -43,7 +43,7 @@ Section PrefixWithinTerm.
       In e (log (snd (nwState net leader))).
   Proof using lsli rri. 
     intros. pose proof lift_prop leader_sublog_host_invariant.
-    conclude_using ltac:(apply leader_sublog_invariant_invariant).
+    conclude_using (apply leader_sublog_invariant_invariant).
     find_apply_hyp_hyp.
     match goal with
       | H : leader_sublog_host_invariant _ |- _ =>
@@ -78,7 +78,7 @@ Section PrefixWithinTerm.
   Proof using lsli rri. 
     intros.
     pose proof lift_prop leader_sublog_nw_invariant.
-    conclude_using ltac:(apply leader_sublog_invariant_invariant).
+    conclude_using (apply leader_sublog_invariant_invariant).
     find_apply_hyp_hyp.
     find_apply_lem_hyp exists_deghosted_packet.
     match goal with
@@ -1077,9 +1077,9 @@ Section PrefixWithinTerm.
             In ?e ?es' =>
             specialize (H p t n pli plt es ci p' t' n' pli' plt' es' ci' e e')
         end.
-        conclude_using ltac:(repeat find_rewrite; in_crush).
+        conclude_using (repeat find_rewrite; in_crush).
         concludes.
-        conclude_using ltac:(repeat find_rewrite; in_crush_tac (intuition auto)).
+        conclude_using (repeat find_rewrite; in_crush_tac (intuition auto)).
         repeat concludes. intuition.
         * exfalso.
           match goal with
@@ -1099,9 +1099,9 @@ Section PrefixWithinTerm.
                 In ?e (?es' ++ _) =>
                 specialize (H p t n pli plt es ci p' t' n' pli' plt' es' ci' e e')
             end.
-            conclude_using ltac:(repeat find_rewrite; in_crush).
+            conclude_using (repeat find_rewrite; in_crush).
             concludes.
-            conclude_using ltac:(repeat find_rewrite; in_crush_tac (intuition auto)).
+            conclude_using (repeat find_rewrite; in_crush_tac (intuition auto)).
             repeat concludes. intuition (auto with datatypes).
             + (* use  log matching *)
               break_exists. intuition.

@@ -524,7 +524,7 @@ Section CommonTheorems.
            exists e, In e (findGtIndex entries x) /\ eIndex e = i.
   Proof using. 
     intros entries x Hsorted; intros. specialize (H i).
-    conclude H ltac:(lia).
+    conclude H lia.
     break_exists. exists x0. intuition.
     apply findGtIndex_sufficient; auto; lia.
   Qed.
@@ -1170,9 +1170,7 @@ Section CommonTheorems.
                 |- _ ] =>
             specialize (H (eIndex e3));
               conclude H
-                       ltac:(split; [eauto|
-                                     eapply Nat.le_trans; eauto; apply maxIndex_is_max; eauto])
-
+                (split; [eauto| eapply Nat.le_trans; eauto; apply maxIndex_is_max; eauto])
         end.
         break_exists. intuition.
         match goal with
@@ -1262,7 +1260,7 @@ Section CommonTheorems.
               specialize (H (eIndex e))
           end.
           intuition.
-          conclude_using ltac:(eapply Nat.le_trans; eauto; apply maxIndex_is_max; eauto).
+          conclude_using (eapply Nat.le_trans; eauto; apply maxIndex_is_max; eauto).
           break_exists. intuition.
           match goal with
             | _: eIndex ?e1 = eIndex ?e2 |- context [ ?e2 ] =>
@@ -1782,13 +1780,13 @@ Section CommonTheorems.
     induction l1; intros; simpl in *; intuition.
     - subst. break_if; do_bool; try lia.
       eexists; repeat (simpl in *; intuition).
-    - specialize (H1 e); intuition. conclude H1 ltac:(apply in_app_iff; intuition).
+    - specialize (H1 e); intuition. conclude H1 (apply in_app_iff; intuition).
       break_if; do_bool; try lia. eexists; intuition; eauto.
       simpl in *. intuition.
       eapply_prop_hyp sorted sorted; eauto. break_exists; intuition.
       find_rewrite. eauto.
   Qed.
-  
+
   Lemma sorted_app_in_1 :
     forall l1 l2 e,
       sorted (l1 ++ l2) ->
@@ -1822,7 +1820,7 @@ Section CommonTheorems.
     - break_if; simpl in *; intuition.
       + eapply_prop_hyp sorted sorted; eauto.
         break_exists; intuition; find_rewrite; eauto.
-      + do_bool. specialize (H1 e); conclude H1 ltac:(apply in_app_iff; intuition).
+      + do_bool. specialize (H1 e); conclude H1 (apply in_app_iff; intuition).
         lia.
   Qed.
 
@@ -1875,7 +1873,7 @@ Section CommonTheorems.
     - exfalso.
       destruct l'; simpl in *; [lia|];
       specialize (H1 e).
-      conclude_using ltac:(intuition auto with datatypes);
+      conclude_using (intuition auto with datatypes);
       lia.
   Qed.
 
@@ -1891,7 +1889,7 @@ Section CommonTheorems.
     subst. destruct l'; simpl in *; intuition.
     - exfalso. specialize (H0 e). intuition lia.
     - exfalso. specialize (H3 e0). 
-      conclude_using ltac:(intuition auto with datatypes);
+      conclude_using (intuition auto with datatypes);
       lia.
   Qed.
   
@@ -2044,7 +2042,7 @@ Section CommonTheorems.
     simpl in *.
     break_match; intuition. subst. simpl in *.
     unfold contiguous_range_exact_lo in *.
-    intuition. specialize (H0 e0). conclude_using ltac:(intuition auto with datatypes).
+    intuition. specialize (H0 e0). conclude_using (intuition auto with datatypes).
     lia.
   Qed.
 
@@ -2158,7 +2156,7 @@ Section CommonTheorems.
         * match goal with
             | H : _ |- eIndex _ > eIndex ?e =>
               specialize (H e)
-          end. conclude_using ltac:(intuition auto with datatypes). intuition.
+          end. conclude_using (intuition auto with datatypes). intuition.
       + find_apply_lem_hyp cons_contiguous_sorted; eauto.
         simpl in *. intuition.
   Qed.

@@ -418,7 +418,7 @@ Section AppendEntriesRequestLeaderLogs.
     induction l1; intros; simpl in *; intuition.
     - subst. break_if; do_bool; try lia.
       eexists; repeat (simpl in *; intuition).
-    - specialize (H1 e); intuition. conclude H1 ltac:(apply in_app_iff; intuition).
+    - specialize (H1 e); intuition. conclude H1 (apply in_app_iff; intuition).
       break_if; do_bool; try lia. eexists; intuition; eauto.
       simpl in *. intuition.
       eapply_prop_hyp sorted sorted; eauto. break_exists; intuition.
@@ -458,7 +458,7 @@ Section AppendEntriesRequestLeaderLogs.
     - break_if; simpl in *; intuition.
       + eapply_prop_hyp sorted sorted; eauto.
         break_exists; intuition; find_rewrite; eauto.
-      + do_bool. specialize (H1 e); conclude H1 ltac:(apply in_app_iff; intuition).
+      + do_bool. specialize (H1 e); conclude H1 (apply in_app_iff; intuition).
         lia.
   Qed.
 
@@ -529,7 +529,7 @@ Section AppendEntriesRequestLeaderLogs.
         match goal with
           | H : forall _ _, In _ _ -> _ |- _ =>
             specialize (H h x0);
-              conclude H ltac:(unfold deghost in *;
+              conclude H (unfold deghost in *;
                                 repeat (break_match; simpl in *);
                                repeat (simpl in *; find_rewrite);
                                auto)

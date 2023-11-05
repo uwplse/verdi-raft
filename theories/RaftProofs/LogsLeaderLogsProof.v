@@ -371,7 +371,7 @@ Section LogsLeaderLogs.
                       assert (eIndex e = eIndex e') as Heq by (repeat find_rewrite; auto);
                         assert (eIndex e'' <= eIndex e) by lia;
                         eapply leaderLogs_entries_match_invariant in Heq; eauto;
-                        repeat conclude Heq ltac:(eauto; intuition)
+                        repeat conclude Heq (eauto; intuition)
                   end; intuition.
             - (* old entry *)
               (* can use host invariant, since we don't change removeAfterIndex *)
