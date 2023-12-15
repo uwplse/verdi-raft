@@ -210,9 +210,3 @@ theories/Systems/VarDRaftSerialized.v
 theories/Systems/VarDRaftSerializers.v
 theories/Systems/VarDRaftLog.v
 theories/Systems/VarDRaft.v
-
-extraction/vard/coq/ExtractVarDRaft.v
-extraction/vard-serialized/coq/ExtractVarDRaftSerialized.v
-extraction/vard-log/coq/ExtractVarDRaftLog.v
-extraction/vard-serialized-log/coq/ExtractVarDRaftSerializedLog.v
-extraction/vard-debug/coq/ExtractVarDRaftDebug.v

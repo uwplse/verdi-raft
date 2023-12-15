@@ -1,8 +1,5 @@
-open Str
 open Printf
 open VarDRaft
-open VarD
-open Util
 
 module type IntValue = sig
   val v : int

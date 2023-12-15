@@ -1,0 +1,24 @@
+(library
+ (name VarDRaftLog)
+ (flags :standard -w -27-32-39-67)
+ (libraries verdi-runtime cheerios-runtime)
+ (modules VarDRaftLog))
+
+(library
+ (name VarDLogSerialization)
+ (libraries verdi-runtime VarDRaftLog)
+ (modules VarDLogSerialization))
+
+(coq.extraction
+ (prelude ExtractVarDRaftLog)
+ (extracted_modules VarDRaftLog)
+ (theories VerdiRaft)
+ (flags :standard -w -extraction-opaque-accessed))
+
+(executable
+ (name vardlog)
+ (public_name vardlog)
+ (libraries verdi-runtime VarDRaftLog VarDLogSerialization)
+ (flags :standard -w -27)
+ (modules vardlog VarDLogArrangement)
+ (package vard-log))

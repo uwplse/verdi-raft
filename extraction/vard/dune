@@ -1,0 +1,23 @@
+(library
+ (name VarDRaft)
+ (flags :standard -w -27-32-39-67)
+ (modules VarDRaft))
+
+(library
+ (name VarDSerialization)
+ (libraries verdi-runtime VarDRaft)
+ (modules VarDSerialization))
+
+(coq.extraction
+ (prelude ExtractVarDRaft)
+ (extracted_modules VarDRaft)
+ (theories VerdiRaft)
+ (flags :standard -w -extraction-opaque-accessed))
+
+(executable
+ (name vard)
+ (public_name vard) 
+ (libraries verdi-runtime VarDRaft VarDSerialization)
+ (flags :standard -w -27)
+ (modules vard VarDArrangement)
+ (package vard))

@@ -3,8 +3,8 @@ open OUnit2
 let () =
   run_test_tt_main 
     ~exit
-    ("VarD" >:::
+    ("VarDLog" >:::
 	[
           OptsTest.tests;
-          VarDSerializedSerializationTest.tests
+          VarDLogSerializationTest.tests
 	])

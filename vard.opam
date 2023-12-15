@@ -8,15 +8,13 @@ bug-reports: "https://github.com/uwplse/verdi-raft/issues"
 license: "BSD-2-Clause"
 synopsis: "Fault-tolerant distributed key-value store using a verified implementation of Raft consensus"
 
-build: [make "-j%{jobs}%" "vard"]
+build: ["dune" "build" "-p" name "-j" jobs]
 depends: [
   "ocaml" {>= "4.05.0"}
+  "dune" {>= "3.5"}
   "coq" {>= "8.14"}
-  "coq-verdi" {= "dev"}
-  "coq-struct-tact" {= "dev"}
-  "coq-cheerios" {= "dev"}
+  "coq-verdi-raft" {= "dev"}
   "verdi-runtime" {= "dev"}
-  "ocamlbuild" {build}
   "ounit" {with-test & >= "2.0.0"}
 ]
 
